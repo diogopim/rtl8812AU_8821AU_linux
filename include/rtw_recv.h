@@ -274,22 +274,9 @@ struct rx_pkt_attrib {
 //These definition is used for Rx packet reordering.
 #define SN_LESS(a, b)		(((a-b)&0x800)!=0)
 #define SN_EQUAL(a, b)	(a == b)
-//#define REORDER_WIN_SIZE	128
-//#define REORDER_ENTRY_NUM	128
 #define REORDER_WAIT_TIME	(50) // (ms)
-
 #define RECVBUFF_ALIGN_SZ 8
-
-#if defined (CONFIG_RTL8192E)
-#ifdef CONFIG_PCI_HCI
-#define RXDESC_SIZE 16
-#define RX_WIFI_INFO_SIZE	24
-#else
 #define RXDESC_SIZE	24
-#endif
-#else
-#define RXDESC_SIZE	24
-#endif
 #define RXDESC_OFFSET RXDESC_SIZE
 
 struct recv_stat {

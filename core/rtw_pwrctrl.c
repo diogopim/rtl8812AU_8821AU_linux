@@ -500,9 +500,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 	{
 		if ( (pwrpriv->rpwm == pslv)
 #ifdef CONFIG_LPS_LCLK
-#ifndef CONFIG_RTL8723A
 		     || ((pwrpriv->rpwm >= PS_STATE_S2)&&(pslv >= PS_STATE_S2))
-#endif
 #endif
 		   ) {
 			RT_TRACE(_module_rtl871x_pwrctrl_c_,_drv_err_,
@@ -575,11 +573,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 			poll_cnt++;
 			rtw_hal_get_hwreg(padapter, HW_VAR_CPWM, &cpwm_now);
 			if ((cpwm_orig ^ cpwm_now) & 0x80) {
-#ifdef CONFIG_RTL8723A
-				pwrpriv->cpwm = PS_STATE(cpwm_now);
-#else // !CONFIG_RTL8723A
 				pwrpriv->cpwm = PS_STATE_S4;
-#endif // !CONFIG_RTL8723A
 				pwrpriv->cpwm_tog = cpwm_now & PS_TOGGLE;
 #ifdef DBG_CHECK_FW_PS_STATE
 				DBG_871X("%s: polling cpwm OK! poll_cnt=%d, cpwm_orig=%02x, cpwm_now=%02x , 0x100=0x%x\n"
@@ -988,19 +982,6 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 				val8 = rtw_btcoex_LpsVal(padapter);
 				if (val8 & BIT(4))
 					pslv = PS_STATE_S2;
-
-#ifdef CONFIG_RTL8723A
-				val8 = rtw_btcoex_RpwmVal(padapter);
-				switch (val8) {
-				case 0x4:
-					pslv = PS_STATE_S3;
-					break;
-
-				case 0xC:
-					pslv = PS_STATE_S4;
-					break;
-				}
-#endif // CONFIG_RTL8723A
 			}
 #endif // CONFIG_BT_COEXIST
 
@@ -1214,11 +1195,8 @@ void LeaveAllPowerSaveModeDirect(PADAPTER Adapter)
 
 			rtw_hal_get_hwreg(Adapter, HW_VAR_CPWM, &cpwm_now);
 			if ((cpwm_orig ^ cpwm_now) & 0x80) {
-#ifdef CONFIG_RTL8723A
 				pwrpriv->cpwm = PS_STATE(cpwm_now);
-#else // !CONFIG_RTL8723A
 				pwrpriv->cpwm = PS_STATE_S4;
-#endif // !CONFIG_RTL8723A
 				pwrpriv->cpwm_tog = cpwm_now & PS_TOGGLE;
 #ifdef DBG_CHECK_FW_PS_STATE
 				DBG_871X("%s: polling cpwm OK! cpwm_orig=%02x, cpwm_now=%02x, 0x100=0x%x \n"
@@ -1652,19 +1630,6 @@ void rtw_unregister_task_alive(PADAPTER padapter, u32 task)
 		val8 = rtw_btcoex_LpsVal(padapter);
 		if (val8 & BIT(4))
 			pslv = PS_STATE_S2;
-
-#ifdef CONFIG_RTL8723A
-		val8 = rtw_btcoex_RpwmVal(padapter);
-		switch (val8) {
-		case 0x4:
-			pslv = PS_STATE_S3;
-			break;
-
-		case 0xC:
-			pslv = PS_STATE_S4;
-			break;
-		}
-#endif // CONFIG_RTL8723A
 	}
 #endif // CONFIG_BT_COEXIST
 
@@ -1921,18 +1886,6 @@ void rtw_unregister_tx_alive(PADAPTER padapter)
 		if (val8 & BIT(4))
 			pslv = PS_STATE_S2;
 
-#ifdef CONFIG_RTL8723A
-		val8 = rtw_btcoex_RpwmVal(padapter);
-		switch (val8) {
-		case 0x4:
-			pslv = PS_STATE_S3;
-			break;
-
-		case 0xC:
-			pslv = PS_STATE_S4;
-			break;
-		}
-#endif // CONFIG_RTL8723A
 	}
 #endif // CONFIG_BT_COEXIST
 
@@ -1995,18 +1948,6 @@ void rtw_unregister_cmd_alive(PADAPTER padapter)
 		if (val8 & BIT(4))
 			pslv = PS_STATE_S2;
 
-#ifdef CONFIG_RTL8723A
-		val8 = rtw_btcoex_RpwmVal(padapter);
-		switch (val8) {
-		case 0x4:
-			pslv = PS_STATE_S3;
-			break;
-
-		case 0xC:
-			pslv = PS_STATE_S4;
-			break;
-		}
-#endif // CONFIG_RTL8723A
 	}
 #endif // CONFIG_BT_COEXIST
 

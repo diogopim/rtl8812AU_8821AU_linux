@@ -22,11 +22,6 @@
 #include <hal_data.h>
 #include <rtw_sreset.h>
 
-#ifdef CONFIG_RTL8192D
-#include <Hal8192DPhyReg.h>
-#endif
-
-
 struct rtw_async_write_data {
 	u8 data[VENDOR_CMD_MAX_DATA_LEN];
 	struct usb_ctrlrequest dr;

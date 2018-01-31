@@ -27,15 +27,6 @@
 #include "../../hal/OUTSRC/phydm_precomp.h"
 //#endif
 
-#if defined(CONFIG_RTL8723A)
-#include "rtl8723a_hal.h"
-#include <rtw_bt_mp.h>
-#endif
-
-#if defined(CONFIG_RTL8723B)
-#include <rtw_bt_mp.h>
-#endif
-
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27))
 #define  iwe_stream_add_event(a, b, c, d, e)  iwe_stream_add_event(b, c, d, e)
 #define  iwe_stream_add_point(a, b, c, d, e)  iwe_stream_add_point(b, c, d, e)
@@ -9067,22 +9058,16 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 
 		sprintf(extra, "\n");
 		for (i = 0; i < EFUSE_MAP_SIZE; i += 16) {
-//			DBG_871X("0x%02x\t", i);
 			sprintf(extra, "%s0x%02x\t", extra, i);
 			for (j=0; j<8; j++) {
-//				DBG_871X("%02X ", data[i+j]);
 				sprintf(extra, "%s%02X ", extra, PROMContent[i+j]);
 			}
-//			DBG_871X("\t");
 			sprintf(extra, "%s\t", extra);
 			for (; j<16; j++) {
-//				DBG_871X("%02X ", data[i+j]);
 				sprintf(extra, "%s%02X ", extra, PROMContent[i+j]);
 			}
-//			DBG_871X("\n");
 			sprintf(extra,"%s\n",extra);
 		}
-//		DBG_871X("\n");
 	} else if (strcmp(tmp[0], "realmap") == 0) {
 		mapLen = EFUSE_MAP_SIZE;
 		if (rtw_efuse_map_read(padapter, EFUSE_WIFI , mapLen, pEfuseHal->fakeEfuseInitMap) == _FAIL) {
@@ -9091,25 +9076,18 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 			goto exit;
 		}
 
-//		DBG_871X("OFFSET\tVALUE(hex)\n");
 		sprintf(extra, "\n");
 		for (i = 0; i < EFUSE_MAP_SIZE; i += 16) {
-//			DBG_871X("0x%02x\t", i);
 			sprintf(extra, "%s0x%02x\t", extra, i);
 			for (j=0; j<8; j++) {
-//				DBG_871X("%02X ", data[i+j]);
 				sprintf(extra, "%s%02X ", extra, pEfuseHal->fakeEfuseInitMap[i+j]);
 			}
-//			DBG_871X("\t");
 			sprintf(extra, "%s\t", extra);
 			for (; j<16; j++) {
-//				DBG_871X("%02X ", data[i+j]);
 				sprintf(extra, "%s%02X ", extra, pEfuseHal->fakeEfuseInitMap[i+j]);
 			}
-//			DBG_871X("\n");
 			sprintf(extra,"%s\n",extra);
 		}
-//		DBG_871X("\n");
 	} else if (strcmp(tmp[0], "rmap") == 0) {
 		if ((tmp[1]==NULL) || (tmp[2]==NULL)) {
 			DBG_871X("%s: rmap Fail!! Parameters error!\n", __FUNCTION__);
@@ -9142,13 +9120,10 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 			goto exit;
 		}
 
-//		DBG_871X("%s: data={", __FUNCTION__);
 		*extra = 0;
 		for (i=0; i<cnts; i++) {
-//			DBG_871X("0x%02x ", data[i]);
 			sprintf(extra, "%s0x%02X ", extra, data[i]);
 		}
-//		DBG_871X("}\n");
 	} else if (strcmp(tmp[0], "realraw") == 0) {
 		addr = 0;
 		mapLen = EFUSE_MAX_SIZE;
@@ -9158,86 +9133,20 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 			goto exit;
 		}
 		_rtw_memset(extra,'\0',strlen(extra));
-		//		DBG_871X("%s: realraw={\n", __FUNCTION__);
-		sprintf(extra, "\n0x00\t");
+				sprintf(extra, "\n0x00\t");
 		for (i=0; i< mapLen; i++) {
-			//			DBG_871X("%02X", rawdata[i]);
-			sprintf(extra, "%s%02X", extra, rawdata[i]);
+						sprintf(extra, "%s%02X", extra, rawdata[i]);
 			if ((i & 0xF) == 0xF) {
-				//				DBG_871X("\n");
-				sprintf(extra, "%s\n", extra);
+								sprintf(extra, "%s\n", extra);
 				sprintf(extra, "%s0x%02x\t", extra, i+1);
 			} else if ((i & 0x7) == 0x7) {
-				//				DBG_871X("\t");
-				sprintf(extra, "%s \t", extra);
+								sprintf(extra, "%s \t", extra);
 			} else {
-				//				DBG_871X(" ");
-				sprintf(extra, "%s ", extra);
+								sprintf(extra, "%s ", extra);
 			}
 		}
-		//		DBG_871X("}\n");
-	} else if (strcmp(tmp[0], "mac") == 0) {
-#ifdef CONFIG_RTL8192C
-		addr = EEPROM_MAC_ADDR_92C;
-#endif // CONFIG_RTL8192C
-#ifdef CONFIG_RTL8192D
-#ifdef CONFIG_USB_HCI
-		if (pHalData->interfaceIndex == 0)
-			addr = EEPROM_MAC_ADDR_MAC0_92DU;
-		else
-			addr = EEPROM_MAC_ADDR_MAC1_92DU;
-#else
-		if (pHalData->interfaceIndex == 0)
-			addr = EEPROM_MAC_ADDR_MAC0_92DE;
-		else
-			addr = EEPROM_MAC_ADDR_MAC1_92DE;
-#endif
-#endif // CONFIG_RTL8192D
-#ifdef CONFIG_RTL8723A
-#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_8723AS;
-#endif
-#ifdef CONFIG_GSPI_HCI
-		addr = EEPROM_MAC_ADDR_8723AS;
-#endif
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_MAC_ADDR_8723AU;
-#endif
-#endif // CONFIG_RTL8723A
-#ifdef CONFIG_RTL8188E
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_MAC_ADDR_88EU;
-#endif
-#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_88ES;
-#endif
-#ifdef CONFIG_PCI_HCI
-		addr = EEPROM_MAC_ADDR_88EE;
-#endif
-#endif // CONFIG_RTL8188E
+			} else if (strcmp(tmp[0], "mac") == 0) {
 
-#ifdef CONFIG_RTL8192E
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_MAC_ADDR_8192EU;
-#endif
-#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_8192ES;
-#endif
-#ifdef CONFIG_PCI_HCI
-		addr = EEPROM_MAC_ADDR_8192EE;
-#endif
-#endif
-#ifdef CONFIG_RTL8723B
-#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_8723BS;
-#endif
-#ifdef CONFIG_GSPI_HCI
-		addr = EEPROM_MAC_ADDR_8723BS;
-#endif
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_MAC_ADDR_8723BU;
-#endif
-#endif // CONFIG_RTL8723B
 		cnts = 6;
 
 		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
@@ -9253,53 +9162,14 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 			goto exit;
 		}
 
-//		DBG_871X("%s: MAC address={", __FUNCTION__);
 		*extra = 0;
 		for (i=0; i<cnts; i++) {
-//			DBG_871X("%02X", data[i]);
 			sprintf(extra, "%s%02X", extra, data[i]);
 			if (i != (cnts-1)) {
-//				DBG_871X(":");
 				sprintf(extra,"%s:",extra);
 			}
 		}
-//		DBG_871X("}\n");
 	} else if (strcmp(tmp[0], "vidpid") == 0) {
-#ifdef CONFIG_RTL8192C
-		addr = EEPROM_VID_92C;
-#endif // CONFIG_RTL8192C
-#ifdef CONFIG_RTL8192D
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_VID_92DU;
-#else
-		addr = EEPROM_VID_92DE;
-#endif
-#endif // CONFIG_RTL8192D
-#ifdef CONFIG_RTL8723A
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_VID_8723AU;
-#endif
-#endif // CONFIG_RTL8723A
-#ifdef CONFIG_RTL8188E
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_VID_88EU;
-#endif
-#ifdef CONFIG_PCI_HCI
-		addr = EEPROM_VID_88EE;
-#endif
-#endif // CONFIG_RTL8188E
-
-#ifdef CONFIG_RTL8192E
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_VID_8192EU;
-#endif
-#ifdef CONFIG_PCI_HCI
-		addr = EEPROM_VID_8192EE;
-#endif
-#endif // CONFIG_RTL8192E
-#ifdef CONFIG_RTL8723B
-		addr = EEPROM_VID_8723BU;
-#endif // CONFIG_RTL8192E
 		cnts = 4;
 
 		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
@@ -9314,17 +9184,13 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 			goto exit;
 		}
 
-//		DBG_871X("%s: {VID,PID}={", __FUNCTION__);
 		*extra = 0;
 		for (i=0; i<cnts; i++) {
-//			DBG_871X("0x%02x", data[i]);
 			sprintf(extra, "%s0x%02X", extra, data[i]);
 			if (i != (cnts-1)) {
-//				DBG_871X(",");
 				sprintf(extra,"%s,",extra);
 			}
 		}
-//		DBG_871X("}\n");
 	} else if (strcmp(tmp[0], "ableraw") == 0) {
 		efuse_GetCurrentSize(padapter,&raw_cursize);
 		raw_maxsize = efuse_GetMaxSize(padapter);
@@ -9339,25 +9205,18 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 			goto exit;
 		}
 
-//		DBG_871X("OFFSET\tVALUE(hex)\n");
 		sprintf(extra, "\n");
 		for (i=0; i<512; i+=16) { // set 512 because the iwpriv's extra size have limit 0x7FF
-//			DBG_871X("0x%03x\t", i);
 			sprintf(extra, "%s0x%03x\t", extra, i);
 			for (j=0; j<8; j++) {
-//				DBG_871X("%02X ", pEfuseHal->BTEfuseInitMap[i+j]);
 				sprintf(extra, "%s%02X ", extra, pEfuseHal->BTEfuseInitMap[i+j]);
 			}
-//			DBG_871X("\t");
 			sprintf(extra,"%s\t",extra);
 			for (; j<16; j++) {
-//				DBG_871X("%02X ", pEfuseHal->BTEfuseInitMap[i+j]);
 				sprintf(extra, "%s%02X ", extra, pEfuseHal->BTEfuseInitMap[i+j]);
 			}
-//			DBG_871X("\n");
 			sprintf(extra, "%s\n", extra);
 		}
-//		DBG_871X("\n");
 	} else if (strcmp(tmp[0],"btbmap") == 0) {
 		BTEfuse_PowerSwitch(padapter,1,_TRUE);
 
@@ -9368,25 +9227,18 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 			goto exit;
 		}
 
-//		DBG_871X("OFFSET\tVALUE(hex)\n");
 		sprintf(extra, "\n");
 		for (i=512; i<1024 ; i+=16) {
-//			DBG_871X("0x%03x\t", i);
 			sprintf(extra, "%s0x%03x\t", extra, i);
 			for (j=0; j<8; j++) {
-//				DBG_871X("%02X ", data[i+j]);
 				sprintf(extra, "%s%02X ", extra, pEfuseHal->BTEfuseInitMap[i+j]);
 			}
-//			DBG_871X("\t");
 			sprintf(extra,"%s\t",extra);
 			for (; j<16; j++) {
-//				DBG_871X("%02X ", data[i+j]);
 				sprintf(extra, "%s%02X ", extra, pEfuseHal->BTEfuseInitMap[i+j]);
 			}
-//			DBG_871X("\n");
 			sprintf(extra, "%s\n", extra);
 		}
-//		DBG_871X("\n");
 	} else if (strcmp(tmp[0],"btrmap") == 0) {
 		if ((tmp[1]==NULL) || (tmp[2]==NULL)) {
 			err = -EINVAL;
@@ -9421,73 +9273,49 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 		}
 
 		*extra = 0;
-//		DBG_871X("%s: bt efuse data={", __FUNCTION__);
 		for (i=0; i<cnts; i++) {
-//			DBG_871X("0x%02x ", data[i]);
 			sprintf(extra, "%s 0x%02X ", extra, data[i]);
 		}
-//		DBG_871X("}\n");
 		DBG_871X(FUNC_ADPT_FMT ": BT MAC=[%s]\n", FUNC_ADPT_ARG(padapter), extra);
 	} else if (strcmp(tmp[0], "btffake") == 0) {
-//		DBG_871X("OFFSET\tVALUE(hex)\n");
 		sprintf(extra, "\n");
 		for (i=0; i<512; i+=16) {
-//			DBG_871X("0x%03x\t", i);
 			sprintf(extra, "%s0x%03x\t", extra, i);
 			for (j=0; j<8; j++) {
-//				DBG_871X("%02X ", pEfuseHal->fakeBTEfuseModifiedMap[i+j]);
 				sprintf(extra, "%s%02X ", extra, pEfuseHal->fakeBTEfuseModifiedMap[i+j]);
 			}
-//			DBG_871X("\t");
 			sprintf(extra, "%s\t", extra);
 			for (; j<16; j++) {
-//				DBG_871X("%02X ", pEfuseHal->fakeBTEfuseModifiedMap[i+j]);
 				sprintf(extra, "%s%02X ", extra, pEfuseHal->fakeBTEfuseModifiedMap[i+j]);
 			}
-//			DBG_871X("\n");
 			sprintf(extra, "%s\n", extra);
 		}
-//		DBG_871X("\n");
 	} else if (strcmp(tmp[0],"btbfake") == 0) {
-//		DBG_871X("OFFSET\tVALUE(hex)\n");
 		sprintf(extra, "\n");
 		for (i=512; i<1024; i+=16) {
-//			DBG_871X("0x%03x\t", i);
 			sprintf(extra, "%s0x%03x\t", extra, i);
 			for (j=0; j<8; j++) {
-//				DBG_871X("%02X ", pEfuseHal->fakeBTEfuseModifiedMap[i+j]);
 				sprintf(extra, "%s%02X ", extra, pEfuseHal->fakeBTEfuseModifiedMap[i+j]);
 			}
-//			DBG_871X("\t");
 			sprintf(extra, "%s\t", extra);
 			for (; j<16; j++) {
-//				DBG_871X("%02X ", pEfuseHal->fakeBTEfuseModifiedMap[i+j]);
 				sprintf(extra, "%s%02X ", extra, pEfuseHal->fakeBTEfuseModifiedMap[i+j]);
 			}
-//			DBG_871X("\n");
 			sprintf(extra, "%s\n", extra);
 		}
-//		DBG_871X("\n");
 	} else if (strcmp(tmp[0],"wlrfkmap")== 0) {
-//		DBG_871X("OFFSET\tVALUE(hex)\n");
 		sprintf(extra, "\n");
 		for (i=0; i<EFUSE_MAP_SIZE; i+=16) {
-//			DBG_871X("\t0x%02x\t", i);
 			sprintf(extra, "%s0x%02x\t", extra, i);
 			for (j=0; j<8; j++) {
-//				DBG_871X("%02X ", pEfuseHal->fakeEfuseModifiedMap[i+j]);
 				sprintf(extra, "%s%02X ", extra, pEfuseHal->fakeEfuseModifiedMap[i+j]);
 			}
-//			DBG_871X("\t");
 			sprintf(extra, "%s\t", extra);
 			for (; j<16; j++) {
-//				DBG_871X("%02X ", pEfuseHal->fakeEfuseModifiedMap[i+j]);
 				sprintf(extra, "%s %02X", extra, pEfuseHal->fakeEfuseModifiedMap[i+j]);
 			}
-//			DBG_871X("\n");
 			sprintf(extra, "%s\n", extra);
 		}
-//		DBG_871X("\n");
 
 	} else if (strcmp(tmp[0],"wlrfkrmap")== 0) {
 		if ((tmp[1]==NULL) || (tmp[2]==NULL)) {
@@ -9507,8 +9335,7 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 		}
 		DBG_871X("%s: cnts=%d\n", __FUNCTION__, cnts);
 
-		//		DBG_871X("%s: data={", __FUNCTION__);
-		*extra = 0;
+				*extra = 0;
 		for (i=0; i<cnts; i++) {
 			DBG_871X("wlrfkrmap = 0x%02x \n", pEfuseHal->fakeEfuseModifiedMap[addr+i]);
 			sprintf(extra, "%s0x%02X ", extra, pEfuseHal->fakeEfuseModifiedMap[addr+i]);
@@ -9531,8 +9358,7 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 		}
 		DBG_871X("%s: cnts=%d\n", __FUNCTION__, cnts);
 
-		//		DBG_871X("%s: data={", __FUNCTION__);
-		*extra = 0;
+				*extra = 0;
 		for (i=0; i<cnts; i++) {
 			DBG_871X("wlrfkrmap = 0x%02x \n", pEfuseHal->fakeBTEfuseModifiedMap[addr+i]);
 			sprintf(extra, "%s0x%02X ", extra, pEfuseHal->fakeBTEfuseModifiedMap[addr+i]);
@@ -9678,12 +9504,15 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		for (jj=0, kk=0; jj<cnts; jj++, kk+=2) {
 			setdata[jj] = key_2char2num(tmp[2][kk], tmp[2][kk+1]);
 		}
-#ifndef CONFIG_RTL8188E
-		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
-#else
-		//Change to check TYPE_EFUSE_MAP_LEN ,beacuse 8188E raw 256,logic map over 256.
-		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&max_available_size, _FALSE);
-#endif
+/**
+ TODO: check this logic
+*/
+//#ifndef CONFIG_RTL8188E
+//		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
+//#else
+ 		//Change to check TYPE_EFUSE_MAP_LEN ,beacuse 8188E raw 256,logic map over 256.
+ 		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&max_available_size, _FALSE);
+//#endif
 		if ((addr+cnts) > max_available_size) {
 			DBG_871X("%s: addr(0x%X)+cnts(%d) parameter error!\n", __FUNCTION__, addr, cnts);
 			err = -EFAULT;
@@ -9750,68 +9579,6 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		}
 
 		//mac,00e04c871200
-#ifdef CONFIG_RTL8192C
-		addr = EEPROM_MAC_ADDR_92C;
-#endif
-#ifdef CONFIG_RTL8192D
-#ifdef CONFIG_USB_HCI
-		if (pHalData->interfaceIndex == 0)
-			addr = EEPROM_MAC_ADDR_MAC0_92DU;
-		else
-			addr = EEPROM_MAC_ADDR_MAC1_92DU;
-#else
-		if (pHalData->interfaceIndex == 0)
-			addr = EEPROM_MAC_ADDR_MAC0_92DE;
-		else
-			addr = EEPROM_MAC_ADDR_MAC1_92DE;
-#endif
-#endif
-#ifdef CONFIG_RTL8723A
-#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_8723AS;
-#endif
-#ifdef CONFIG_GSPI_HCI
-		addr = EEPROM_MAC_ADDR_8723AS;
-#endif
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_MAC_ADDR_8723AU;
-#endif
-#endif // CONFIG_RTL8723A
-#ifdef CONFIG_RTL8188E
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_MAC_ADDR_88EU;
-#endif
-#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_88ES;
-#endif
-#ifdef CONFIG_PCI_HCI
-		addr = EEPROM_MAC_ADDR_88EE;
-#endif
-#endif //#ifdef CONFIG_RTL8188E
-
-#ifdef CONFIG_RTL8192E
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_MAC_ADDR_8192EU;
-#endif
-#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_8192ES;
-#endif
-#ifdef CONFIG_PCI_HCI
-		addr = EEPROM_MAC_ADDR_8192EE;
-#endif
-#endif //#ifdef CONFIG_RTL8192E
-
-#ifdef CONFIG_RTL8723B
-#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_8723BS;
-#endif
-#ifdef CONFIG_GSPI_HCI
-		addr = EEPROM_MAC_ADDR_8723BS;
-#endif
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_MAC_ADDR_8723BU;
-#endif
-#endif // CONFIG_RTL8723B
 
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 #ifdef CONFIG_SDIO_HCI
@@ -9823,7 +9590,6 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_MAC_ADDR_8821AU;
 #endif
-
 #endif // CONFIG_RTL8812A/CONFIG_RTL8821A
 
 		cnts = strlen(tmp[1]);
@@ -9849,12 +9615,15 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		for (jj=0, kk=0; jj<cnts; jj++, kk+=2) {
 			setdata[jj] = key_2char2num(tmp[1][kk], tmp[1][kk+1]);
 		}
-#ifndef CONFIG_RTL8188E
-		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
-#else
-		//Change to check TYPE_EFUSE_MAP_LEN ,beacuse 8188E raw 256,logic map over 256.
-		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&max_available_size, _FALSE);
-#endif
+/**
+ TODO: check this logic
+*/
+//#ifndef CONFIG_RTL8188E
+//		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
+//#else
+ 		//Change to check TYPE_EFUSE_MAP_LEN ,beacuse 8188E raw 256,logic map over 256.
+ 		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&max_available_size, _FALSE);
+//#endif
 		if ((addr+cnts) > max_available_size) {
 			DBG_871X("%s: addr(0x%X)+cnts(%d) parameter error!\n", __FUNCTION__, addr, cnts);
 			err = -EFAULT;
@@ -9873,42 +9642,6 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		}
 
 		// pidvid,da0b7881
-#ifdef CONFIG_RTL8192C
-		addr = EEPROM_VID_92C;
-#endif // CONFIG_RTL8192C
-#ifdef CONFIG_RTL8192D
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_VID_92DU;
-#else
-		addr = EEPROM_VID_92DE;
-#endif
-#endif // CONFIG_RTL8192D
-#ifdef CONFIG_RTL8723A
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_VID_8723AU;
-#endif
-#endif // CONFIG_RTL8723A
-#ifdef CONFIG_RTL8188E
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_VID_88EU;
-#endif
-#ifdef CONFIG_PCI_HCI
-		addr = EEPROM_VID_88EE;
-#endif
-#endif // CONFIG_RTL8188E
-
-#ifdef CONFIG_RTL8192E
-#ifdef CONFIG_USB_HCI
-		addr = EEPROM_VID_8192EU;
-#endif
-#ifdef CONFIG_PCI_HCI
-		addr = EEPROM_VID_8192EE;
-#endif
-#endif // CONFIG_RTL8188E
-
-#ifdef CONFIG_RTL8723B
-		addr = EEPROM_VID_8723BU;
-#endif
 
 		cnts = strlen(tmp[1]);
 		if (cnts%2) {
@@ -10574,21 +10307,7 @@ static int rtw_mp_start(struct net_device *dev,
 		MPT_PwrCtlDM(padapter,0);
 	}
 	padapter->mppriv.bmac_filter = _FALSE;
-#ifdef CONFIG_RTL8723B
-#ifdef CONFIG_USB_HCI
-	rtw_write32(padapter, 0x765, 0x0000);
-	rtw_write32(padapter, 0x948, 0x0280);
-#else
-	rtw_write32(padapter, 0x765, 0x0000);
-	rtw_write32(padapter, 0x948, 0x0000);
-#endif
-#ifdef CONFIG_FOR_RTL8723BS_VQ0
-	rtw_write32(padapter, 0x765, 0x0000);
-	rtw_write32(padapter, 0x948, 0x0280);
-#endif
-	rtw_write8(padapter, 0x66, 0x27); //Open BT uart Log
-	rtw_write8(padapter, 0xc50, 0x20); //for RX init Gain
-#endif
+
 	ODM_Write_DIG(&pHalData->odmpriv,0x20);
 
 	return 0;
@@ -11296,26 +11015,8 @@ static int rtw_mp_thermal(struct net_device *dev,
 	u8 val;
 	int bwrite=1;
 
-#ifdef CONFIG_RTL8192C
-	u16 addr=EEPROM_THERMAL_METER_92C;
-#endif
-#ifdef CONFIG_RTL8192D
-	u16 addr=EEPROM_THERMAL_METER_92D;
-#endif
-#ifdef CONFIG_RTL8723A
-	u16 addr=EEPROM_THERMAL_METER_8723A;
-#endif
-#ifdef CONFIG_RTL8188E
-	u16 addr=EEPROM_THERMAL_METER_88E;
-#endif
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 	u16 addr=EEPROM_THERMAL_METER_8812;
-#endif
-#ifdef CONFIG_RTL8192E
-	u16 addr=EEPROM_THERMAL_METER_8192E;
-#endif
-#ifdef CONFIG_RTL8723B
-	u16 addr=EEPROM_THERMAL_METER_8723B;
 #endif
 	u16 cnt=1;
 	u16 max_available_size=0;
@@ -11659,352 +11360,6 @@ static int rtw_efuse_file_map(struct net_device *dev,
 }
 
 
-#if (defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B))
-/* update Tx AGC offset */
-static int rtw_mp_SetBT(struct net_device *dev,
-                        struct iw_request_info *info,
-                        union iwreq_data *wrqu, char *extra)
-{
-	PADAPTER padapter = rtw_netdev_priv(dev);
-	struct hal_ops *pHalFunc = &padapter->HalFunc;
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-
-	BT_REQ_CMD	BtReq;
-	PMPT_CONTEXT	pMptCtx=&(padapter->mppriv.MptCtx);
-	PBT_RSP_CMD 	pBtRsp=(PBT_RSP_CMD)&pMptCtx->mptOutBuf[0];
-	char	input[128];
-	char *pch, *ptmp, *token, *tmp[2]= {0x00,0x00};
-	u8 setdata[100];
-	u8 resetbt=0x00;
-	u8 tempval,BTStatus;
-	u8 H2cSetbtmac[6];
-	u8 u1H2CBtMpOperParm[4]= {0x01};
-	int testmode = 1, ready = 1, trxparam = 1, setgen = 1, getgen = 1, testctrl = 1, testbt = 1, readtherm = 1, setbtmac = 1;
-	u32 i = 0, ii = 0, jj = 0, kk = 0, cnts = 0, status = 0;
-	PRT_MP_FIRMWARE	pBTFirmware = NULL;
-
-	if (copy_from_user(extra, wrqu->data.pointer, wrqu->data.length))
-		return -EFAULT;
-	if(strlen(extra)<1) return -EFAULT;
-
-	DBG_871X("%s:iwpriv in=%s\n", __FUNCTION__, extra);
-	ready = strncmp(extra, "ready", 5);
-	testmode = strncmp(extra, "testmode", 8); // strncmp TRUE is 0
-	trxparam = strncmp(extra, "trxparam", 8);
-	setgen = strncmp(extra, "setgen", 6);
-	getgen = strncmp(extra, "getgen", 6);
-	testctrl = strncmp(extra, "testctrl", 8);
-	testbt = strncmp(extra, "testbt", 6);
-	readtherm = strncmp(extra, "readtherm", 9);
-	setbtmac = strncmp(extra, "setbtmac", 8);
-
-	if ( strncmp(extra, "dlbt", 4) == 0) {
-		pHalData->LastHMEBoxNum=0;
-		padapter->bBTFWReady = _FALSE;
-		rtw_write8(padapter, 0xa3, 0x05);
-		BTStatus=rtw_read8(padapter, 0xa0);
-		DBG_871X("%s: btwmap before read 0xa0 BT Status =0x%x \n", __FUNCTION__,BTStatus);
-		if (BTStatus != 0x04) {
-			sprintf(extra, "BT Status not Active DLFW FAIL\n");
-			goto exit;
-		}
-
-		tempval = rtw_read8(padapter, 0x6B);
-		tempval |= BIT7;
-		rtw_write8(padapter, 0x6B, tempval);
-
-		// Attention!! Between 0x6A[14] and 0x6A[15] setting need 100us delay
-		// So don't wirte 0x6A[14]=1 and 0x6A[15]=0 together!
-		rtw_usleep_os(100);
-		// disable BT power cut
-		// 0x6A[14] = 0
-		tempval = rtw_read8(padapter, 0x6B);
-		tempval &= ~BIT6;
-		rtw_write8(padapter, 0x6B, tempval);
-		rtw_usleep_os(100);
-		MPT_PwrCtlDM(padapter,0);
-		rtw_write32(padapter, 0xcc, (rtw_read32(padapter, 0xcc)| 0x00000004));
-		rtw_write32(padapter, 0x6b, (rtw_read32(padapter, 0x6b)& 0xFFFFFFEF));
-		rtw_msleep_os(600);
-		rtw_write32(padapter, 0x6b, (rtw_read32(padapter, 0x6b)| 0x00000010));
-		rtw_write32(padapter, 0xcc, (rtw_read32(padapter, 0xcc)& 0xFFFFFFFB));
-		rtw_msleep_os(1200);
-		pBTFirmware = (PRT_MP_FIRMWARE)rtw_zmalloc(sizeof(RT_MP_FIRMWARE));
-		if(pBTFirmware==NULL)
-			goto exit;
-		padapter->bBTFWReady = _FALSE;
-		FirmwareDownloadBT(padapter, pBTFirmware);
-		if (pBTFirmware)
-			rtw_mfree((u8*)pBTFirmware, sizeof(RT_MP_FIRMWARE));
-
-		DBG_871X("Wait for FirmwareDownloadBT fw boot!\n");
-		rtw_msleep_os(2000);
-		_rtw_memset(extra,'\0', wrqu->data.length);
-		BtReq.opCodeVer = 1;
-		BtReq.OpCode = 0;
-		BtReq.paraLength = 0;
-		mptbt_BtControlProcess(padapter, &BtReq);
-		rtw_msleep_os(100);
-
-		DBG_8192C("FirmwareDownloadBT ready = 0x%x 0x%x", pMptCtx->mptOutBuf[4],pMptCtx->mptOutBuf[5]);
-		if ((pMptCtx->mptOutBuf[4] == 0x00) && (pMptCtx->mptOutBuf[5] == 0x00)) {
-
-			if (padapter->mppriv.bTxBufCkFail == _TRUE)
-				sprintf(extra, "check TxBuf Fail.\n");
-			else
-				sprintf(extra, "download FW Fail.\n");
-		} else {
-			sprintf(extra, "download FW OK.\n");
-			goto exit;
-		}
-		goto exit;
-	}
-	if ( strncmp(extra, "dlfw", 4) == 0) {
-		pHalData->LastHMEBoxNum=0;
-		padapter->bBTFWReady = _FALSE;
-		rtw_write8(padapter, 0xa3, 0x05);
-		BTStatus=rtw_read8(padapter, 0xa0);
-		DBG_871X("%s: btwmap before read 0xa0 BT Status =0x%x \n", __FUNCTION__,BTStatus);
-		if (BTStatus != 0x04) {
-			sprintf(extra, "BT Status not Active DLFW FAIL\n");
-			goto exit;
-		}
-
-		tempval = rtw_read8(padapter, 0x6B);
-		tempval |= BIT7;
-		rtw_write8(padapter, 0x6B, tempval);
-
-		// Attention!! Between 0x6A[14] and 0x6A[15] setting need 100us delay
-		// So don't wirte 0x6A[14]=1 and 0x6A[15]=0 together!
-		rtw_usleep_os(100);
-		// disable BT power cut
-		// 0x6A[14] = 0
-		tempval = rtw_read8(padapter, 0x6B);
-		tempval &= ~BIT6;
-		rtw_write8(padapter, 0x6B, tempval);
-		rtw_usleep_os(100);
-
-		MPT_PwrCtlDM(padapter,0);
-		rtw_write32(padapter, 0xcc, (rtw_read32(padapter, 0xcc)| 0x00000004));
-		rtw_write32(padapter, 0x6b, (rtw_read32(padapter, 0x6b)& 0xFFFFFFEF));
-		rtw_msleep_os(600);
-		rtw_write32(padapter, 0x6b, (rtw_read32(padapter, 0x6b)| 0x00000010));
-		rtw_write32(padapter, 0xcc, (rtw_read32(padapter, 0xcc)& 0xFFFFFFFB));
-		rtw_msleep_os(1200);
-
-#if defined(CONFIG_PLATFORM_SPRD) && (MP_DRIVER == 1)
-		// Pull up BT reset pin.
-		DBG_871X("%s: pull up BT reset pin when bt start mp test\n", __FUNCTION__);
-		rtw_wifi_gpio_wlan_ctrl(WLAN_BT_PWDN_ON);
-#endif
-		DBG_871X(" rtl8723a_FirmwareDownload!\n");
-
-#ifdef CONFIG_RTL8723A
-		status = rtl8723a_FirmwareDownload(padapter);
-#elif defined(CONFIG_RTL8723B)
-		status = rtl8723b_FirmwareDownload(padapter, _FALSE);
-#endif
-		DBG_871X("Wait for FirmwareDownloadBT fw boot!\n");
-		rtw_msleep_os(1000);
-#ifdef CONFIG_BT_COEXIST
-		rtw_btcoex_HaltNotify(padapter);
-		DBG_871X("SetBT btcoex HaltNotify !\n");
-		//hal_btcoex1ant_SetAntPath(padapter);
-		rtw_btcoex_SetManualControl(padapter, _TRUE);
-#endif
-		_rtw_memset(extra,'\0', wrqu->data.length);
-		BtReq.opCodeVer = 1;
-		BtReq.OpCode = 0;
-		BtReq.paraLength = 0;
-		mptbt_BtControlProcess(padapter, &BtReq);
-		rtw_msleep_os(200);
-
-		DBG_8192C("FirmwareDownloadBT ready = 0x%x 0x%x", pMptCtx->mptOutBuf[4],pMptCtx->mptOutBuf[5]);
-		if( (pMptCtx->mptOutBuf[4]==0x00) && (pMptCtx->mptOutBuf[5]==0x00)) {
-			if(padapter->mppriv.bTxBufCkFail==_TRUE)
-				sprintf(extra, "check TxBuf Fail.\n");
-			else
-				sprintf(extra, "download FW Fail.\n");
-		} else {
-#ifdef CONFIG_BT_COEXIST
-			rtw_btcoex_SwitchBtTRxMask(padapter);
-#endif
-			rtw_msleep_os(200);
-			sprintf(extra, "download FW OK.\n");
-			goto exit;
-		}
-		goto exit;
-	}
-
-	if ( strncmp(extra, "down", 4) == 0) {
-		DBG_871X("SetBT down for to hal_init !\n");
-#ifdef CONFIG_BT_COEXIST
-		rtw_btcoex_SetManualControl(padapter, _FALSE);
-		rtw_btcoex_Initialize(padapter);
-#endif
-		pHalFunc->read_adapter_info(padapter);
-		pHalFunc->hal_deinit(padapter);
-		pHalFunc->hal_init(padapter);
-		rtw_pm_set_ips(padapter,IPS_NONE);
-		LeaveAllPowerSaveMode(padapter);
-		MPT_PwrCtlDM(padapter,0);
-		rtw_write32(padapter, 0xcc, (rtw_read32(padapter, 0xcc)| 0x00000004));
-		rtw_write32(padapter, 0x6b, (rtw_read32(padapter, 0x6b)& 0xFFFFFFEF));
-		rtw_msleep_os(600);
-		//rtw_write32(padapter, 0x6a, (rtw_read32(padapter, 0x6a)& 0xFFFFFFFE));
-		rtw_write32(padapter, 0x6b, (rtw_read32(padapter, 0x6b)| 0x00000010));
-		rtw_write32(padapter, 0xcc, (rtw_read32(padapter, 0xcc)& 0xFFFFFFFB));
-		rtw_msleep_os(1200);
-		goto exit;
-	}
-	if ( strncmp(extra, "disable", 7) == 0) {
-		DBG_871X("SetBT disable !\n");
-		rtw_write32(padapter, 0x6a, (rtw_read32(padapter, 0x6a)& 0xFFFFFFFB));
-		rtw_msleep_os(500);
-		goto exit;
-	}
-	if ( strncmp(extra, "enable", 6) == 0) {
-		DBG_871X("SetBT enable !\n");
-		rtw_write32(padapter, 0x6a, (rtw_read32(padapter, 0x6a)| 0x00000004));
-		rtw_msleep_os(500);
-		goto exit;
-	}
-	if ( strncmp(extra, "h2c", 3) == 0) {
-		DBG_871X("SetBT h2c !\n");
-		padapter->bBTFWReady = _TRUE;
-		rtw_hal_fill_h2c_cmd(padapter, 0x63, 1, u1H2CBtMpOperParm);
-		goto exit;
-	}
-	if ( strncmp(extra, "2ant", 4) == 0) {
-		DBG_871X("Set BT 2ant use!\n");
-		PHY_SetMacReg(padapter,0x67,BIT5,0x1);
-		rtw_write32(padapter, 0x948, 0000);
-
-		goto exit;
-	}
-
-	if( ready!=0 && testmode!=0 && trxparam!=0 && setgen!=0 && getgen!=0 && testctrl!=0 && testbt!=0 && readtherm!=0 &&setbtmac!=0)
-		return -EFAULT;
-
-	if( testbt==0 ) {
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=6;
-		BtReq.paraLength=cnts/2;
-		goto todo;
-	}
-	if( ready==0 ) {
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=0;
-		BtReq.paraLength=0;
-		goto todo;
-	}
-
-	pch = extra;
-	i = 0;
-	while ((token = strsep(&pch, ",")) != NULL) {
-		if (i > 1) break;
-		tmp[i] = token;
-		i++;
-	}
-
-	if ((tmp[0]==NULL) && (tmp[1]==NULL)) {
-		return -EFAULT;
-	} else {
-		cnts = strlen(tmp[1]);
-		if (cnts<1) return -EFAULT;
-
-		DBG_871X("%s: cnts=%d\n", __FUNCTION__, cnts);
-		DBG_871X("%s: data=%s\n", __FUNCTION__, tmp[1]);
-
-		for (jj=0, kk=0; jj<cnts; jj++, kk+=2) {
-			BtReq.pParamStart[jj] = key_2char2num(tmp[1][kk], tmp[1][kk+1]);
-//			DBG_871X("BtReq.pParamStart[%d]=0x%02x\n", jj, BtReq.pParamStart[jj]);
-		}
-	}
-
-	if( testmode==0 ) {
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=1;
-		BtReq.paraLength=1;
-	}
-	if( trxparam==0 ) {
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=2;
-		BtReq.paraLength=cnts/2;
-	}
-	if( setgen==0 ) {
-		DBG_871X("%s: BT_SET_GENERAL \n", __func__);
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=3; //BT_SET_GENERAL	3
-		BtReq.paraLength=cnts/2;
-	}
-	if( getgen==0 ) {
-		DBG_871X("%s: BT_GET_GENERAL \n", __func__);
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=4;		//BT_GET_GENERAL	4
-		BtReq.paraLength=cnts/2;
-	}
-	if( readtherm==0 ) {
-		DBG_871X("%s: BT_GET_GENERAL \n", __func__);
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=4;		//BT_GET_GENERAL	4
-		BtReq.paraLength=cnts/2;
-	}
-
-	if( testctrl==0 ) {
-		DBG_871X("%s: BT_TEST_CTRL \n", __func__);
-		BtReq.opCodeVer=1;
-		BtReq.OpCode=5;		//BT_TEST_CTRL	5
-		BtReq.paraLength=cnts/2;
-	}
-
-	DBG_871X("%s: Req opCodeVer=%d OpCode=%d paraLength=%d\n",
-	         __FUNCTION__, BtReq.opCodeVer, BtReq.OpCode, BtReq.paraLength);
-
-	if(BtReq.paraLength<1)
-		goto todo;
-	for (i=0; i<BtReq.paraLength; i++) {
-		DBG_871X("%s: BtReq.pParamStart[%d] = 0x%02x \n",
-		         __FUNCTION__, i, BtReq.pParamStart[i]);
-	}
-
-todo:
-	_rtw_memset(extra,'\0', wrqu->data.length);
-
-	if (padapter->bBTFWReady == _FALSE) {
-		sprintf(extra, "BTFWReady = FALSE.\n");
-		goto exit;
-	}
-
-	mptbt_BtControlProcess(padapter, &BtReq);
-
-	if (readtherm == 0) {
-		sprintf(extra, "BT thermal=");
-		for (i=4; i<pMptCtx->mptOutLen; i++) {
-			if ((pMptCtx->mptOutBuf[i]==0x00) && (pMptCtx->mptOutBuf[i+1]==0x00))
-				goto exit;
-
-#ifdef CONFIG_RTL8723A
-			sprintf(extra, "%s %d ", extra, (pMptCtx->mptOutBuf[i]& 0x3f));
-#else
-			sprintf(extra, "%s %d ", extra, (pMptCtx->mptOutBuf[i]& 0x1f));
-#endif
-		}
-	} else {
-		for (i=4; i<pMptCtx->mptOutLen; i++) {
-			sprintf(extra, "%s 0x%x ", extra, pMptCtx->mptOutBuf[i]);
-		}
-	}
-
-exit:
-	wrqu->data.length = strlen(extra) + 1;
-	DBG_871X("-%s: output len=%d data=%s\n", __FUNCTION__, wrqu->data.length, extra);
-
-	return status;
-}
-
-#endif //#ifdef CONFIG_RTL8723A
-
 static int rtw_mp_set(struct net_device *dev,
                       struct iw_request_info *info,
                       union iwreq_data *wdata, char *extra)
@@ -12230,13 +11585,6 @@ static int rtw_mp_get(struct net_device *dev,
 		DBG_871X("mp_get MP_MON \n");
 		rtw_efuse_file_map(dev,info,wdata,extra);
 		break;
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)
-	case MP_SetBT:
-		DBG_871X("set MP_SetBT \n");
-		rtw_mp_SetBT(dev,info,wdata,extra);
-		break;
-#endif
-
 	}
 
 	rtw_msleep_os(10); //delay 5ms for sending pkt before exit adb shell operation
@@ -13139,36 +12487,6 @@ static int rtw_widi_set_probe_request(struct net_device *dev,
 
 #ifdef CONFIG_MAC_LOOPBACK_DRIVER
 
-#ifdef CONFIG_RTL8723A
-extern void rtl8723a_cal_txdesc_chksum(struct tx_desc *ptxdesc);
-#define cal_txdesc_chksum rtl8723a_cal_txdesc_chksum
-extern void rtl8723a_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf);
-#define fill_default_txdesc rtl8723a_fill_default_txdesc
-#endif
-#if defined(CONFIG_RTL8188E)
-#include <rtl8188e_hal.h>
-extern void rtl8188e_cal_txdesc_chksum(struct tx_desc *ptxdesc);
-#define cal_txdesc_chksum rtl8188e_cal_txdesc_chksum
-#ifdef CONFIG_SDIO_HCI || defined(CONFIG_GSPI_HCI)
-extern void rtl8188es_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf);
-#define fill_default_txdesc rtl8188es_fill_default_txdesc
-#endif // CONFIG_SDIO_HCI
-#endif // CONFIG_RTL8188E
-#if defined(CONFIG_RTL8723B)
-extern void rtl8723b_cal_txdesc_chksum(struct tx_desc *ptxdesc);
-#define cal_txdesc_chksum rtl8723b_cal_txdesc_chksum
-extern void rtl8723b_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf);
-#define fill_default_txdesc rtl8723b_fill_default_txdesc
-#endif // CONFIG_RTL8723B
-#if defined(CONFIG_RTL8192E)
-extern void rtl8192e_cal_txdesc_chksum(struct tx_desc *ptxdesc);
-#define cal_txdesc_chksum rtl8192e_cal_txdesc_chksum
-#ifdef CONFIG_SDIO_HCI || defined(CONFIG_GSPI_HCI)
-extern void rtl8192es_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf);
-#define fill_default_txdesc rtl8192es_fill_default_txdesc
-#endif // CONFIG_SDIO_HCI
-#endif //CONFIG_RTL8192E
-
 static s32 initLoopback(PADAPTER padapter)
 {
 	PLOOPBACKDATA ploopback;
@@ -13754,33 +13072,6 @@ static int rtw_test(
 	}
 #endif
 
-#if 0
-//#ifdef CONFIG_RTL8723A
-	if (strcmp(pch, "poweron") == 0) {
-		s32 ret;
-
-		ret = _InitPowerOn(padapter);
-		DBG_871X("%s: power on %s\n", __func__, (_FAIL==ret) ? "FAIL!":"OK.");
-		sprintf(extra, "Power ON %s", (_FAIL==ret) ? "FAIL!":"OK.");
-		wrqu->data.length = strlen(extra) + 1;
-
-		rtw_mfree(pbuf, len);
-		return 0;
-	}
-
-	if (strcmp(pch, "dlfw") == 0) {
-		s32 ret;
-
-		ret = rtl8723a_FirmwareDownload(padapter);
-		DBG_871X("%s: download FW %s\n", __func__, (_FAIL==ret) ? "FAIL!":"OK.");
-		sprintf(extra, "download FW %s", (_FAIL==ret) ? "FAIL!":"OK.");
-		wrqu->data.length = strlen(extra) + 1;
-
-		rtw_mfree(pbuf, len);
-		return 0;
-	}
-#endif
-
 #ifdef CONFIG_BT_COEXIST
 	if (strcmp(pch, "bton") == 0) {
 		rtw_btcoex_SetManualControl(padapter, _FALSE);
@@ -14042,10 +13333,6 @@ static const struct iw_priv_args rtw_private_args[] = {
 	{ MP_MON, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "mp_mon" },
 	{ EFUSE_MASK, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "efuse_mask" },
 	{ EFUSE_FILE, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "efuse_file" },
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)
-	{ MP_SetBT, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "mp_setbt" },
-	{ MP_DISABLE_BT_COEXIST, IW_PRIV_TYPE_CHAR | 1024, 0, "mp_disa_btcoex"},
-#endif
 	{ CTA_TEST, IW_PRIV_TYPE_CHAR | 1024, 0, "cta_test"},
 #endif
 #ifdef CONFIG_WOWLAN

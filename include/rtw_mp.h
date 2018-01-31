@@ -280,32 +280,12 @@ typedef struct _MPT_CONTEXT {
 //#endif
 
 /* E-Fuse */
-#ifdef CONFIG_RTL8192D
-#define EFUSE_MAP_SIZE		256
-#endif
-#ifdef CONFIG_RTL8192C
-#define EFUSE_MAP_SIZE		128
-#endif
-#ifdef CONFIG_RTL8723A
-#define EFUSE_MAP_SIZE		256
-#endif
-#ifdef CONFIG_RTL8188E
-#define EFUSE_MAP_SIZE		512
-#endif
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
-#define EFUSE_MAP_SIZE		512
-#endif
-#ifdef CONFIG_RTL8192E
-#define EFUSE_MAP_SIZE		512
-#endif
-#ifdef CONFIG_RTL8723B
 #define EFUSE_MAP_SIZE		512
 #endif
 
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 #define EFUSE_MAX_SIZE		1024
-#elif defined(CONFIG_RTL8188E)
-#define EFUSE_MAX_SIZE		256
 #else
 #define EFUSE_MAX_SIZE		512
 #endif
@@ -701,22 +681,8 @@ typedef enum	_MPT_TXPWR_DEF {
 } MPT_TXPWR_DEF;
 
 #ifdef CONFIG_RF_GAIN_OFFSET
-
-#if defined(CONFIG_RTL8723A)
-#define 	REG_RF_BB_GAIN_OFFSET_CCK	0x0d
-#define 	REG_RF_BB_GAIN_OFFSET_OFDM	0x0e
-#define 	RF_GAIN_OFFSET_MASK 	0xfffff
-#elif defined(CONFIG_RTL8723B)
-#define 	REG_RF_BB_GAIN_OFFSET	0x7f
-#define 	RF_GAIN_OFFSET_MASK 	0xfffff
-#elif defined(CONFIG_RTL8188E)
 #define 	REG_RF_BB_GAIN_OFFSET	0x55
 #define 	RF_GAIN_OFFSET_MASK 	0xfffff
-#else
-#define 	REG_RF_BB_GAIN_OFFSET	0x55
-#define 	RF_GAIN_OFFSET_MASK 	0xfffff
-#endif	//CONFIG_RTL8723A
-
 #endif //CONFIG_RF_GAIN_OFFSET
 
 //=======================================================================

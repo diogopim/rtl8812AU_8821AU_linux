@@ -149,24 +149,8 @@ do{\
 
 #define HWXMIT_ENTRY	4
 
-// For Buffer Descriptor ring architecture
-#ifdef BUF_DESC_ARCH
-#if defined (CONFIG_RTL8192E)
-#define TX_BUFFER_SEG_NUM 	1 // 0:2 seg, 1: 4 seg, 2: 8 seg.
-#endif
-#endif
-
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)|| defined(CONFIG_RTL8723B)
 #define TXDESC_SIZE 40
-//8192EE_TODO
-#elif defined (CONFIG_RTL8192E) // this section is defined for buffer descriptor ring architecture
-#ifdef CONFIG_PCI_HCI
-#define TXDESC_SIZE ((TX_BUFFER_SEG_NUM ==0)?16: ((TX_BUFFER_SEG_NUM ==1)? 32:64) )
-#define TX_WIFI_INFO_SIZE 40
-#else  //8192E USB or SDIO
-#define TXDESC_SIZE 40
-#endif
-//8192EE_TODO
 #else
 #define TXDESC_SIZE 32
 #endif
@@ -190,11 +174,7 @@ do{\
 #endif
 
 #ifdef CONFIG_PCI_HCI
-#if defined(CONFIG_RTL8192E) // this section is defined for buffer descriptor ring architecture
-#define TXDESC_OFFSET TX_WIFI_INFO_SIZE
-#else
 #define TXDESC_OFFSET 0
-#endif
 #define TX_DESC_NEXT_DESC_OFFSET	(TXDESC_SIZE + 8)
 #endif //CONFIG_PCI_HCI
 
@@ -564,10 +544,6 @@ struct xmit_frame {
 	u8	agg_num;
 #endif
 	s8	pkt_offset;
-#ifdef CONFIG_RTL8192D
-	u8	EMPktNum;
-	u16	EMPktLen[5];//The max value by HW
-#endif
 #endif
 
 #ifdef CONFIG_XMIT_ACK

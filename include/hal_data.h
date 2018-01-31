@@ -119,28 +119,11 @@ typedef enum _RT_AMPDU_BRUST_MODE {
 #define MAX_BASE_NUM_IN_PHY_REG_PG_2_4G			10 //  CCK:1,OFDM:1, HT:4, VHT:4
 #define MAX_BASE_NUM_IN_PHY_REG_PG_5G			9 // OFDM:1, HT:4, VHT:4
 
-
-//###### duplicate code,will move to ODM #########
-//#define IQK_MAC_REG_NUM		4
-//#define IQK_ADDA_REG_NUM		16
-
-//#define IQK_BB_REG_NUM			10
 #define IQK_BB_REG_NUM_92C	9
 #define IQK_BB_REG_NUM_92D	10
 #define IQK_BB_REG_NUM_test	6
 
 #define IQK_Matrix_Settings_NUM_92D	1+24+21
-
-//#define HP_THERMAL_NUM		8
-//###### duplicate code,will move to ODM #########
-
-#if defined(CONFIG_RTL8192D) || defined(CONFIG_BT_COEXIST)
-typedef enum _MACPHY_MODE_8192D {
-	SINGLEMAC_SINGLEPHY,	//SMSP
-	DUALMAC_DUALPHY,		//DMDP
-	DUALMAC_SINGLEPHY,	//DMSP
-} MACPHY_MODE_8192D,*PMACPHY_MODE_8192D;
-#endif
 
 #ifdef CONFIG_USB_RX_AGGREGATION
 typedef enum _USB_RX_AGG_MODE {
@@ -149,8 +132,6 @@ typedef enum _USB_RX_AGG_MODE {
 	USB_RX_AGG_USB,
 	USB_RX_AGG_MIX
 } USB_RX_AGG_MODE;
-
-//#define MAX_RX_DMA_BUFFER_SIZE	10240		// 10K for 8192C RX DMA buffer
 
 #endif
 
@@ -165,7 +146,6 @@ struct dm_priv {
 
 	u8	DMFlag;
 	u8	InitDMFlag;
-	//u8   RSVD_1;
 
 	u32	InitODMFlag;
 	//* Upper and Lower Signal threshold for Rate Adaptive*/
@@ -206,9 +186,6 @@ struct dm_priv {
 	u8	bDPdone;
 	u8	bDPPathAOK;
 	u8	bDPPathBOK;
-	//u8   RSVD_3;
-	//u8   RSVD_4;
-	//u8   RSVD_5;
 
 	//for IQK
 	u32	ADDA_backup[IQK_ADDA_REG_NUM];
@@ -227,9 +204,8 @@ struct dm_priv {
 	u8	OFDM_index_HP[2];
 	u8	ThermalValue_HP[HP_THERMAL_NUM];
 	u8	ThermalValue_HP_index;
-	//u8   RSVD_6;
 
-	//for TxPwrTracking2
+		//for TxPwrTracking2
 	s32	RegE94;
 	s32  RegE9C;
 	s32	RegEB4;
@@ -238,26 +214,7 @@ struct dm_priv {
 	u32	TXPowerTrackingCallbackCnt;	//cosa add for debug
 
 	u32	prv_traffic_idx; // edca turbo
-#ifdef CONFIG_RTL8192D
-	u8	ThermalValue_AVG[AVG_THERMAL_NUM];
-	u8	ThermalValue_AVG_index;
-	u8	ThermalValue_RxGain;
-	u8	ThermalValue_Crystal;
-	u8	bReloadtxpowerindex;
 
-	u32	RegD04_MP;
-
-	u8	RegC04_MP;
-	u8	Delta_IQK;
-	u8	Delta_LCK;
-	//u8   RSVD_7;
-
-	BOOLEAN	bDPKdone[2];
-	//u16 RSVD_8;
-
-	u32	RegA24;
-	u32	RegRF3C[2];	//pathA / pathB
-#endif
 //###### duplicate code,will move to ODM #########
 
 	// Add for Reading Initial Data Rate SEL Register 0x484 during watchdog. Using for fill tx desc. 2011.3.21 by Thomas
@@ -623,58 +580,7 @@ typedef struct hal_com_data {
 #ifdef CONFIG_BT_COEXIST
 	// For bluetooth co-existance
 	BT_COEXIST		bt_coexist;
-#ifdef CONFIG_RTL8723A
-	u8				bAntennaDetected;
-#endif // CONFIG_RTL8723A
 #endif // CONFIG_BT_COEXIST
-
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)
-#ifndef CONFIG_PCI_HCI	// mutual exclusive with PCI -- so they're SDIO and GSPI
-	// Interrupt relatd register information.
-	u32			SysIntrStatus;
-	u32			SysIntrMask;
-#endif
-#endif //endif CONFIG_RTL8723A
-
-
-#if defined(CONFIG_RTL8192C) ||defined(CONFIG_RTL8192D)
-
-	u8	BluetoothCoexist;
-
-	u8	EEPROMChnlAreaTxPwrCCK[2][3];
-	u8	EEPROMChnlAreaTxPwrHT40_1S[2][3];
-	u8	EEPROMChnlAreaTxPwrHT40_2SDiff[2][3];
-	u8	EEPROMPwrLimitHT20[3];
-	u8	EEPROMPwrLimitHT40[3];
-#ifdef CONFIG_RTL8192D
-	MACPHY_MODE_8192D	MacPhyMode92D;
-	BAND_TYPE	CurrentBandType92D;	//0:2.4G, 1:5G
-	BAND_TYPE	BandSet92D;
-	BOOLEAN       bMasterOfDMSP;
-	BOOLEAN       bSlaveOfDMSP;
-
-	IQK_MATRIX_REGS_SETTING IQKMatrixRegSetting[IQK_Matrix_Settings_NUM_92D];
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	BOOLEAN		bInModeSwitchProcess;
-#endif
-	u8	AutoLoadStatusFor8192D;
-	u8	EEPROMC9;
-	u8	EEPROMCC;
-	u8	PAMode;
-	u8	InternalPA5G[2];	//pathA / pathB
-	BOOLEAN		bPhyValueInitReady;
-	BOOLEAN		bLoadIMRandIQKSettingFor2G;// True if IMR or IQK  have done  for 2.4G in scan progress
-	BOOLEAN		bNOPG;
-	BOOLEAN		bIsVS;
-	//Query RF by FW
-	BOOLEAN		bReadRFbyFW;
-	BOOLEAN		bEarlyModeEnable;
-	BOOLEAN		bSupportRemoteWakeUp;
-	BOOLEAN		bInSetPower;
-	u8	RTSInitRate;	 // 2010.11.24.by tynli.
-#endif //CONFIG_RTL8192D
-
-#endif //defined(CONFIG_RTL8192C) ||defined(CONFIG_RTL8192D)
 
 #ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
 	char	para_file_buf[MAX_PARA_FILE_BUF_LEN];
