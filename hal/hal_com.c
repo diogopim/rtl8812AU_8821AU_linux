@@ -4279,10 +4279,6 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 	struct hal_ops *pHalFunc = &adapter->HalFunc;
 	u32	BeaconLength = 0, PSPollLength = 0;
 	u32	NullDataLength = 0, QosNullLength = 0;
-#ifdef CONFIG_BT_COEXIST
-	u32 BTQosNullLength = 0;
-#endif
-	//u32	ProbeReqLength = 0, NullFunctionDataLength = 0;
 	u8	TxDescLen = TXDESC_SIZE, TxDescOffset = TXDESC_OFFSET;
 	u8	TotalPageNum=0, CurtPktPageNum=0, RsvdPageNum=0;
 	u8	*ReservedPagePacket;
@@ -4384,27 +4380,6 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 	TotalPageNum += CurtPktPageNum;
 
 	BufIndex += (CurtPktPageNum*PageSize);
-
-#ifdef CONFIG_BT_COEXIST
-	//BT Qos null data * 1 page
-	RsvdPageLoc.LocBTQosNull = TotalPageNum;
-	DBG_871X("LocBTQosNull: %d\n", RsvdPageLoc.LocBTQosNull);
-	rtw_hal_construct_NullFunctionData(
-	    adapter,
-	    &ReservedPagePacket[BufIndex],
-	    &BTQosNullLength,
-	    get_my_bssid(&pmlmeinfo->network),
-	    _TRUE, 0, 0, _FALSE);
-	rtw_hal_fill_fake_txdesc(adapter,
-	                         &ReservedPagePacket[BufIndex-TxDescLen],
-	                         BTQosNullLength, _FALSE, _TRUE, _FALSE);
-
-	CurtPktPageNum = (u8)PageNum(TxDescLen + BTQosNullLength, PageSize);
-
-	TotalPageNum += CurtPktPageNum;
-
-	BufIndex += (CurtPktPageNum*PageSize);
-#endif //CONFIG_BT_COEXIT
 
 	//null data * 1 page
 	RsvdPageLoc.LocNullData = TotalPageNum;

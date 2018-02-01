@@ -1372,16 +1372,10 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 		HAL_INIT_STAGES_INIT_SECURITY,
 		HAL_INIT_STAGES_MISC11,
 		HAL_INIT_STAGES_INIT_HAL_DM,
-		//HAL_INIT_STAGES_RF_PS,
 		HAL_INIT_STAGES_IQK,
 		HAL_INIT_STAGES_PW_TRACK,
 		HAL_INIT_STAGES_LCK,
 		HAL_INIT_STAGES_MISC21,
-		//HAL_INIT_STAGES_INIT_PABIAS,
-#ifdef CONFIG_BT_COEXIST
-		HAL_INIT_STAGES_BT_COEXIST,
-#endif
-		//HAL_INIT_STAGES_ANTENNA_SEL,
 		HAL_INIT_STAGES_MISC31,
 		HAL_INIT_STAGES_END,
 		HAL_INIT_STAGES_NUM
@@ -1401,15 +1395,10 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 		"HAL_INIT_STAGES_INIT_SECURITY",
 		"HAL_INIT_STAGES_MISC11",
 		"HAL_INIT_STAGES_INIT_HAL_DM",
-		//"HAL_INIT_STAGES_RF_PS",
 		"HAL_INIT_STAGES_IQK",
 		"HAL_INIT_STAGES_PW_TRACK",
 		"HAL_INIT_STAGES_LCK",
 		"HAL_INIT_STAGES_MISC21",
-#ifdef CONFIG_BT_COEXIST
-		"HAL_INIT_STAGES_BT_COEXIST",
-#endif
-		//"HAL_INIT_STAGES_ANTENNA_SEL",
 		"HAL_INIT_STAGES_MISC31",
 		"HAL_INIT_STAGES_END",
 	};
@@ -1805,60 +1794,16 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 		// Reset USB mode switch setting
 		rtw_write8(Adapter, REG_SDIO_CTRL_8812, 0x0);
 		rtw_write8(Adapter, REG_ACLK_MON, 0x0);
-
-		//RT_TRACE(COMP_INIT, DBG_TRACE, ("InitializeAdapter8188EUsb() <====\n"));
-
 		HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_IQK);
 		// 2010/08/26 MH Merge from 8192CE.
 		if(pwrctrlpriv->rf_pwrstate == rf_on) {
-			/*		if(IS_HARDWARE_TYPE_8812AU(Adapter))
-					{
-			#if (RTL8812A_SUPPORT == 1)
-						pHalData->odmpriv.RFCalibrateInfo.bNeedIQK = _TRUE;
-						if(pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized)
-							PHY_IQCalibrate_8812A(Adapter, _TRUE);
-						else
-						{
-							PHY_IQCalibrate_8812A(Adapter, _FALSE);
-							pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized = _TRUE;
-						}
-			#endif
-					}*/
-
 			HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_PW_TRACK);
-
-			//ODM_TXPowerTrackingCheck(&pHalData->odmpriv );
-
-
 			HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_LCK);
-			//PHY_LCCalibrate_8812A(Adapter);
 		}
 	}
 
 	HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC21);
-
-
-//HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_PABIAS);
-//	_InitPABias(Adapter);
-
-#ifdef CONFIG_BT_COEXIST
-	HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_BT_COEXIST);
-	//_InitBTCoexist(Adapter);
-	// 2010/08/23 MH According to Alfred's suggestion, we need to to prevent HW enter
-	// suspend mode automatically.
-	//HwSuspendModeEnable92Cu(Adapter, _FALSE);
-
-	if ( _TRUE == pHalData->EEPROMBluetoothCoexist) {
-		// Init BT hw config.
-		rtw_btcoex_HAL_Initialize(Adapter, _FALSE);
-	} else {
-		// In combo card run wifi only , must setting some hardware reg.
-		rtl8812a_combo_card_WifiOnlyHwInit(Adapter);
-	}
-#endif //CONFIG_BT_COEXIST
-
 	HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC31);
-
 	rtw_write8(Adapter, REG_USB_HRPWM, 0);
 
 #ifdef CONFIG_XMIT_ACK
@@ -1979,16 +1924,6 @@ u32 rtl8812au_hal_deinit(PADAPTER Adapter)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	DBG_8192C("==> %s \n",__FUNCTION__);
 
-#ifdef CONFIG_BT_COEXIST
-	if (hal_btcoex_IsBtExist(Adapter)) {
-		DBG_871X("BT module enable SIC\n");
-		// Only under WIN7 we can support selective suspend and enter D3 state when system call halt adapter.
-
-		//rtw_write16(Adapter, REG_GPIO_MUXCFG, rtw_read16(Adapter, REG_GPIO_MUXCFG)|BIT12);
-		// 2010/10/13 MH If we enable SIC in the position and then call _ResetDigitalProcedure1. in XP,
-		// the system will hang due to 8051 reset fail.
-	} else
-#endif //CONFIG_BT_COEXIST
 	{
 		rtw_write16(Adapter, REG_GPIO_MUXCFG, rtw_read16(Adapter, REG_GPIO_MUXCFG)&(~BIT12));
 	}

@@ -23,10 +23,6 @@
 #if 1//def  CONFIG_SINGLE_IMG
 
 #include "../hal/OUTSRC/phydm_precomp.h"
-#ifdef CONFIG_BT_COEXIST
-#include <hal_btcoex.h>
-#endif
-
 //
 // <Roger_Notes> For RTL8723 WiFi/BT/GPS multi-function configuration. 2010.10.06.
 //
@@ -502,11 +498,6 @@ typedef struct hal_com_data {
 #ifdef DBG_CONFIG_ERROR_DETECT
 	struct sreset_priv srestpriv;
 #endif //#ifdef DBG_CONFIG_ERROR_DETECT
-
-#ifdef CONFIG_BT_COEXIST
-	// For bluetooth co-existance
-	BT_COEXIST		bt_coexist;
-#endif // CONFIG_BT_COEXIST
 
 #ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
 	char	para_file_buf[MAX_PARA_FILE_BUF_LEN];

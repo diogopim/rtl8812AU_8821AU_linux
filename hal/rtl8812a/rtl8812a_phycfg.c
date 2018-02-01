@@ -1281,14 +1281,6 @@ phy_SetRFEReg8812(
 			PHY_SetBBReg(Adapter, rB_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x000);
 			break;
 		case 1:
-#ifdef CONFIG_BT_COEXIST
-			if (hal_btcoex_IsBtExist(Adapter) && (Adapter->registrypriv.mp_mode==0)) {
-				PHY_SetBBReg(Adapter, rA_RFE_Pinmux_Jaguar,0xffffff, 0x777777);
-				PHY_SetBBReg(Adapter, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777);
-				PHY_SetBBReg(Adapter, rA_RFE_Inv_Jaguar, 0x33f00000, 0x000);
-				PHY_SetBBReg(Adapter, rB_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x000);
-			} else
-#endif
 			{
 				PHY_SetBBReg(Adapter, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777);
 				PHY_SetBBReg(Adapter, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777);
@@ -1329,14 +1321,6 @@ phy_SetRFEReg8812(
 			PHY_SetBBReg(Adapter, rB_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x010);
 			break;
 		case 1:
-#ifdef CONFIG_BT_COEXIST
-			if (hal_btcoex_IsBtExist(Adapter) && (Adapter->registrypriv.mp_mode==0)) {
-				PHY_SetBBReg(Adapter, rA_RFE_Pinmux_Jaguar,0xffffff, 0x337717);
-				PHY_SetBBReg(Adapter, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337717);
-				PHY_SetBBReg(Adapter, rA_RFE_Inv_Jaguar, 0x33f00000, 0x000);
-				PHY_SetBBReg(Adapter, rB_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x000);
-			} else
-#endif
 			{
 				PHY_SetBBReg(Adapter, rA_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337717);
 				PHY_SetBBReg(Adapter, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337717);

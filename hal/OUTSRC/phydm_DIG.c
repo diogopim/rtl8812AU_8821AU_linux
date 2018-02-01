@@ -1116,7 +1116,7 @@ odm_DIG(
 	} else
 #endif
 	{
-#if ((DM_ODM_SUPPORT_TYPE & ODM_WIN) || ((DM_ODM_SUPPORT_TYPE & ODM_CE) && (ODM_CONFIG_BT_COEXIST == 1)))
+#if (DM_ODM_SUPPORT_TYPE & ODM_WIN)
 		if(pDM_Odm->bBtHsOperation) {
 			if(pDM_Odm->bLinked) {
 				if(pDM_DigTable->BT30_CurIGI > (CurrentIGI))

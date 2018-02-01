@@ -171,16 +171,7 @@
 #define CONFIG_TDLS_CH_SW
 #endif
 
-#ifdef CONFIG_BT_COEXIST
-// for ODM and outsrc BT-Coex
-#define BT_30_SUPPORT 1
-
-#ifndef CONFIG_LPS
-#define CONFIG_LPS	// download reserved page to FW
-#endif
-#else // !CONFIG_BT_COEXIST
 #define BT_30_SUPPORT 0
-#endif // !CONFIG_BT_COEXIST
 
 #define CONFIG_SKB_COPY	1//for amsdu
 

@@ -357,9 +357,6 @@ rtl8812_HalDmWatchDog(
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_STATION_STATE, bsta_state);
 
-#ifdef CONFIG_BT_COEXIST
-		bBtDisabled = rtw_btcoex_IsBtDisabled(Adapter);
-#endif // CONFIG_BT_COEXIST
 		ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_BT_ENABLED, ((bBtDisabled == _TRUE)?_FALSE:_TRUE));
 
 		ODM_DMWatchdog(&pHalData->odmpriv);
@@ -386,10 +383,6 @@ void rtl8812_init_dm_priv(IN PADAPTER Adapter)
 	_rtw_memset(pdmpriv, 0, sizeof(struct dm_priv));
 	//_rtw_spinlock_init(&(pHalData->odm_stainfo_lock));
 
-#ifdef CONFIG_BT_COEXIST
-	/* firmware size issue, btcoex fw doesn't support IQK offload */
-	if (pHalData->EEPROMBluetoothCoexist == _FALSE)
-#endif
 	{
 		pHalData->RegIQKFWOffload = 1;
 		rtw_sctx_init(&pHalData->iqk_sctx, 0);

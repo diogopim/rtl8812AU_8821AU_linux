@@ -3816,16 +3816,6 @@ static void rtw_dbg_mode_hdl(_adapter *padapter, u32 id, u8 *pdata, u32 len)
 		DBG_871X("==> trigger gpio 0\n");
 		rtw_hal_set_hwreg(padapter, HW_VAR_TRIGGER_GPIO_0, 0);
 		break;
-#ifdef CONFIG_BT_COEXIST
-	case GEN_MP_IOCTL_SUBCODE(SET_DM_BT):
-		DBG_871X("==> set dm_bt_coexist:%x\n",*(u8 *)pdata);
-		rtw_hal_set_hwreg(padapter, HW_VAR_BT_SET_COEXIST, pdata);
-		break;
-	case GEN_MP_IOCTL_SUBCODE(DEL_BA):
-		DBG_871X("==> delete ba:%x\n",*(u8 *)pdata);
-		rtw_hal_set_hwreg(padapter, HW_VAR_BT_ISSUE_DELBA, pdata);
-		break;
-#endif
 #ifdef DBG_CONFIG_ERROR_DETECT
 	case GEN_MP_IOCTL_SUBCODE(GET_WIFI_STATUS):
 		*pdata = rtw_hal_sreset_get_wifi_status(padapter);
@@ -9881,9 +9871,6 @@ static int rtw_mp_start(struct net_device *dev,
 	//u8 val8;
 	PADAPTER padapter = rtw_netdev_priv(dev);
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-#ifdef CONFIG_BT_COEXIST
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-#endif
 	struct hal_ops *pHalFunc = &padapter->HalFunc;
 
 	rtw_pm_set_ips(padapter,IPS_NONE);
@@ -9891,9 +9878,6 @@ static int rtw_mp_start(struct net_device *dev,
 
 	if(padapter->registrypriv.mp_mode ==0) {
 
-#ifdef CONFIG_BT_COEXIST
-		pdmpriv->DMFlag &= ~DYNAMIC_FUNC_BT;
-#endif
 		pHalFunc->hal_deinit(padapter);
 		padapter->registrypriv.mp_mode =1;
 		pHalFunc->hal_init(padapter);
@@ -10380,13 +10364,6 @@ static int rtw_mp_disable_bt_coexist(struct net_device *dev,
                                      struct iw_request_info *info,
                                      union iwreq_data *wrqu, char *extra)
 {
-#ifdef CONFIG_BT_COEXIST
-	PADAPTER padapter = (PADAPTER)rtw_netdev_priv(dev);
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	//struct hal_ops *pHalFunc = &padapter->HalFunc;
-#endif
-
 	u8 input[wrqu->data.length];
 	u32 bt_coexist;
 
@@ -10399,21 +10376,9 @@ static int rtw_mp_disable_bt_coexist(struct net_device *dev,
 		RT_TRACE(_module_mp_, _drv_info_,
 		         ("Set OID_RT_SET_DISABLE_BT_COEXIST: disable BT_COEXIST\n"));
 		DBG_871X("Set OID_RT_SET_DISABLE_BT_COEXIST: disable BT_COEXIST\n");
-#ifdef CONFIG_BT_COEXIST
-		rtw_btcoex_HaltNotify(padapter);
-		rtw_btcoex_SetManualControl(padapter, _TRUE);
-		pdmpriv->DMFlag &= ~DYNAMIC_FUNC_BT;
-		// Force to switch Antenna to WiFi
-		rtw_write16(padapter, 0x870, 0x300);
-		rtw_write16(padapter, 0x860, 0x110);
-#endif // CONFIG_BT_COEXIST
 	} else {
 		RT_TRACE(_module_mp_, _drv_info_,
 		         ("Set OID_RT_SET_DISABLE_BT_COEXIST: enable BT_COEXIST\n"));
-#ifdef CONFIG_BT_COEXIST
-		pdmpriv->DMFlag |= DYNAMIC_FUNC_BT;
-		rtw_btcoex_SetManualControl(padapter, _FALSE);
-#endif
 	}
 
 	return 0;
@@ -12606,7 +12571,7 @@ static int rtw_test(
 	u8 *pbuf, *pch;
 	char *ptmp;
 	u8 *delim = ",";
-#if defined(CONFIG_BT_COEXIST) || defined(CONFIG_MAC_LOOPBACK_DRIVER)
+#if defined(CONFIG_MAC_LOOPBACK_DRIVER)
 	PADAPTER padapter = rtw_netdev_priv(dev);
 #endif
 
@@ -12666,50 +12631,6 @@ static int rtw_test(
 		return 0;
 	}
 #endif
-
-#ifdef CONFIG_BT_COEXIST
-	if (strcmp(pch, "bton") == 0) {
-		rtw_btcoex_SetManualControl(padapter, _FALSE);
-	} else if (strcmp(pch, "btoff") == 0) {
-		rtw_btcoex_SetManualControl(padapter, _TRUE);
-	} else if (strcmp(pch, "h2c") == 0) {
-		u8 param[8];
-		u8 count = 0;
-		u32 tmp;
-		u8 i;
-		u32 pos;
-		s32 ret;
-
-
-		do {
-			pch = strsep(&ptmp, delim);
-			if ((pch == NULL) || (strlen(pch) == 0))
-				break;
-
-			sscanf(pch, "%x", &tmp);
-			param[count++] = (u8)tmp;
-		} while (count < 8);
-
-		if (count == 0) {
-			rtw_mfree(pbuf, len);
-			DBG_871X("%s: parameter error(level 2)!\n", __func__);
-			return -EFAULT;
-		}
-
-		ret = rtw_hal_fill_h2c_cmd(padapter, param[0], count-1, &param[1]);
-
-		pos = sprintf(extra, "H2C ID=0x%02x content=", param[0]);
-		for (i=1; i<count; i++) {
-			pos += sprintf(extra+pos, "%02x,", param[i]);
-		}
-		extra[pos] = 0;
-		pos--;
-		pos += sprintf(extra+pos, " %s", ret==_FAIL?"FAIL":"OK");
-
-		wrqu->data.length = strlen(extra) + 1;
-	}
-#endif // CONFIG_BT_COEXIST
-
 	rtw_mfree(pbuf, len);
 	return 0;
 }

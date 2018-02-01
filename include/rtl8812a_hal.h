@@ -331,10 +331,5 @@ void SetBcnCtrlReg(PADAPTER padapter, u8 SetBits, u8 ClearBits);
 void rtl8812_start_thread(PADAPTER padapter);
 void rtl8812_stop_thread(PADAPTER padapter);
 
-#ifdef CONFIG_BT_COEXIST
-void rtl8812a_combo_card_WifiOnlyHwInit(PADAPTER Adapter);
-#endif
-
-
 #endif //__RTL8188E_HAL_H__
 

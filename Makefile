@@ -32,7 +32,6 @@ CONFIG_USB_HCI = y
 ########################## Features ###########################
 CONFIG_MP_INCLUDED = y
 CONFIG_POWER_SAVING = y
-#CONFIG_BT_COEXIST = n
 #CONFIG_INTEL_WIDI = n
 #CONFIG_WAPI_SUPPORT = n
 #CONFIG_EFUSE_CONFIG_FILE = n
