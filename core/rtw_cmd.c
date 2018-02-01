@@ -2830,7 +2830,7 @@ exit:
 
 #endif
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 void antenna_select_wk_hdl(_adapter *padapter, u8 antenna)
 {
 	rtw_hal_set_hwreg(padapter, HW_VAR_ANTENNA_DIVERSITY_SELECT, (u8 *)(&antenna));
@@ -3322,7 +3322,7 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 		rpt_timer_setting_wk_hdl(padapter, pdrvextra_cmd->type);
 		break;
 #endif
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 	case ANT_SELECT_WK_CID:
 		antenna_select_wk_hdl(padapter, pdrvextra_cmd->type);
 		break;

@@ -37,7 +37,6 @@ CONFIG_LOAD_PHY_PARA_FROM_FILE = y
 #CONFIG_RTW_ADAPTIVITY_EN = disable
 #CONFIG_RTW_ADAPTIVITY_MODE = normal
 CONFIG_BR_EXT = y
-#CONFIG_ANTENNA_DIVERSITY = n
 #CONFIG_TDLS = n
 ######################## Wake On Lan ##########################
 #CONFIG_WOWLAN = n

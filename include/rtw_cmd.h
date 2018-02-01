@@ -1022,7 +1022,7 @@ u8 rtw_lps_change_dtim_cmd(_adapter*padapter, u8 dtim);
 u8 rtw_rpt_timer_cfg_cmd(_adapter*padapter, u16 minRptTime);
 #endif
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 extern  u8 rtw_antenna_select_cmd(_adapter*padapter, u8 antenna,u8 enqueue);
 #endif
 

@@ -406,7 +406,7 @@ void rtl8812_deinit_dm_priv(IN PADAPTER Adapter)
 }
 
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 // Add new function to reset the state of antenna diversity before link.
 //
 // Compare RSSI for deciding antenna

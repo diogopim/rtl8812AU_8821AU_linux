@@ -101,7 +101,7 @@
 //#define CONFIG_ANTENNA_DIVERSITY
 
 //after link
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 #define CONFIG_HW_ANTENNA_DIVERSITY
 #endif
 

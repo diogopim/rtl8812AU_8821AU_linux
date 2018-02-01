@@ -577,7 +577,7 @@ void rtw_hal_bcn_related_reg_setting(_adapter *padapter)
 }
 
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 u8	rtw_hal_antdiv_before_linked(_adapter *padapter)
 {
 	if(padapter->HalFunc.AntDivBeforeLinkHandler)

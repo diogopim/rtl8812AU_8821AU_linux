@@ -718,7 +718,7 @@ void update_network(WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src,
 
 	_func_enter_;
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 	rtw_hal_antdiv_rssi_compared(padapter, dst, src); //this will update src.Rssi, need consider again
 #endif
 
@@ -915,7 +915,7 @@ void rtw_update_scanned_network(_adapter *adapter, WLAN_BSSID_EX *target)
 				RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("\n\n\nsomething wrong here\n\n\n"));
 				goto exit;
 			}
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 			//target->PhyInfo.Optimum_antenna = pHalData->CurAntenna;//optimum_antenna=>For antenna diversity
 			rtw_hal_get_def_var(adapter, HAL_DEF_CURRENT_ANTENNA, &(target->PhyInfo.Optimum_antenna));
 #endif
@@ -944,7 +944,7 @@ void rtw_update_scanned_network(_adapter *adapter, WLAN_BSSID_EX *target)
 
 			bssid_ex_sz = get_WLAN_BSSID_EX_sz(target);
 			target->Length = bssid_ex_sz;
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 			//target->PhyInfo.Optimum_antenna = pHalData->CurAntenna;
 			rtw_hal_get_def_var(adapter, HAL_DEF_CURRENT_ANTENNA, &(target->PhyInfo.Optimum_antenna));
 #endif
@@ -3044,7 +3044,7 @@ candidate_exist:
 		}
 	}
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 	rtw_hal_get_def_var(adapter, HAL_DEF_IS_SUPPORT_ANT_DIV, &(bSupportAntDiv));
 	if(_TRUE == bSupportAntDiv) {
 		u8 CurrentAntenna;
