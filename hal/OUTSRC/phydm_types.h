@@ -243,8 +243,6 @@ typedef s64					s8Byte,*ps8Byte;
 #endif
 #ifdef CONFIG_USB_HCI
 #define DEV_BUS_TYPE  	RT_USB_INTERFACE
-#elif defined(CONFIG_GSPI_HCI)
-#define DEV_BUS_TYPE  	RT_SDIO_INTERFACE
 #endif
 
 

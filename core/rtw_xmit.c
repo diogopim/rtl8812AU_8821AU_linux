@@ -174,13 +174,6 @@ s32	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, _adapter *padapter)
 			}
 		}
 
-#if defined(CONFIG_GSPI_HCI)
-		pxmitbuf->phead = pxmitbuf->pbuf;
-		pxmitbuf->pend = pxmitbuf->pbuf + MAX_XMITBUF_SZ;
-		pxmitbuf->len = 0;
-		pxmitbuf->pdata = pxmitbuf->ptail = pxmitbuf->phead;
-#endif
-
 		pxmitbuf->flags = XMIT_VO_QUEUE;
 
 		rtw_list_insert_tail(&pxmitbuf->list, &(pxmitpriv->free_xmitbuf_queue.queue));
@@ -254,13 +247,6 @@ s32	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, _adapter *padapter)
 			goto exit;
 		}
 
-#if defined(CONFIG_GSPI_HCI)
-		pxmitbuf->phead = pxmitbuf->pbuf;
-		pxmitbuf->pend = pxmitbuf->pbuf + MAX_XMIT_EXTBUF_SZ;
-		pxmitbuf->len = 0;
-		pxmitbuf->pdata = pxmitbuf->ptail = pxmitbuf->phead;
-#endif
-
 		rtw_list_insert_tail(&pxmitbuf->list, &(pxmitpriv->free_xmit_extbuf_queue.queue));
 #ifdef DBG_XMIT_BUF_EXT
 		pxmitbuf->no=i;
@@ -285,12 +271,6 @@ s32	_rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, _adapter *padapter)
 				goto exit;
 			}
 
-#if defined(CONFIG_GSPI_HCI)
-			pxmitbuf->phead = pxmitbuf->pbuf;
-			pxmitbuf->pend = pxmitbuf->pbuf + MAX_CMDBUF_SZ;
-			pxmitbuf->len = 0;
-			pxmitbuf->pdata = pxmitbuf->ptail = pxmitbuf->phead;
-#endif
 			pxmitbuf->alloc_sz = MAX_CMDBUF_SZ+XMITBUF_ALIGN_SZ;
 		}
 	}
@@ -877,27 +857,12 @@ u8 rtw_check_tdls_established(_adapter *padapter, struct pkt_attrib *pattrib)
 	pattrib->direct_link = _FALSE;
 	if (padapter->tdlsinfo.link_established == _TRUE) {
 		pattrib->ptdls_sta = rtw_get_stainfo(&padapter->stapriv, pattrib->dst);
-#if 1
 		if((pattrib->ptdls_sta!=NULL)&&
 		   (pattrib->ptdls_sta->tdls_sta_state & TDLS_LINKED_STATE)&&
 		   (pattrib->ether_type!=0x0806)) {
 			pattrib->direct_link = _TRUE;
 			//DBG_871X("send ptk to "MAC_FMT" using direct link\n", MAC_ARG(pattrib->dst));
 		}
-#else
-		if (pattrib->ptdls_sta != NULL &&
-		    pattrib->ptdls_sta->tdls_sta_state & TDLS_LINKED_STATE) {
-			pattrib->direct_link = _TRUE;
-#if 0
-			DBG_871X("send ptk to "MAC_FMT" using direct link\n", MAC_ARG(pattrib->dst));
-#endif
-		}
-
-		/* ARP frame may be helped by AP*/
-		if (pattrib->ether_type != 0x0806) {
-			pattrib->direct_link = _FALSE;
-		}
-#endif
 	}
 
 	return pattrib->direct_link;
@@ -2432,7 +2397,7 @@ void rtw_count_tx_stats(PADAPTER padapter, struct xmit_frame *pxmitframe, int sz
 	u8	pkt_num = 1;
 
 	if ((pxmitframe->frame_tag&0x0f) == DATA_FRAMETAG) {
-#if defined(CONFIG_USB_TX_AGGREGATION) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_USB_TX_AGGREGATION)
 		pkt_num = pxmitframe->agg_num;
 #endif
 		pmlmepriv->LinkDetectInfo.NumTxOkInPeriod += pkt_num;
@@ -2475,12 +2440,6 @@ static struct xmit_buf *__rtw_alloc_cmd_xmitbuf(struct xmit_priv *pxmitpriv,
 	if (pxmitbuf !=  NULL) {
 		pxmitbuf->priv_data = NULL;
 
-#if defined(CONFIG_GSPI_HCI)
-		pxmitbuf->len = 0;
-		pxmitbuf->pdata = pxmitbuf->ptail = pxmitbuf->phead;
-		pxmitbuf->agg_num = 0;
-		pxmitbuf->pg_num = 0;
-#endif
 		if (pxmitbuf->sctx) {
 			DBG_871X("%s pxmitbuf->sctx is not NULL\n", __func__);
 			rtw_sctx_done_err(&pxmitbuf->sctx, RTW_SCTX_DONE_BUF_ALLOC);
@@ -2557,11 +2516,6 @@ struct xmit_buf *rtw_alloc_xmitbuf_ext(struct xmit_priv *pxmitpriv)
 
 		pxmitbuf->priv_data = NULL;
 
-#if defined(CONFIG_GSPI_HCI)
-		pxmitbuf->len = 0;
-		pxmitbuf->pdata = pxmitbuf->ptail = pxmitbuf->phead;
-		pxmitbuf->agg_num = 1;
-#endif
 		if (pxmitbuf->sctx) {
 			DBG_871X("%s pxmitbuf->sctx is not NULL\n", __func__);
 			rtw_sctx_done_err(&pxmitbuf->sctx, RTW_SCTX_DONE_BUF_ALLOC);
@@ -2639,12 +2593,6 @@ struct xmit_buf *rtw_alloc_xmitbuf(struct xmit_priv *pxmitpriv)
 
 		pxmitbuf->priv_data = NULL;
 
-#if defined(CONFIG_GSPI_HCI)
-		pxmitbuf->len = 0;
-		pxmitbuf->pdata = pxmitbuf->ptail = pxmitbuf->phead;
-		pxmitbuf->agg_num = 0;
-		pxmitbuf->pg_num = 0;
-#endif
 		if (pxmitbuf->sctx) {
 			DBG_871X("%s pxmitbuf->sctx is not NULL\n", __func__);
 			rtw_sctx_done_err(&pxmitbuf->sctx, RTW_SCTX_DONE_BUF_ALLOC);
@@ -2728,11 +2676,6 @@ void rtw_init_xmitframe(struct xmit_frame *pxframe)
 #endif
 
 #endif //#ifdef CONFIG_USB_HCI
-
-#if defined(CONFIG_GSPI_HCI)
-		pxframe->pg_num = 1;
-		pxframe->agg_num = 1;
-#endif
 
 #ifdef CONFIG_XMIT_ACK
 		pxframe->ack_report = 0;
@@ -3117,65 +3060,6 @@ struct tx_servq *rtw_get_sta_pending(_adapter *padapter, struct sta_info *psta, 
 		*(ac) = 2;
 		RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("rtw_get_sta_pending : BE \n"));
 		break;
-
-	}
-
-	_func_exit_;
-
-	return ptxservq;
-}
-#else
-__inline static struct tx_servq *rtw_get_sta_pending
-(_adapter *padapter, _queue **ppstapending, struct sta_info *psta, sint up)
-{
-	struct tx_servq *ptxservq;
-	struct hw_xmit *phwxmits =  padapter->xmitpriv.hwxmits;
-
-	_func_enter_;
-
-#ifdef CONFIG_RTL8711
-
-	if(IS_MCAST(psta->hwaddr)) {
-		ptxservq = &(psta->sta_xmitpriv.be_q); // we will use be_q to queue bc/mc frames in BCMC_stainfo
-		*ppstapending = &padapter->xmitpriv.bm_pending;
-	} else
-#endif
-	{
-		switch (up) {
-		case 1:
-		case 2:
-			ptxservq = &(psta->sta_xmitpriv.bk_q);
-			*ppstapending = &padapter->xmitpriv.bk_pending;
-			(phwxmits+3)->accnt++;
-			RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("rtw_get_sta_pending : BK \n"));
-			break;
-
-		case 4:
-		case 5:
-			ptxservq = &(psta->sta_xmitpriv.vi_q);
-			*ppstapending = &padapter->xmitpriv.vi_pending;
-			(phwxmits+1)->accnt++;
-			RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("rtw_get_sta_pending : VI\n"));
-			break;
-
-		case 6:
-		case 7:
-			ptxservq = &(psta->sta_xmitpriv.vo_q);
-			*ppstapending = &padapter->xmitpriv.vo_pending;
-			(phwxmits+0)->accnt++;
-			RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("rtw_get_sta_pending : VO \n"));
-			break;
-
-		case 0:
-		case 3:
-		default:
-			ptxservq = &(psta->sta_xmitpriv.be_q);
-			*ppstapending = &padapter->xmitpriv.be_pending;
-			(phwxmits+2)->accnt++;
-			RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("rtw_get_sta_pending : BE \n"));
-			break;
-
-		}
 
 	}
 

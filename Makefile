@@ -29,7 +29,6 @@ CONFIG_RTL8821A = n
 #CONFIG_RTL8723B = n
 ######################### Interface ###########################
 CONFIG_USB_HCI = y
-#CONFIG_GSPI_HCI = n
 ########################## Features ###########################
 CONFIG_MP_INCLUDED = y
 CONFIG_POWER_SAVING = y

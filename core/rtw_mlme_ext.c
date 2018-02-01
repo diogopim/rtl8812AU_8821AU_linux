@@ -9263,7 +9263,7 @@ unsigned int send_beacon(_adapter *padapter)
 	int	issue=0;
 	int poll = 0;
 
-#if defined(CONFIG_USB_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_USB_HCI)
 	u32 start = rtw_get_current_time();
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_BCN_VALID, NULL);
