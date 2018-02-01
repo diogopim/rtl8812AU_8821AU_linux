@@ -661,11 +661,6 @@ static s32 update_attrib_sec_info(_adapter *padapter, struct pkt_attrib *pattrib
 	} else {
 		GET_ENCRY_ALGO(psecuritypriv, psta, pattrib->encrypt, bmcast);
 
-#ifdef CONFIG_WAPI_SUPPORT
-		if(pattrib->ether_type == 0x88B4)
-			pattrib->encrypt=_NO_PRIVACY_;
-#endif
-
 		switch(psecuritypriv->dot11AuthAlgrthm) {
 		case dot11AuthAlgrthm_Open:
 		case dot11AuthAlgrthm_Shared:
@@ -731,13 +726,6 @@ static s32 update_attrib_sec_info(_adapter *padapter, struct pkt_attrib *pattrib
 
 		break;
 
-#ifdef CONFIG_WAPI_SUPPORT
-	case _SMS4_:
-		pattrib->iv_len = 18;
-		pattrib->icv_len = 16;
-		rtw_wapi_get_iv(padapter,pattrib->ra,pattrib->iv);
-		break;
-#endif
 	default:
 		pattrib->iv_len = 0;
 		pattrib->icv_len = 0;
@@ -766,11 +754,6 @@ static s32 update_attrib_sec_info(_adapter *padapter, struct pkt_attrib *pattrib
 	if((pattrib->encrypt && bmcast) || (pattrib->encrypt ==_WEP40_) || (pattrib->encrypt ==_WEP104_)) {
 		pattrib->bswenc = _TRUE;//force using sw enc.
 	}
-#endif
-
-#ifdef CONFIG_WAPI_SUPPORT
-	if(pattrib->encrypt == _SMS4_)
-		pattrib->bswenc = _FALSE;
 #endif
 
 #ifdef CONFIG_TDLS
@@ -1035,18 +1018,10 @@ static s32 update_attrib(_adapter *padapter, _pkt *pkt, struct pkt_attrib *pattr
 
 #ifdef CONFIG_LPS
 	// If EAPOL , ARP , OR DHCP packet, driver must be in active mode.
-#ifdef CONFIG_WAPI_SUPPORT
-	if ( (pattrib->ether_type == 0x88B4) || (pattrib->ether_type == 0x0806) || (pattrib->ether_type == 0x888e) || (pattrib->dhcp_pkt == 1) )
-#else //!CONFIG_WAPI_SUPPORT
-#if 0
-	if ( (pattrib->ether_type == 0x0806) || (pattrib->ether_type == 0x888e) || (pattrib->dhcp_pkt == 1) )
-#else // only ICMP/DHCP packets is as SPECIAL_PACKET, and leave LPS when tx IMCP/DHCP packets.
-	//if ((pattrib->ether_type == 0x888e) || (pattrib->dhcp_pkt == 1) )
+
 	if (pattrib->icmp_pkt==1) {
 		rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_LEAVE, 1);
 	} else if(pattrib->dhcp_pkt==1)
-#endif
-#endif
 	{
 		DBG_COUNTER(padapter->tx_logs.core_tx_upd_attrib_active);
 		rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_SPECIAL_PACKET, 1);
@@ -1313,10 +1288,6 @@ static s32 xmitframe_swencrypt(_adapter *padapter, struct xmit_frame *pxmitframe
 		case _AES_:
 			rtw_aes_encrypt(padapter, (u8 * )pxmitframe);
 			break;
-#ifdef CONFIG_WAPI_SUPPORT
-		case _SMS4_:
-			rtw_sms4_encrypt(padapter, (u8 * )pxmitframe);
-#endif
 		default:
 			break;
 		}
@@ -1968,40 +1939,6 @@ s32 rtw_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame *pxm
 
 		//adding icv, if necessary...
 		if (pattrib->iv_len) {
-			/*
-						//if (check_fwstate(pmlmepriv, WIFI_MP_STATE))
-						//	psta = rtw_get_stainfo(pstapriv, get_bssid(pmlmepriv));
-						//else
-						//	psta = rtw_get_stainfo(pstapriv, pattrib->ra);
-
-						if (psta != NULL)
-						{
-							switch(pattrib->encrypt)
-							{
-								case _WEP40_:
-								case _WEP104_:
-										WEP_IV(pattrib->iv, psta->dot11txpn, pattrib->key_idx);
-									break;
-								case _TKIP_:
-									if(bmcst)
-										TKIP_IV(pattrib->iv, psta->dot11txpn, pattrib->key_idx);
-									else
-										TKIP_IV(pattrib->iv, psta->dot11txpn, 0);
-									break;
-								case _AES_:
-									if(bmcst)
-										AES_IV(pattrib->iv, psta->dot11txpn, pattrib->key_idx);
-									else
-										AES_IV(pattrib->iv, psta->dot11txpn, 0);
-									break;
-			#ifdef CONFIG_WAPI_SUPPORT
-								case _SMS4_:
-									rtw_wapi_get_iv(padapter,pattrib->ra,pattrib->iv);
-									break;
-			#endif
-							}
-						}
-			*/
 			_rtw_memcpy(pframe, pattrib->iv, pattrib->iv_len);
 
 			RT_TRACE(_module_rtl871x_xmit_c_, _drv_notice_,
@@ -3530,14 +3467,6 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 
 	res = update_attrib(padapter, *ppkt, &pxmitframe->attrib);
 
-#ifdef CONFIG_WAPI_SUPPORT
-	if(pxmitframe->attrib.ether_type != 0x88B4) {
-		if(rtw_wapi_drop_for_key_absent(padapter, pxmitframe->attrib.ra)) {
-			WAPI_TRACE(WAPI_RX,"drop for key absend when tx \n");
-			res = _FAIL;
-		}
-	}
-#endif
 	if (res == _FAIL) {
 		RT_TRACE(_module_xmit_osdep_c_, _drv_err_, ("rtw_xmit: update attrib fail\n"));
 #ifdef DBG_TX_DROP_FRAME
@@ -3657,9 +3586,6 @@ inline bool xmitframe_hiq_filter(struct xmit_frame *xmitframe)
 
 			if (attrib->ether_type == 0x0806
 			    || attrib->ether_type == 0x888e
-#ifdef CONFIG_WAPI_SUPPORT
-			    || attrib->ether_type == 0x88B4
-#endif
 			    || attrib->dhcp_pkt
 			   ) {
 				if (0)

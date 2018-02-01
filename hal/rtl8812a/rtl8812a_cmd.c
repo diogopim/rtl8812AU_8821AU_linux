@@ -721,23 +721,8 @@ static void ConstructGTKResponse(
 	SetSeqNum(pwlanhdr, 0);
 	SetDuration(pwlanhdr, 0);
 
-#ifdef CONFIG_WAPI_SUPPORT
-	*pLength = sMacHdrLng;
-#else
 	*pLength = 24;
-#endif //CONFIG_WAPI_SUPPORT
 
-//YJ,del,120503
-#if 0
-	//-------------------------------------------------------------------------
-	// Qos Header: leave space for it if necessary.
-	//-------------------------------------------------------------------------
-	if(pStaQos->CurrentQosMode > QOS_DISABLE) {
-		SET_80211_HDR_QOS_EN(pGTKRspPkt, 1);
-		PlatformZeroMemory(&(Buffer[*pLength]), sQoSCtlLng);
-		*pLength += sQoSCtlLng;
-	}
-#endif //0
 	//-------------------------------------------------------------------------
 	// Security Header: leave space for it if necessary.
 	//-------------------------------------------------------------------------
@@ -754,11 +739,6 @@ static void ConstructGTKResponse(
 	case _AES_:
 		EncryptionHeadOverhead = 8;
 		break;
-#ifdef CONFIG_WAPI_SUPPORT
-	case _SMS4_:
-		EncryptionHeadOverhead = 18;
-		break;
-#endif //CONFIG_WAPI_SUPPORT
 	default:
 		EncryptionHeadOverhead = 0;
 	}
@@ -1626,32 +1606,9 @@ static inline void ConstructARPResponse(
 
 	SetSeqNum(pwlanhdr, 0);
 	SetDuration(pwlanhdr, 0);
-	//SET_80211_HDR_FRAME_CONTROL(pARPRspPkt, 0);
-	//SET_80211_HDR_TYPE_AND_SUBTYPE(pARPRspPkt, Type_Data);
-	//SET_80211_HDR_TO_DS(pARPRspPkt, 1);
-	//SET_80211_HDR_ADDRESS1(pARPRspPkt, pMgntInfo->Bssid);
-	//SET_80211_HDR_ADDRESS2(pARPRspPkt, Adapter->CurrentAddress);
-	//SET_80211_HDR_ADDRESS3(pARPRspPkt, pMgntInfo->Bssid);
-
-	//SET_80211_HDR_DURATION(pARPRspPkt, 0);
-	//SET_80211_HDR_FRAGMENT_SEQUENCE(pARPRspPkt, 0);
-#ifdef CONFIG_WAPI_SUPPORT
-	*pLength = sMacHdrLng;
-#else
 	*pLength = 24;
-#endif
 
 //YJ,del,120503
-#if 0
-	//-------------------------------------------------------------------------
-	// Qos Header: leave space for it if necessary.
-	//-------------------------------------------------------------------------
-	if(pStaQos->CurrentQosMode > QOS_DISABLE) {
-		SET_80211_HDR_QOS_EN(pARPRspPkt, 1);
-		PlatformZeroMemory(&(Buffer[*pLength]), sQoSCtlLng);
-		*pLength += sQoSCtlLng;
-	}
-#endif
 	//-------------------------------------------------------------------------
 	// Security Header: leave space for it if necessary.
 	//-------------------------------------------------------------------------
@@ -1668,11 +1625,6 @@ static inline void ConstructARPResponse(
 	case _AES_:
 		EncryptionHeadOverhead = 8;
 		break;
-#ifdef CONFIG_WAPI_SUPPORT
-	case _SMS4_:
-		EncryptionHeadOverhead = 18;
-		break;
-#endif
 	default:
 		EncryptionHeadOverhead = 0;
 	}
@@ -1775,11 +1727,6 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 	u32	TotalPacketLen, MaxRsvdPageBufSize=0;
 	RSVDPAGE_LOC	RsvdPageLoc;
 #ifdef CONFIG_WOWLAN
-	//u32	ARPLegnth = 0, GTKLegnth = 0, PNOLength = 0, ScanInfoLength = 0;
-	//u32	SSIDLegnth = 0;
-	//struct security_priv *psecuritypriv = &padapter->securitypriv; //added by xx
-	//u8 currentip[4];
-	//u8 cur_dot11txpn[8];
 #ifdef CONFIG_GTK_OL
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info * psta;
@@ -1868,27 +1815,6 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 	TotalPageNum += CurtPktPageNum;
 
 	BufIndex += (CurtPktPageNum*PageSize);
-
-#if 0
-	//3 (4) probe response
-	RsvdPageLoc.LocProbeRsp = TotalPageNum;
-	ConstructProbeRsp(
-	    padapter,
-	    &ReservedPagePacket[BufIndex],
-	    &ProbeRspLength,
-	    get_my_bssid(&pmlmeinfo->network),
-	    _FALSE);
-	rtl8812a_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], ProbeRspLength, _FALSE, _FALSE);
-
-	//DBG_871X("%s(): HW_VAR_SET_TX_CMD: PROBE RSP %p %d\n",
-	//	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (ProbeRspLength+TxDescLen));
-
-	CurtPktPageNum = (u8)PageNum(TxDescLen + ProbeRspLength, PageSize);
-
-	TotalPageNum += CurtPktPageNum;
-
-	BufIndex += (CurtPktPageNum*PageSize);
-#endif
 
 	//3 (5) Qos null data
 	RsvdPageLoc.LocQosNull = TotalPageNum;
@@ -1992,19 +1918,6 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		_rtw_memcpy(ReservedPagePacket+BufIndex-TxDescLen, kck, RTW_KCK_LEN);
 		_rtw_memcpy(ReservedPagePacket+BufIndex-TxDescLen+RTW_KCK_LEN, kek, RTW_KEK_LEN);
 
-#if 0
-		{
-			int i;
-			printk("\ntoFW KCK: ");
-			for(i=0; i<16; i++)
-				printk(" %02x ", kck[i]);
-			printk("\ntoFW KEK: ");
-			for(i=0; i<16; i++)
-				printk(" %02x ", kek[i]);
-			printk("\n");
-		}
-#endif
-
 		//DBG_871X("%s(): HW_VAR_SET_TX_CMD: KEK KCK %p %d\n",
 		//	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (TxDescLen + RTW_KCK_LEN + RTW_KEK_LEN));
 
@@ -2023,18 +1936,6 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		);
 
 		rtl8812a_fill_fake_txdesc(padapter, &ReservedPagePacket[BufIndex-TxDescLen], GTKLegnth, _FALSE, _FALSE, _TRUE);
-#if 0
-		{
-			int gj;
-			printk("123GTK pkt=> \n");
-			for(gj=0; gj < GTKLegnth+TxDescLen; gj++) {
-				printk(" %02x ", ReservedPagePacket[BufIndex-TxDescLen+gj]);
-				if ((gj + 1)%16==0)
-					printk("\n");
-			}
-			printk(" <=end\n");
-		}
-#endif
 
 		//DBG_871X("%s(): HW_VAR_SET_TX_CMD: GTK RSP %p %d\n",
 		//	__FUNCTION__, &ReservedPagePacket[BufIndex-TxDescLen], (TxDescLen + GTKLegnth));
@@ -2510,13 +2411,6 @@ static void rtl8812_set_FwWoWlanRelated_cmd(_adapter* padapter, u8 enable)
 		rtl8812_set_FwWoWlanCtrl_Cmd(padapter, enable);
 		//rtw_hal_set_remote_wake_ctrl_cmd(padapter, enable);
 	} else {
-#if 0
-		{
-			u32 PageSize = 0;
-			rtw_hal_get_def_var(adapter, HAL_DEF_TX_PAGE_SIZE, (u8 *)&PageSize);
-			dump_TX_FIFO(padapter, 4, PageSize);
-		}
-#endif
 		rtl8812_set_FwRemoteWakeCtrl_Cmd(padapter, enable);
 		//rtw_hal_set_remote_wake_ctrl_cmd(padapter, enable);
 		rtw_msleep_os(2);
@@ -2595,13 +2489,7 @@ C2HRaReportHandler_8812(
 )
 {
 	u8 	Rate = CmdBuf[0] & 0x3F;
-	//u8	MacId = CmdBuf[1];
-	//BOOLEAN	bLDPC = CmdBuf[2] & BIT0;
-	//BOOLEAN	bTxBF = (CmdBuf[2] & BIT1) >> 1;
-	//BOOLEAN	bNoisyStateFromC2H = (CmdBuf[2] & BIT2) >> 2;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-
-	//pHalData->CurrentRARate = MRateToHwRate(Rate);
 
 	ODM_UpdateInitRate(&pHalData->odmpriv, Rate);
 	//ODM_UpdateNoisyState(&pHalData->odmpriv, bNoisyStateFromC2H);
@@ -2654,9 +2542,6 @@ _C2HContentParsing8812(
 	case C2H_8812_IQK_FINISH:
 		DBG_871X("== IQK Finish ==\n");
 		rtl8812_iqk_done(Adapter);
-		//rtw_odm_acquirespinlock(Adapter, RT_IQK_SPINLOCK);
-		//pDM_Odm->RFCalibrateInfo.bIQKInProgress = FALSE;
-		//rtw_odm_releasespinlock(Adapter, RT_IQK_SPINLOCK);
 		break;
 
 	case C2H_8812_MAILBOX_STATUS:
@@ -2694,9 +2579,6 @@ C2HPacketHandler_8812(
 	c2hCmdSeq = Buffer[1];
 	c2hCmdLen = Length -2;
 	tmpBuf = Buffer+2;
-
-	//DBG_871X("[C2H packet], c2hCmdId=0x%x, c2hCmdSeq=0x%x, c2hCmdLen=%d\n", c2hCmdId, c2hCmdSeq, c2hCmdLen);
-
 	{
 		/* handle directly */
 		_C2HContentParsing8812(Adapter, c2hCmdId, c2hCmdLen, tmpBuf);
