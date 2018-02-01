@@ -359,30 +359,30 @@ struct oid_obj_priv oid_rtl_seg_87_11_F0[] = {
 
 };
 
-struct oid_obj_priv oid_rtl_seg_87_12_00[]= {
-	{1, &oid_rt_pro_encryption_ctrl_hdl},		//0x00	Q&S
-	{1, &oid_rt_pro_add_sta_info_hdl},		//0x01	S
-	{1, &oid_rt_pro_dele_sta_info_hdl},		//0x02	S
-	{1, &oid_rt_pro_query_dr_variable_hdl},		//0x03	Q
-	{1, &oid_rt_pro_rx_packet_type_hdl},		//0x04	Q,S
-	{1, &oid_rt_pro_read_efuse_hdl},		//0x05	Q	OID_RT_PRO_READ_EFUSE
-	{1, &oid_rt_pro_write_efuse_hdl},		//0x06	S	OID_RT_PRO_WRITE_EFUSE
-	{1, &oid_rt_pro_rw_efuse_pgpkt_hdl},		//0x07	Q,S
-	{1, &oid_rt_get_efuse_current_size_hdl},	//0x08 	Q
-	{1, &oid_rt_set_bandwidth_hdl},			//0x09
-	{1, &oid_rt_set_crystal_cap_hdl},		//0x0a
-	{1, &oid_rt_set_rx_packet_type_hdl},		//0x0b	S
-	{1, &oid_rt_get_efuse_max_size_hdl},		//0x0c
-	{1, &oid_rt_pro_set_tx_agc_offset_hdl},		//0x0d
-	{1, &oid_rt_pro_set_pkt_test_mode_hdl},		//0x0e
-	{1, &oid_null_function},			//0x0f		OID_RT_PRO_FOR_EVM_TEST_SETTING
-	{1, &oid_rt_get_thermal_meter_hdl},		//0x10	Q	OID_RT_PRO_GET_THERMAL_METER
-	{1, &oid_rt_reset_phy_rx_packet_count_hdl},	//0x11	S	OID_RT_RESET_PHY_RX_PACKET_COUNT
-	{1, &oid_rt_get_phy_rx_packet_received_hdl},	//0x12	Q	OID_RT_GET_PHY_RX_PACKET_RECEIVED
-	{1, &oid_rt_get_phy_rx_packet_crc32_error_hdl},	//0x13	Q	OID_RT_GET_PHY_RX_PACKET_CRC32_ERROR
-	{1, &oid_rt_set_power_down_hdl},		//0x14	Q	OID_RT_SET_POWER_DOWN
-	{1, &oid_rt_get_power_mode_hdl}			//0x15	Q	OID_RT_GET_POWER_MODE
-};
+//struct oid_obj_priv oid_rtl_seg_87_12_00[]= {
+//	{1, &oid_rt_pro_encryption_ctrl_hdl},		//0x00	Q&S
+//	{1, &oid_rt_pro_add_sta_info_hdl},		//0x01	S
+//	{1, &oid_rt_pro_dele_sta_info_hdl},		//0x02	S
+//	{1, &oid_rt_pro_query_dr_variable_hdl},		//0x03	Q
+//	{1, &oid_rt_pro_rx_packet_type_hdl},		//0x04	Q,S
+//	{1, &oid_rt_pro_read_efuse_hdl},		//0x05	Q	OID_RT_PRO_READ_EFUSE
+//	{1, &oid_rt_pro_write_efuse_hdl},		//0x06	S	OID_RT_PRO_WRITE_EFUSE
+//	{1, &oid_rt_pro_rw_efuse_pgpkt_hdl},		//0x07	Q,S
+//	{1, &oid_rt_get_efuse_current_size_hdl},	//0x08 	Q
+//	{1, &oid_rt_set_bandwidth_hdl},			//0x09
+//	{1, &oid_rt_set_crystal_cap_hdl},		//0x0a
+//	{1, &oid_rt_set_rx_packet_type_hdl},		//0x0b	S
+//	{1, &oid_rt_get_efuse_max_size_hdl},		//0x0c
+//	{1, &oid_rt_pro_set_tx_agc_offset_hdl},		//0x0d
+//	{1, &oid_rt_pro_set_pkt_test_mode_hdl},		//0x0e
+//	{1, &oid_null_function},			//0x0f		OID_RT_PRO_FOR_EVM_TEST_SETTING
+//	{1, &oid_rt_get_thermal_meter_hdl},		//0x10	Q	OID_RT_PRO_GET_THERMAL_METER
+//	{1, &oid_rt_reset_phy_rx_packet_count_hdl},	//0x11	S	OID_RT_RESET_PHY_RX_PACKET_COUNT
+//	{1, &oid_rt_get_phy_rx_packet_received_hdl},	//0x12	Q	OID_RT_GET_PHY_RX_PACKET_RECEIVED
+//	{1, &oid_rt_get_phy_rx_packet_crc32_error_hdl},	//0x13	Q	OID_RT_GET_PHY_RX_PACKET_CRC32_ERROR
+//	{1, &oid_rt_set_power_down_hdl},		//0x14	Q	OID_RT_SET_POWER_DOWN
+//	{1, &oid_rt_get_power_mode_hdl}			//0x15	Q	OID_RT_GET_POWER_MODE
+//};
 
 #else /* _RTL871X_MP_IOCTL_C_ */
 
@@ -522,51 +522,51 @@ u32 mp_ioctl_xmit_packet_hdl(struct oid_par_priv* poid_par_priv);
 #define EXT_MP_IOCTL_HANDLER(sz, subcode, oid) {sz, mp_ioctl_ ## subcode ## _hdl, oid},
 
 
-struct mp_ioctl_handler mp_ioctl_hdl[] = {
-
-	/*0*/	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_start_test_hdl, OID_RT_PRO_START_TEST)
-	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_stop_test_hdl, OID_RT_PRO_STOP_TEST)
-
-	GEN_MP_IOCTL_HANDLER(sizeof(struct rwreg_param), oid_rt_pro_read_register_hdl, OID_RT_PRO_READ_REGISTER)
-	GEN_MP_IOCTL_HANDLER(sizeof(struct rwreg_param), oid_rt_pro_write_register_hdl, OID_RT_PRO_WRITE_REGISTER)
-	GEN_MP_IOCTL_HANDLER(sizeof(struct bb_reg_param), oid_rt_pro_read_bb_reg_hdl, OID_RT_PRO_READ_BB_REG)
-	/*5*/	GEN_MP_IOCTL_HANDLER(sizeof(struct bb_reg_param), oid_rt_pro_write_bb_reg_hdl, OID_RT_PRO_WRITE_BB_REG)
-	GEN_MP_IOCTL_HANDLER(sizeof(struct rf_reg_param), oid_rt_pro_read_rf_reg_hdl, OID_RT_PRO_RF_READ_REGISTRY)
-	GEN_MP_IOCTL_HANDLER(sizeof(struct rf_reg_param), oid_rt_pro_write_rf_reg_hdl, OID_RT_PRO_RF_WRITE_REGISTRY)
-
-	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_channel_direct_call_hdl, OID_RT_PRO_SET_CHANNEL_DIRECT_CALL)
-	GEN_MP_IOCTL_HANDLER(sizeof(struct txpower_param), oid_rt_pro_set_tx_power_control_hdl, OID_RT_PRO_SET_TX_POWER_CONTROL)
-	/*10*/	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_data_rate_hdl, OID_RT_PRO_SET_DATA_RATE)
-	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_set_bandwidth_hdl, OID_RT_SET_BANDWIDTH)
-	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_antenna_bb_hdl, OID_RT_PRO_SET_ANTENNA_BB)
-
-	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_continuous_tx_hdl, OID_RT_PRO_SET_CONTINUOUS_TX)
-	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_single_carrier_tx_hdl, OID_RT_PRO_SET_SINGLE_CARRIER_TX)
-	/*15*/	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_carrier_suppression_tx_hdl, OID_RT_PRO_SET_CARRIER_SUPPRESSION_TX)
-	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_single_tone_tx_hdl, OID_RT_PRO_SET_SINGLE_TONE_TX)
-
-	EXT_MP_IOCTL_HANDLER(0, xmit_packet, 0)
-
-	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_set_rx_packet_type_hdl, OID_RT_SET_RX_PACKET_TYPE)
-	GEN_MP_IOCTL_HANDLER(0, oid_rt_reset_phy_rx_packet_count_hdl, OID_RT_RESET_PHY_RX_PACKET_COUNT)
-	/*20*/	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_get_phy_rx_packet_received_hdl, OID_RT_GET_PHY_RX_PACKET_RECEIVED)
-	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_get_phy_rx_packet_crc32_error_hdl, OID_RT_GET_PHY_RX_PACKET_CRC32_ERROR)
-
-	GEN_MP_IOCTL_HANDLER(sizeof(struct eeprom_rw_param), NULL, 0)
-	GEN_MP_IOCTL_HANDLER(sizeof(struct eeprom_rw_param), NULL, 0)
-	GEN_MP_IOCTL_HANDLER(sizeof(EFUSE_ACCESS_STRUCT), oid_rt_pro_efuse_hdl, OID_RT_PRO_EFUSE)
-	/*25*/	GEN_MP_IOCTL_HANDLER(0, oid_rt_pro_efuse_map_hdl, OID_RT_PRO_EFUSE_MAP)
-	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_get_efuse_max_size_hdl, OID_RT_GET_EFUSE_MAX_SIZE)
-	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_get_efuse_current_size_hdl, OID_RT_GET_EFUSE_CURRENT_SIZE)
-
-	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_get_thermal_meter_hdl, OID_RT_PRO_GET_THERMAL_METER)
-	GEN_MP_IOCTL_HANDLER(sizeof(u8), oid_rt_pro_set_power_tracking_hdl, OID_RT_PRO_SET_POWER_TRACKING)
-	/*30*/	GEN_MP_IOCTL_HANDLER(sizeof(u8), oid_rt_set_power_down_hdl, OID_RT_SET_POWER_DOWN)
-	/*31*/	GEN_MP_IOCTL_HANDLER(0, oid_rt_pro_trigger_gpio_hdl, 0)
-	GEN_MP_IOCTL_HANDLER(0, NULL, 0)
-	GEN_MP_IOCTL_HANDLER(0, NULL, 0)
-	GEN_MP_IOCTL_HANDLER(0, NULL, 0)
-};
+//struct mp_ioctl_handler mp_ioctl_hdl[] = {
+//
+//	/*0*/	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_start_test_hdl, OID_RT_PRO_START_TEST)
+//	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_stop_test_hdl, OID_RT_PRO_STOP_TEST)
+//
+//	GEN_MP_IOCTL_HANDLER(sizeof(struct rwreg_param), oid_rt_pro_read_register_hdl, OID_RT_PRO_READ_REGISTER)
+//	GEN_MP_IOCTL_HANDLER(sizeof(struct rwreg_param), oid_rt_pro_write_register_hdl, OID_RT_PRO_WRITE_REGISTER)
+//	GEN_MP_IOCTL_HANDLER(sizeof(struct bb_reg_param), oid_rt_pro_read_bb_reg_hdl, OID_RT_PRO_READ_BB_REG)
+//	/*5*/	GEN_MP_IOCTL_HANDLER(sizeof(struct bb_reg_param), oid_rt_pro_write_bb_reg_hdl, OID_RT_PRO_WRITE_BB_REG)
+//	GEN_MP_IOCTL_HANDLER(sizeof(struct rf_reg_param), oid_rt_pro_read_rf_reg_hdl, OID_RT_PRO_RF_READ_REGISTRY)
+//	GEN_MP_IOCTL_HANDLER(sizeof(struct rf_reg_param), oid_rt_pro_write_rf_reg_hdl, OID_RT_PRO_RF_WRITE_REGISTRY)
+//
+//	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_channel_direct_call_hdl, OID_RT_PRO_SET_CHANNEL_DIRECT_CALL)
+//	GEN_MP_IOCTL_HANDLER(sizeof(struct txpower_param), oid_rt_pro_set_tx_power_control_hdl, OID_RT_PRO_SET_TX_POWER_CONTROL)
+//	/*10*/	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_data_rate_hdl, OID_RT_PRO_SET_DATA_RATE)
+//	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_set_bandwidth_hdl, OID_RT_SET_BANDWIDTH)
+//	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_antenna_bb_hdl, OID_RT_PRO_SET_ANTENNA_BB)
+//
+//	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_continuous_tx_hdl, OID_RT_PRO_SET_CONTINUOUS_TX)
+//	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_single_carrier_tx_hdl, OID_RT_PRO_SET_SINGLE_CARRIER_TX)
+//	/*15*/	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_carrier_suppression_tx_hdl, OID_RT_PRO_SET_CARRIER_SUPPRESSION_TX)
+//	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_pro_set_single_tone_tx_hdl, OID_RT_PRO_SET_SINGLE_TONE_TX)
+//
+//	EXT_MP_IOCTL_HANDLER(0, xmit_packet, 0)
+//
+//	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_set_rx_packet_type_hdl, OID_RT_SET_RX_PACKET_TYPE)
+//	GEN_MP_IOCTL_HANDLER(0, oid_rt_reset_phy_rx_packet_count_hdl, OID_RT_RESET_PHY_RX_PACKET_COUNT)
+//	/*20*/	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_get_phy_rx_packet_received_hdl, OID_RT_GET_PHY_RX_PACKET_RECEIVED)
+//	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_get_phy_rx_packet_crc32_error_hdl, OID_RT_GET_PHY_RX_PACKET_CRC32_ERROR)
+//
+//	GEN_MP_IOCTL_HANDLER(sizeof(struct eeprom_rw_param), NULL, 0)
+//	GEN_MP_IOCTL_HANDLER(sizeof(struct eeprom_rw_param), NULL, 0)
+//	GEN_MP_IOCTL_HANDLER(sizeof(EFUSE_ACCESS_STRUCT), oid_rt_pro_efuse_hdl, OID_RT_PRO_EFUSE)
+//	/*25*/	GEN_MP_IOCTL_HANDLER(0, oid_rt_pro_efuse_map_hdl, OID_RT_PRO_EFUSE_MAP)
+//	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_get_efuse_max_size_hdl, OID_RT_GET_EFUSE_MAX_SIZE)
+//	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_get_efuse_current_size_hdl, OID_RT_GET_EFUSE_CURRENT_SIZE)
+//
+//	GEN_MP_IOCTL_HANDLER(sizeof(u32), oid_rt_get_thermal_meter_hdl, OID_RT_PRO_GET_THERMAL_METER)
+//	GEN_MP_IOCTL_HANDLER(sizeof(u8), oid_rt_pro_set_power_tracking_hdl, OID_RT_PRO_SET_POWER_TRACKING)
+//	/*30*/	GEN_MP_IOCTL_HANDLER(sizeof(u8), oid_rt_set_power_down_hdl, OID_RT_SET_POWER_DOWN)
+//	/*31*/	GEN_MP_IOCTL_HANDLER(0, oid_rt_pro_trigger_gpio_hdl, 0)
+//	GEN_MP_IOCTL_HANDLER(0, NULL, 0)
+//	GEN_MP_IOCTL_HANDLER(0, NULL, 0)
+//	GEN_MP_IOCTL_HANDLER(0, NULL, 0)
+//};
 
 #else /* _RTW_MP_IOCTL_C_ */
 

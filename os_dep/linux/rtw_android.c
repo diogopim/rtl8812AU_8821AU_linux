@@ -18,10 +18,6 @@
  *
  ******************************************************************************/
 
-#ifdef CONFIG_GPIO_WAKEUP
-#include <linux/gpio.h>
-#endif
-
 #include <drv_types.h>
 
 #if defined(RTW_ENABLE_WIFI_CONTROL_FUNC)
@@ -32,11 +28,6 @@
 #include <linux/wifi_tiwlan.h>
 #endif
 #endif /* defined(RTW_ENABLE_WIFI_CONTROL_FUNC) */
-
-#ifdef CONFIG_GPIO_WAKEUP
-#include <linux/interrupt.h>
-#include <linux/irq.h>
-#endif
 
 extern void macstr2num(u8 *dst, u8 *src);
 
@@ -1017,24 +1008,6 @@ static int wifi_probe(struct platform_device *pdev)
 	else
 		wifi_wake_gpio = wifi_irqres->start;
 
-#ifdef CONFIG_GPIO_WAKEUP
-	printk("%s: gpio:%d wifi_wake_gpio:%d\n", __func__,
-	       wifi_irqres->start, wifi_wake_gpio);
-
-	if (wifi_wake_gpio > 0) {
-#ifdef CONFIG_PLATFORM_INTEL_BYT
-		wifi_configure_gpio();
-#else //CONFIG_PLATFORM_INTEL_BYT
-		gpio_request(wifi_wake_gpio, "oob_irq");
-		gpio_direction_input(wifi_wake_gpio);
-		oob_irq = gpio_to_irq(wifi_wake_gpio);
-#endif //CONFIG_PLATFORM_INTEL_BYT
-		printk("%s oob_irq:%d\n", __func__, oob_irq);
-	} else if(wifi_irqres) {
-		oob_irq = wifi_irqres->start;
-		printk("%s oob_irq:%d\n", __func__, oob_irq);
-	}
-#endif
 	wifi_control_data = wifi_ctrl;
 
 	wifi_set_power(1, 0);	/* Power On */
@@ -1210,35 +1183,3 @@ static void wifi_del_dev(void)
 	platform_driver_unregister(&wifi_device_legacy);
 }
 #endif /* defined(RTW_ENABLE_WIFI_CONTROL_FUNC) */
-
-#ifdef CONFIG_GPIO_WAKEUP
-#ifdef CONFIG_PLATFORM_INTEL_BYT
-int wifi_configure_gpio(void)
-{
-	if (gpio_request(oob_gpio, "oob_irq")) {
-		DBG_871X("## %s Cannot request GPIO\n", __FUNCTION__);
-		return -1;
-	}
-	gpio_export(oob_gpio, 0);
-	if (gpio_direction_input(oob_gpio)) {
-		DBG_871X("## %s Cannot set GPIO direction input\n", __FUNCTION__);
-		return -1;
-	}
-	if ((oob_irq = gpio_to_irq(oob_gpio)) < 0) {
-		DBG_871X("## %s Cannot convert GPIO to IRQ\n", __FUNCTION__);
-		return -1;
-	}
-
-	DBG_871X("## %s OOB_IRQ=%d\n", __FUNCTION__, oob_irq);
-
-	return 0;
-}
-#endif //CONFIG_PLATFORM_INTEL_BYT
-void wifi_free_gpio(unsigned int gpio)
-{
-#ifdef CONFIG_PLATFORM_INTEL_BYT
-	if(gpio)
-		gpio_free(gpio);
-#endif //CONFIG_PLATFORM_INTEL_BYT
-}
-#endif //CONFIG_GPIO_WAKEUP

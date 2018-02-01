@@ -8694,13 +8694,7 @@ static int issue_action_ba(_adapter *padapter, unsigned char *raddr, unsigned ch
 				pmlmeinfo->dialogToken++;
 			} while (pmlmeinfo->dialogToken == 0);
 			pframe = rtw_set_fixed_ie(pframe, 1, &(pmlmeinfo->dialogToken), &(pattrib->pktlen));
-
-#if defined(CONFIG_RTL8188E) && defined(CONFIG_SDIO_HCI)
-			BA_para_set = (0x0802 | ((tid & 0xf) << 2)); /* immediate ack & 16 buffer size */
-#else
 			BA_para_set = (0x1002 | ((tid & 0xf) << 2)); /* immediate ack & 64 buffer size */
-#endif
-
 			BA_para_set = cpu_to_le16(BA_para_set);
 			pframe = rtw_set_fixed_ie(pframe, 2, (unsigned char *)(&(BA_para_set)), &(pattrib->pktlen));
 
@@ -9268,27 +9262,8 @@ unsigned int send_beacon(_adapter *padapter)
 	u8	bxmitok = _FALSE;
 	int	issue=0;
 	int poll = 0;
-//#ifdef CONFIG_CONCURRENT_MODE
-	//struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
-	//struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
-	//_adapter *pbuddy_adapter = padapter->pbuddy_adapter;
-	//struct mlme_priv *pbuddy_mlmepriv = &(pbuddy_adapter->mlmepriv);
-//#endif
 
-#ifdef CONFIG_PCI_HCI
-	//DBG_871X("%s\n", __FUNCTION__);
-
-	rtw_hal_set_hwreg(padapter, HW_VAR_BCN_VALID, NULL);
-
-	/* 8192EE Port select for Beacon DL */
-	rtw_hal_set_hwreg(padapter, HW_VAR_DL_BCN_SEL, NULL);
-
-	issue_beacon(padapter, 0);
-
-	return _SUCCESS;
-#endif
-
-#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_USB_HCI) || defined(CONFIG_GSPI_HCI)
 	u32 start = rtw_get_current_time();
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_BCN_VALID, NULL);
@@ -12760,9 +12735,7 @@ u8 chk_bmc_sleepq_hdl(_adapter *padapter, unsigned char *pbuf)
 		return H2C_SUCCESS;
 
 	if((pstapriv->tim_bitmap&BIT(0)) && (psta_bmc->sleepq_len>0)) {
-#ifndef CONFIG_PCI_HCI
 		rtw_msleep_os(10);// 10ms, ATIM(HIQ) Windows
-#endif
 		//_enter_critical_bh(&psta_bmc->sleep_q.lock, &irqL);
 		_enter_critical_bh(&pxmitpriv->lock, &irqL);
 

@@ -217,12 +217,6 @@
 #define CONFIG_ARP_KEEP_ALIVE
 #endif // CONFIG_WOWLAN
 
-#ifdef CONFIG_GPIO_WAKEUP
-#ifndef WAKEUP_GPIO_IDX
-#define WAKEUP_GPIO_IDX	1	// WIFI Chip Side
-#endif // !WAKEUP_GPIO_IDX
-#endif // CONFIG_GPIO_WAKEUP
-
 /*
  * Interface  Related Config
  */

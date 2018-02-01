@@ -402,9 +402,6 @@ void rtl8812_set_FwPwrMode_cmd(PADAPTER padapter, u8 PSMode)
 			pwrModeByte5 = 0x40;
 		}
 
-#ifdef CONFIG_EXT_CLK
-		Mode |= BIT(7);//supporting 26M XTAL CLK_Request feature.
-#endif //CONFIG_EXT_CLK
 	} else {
 		PowerState = 0x0C;// AllON(0x0C), RFON(0x04), RFOFF(0x00)
 		pwrModeByte5 = 0x40;
@@ -1012,11 +1009,7 @@ static inline void SetFwRsvdPagePkt_8812(PADAPTER padapter, BOOLEAN bDLFinished)
 		update_mgntframe_attrib(padapter, pattrib);
 		pattrib->qsel = QSLT_BEACON;
 		pattrib->pktlen = pattrib->last_txcmdsz = TotalPacketLen - TxDescLen;
-#ifdef CONFIG_PCI_HCI
-		dump_mgntframe(padapter, pcmdframe);
-#else
 		dump_mgntframe_and_wait(padapter, pcmdframe, 100);
-#endif
 	}
 
 	if(!bDLFinished) {
@@ -1537,11 +1530,7 @@ static void rtl8812_set_AP_FwRsvdPagePkt(PADAPTER padapter,
 		pattrib->qsel = QSLT_BEACON;
 		pattrib->pktlen = TotalPacketLen - TxDescOffset;
 		pattrib->last_txcmdsz = TotalPacketLen - TxDescOffset;
-#ifdef CONFIG_PCI_HCI
-		dump_mgntframe(padapter, pcmdframe);
-#else
 		dump_mgntframe_and_wait(padapter, pcmdframe, 100);
-#endif
 	}
 
 	DBG_871X("%s: Set RSVD page location to Fw ,TotalPacketLen(%d), TotalPageNum(%d)\n", __FUNCTION__,TotalPacketLen,TotalPageNum);
@@ -2196,11 +2185,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		update_mgntframe_attrib(padapter, pattrib);
 		pattrib->qsel = QSLT_BEACON;
 		pattrib->pktlen = pattrib->last_txcmdsz = TotalPacketLen - TxDescOffset;
-#ifdef CONFIG_PCI_HCI
-		dump_mgntframe(padapter, pcmdframe);
-#else
 		dump_mgntframe_and_wait(padapter, pcmdframe, 100);
-#endif
 	}
 
 	DBG_871X("%s: Set RSVD page location to Fw ,TotalPacketLen(%d), TotalPageNum(%d)\n", __FUNCTION__,TotalPacketLen,TotalPageNum);
@@ -2336,11 +2321,6 @@ static void rtl8812_set_FwWoWlanCtrl_Cmd(PADAPTER padapter, u8 bFuncEn)
 	u8 sdio_wakeup_enable = 0;
 	u8 gpio_high_active = 0; //0: low active, 1: high active
 	u8 magic_pkt = 1;
-
-#ifdef CONFIG_GPIO_WAKEUP
-	gpionum = WAKEUP_GPIO_IDX;
-	sdio_wakeup_enable = 0;
-#endif
 
 #ifdef CONFIG_PNO_SUPPORT
 	if (!ppwrpriv->wowlan_pno_enable) {
@@ -2930,11 +2910,7 @@ static void SetFwRsvdPagePkt_BTCoex(PADAPTER padapter)
 		update_mgntframe_attrib(padapter, pattrib);
 		pattrib->qsel = QSLT_BEACON;
 		pattrib->pktlen = pattrib->last_txcmdsz = TotalPacketLen - TxDescOffset;
-#ifdef CONFIG_PCI_HCI
-		dump_mgntframe(padapter, pcmdframe);
-#else
 		dump_mgntframe_and_wait(padapter, pcmdframe, 100);
-#endif
 	}
 
 	DBG_871X("%s: Set RSVD page location to Fw ,TotalPacketLen(%d), TotalPageNum(%d)\n", __FUNCTION__,TotalPacketLen,TotalPageNum);

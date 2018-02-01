@@ -2875,10 +2875,6 @@ void SetHwReg8812AU(PADAPTER Adapter, u8 variable, const u8* val)
 			} while (trycnt--);
 
 			SetFwRelatedForWoWLAN8192E(Adapter, _FALSE);
-#ifdef CONFIG_GPIO_WAKEUP
-			DBG_871X_LEVEL(_drv_always_, "Set Wake GPIO to high for default.\n");
-			HalSetOutPutGPIO(Adapter, WAKEUP_GPIO_IDX, 1);
-#endif
 
 #ifdef CONFIG_CONCURRENT_MODE
 			if (rtw_buddy_adapter_up(Adapter) == _TRUE &&

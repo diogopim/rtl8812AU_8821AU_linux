@@ -1348,73 +1348,6 @@ void rtw_hal_set_FwRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc)
 	}
 }
 
-#ifdef CONFIG_GPIO_WAKEUP
-/*
- * Switch GPIO_13, GPIO_14 to wlan control, or pull GPIO_13,14 MUST fail.
- * It happended at 8723B/8192E/8821A. New IC will check multi function GPIO,
- * and implement HAL function.
- */
-static void rtw_hal_switch_gpio_wl_ctrl(_adapter* padapter, u8 index, u8 enable)
-{
-	if (index !=13 && index != 14) return;
-
-	rtw_hal_set_hwreg(padapter, HW_SET_GPIO_WL_CTRL, (u8 *)(&enable));
-}
-
-static void rtw_hal_set_output_gpio(_adapter* padapter, u8 index, u8 outputval)
-{
-	if ( index <= 7 ) {
-		/* config GPIO mode */
-		rtw_write8(padapter, REG_GPIO_PIN_CTRL + 3,
-		           rtw_read8(padapter, REG_GPIO_PIN_CTRL + 3) & ~BIT(index) );
-
-		/* config GPIO Sel */
-		/* 0: input */
-		/* 1: output */
-		rtw_write8(padapter, REG_GPIO_PIN_CTRL + 2,
-		           rtw_read8(padapter, REG_GPIO_PIN_CTRL + 2) | BIT(index));
-
-		/* set output value */
-		if ( outputval ) {
-			rtw_write8(padapter, REG_GPIO_PIN_CTRL + 1,
-			           rtw_read8(padapter, REG_GPIO_PIN_CTRL + 1) | BIT(index));
-		} else {
-			rtw_write8(padapter, REG_GPIO_PIN_CTRL + 1,
-			           rtw_read8(padapter, REG_GPIO_PIN_CTRL + 1) & ~BIT(index));
-		}
-	} else if (index <= 15) {
-		/* 88C Series: */
-		/* index: 11~8 transform to 3~0 */
-		/* 8723 Series: */
-		/* index: 12~8 transform to 4~0 */
-
-		index -= 8;
-
-		/* config GPIO mode */
-		rtw_write8(padapter, REG_GPIO_PIN_CTRL_2 + 3,
-		           rtw_read8(padapter, REG_GPIO_PIN_CTRL_2 + 3) & ~BIT(index) );
-
-		/* config GPIO Sel */
-		/* 0: input */
-		/* 1: output */
-		rtw_write8(padapter, REG_GPIO_PIN_CTRL_2 + 2,
-		           rtw_read8(padapter, REG_GPIO_PIN_CTRL_2 + 2) | BIT(index));
-
-		/* set output value */
-		if ( outputval ) {
-			rtw_write8(padapter, REG_GPIO_PIN_CTRL_2 + 1,
-			           rtw_read8(padapter, REG_GPIO_PIN_CTRL_2 + 1) | BIT(index));
-		} else {
-			rtw_write8(padapter, REG_GPIO_PIN_CTRL_2 + 1,
-			           rtw_read8(padapter, REG_GPIO_PIN_CTRL_2 + 1) & ~BIT(index));
-		}
-	} else {
-		DBG_871X("%s: invalid GPIO%d=%d\n",
-		         __FUNCTION__, index, outputval);
-	}
-}
-#endif
-
 void rtw_hal_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc)
 {
 	//struct	pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
@@ -1596,7 +1529,7 @@ static u8 rtw_hal_pause_rx_dma(_adapter* adapter)
 			ret = _SUCCESS;
 			break;
 		}
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_GSPI_HCI)
 		else {
 			// If RX_DMA is not idle, receive one pkt from DMA
 			res = sdio_local_read(adapter,
@@ -1611,7 +1544,7 @@ static u8 rtw_hal_pause_rx_dma(_adapter* adapter)
 
 			DBG_871X_LEVEL(_drv_always_, "RecvOnePkt Result: %d\n", res);
 		}
-#endif //CONFIG_SDIO_HCI || CONFIG_GSPI_HCI
+#endif CONFIG_GSPI_HCI
 	} while(trycnt--);
 
 	if(trycnt ==0) {
@@ -1622,7 +1555,7 @@ static u8 rtw_hal_pause_rx_dma(_adapter* adapter)
 	return ret;
 }
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_GSPI_HCI)
 static u8 rtw_hal_enable_cpwm2(_adapter* adapter)
 {
 	u8 ret = 0;
@@ -1652,7 +1585,7 @@ static u8 rtw_hal_enable_cpwm2(_adapter* adapter)
 
 	return ret;
 }
-#endif //CONFIG_SDIO_HCI, CONFIG_GSPI_HCI
+#endif // CONFIG_GSPI_HCI
 
 #ifdef CONFIG_GTK_OL
 static void rtw_hal_fw_sync_cam_id(_adapter* adapter)
@@ -1908,11 +1841,6 @@ static u8 rtw_hal_set_wowlan_ctrl_cmd(_adapter *adapter, u8 enable)
 	u8 gpio_high_active = 0; //0: low active, 1: high active
 	u8 magic_pkt = 0;
 	u8 ret = _FAIL;
-
-#ifdef CONFIG_GPIO_WAKEUP
-	gpionum = WAKEUP_GPIO_IDX;
-	sdio_wakeup_enable = 0;
-#endif //CONFIG_GPIO_WAKEUP
 
 	if (!ppwrpriv->wowlan_pno_enable)
 		magic_pkt = enable;
@@ -4909,11 +4837,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 		update_mgntframe_attrib(adapter, pattrib);
 		pattrib->qsel = 0x10;
 		pattrib->pktlen = pattrib->last_txcmdsz = TotalPacketLen - TxDescOffset;
-#ifdef CONFIG_PCI_HCI
-		dump_mgntframe(adapter, pcmdframe);
-#else
 		dump_mgntframe_and_wait(adapter, pcmdframe, 100);
-#endif
 	}
 
 	DBG_871X("%s: Set RSVD page location to Fw ,TotalPacketLen(%d), TotalPageNum(%d)\n",
@@ -5113,15 +5037,11 @@ void SetHwReg(_adapter *adapter, u8 variable, const u8 *val)
 			if (res == _FAIL)
 				DBG_871X_LEVEL(_drv_always_, "[WARNING] pause RX DMA fail\n");
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_GSPI_HCI)
 			//Enable CPWM2 only.
 			res = rtw_hal_enable_cpwm2(adapter);
 			if (res == _FAIL)
 				DBG_871X_LEVEL(_drv_always_, "[WARNING] enable cpwm2 fail\n");
-#endif
-#ifdef CONFIG_GPIO_WAKEUP
-			rtw_hal_switch_gpio_wl_ctrl(adapter,
-			                            WAKEUP_GPIO_IDX, _TRUE);
 #endif
 			//Set WOWLAN H2C command.
 			DBG_871X_LEVEL(_drv_always_, "Set WOWLan cmd\n");
@@ -5208,12 +5128,6 @@ void SetHwReg(_adapter *adapter, u8 variable, const u8 *val)
 				pHalFunc->hal_set_wowlan_fw(adapter, _FALSE);
 			else
 				DBG_871X("hal_set_wowlan_fw is null\n");
-#ifdef CONFIG_GPIO_WAKEUP
-			DBG_871X_LEVEL(_drv_always_, "Set Wake GPIO to high for default.\n");
-			rtw_hal_set_output_gpio(adapter, WAKEUP_GPIO_IDX, 1);
-			rtw_hal_switch_gpio_wl_ctrl(adapter,
-			                            WAKEUP_GPIO_IDX, _FALSE);
-#endif
 			if((pwrctl->wowlan_wake_reason != FWDecisionDisconnect) &&
 			   (pwrctl->wowlan_wake_reason != Rx_Pairwisekey) &&
 			   (pwrctl->wowlan_wake_reason != Rx_DisAssoc) &&

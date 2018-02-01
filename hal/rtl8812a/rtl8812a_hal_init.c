@@ -174,12 +174,6 @@ void SetBcnCtrlReg(
 	pHalData->RegBcnCtrlVal |= SetBits;
 	pHalData->RegBcnCtrlVal &= ~ClearBits;
 
-#if 0
-//#ifdef CONFIG_SDIO_HCI
-	if (pHalData->sdio_himr & (SDIO_HIMR_TXBCNOK_MSK | SDIO_HIMR_TXBCNERR_MSK))
-		pHalData->RegBcnCtrlVal |= EN_TXBCN_RPT;
-#endif
-
 	rtw_write8(padapter, REG_BCN_CTRL, (u8)pHalData->RegBcnCtrlVal);
 }
 
@@ -223,11 +217,6 @@ _BlockWrite_8812(
 	u32			remainSize_p1 = 0, remainSize_p2 = 0;
 	u8			*bufferPtr	= (u8*)buffer;
 	u32			i=0, offset=0;
-#ifdef CONFIG_PCI_HCI
-	u8			remainFW[4] = {0, 0, 0, 0};
-	u8			*p = NULL;
-#endif
-
 #ifdef CONFIG_USB_HCI
 	blockSize_p1 = MAX_REG_BOLCK_SIZE;
 #endif
@@ -252,25 +241,6 @@ _BlockWrite_8812(
 		if(ret == _FAIL)
 			goto exit;
 	}
-
-#ifdef CONFIG_PCI_HCI
-	p = (u8*)((u32*)(bufferPtr + blockCount_p1 * blockSize_p1));
-	if (remainSize_p1) {
-		switch (remainSize_p1) {
-		case 0:
-			break;
-		case 3:
-			remainFW[2]=*(p+2);
-		case 2:
-			remainFW[1]=*(p+1);
-		case 1:
-			remainFW[0]=*(p);
-			ret = rtw_write32(padapter, (FW_START_ADDRESS + blockCount_p1 * blockSize_p1),
-			                  le32_to_cpu(*(u32*)remainFW));
-		}
-		return ret;
-	}
-#endif
 
 	//3 Phase #2
 	if (remainSize_p1) {
@@ -365,12 +335,6 @@ _WriteFW_8812(
 	u32	pageNums,remainSize ;
 	u32	page, offset;
 	u8	*bufferPtr = (u8*)buffer;
-
-#ifdef CONFIG_PCI_HCI
-	// 20100120 Joseph: Add for 88CE normal chip.
-	// Fill in zero to make firmware image to dword alignment.
-//		_FillDummy(bufferPtr, &size);
-#endif
 
 	pageNums = size / MAX_DLFW_PAGE_SIZE ;
 	//RT_ASSERT((pageNums <= 4), ("Page numbers should not greater then 4 \n"));
@@ -738,11 +702,6 @@ int _CheckWLANFwPatchBTFwReady_8821A( PADAPTER	Adapter )
 	// Reset beacon setting to the initial value.
 	//---------------------------------------------------------
 #if (DEV_BUS_TYPE == RT_SDIO_INTERFACE)
-#if 0
-	if(!Adapter->MgntInfo.bWiFiConfg) {
-		txpktbuf_bndy = TX_PAGE_BOUNDARY_8821;
-	} else
-#endif
 	{
 		// for WMM
 		txpktbuf_bndy = WMM_NORMAL_TX_PAGE_BOUNDARY_8821;
@@ -829,15 +788,6 @@ int _WriteBTFWtoTxPktBuf8812(
 	// 1. Pause BCN
 	//---------------------------------------------------------
 	//Set REG_CR bit 8. DMA beacon by SW.
-#if 0//(DEV_BUS_TYPE == RT_PCI_INTERFACE)
-	u1bTmp = PlatformEFIORead1Byte(Adapter, REG_CR+1);
-	PlatformEFIOWrite1Byte(Adapter,  REG_CR+1, (u1bTmp|BIT0));
-#else
-	// Remove for temparaily because of the code on v2002 is not sync to MERGE_TMEP for USB/SDIO.
-	// De not remove this part on MERGE_TEMP. by tynli.
-	//pHalData->RegCR_1 |= (BIT0);
-	//PlatformEFIOWrite1Byte(Adapter,  REG_CR+1, pHalData->RegCR_1);
-#endif
 
 	// Disable Hw protection for a time which revserd for Hw sending beacon.
 	// Fix download reserved page packet fail that access collision with the protection time.
@@ -847,34 +797,15 @@ int _WriteBTFWtoTxPktBuf8812(
 	val8 |= BIT(4);
 	rtw_write8(Adapter, REG_BCN_CTRL, val8);
 
-#if 0//(DEV_BUS_TYPE == RT_PCI_INTERFACE)
-	tmpReg422 = PlatformEFIORead1Byte(Adapter, REG_FWHW_TXQ_CTRL+2);
-	if( tmpReg422&BIT6)
-		bRecover = TRUE;
-	PlatformEFIOWrite1Byte(Adapter, REG_FWHW_TXQ_CTRL+2,  tmpReg422&(~BIT6));
-#else
 	// Set FWHW_TXQ_CTRL 0x422[6]=0 to tell Hw the packet is not a real beacon frame.
 	if(pHalData->RegFwHwTxQCtrl & BIT(6))
 		bRecover=_TRUE;
 	PlatformEFIOWrite1Byte(Adapter, REG_FWHW_TXQ_CTRL+2, (pHalData->RegFwHwTxQCtrl&(~BIT(6))));
 	pHalData->RegFwHwTxQCtrl &= (~ BIT(6));
-#endif
 
 	//---------------------------------------------------------
 	// 2. Adjust LLT table to an even boundary.
 	//---------------------------------------------------------
-#if 0//(DEV_BUS_TYPE == RT_SDIO_INTERFACE)
-	txpktbuf_bndy = 10; // rsvd page start address should be an even value.
-	rtStatus =	InitLLTTable8723BS(Adapter, txpktbuf_bndy);
-	if(RT_STATUS_SUCCESS != rtStatus) {
-		DBG_8192C("_CheckWLANFwPatchBTFwReady_8723B(): Failed to init LLT!\n");
-		return RT_STATUS_FAILURE;
-	}
-
-	// Init Tx boundary.
-	PlatformEFIOWrite1Byte(Adapter, REG_DWBCN0_CTRL_8723B+1, (u1Byte)txpktbuf_bndy);
-#endif
-
 
 	//---------------------------------------------------------
 	// 3. Write Fw to Tx packet buffer by reseverd page.
@@ -894,17 +825,6 @@ int _WriteBTFWtoTxPktBuf8812(
 		RT_TRACE(_module_mp_, _drv_info_,("0x209:%x\n",
 		                                  PlatformEFIORead1Byte(Adapter, REG_TDECTRL+1)));
 
-#if 0
-		// Acquice TX spin lock before GetFwBuf and send the packet to prevent system deadlock.
-		// Advertised by Roger. Added by tynli. 2010.02.22.
-		PlatformAcquireSpinLock(Adapter, RT_TX_SPINLOCK);
-		if(MgntGetFWBuffer(Adapter, &pTcb, &pBuf)) {
-			PlatformMoveMemory(pBuf->Buffer.VirtualAddress, ReservedPagePacket, TotalPktLen);
-			CmdSendPacket(Adapter, pTcb, pBuf, TotalPktLen, DESC_PACKET_TYPE_NORMAL, FALSE);
-		} else
-			dbgdump("SetFwRsvdPagePkt(): MgntGetFWBuffer FAIL!!!!!!!!.\n");
-		PlatformReleaseSpinLock(Adapter, RT_TX_SPINLOCK);
-#else
 		/*---------------------------------------------------------
 		tx reserved_page_packet
 		----------------------------------------------------------*/
@@ -925,13 +845,8 @@ int _WriteBTFWtoTxPktBuf8812(
 		_rtw_memcpy( (u8*) (pmgntframe->buf_addr + txdesc_offset), ReservedPagePacket, FwBufLen);
 		DBG_871X("[%d]===>TotalPktLen + TXDESC_OFFSET TotalPacketLen:%d \n", DLBcnCount, (FwBufLen + txdesc_offset));
 
-#ifdef CONFIG_PCI_HCI
-		dump_mgntframe(Adapter, pmgntframe);
-#else
 		dump_mgntframe_and_wait(Adapter, pmgntframe, 100);
-#endif
 
-#endif
 #if 1
 		// check rsvd page download OK.
 		BcnValidReg = PlatformEFIORead1Byte(Adapter, REG_TDECTRL+2);
@@ -1684,18 +1599,6 @@ Hal_ReadTxPowerInfo8812A(
 			pHalData->BW40_5G_Diff[rfPath][TxCount]=pwrInfo5G.BW40_Diff[rfPath][TxCount];
 			pHalData->BW80_5G_Diff[rfPath][TxCount]=pwrInfo5G.BW80_Diff[rfPath][TxCount];
 //#if DBG
-#if 0
-			DBG_871X("--------------------------------------- 2.4G ---------------------------------------\n");
-			DBG_871X("CCK_24G_Diff[%d][%d]= %d\n",rfPath,TxCount,pHalData->CCK_24G_Diff[rfPath][TxCount]);
-			DBG_871X("OFDM_24G_Diff[%d][%d]= %d\n",rfPath,TxCount,pHalData->OFDM_24G_Diff[rfPath][TxCount]);
-			DBG_871X("BW20_24G_Diff[%d][%d]= %d\n",rfPath,TxCount,pHalData->BW20_24G_Diff[rfPath][TxCount]);
-			DBG_871X("BW40_24G_Diff[%d][%d]= %d\n",rfPath,TxCount,pHalData->BW40_24G_Diff[rfPath][TxCount]);
-			DBG_871X("---------------------------------------- 5G ----------------------------------------\n");
-			DBG_871X("OFDM_5G_Diff[%d][%d]= %d\n",rfPath,TxCount,pHalData->OFDM_5G_Diff[rfPath][TxCount]);
-			DBG_871X("BW20_5G_Diff[%d][%d]= %d\n",rfPath,TxCount,pHalData->BW20_5G_Diff[rfPath][TxCount]);
-			DBG_871X("BW40_5G_Diff[%d][%d]= %d\n",rfPath,TxCount,pHalData->BW40_5G_Diff[rfPath][TxCount]);
-			DBG_871X("BW80_5G_Diff[%d][%d]= %d\n",rfPath,TxCount,pHalData->BW80_5G_Diff[rfPath][TxCount]);
-#endif
 		}
 	}
 
@@ -3576,19 +3479,12 @@ void InitPGData8812A(PADAPTER padapter)
 		tmp = _halReadMACAddrFromFile(padapter, pEEPROM->mac_addr);
 		pEEPROM->bloadmac_fail_flag = ((tmp==_FAIL) ? _TRUE : _FALSE);
 
-#ifdef CONFIG_SDIO_HCI
-		addr = EEPROM_MAC_ADDR_8821AS;
-#elif defined(CONFIG_USB_HCI)
+#if defined(CONFIG_USB_HCI)
 		if (IS_HARDWARE_TYPE_8812AU(padapter))
 			addr = EEPROM_MAC_ADDR_8812AU;
 		else
 			addr = EEPROM_MAC_ADDR_8821AU;
-#elif defined(CONFIG_PCI_HCI)
-		if (IS_HARDWARE_TYPE_8812E(padapter))
-			addr = EEPROM_MAC_ADDR_8812AE;
-		else
-			addr = EEPROM_MAC_ADDR_8821AE;
-#endif // CONFIG_PCI_HCI
+#endif
 		_rtw_memcpy(&pEEPROM->efuse_eeprom_data[addr], pEEPROM->mac_addr, ETH_ALEN);
 	}
 #else // !CONFIG_EFUSE_CONFIG_FILE
@@ -3976,11 +3872,6 @@ SetBeamformingCLK_8812(
 
 	// Stop Usb TxDMA
 	rtw_write_port_cancel(Adapter);
-
-#ifdef CONFIG_PCI_HCI
-	// Stop PCIe TxDMA
-	rtw_write8(Adapter, REG_PCIE_CTRL_REG+1, 0xFE);
-#endif
 
 	// Wait TXFF empty
 	for(Count = 0; Count < 100; Count++) {
@@ -4454,14 +4345,6 @@ static void hw_var_set_monitor(PADAPTER Adapter, u8 variable, const u8 *val)
 		/* Append FCS */
 		rcr_bits |= RCR_APPFCS;
 
-#if 0
-		/*
-		   CRC and ICV packet will drop in recvbuf2recvframe()
-		   We no turn on it.
-		 */
-		rcr_bits |= (RCR_ACRC32 | RCR_AICV);
-#endif
-
 		/* Receive all data frames */
 		value_rxfltmap2 = 0xFFFF;
 
@@ -4470,10 +4353,6 @@ static void hw_var_set_monitor(PADAPTER Adapter, u8 variable, const u8 *val)
 
 		rtw_write16(Adapter, REG_RXFLTMAP2, value_rxfltmap2);
 
-#if 0
-		/* tx pause */
-		rtw_write8(padapter, REG_TXPAUSE, 0xFF);
-#endif
 	} else {
 		/* do nothing */
 	}
@@ -4514,9 +4393,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 		if((mode == _HW_STATE_STATION_) || (mode == _HW_STATE_NOLINK_)) {
 			if(!check_buddy_mlmeinfo_state(Adapter, WIFI_FW_AP_STATE)) {
 				StopTxBeacon(Adapter);
-#ifdef CONFIG_PCI_HCI
-				UpdateInterruptMask8812AE( Adapter, 0, 0, RT_BCN_INT_MASKS, 0);
-#else
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN
 
 #ifdef  CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
@@ -4529,7 +4405,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 #endif// CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
 
 #endif //CONFIG_INTERRUPT_BASED_TXBCN
-#endif
 			}
 
 			rtw_write8(Adapter,REG_BCN_CTRL_1, 0x11);//disable atim wnd and disable beacon function
@@ -4538,9 +4413,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 			ResumeTxBeacon(Adapter);
 			rtw_write8(Adapter,REG_BCN_CTRL_1, 0x1a);
 		} else if(mode == _HW_STATE_AP_) {
-#ifdef CONFIG_PCI_HCI
-			UpdateInterruptMask8812AE( Adapter, RT_BCN_INT_MASKS, 0, 0, 0);
-#else
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN
 #ifdef  CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
 			UpdateInterruptMask8812AU(Adapter,_TRUE ,IMR_BCNDMAINT0_8812, 0);
@@ -4551,8 +4423,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 #endif//CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
 
 #endif //CONFIG_INTERRUPT_BASED_TXBCN
-#endif
-
 			ResumeTxBeacon(Adapter);
 
 			rtw_write8(Adapter, REG_BCN_CTRL_1, 0x12);
@@ -4629,9 +4499,7 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 #endif // CONFIG_CONCURRENT_MODE
 			{
 				StopTxBeacon(Adapter);
-#ifdef CONFIG_PCI_HCI
-				UpdateInterruptMask8812AE( Adapter, 0, 0, RT_BCN_INT_MASKS, 0);
-#else
+
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN
 #ifdef  CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
 				rtw_write8(Adapter, REG_DRVERLYINT, 0x05);//restore early int time to 5ms
@@ -4643,7 +4511,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 #endif //CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
 
 #endif //CONFIG_INTERRUPT_BASED_TXBCN
-#endif
 			}
 
 			rtw_write8(Adapter,REG_BCN_CTRL, 0x19);//disable atim wnd
@@ -4652,9 +4519,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 			ResumeTxBeacon(Adapter);
 			rtw_write8(Adapter,REG_BCN_CTRL, 0x1a);
 		} else if(mode == _HW_STATE_AP_) {
-#ifdef CONFIG_PCI_HCI
-			UpdateInterruptMask8812AE( Adapter, RT_BCN_INT_MASKS, 0, 0, 0);
-#else
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN
 #ifdef  CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
 			UpdateInterruptMask8812AU(Adapter,_TRUE ,IMR_BCNDMAINT0_8812, 0);
@@ -4665,7 +4529,6 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 #endif//CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
 
 #endif //CONFIG_INTERRUPT_BASED_TXBCN
-#endif
 
 			ResumeTxBeacon(Adapter);
 
@@ -5485,11 +5348,6 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 		rtw_write32(padapter, REG_AMPDU_MAX_LENGTH_8812, AMPDULen);
 	}
 	break;
-#if 0
-	case HW_VAR_RXDMA_AGG_PG_TH:
-		rtw_write8(padapter, REG_RXDMA_AGG_PG_TH, *pval);
-		break;
-#endif
 	case HW_VAR_H2C_FW_PWRMODE: {
 		u8 psmode = *pval;
 
@@ -5556,21 +5414,6 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 	case HW_VAR_EFUSE_BYTES:
 		pHalData->EfuseUsedBytes = *(u16*)pval;
 		break;
-#if 0
-	case HW_VAR_EFUSE_BT_USAGE:
-#ifdef HAL_EFUSE_MEMORY
-		pHalData->EfuseHal.BTEfuseUsedPercentage = *pval;
-#endif
-		break;
-
-	case HW_VAR_EFUSE_BT_BYTES:
-#ifdef HAL_EFUSE_MEMORY
-		pHalData->EfuseHal.BTEfuseUsedBytes = *(u16*)pval;
-#else
-		BTEfuseUsedBytes = *(u16*)pval;
-#endif
-		break;
-#endif
 	case HW_VAR_FIFO_CLEARN_UP: {
 		struct pwrctrl_priv *pwrpriv;
 		u8 trycnt = 100;
@@ -5874,22 +5717,6 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 		rtw_write32(padapter, reg_macid_sleep, val32);
 	}
 	break;
-#ifdef CONFIG_GPIO_WAKEUP
-	case HW_SET_GPIO_WL_CTRL: {
-		u8 enable = *pval;
-		u8 value = rtw_read8(padapter, 0x4e);
-		if (enable && (value & BIT(6))) {
-			value &= ~BIT(6);
-			rtw_write8(padapter, 0x4e, value);
-		} else if (enable == _FALSE) {
-			value |= BIT(6);
-			rtw_write8(padapter, 0x4e, value);
-		}
-		DBG_871X("%s: set WL control, 0x4E=0x%02X\n",
-		         __func__, rtw_read8(padapter, 0x4e));
-	}
-	break;
-#endif
 	default:
 		SetHwReg(padapter, variable, pval);
 		break;
