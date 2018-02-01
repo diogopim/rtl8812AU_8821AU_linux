@@ -1298,9 +1298,9 @@ static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	struct wireless_dev *rtw_wdev = padapter->rtw_wdev;
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-#ifdef CONFIG_TDLS
+#if 0
 	struct sta_info *ptdls_sta;
-#endif /* CONFIG_TDLS */
+#endif
 
 	DBG_871X(FUNC_NDEV_FMT" adding key for %pM\n", FUNC_NDEV_ARG(ndev), mac_addr);
 	DBG_871X("cipher=0x%x\n", params->cipher);
@@ -1370,7 +1370,7 @@ static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
 	}
 
 	if(check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _TRUE) {
-#ifdef CONFIG_TDLS
+#if 0
 		if (rtw_tdls_is_driver_setup(padapter) == _FALSE && mac_addr) {
 			ptdls_sta = rtw_get_stainfo(&padapter->stapriv, (void *)mac_addr);
 			if (ptdls_sta != NULL && ptdls_sta->tdls_sta_state) {
@@ -1379,7 +1379,7 @@ static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
 				goto addkey_end;
 			}
 		}
-#endif /* CONFIG_TDLS */
+#endif
 
 		ret =  rtw_cfg80211_set_encryption(ndev, param, param_len);
 	} else if(check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE) {
@@ -3856,14 +3856,14 @@ static int	cfg80211_rtw_add_station(struct wiphy *wiphy, struct net_device *ndev
 #endif
 {
 	int ret = 0;
-#ifdef CONFIG_TDLS
+#if 0
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(ndev);
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info *psta;
-#endif /* CONFIG_TDLS */
+#endif
 	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
 
-#ifdef CONFIG_TDLS
+#if 0
 	psta = rtw_get_stainfo(pstapriv, mac);
 	if (psta == NULL) {
 		psta = rtw_alloc_stainfo(pstapriv, mac);
@@ -3874,7 +3874,7 @@ static int	cfg80211_rtw_add_station(struct wiphy *wiphy, struct net_device *ndev
 		}
 	}
 exit:
-#endif /* CONFIG_TDLS */
+#endif
 	return ret;
 }
 
@@ -5027,7 +5027,7 @@ exit:
 	return;
 }
 
-#if defined(CONFIG_TDLS) && (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))
+#if 0
 static int cfg80211_rtw_tdls_mgmt(struct wiphy *wiphy,
 		struct net_device *ndev,
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3,14,0))
@@ -5190,7 +5190,7 @@ static int cfg80211_rtw_tdls_oper(struct wiphy *wiphy,
 	}
 	return 0;
 }
-#endif /* CONFIG_TDLS */
+#endif
 
 #if defined(CONFIG_PNO_SUPPORT) && (LINUX_VERSION_CODE >= KERNEL_VERSION(3,0,0))
 static int cfg80211_rtw_sched_scan_start(struct wiphy *wiphy,
@@ -5772,8 +5772,8 @@ static void rtw_cfg80211_preinit_wiphy(_adapter *padapter, struct wiphy *wiphy)
 #ifndef CONFIG_TDLS_DRIVER_SETUP
 	wiphy->flags |= WIPHY_FLAG_TDLS_EXTERNAL_SETUP;	//Driver handles key exchange
 	wiphy->flags |= NL80211_ATTR_HT_CAPABILITY;
-#endif //CONFIG_TDLS_DRIVER_SETUP
-#endif /* CONFIG_TDLS */
+#endif //_DRIVER_SETUP
+#endif
 
 	if(padapter->registrypriv.power_mgnt != PS_MODE_ACTIVE)
 		wiphy->flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
@@ -5850,7 +5850,7 @@ static struct cfg80211_ops rtw_cfg80211_ops = {
 #if defined(CONFIG_TDLS) && (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))
 	.tdls_mgmt = cfg80211_rtw_tdls_mgmt,
 	.tdls_oper = cfg80211_rtw_tdls_oper,
-#endif /* CONFIG_TDLS */
+#endif
 
 #if defined(CONFIG_PNO_SUPPORT) && (LINUX_VERSION_CODE >= KERNEL_VERSION(3,0,0))
 	.sched_scan_start = cfg80211_rtw_sched_scan_start,

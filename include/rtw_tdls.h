@@ -21,7 +21,7 @@
 #define __RTW_TDLS_H_
 
 
-#ifdef CONFIG_TDLS
+#if 0
 /* TDLS STA state */
 
 
@@ -119,7 +119,7 @@ int On_TDLS_Dis_Req(_adapter *adapter, union recv_frame *precv_frame);
 int On_TDLS_Teardown(_adapter *adapter, union recv_frame *precv_frame);
 int On_TDLS_Peer_Traffic_Indication(_adapter *adapter, union recv_frame *precv_frame);
 int On_TDLS_Peer_Traffic_Rsp(_adapter *adapter, union recv_frame *precv_frame);
-#ifdef CONFIG_TDLS_CH_SW
+#if 0_CH_SW
 sint On_TDLS_Ch_Switch_Req(_adapter *adapter, union recv_frame *precv_frame);
 sint On_TDLS_Ch_Switch_Rsp(_adapter *adapter, union recv_frame *precv_frame);
 void rtw_build_tdls_ch_switch_req_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe, struct tdls_txmgmt *ptxmgmt);
@@ -141,7 +141,7 @@ u32 update_mask_tdls(_adapter *padapter, struct sta_info *psta);
 int rtw_tdls_is_driver_setup(_adapter *padapter);
 void rtw_tdls_set_key(_adapter *padapter, struct sta_info *ptdls_sta);
 const char * rtw_tdls_action_txt(enum TDLS_ACTION_FIELD action);
-#endif /* CONFIG_TDLS */
+#endif
 
 #endif
 

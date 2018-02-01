@@ -354,7 +354,7 @@ struct	ss_res {
 
 #define	WIFI_FW_LINKING_STATE		(WIFI_FW_AUTH_NULL | WIFI_FW_AUTH_STATE | WIFI_FW_AUTH_SUCCESS |WIFI_FW_ASSOC_STATE)
 
-#ifdef CONFIG_TDLS
+#if 0
 enum TDLS_option {
 	TDLS_ESTABLISHED	= 	1,
 	TDLS_ISSUE_PTI				=	2,
@@ -366,7 +366,7 @@ enum TDLS_option {
 	maxTDLS,
 };
 
-#endif //CONFIG_TDLS
+#endif //
 
 struct FW_Sta_Info {
 	struct sta_info	*psta;

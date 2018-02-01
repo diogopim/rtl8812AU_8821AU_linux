@@ -119,9 +119,9 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_p2p.h>
 #endif // CONFIG_P2P
 
-#ifdef CONFIG_TDLS
+#if 0
 #include <rtw_tdls.h>
-#endif // CONFIG_TDLS
+#endif //
 
 #ifdef CONFIG_DRVEXT_MODULE
 #include <drvext_api.h>
@@ -807,9 +807,9 @@ struct _ADAPTER {
 	struct wifidirect_info	wdinfo;
 #endif //CONFIG_P2P
 
-#ifdef CONFIG_TDLS
+#if 0
 	struct tdls_info	tdlsinfo;
-#endif //CONFIG_TDLS
+#endif //
 
 #ifdef CONFIG_WFD
 	struct wifi_display_info wfd_info;

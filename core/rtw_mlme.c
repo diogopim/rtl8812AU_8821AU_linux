@@ -1403,9 +1403,9 @@ void rtw_free_assoc_resources(_adapter *adapter, int lock_scanned_queue)
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 
 
-#ifdef CONFIG_TDLS
+#if 0
 	struct tdls_info *ptdlsinfo = &adapter->tdlsinfo;
-#endif //CONFIG_TDLS
+#endif //
 	_func_enter_;
 
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_notice_, ("+rtw_free_assoc_resources\n"));
@@ -1417,14 +1417,14 @@ void rtw_free_assoc_resources(_adapter *adapter, int lock_scanned_queue)
 
 		psta = rtw_get_stainfo(&adapter->stapriv, tgt_network->network.MacAddress);
 
-#ifdef CONFIG_TDLS
+#if 0
 		if (ptdlsinfo->link_established == _TRUE) {
 			rtw_tdls_cmd(adapter, NULL, TDLS_RS_RCR);
 			rtw_reset_tdls_info(adapter);
 			rtw_free_all_stainfo(adapter);
 			//_enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
 		} else
-#endif //CONFIG_TDLS
+#endif //
 		{
 			//_enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL);
 			rtw_free_stainfo(adapter,  psta);
@@ -3998,7 +3998,7 @@ void rtw_update_ht_cap(_adapter *padapter, u8 *pie, uint ie_len, u8 channel)
 
 }
 
-#ifdef CONFIG_TDLS
+#if 0
 void rtw_issue_addbareq_cmd_tdls(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
 	struct pkt_attrib *pattrib =&pxmitframe->attrib;
@@ -4027,7 +4027,7 @@ void rtw_issue_addbareq_cmd_tdls(_adapter *padapter, struct xmit_frame *pxmitfra
 		}
 	}
 }
-#endif //CONFIG_TDLS
+#endif //
 
 void rtw_issue_addbareq_cmd(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
@@ -4044,9 +4044,9 @@ void rtw_issue_addbareq_cmd(_adapter *padapter, struct xmit_frame *pxmitframe)
 
 	priority = pattrib->priority;
 
-#ifdef CONFIG_TDLS
+#if 0
 	rtw_issue_addbareq_cmd_tdls(padapter, pxmitframe);
-#endif //CONFIG_TDLS
+#endif //
 
 	psta = rtw_get_stainfo(&padapter->stapriv, pattrib->ra);
 	if(pattrib->psta != psta) {

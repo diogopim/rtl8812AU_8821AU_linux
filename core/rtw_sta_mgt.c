@@ -382,9 +382,9 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, const u8 *hwaddr)
 
 		init_addba_retry_timer(pstapriv->padapter, psta);
 
-#ifdef CONFIG_TDLS
+#if 0
 		rtw_init_tdls_timer(pstapriv->padapter, psta);
-#endif //CONFIG_TDLS
+#endif //
 
 		//for A-MPDU Rx reordering buffer control
 		for(i=0; i < 16 ; i++) {
@@ -530,10 +530,10 @@ u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 
 	_cancel_timer_ex(&psta->addba_retry_timer);
 
-#ifdef CONFIG_TDLS
+#if 0
 	psta->tdls_sta_state = TDLS_STATE_NONE;
 	rtw_free_tdls_timer(psta);
-#endif //CONFIG_TDLS
+#endif //
 
 	//for A-MPDU Rx reordering buffer control, cancel reordering_ctrl_timer
 	for(i=0; i < 16 ; i++) {

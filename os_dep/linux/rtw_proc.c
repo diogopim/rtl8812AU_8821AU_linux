@@ -690,7 +690,7 @@ const struct rtw_proc_hdl adapter_proc_hdls [] = {
 #ifdef CONFIG_POWER_SAVING
 	{"ps_info",proc_get_ps_info, NULL},
 #endif
-#ifdef CONFIG_TDLS
+#if 0
 	{"tdls_info", proc_get_tdls_info, NULL},
 #endif
 	{"monitor", proc_get_monitor, proc_set_monitor},

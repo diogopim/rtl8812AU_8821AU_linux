@@ -1636,12 +1636,12 @@ u8 rtw_setstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 key_type, bool
 	} else if (key_type == UNICAST_KEY) {
 		_rtw_memcpy(&psetstakey_para->key, &sta->dot118021x_UncstKey, 16);
 	}
-#ifdef CONFIG_TDLS
+#if 0
 	else if(key_type == TDLS_KEY) {
 		_rtw_memcpy(&psetstakey_para->key, sta->tpk.tk, 16);
 		psetstakey_para->algorithm=(u8)sta->dot118021XPrivacy;
 	}
-#endif /* CONFIG_TDLS */
+#endif
 
 	//jeff: set this becasue at least sw key is ready
 	padapter->securitypriv.busetkipkey=_TRUE;
@@ -2214,7 +2214,7 @@ exit:
 
 u8 rtw_tdls_cmd(_adapter *padapter, const u8 *addr, u8 option)
 {
-#ifdef CONFIG_TDLS
+#if 0
 	struct	cmd_obj*	pcmdobj;
 	struct	TDLSoption_param	*TDLSoption;
 	struct	cmd_priv   *pcmdpriv = &padapter->cmdpriv;
@@ -2225,7 +2225,7 @@ u8 rtw_tdls_cmd(_adapter *padapter, const u8 *addr, u8 option)
 
 	_func_enter_;
 
-#ifdef CONFIG_TDLS
+#if 0
 
 	RT_TRACE(_module_rtl871x_cmd_c_, _drv_notice_, ("+rtw_set_tdls_cmd\n"));
 
@@ -2251,7 +2251,7 @@ u8 rtw_tdls_cmd(_adapter *padapter, const u8 *addr, u8 option)
 	res = rtw_enqueue_cmd(pcmdpriv, pcmdobj);
 
 exit:
-#endif	//CONFIG_TDLS
+#endif //
 
 	_func_exit_;
 
@@ -2313,11 +2313,11 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 	u8	bHigherBusyTraffic = _FALSE, bHigherBusyRxTraffic = _FALSE, bHigherBusyTxTraffic = _FALSE;
 
 	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
-#if defined(CONFIG_TDLS) && defined(CONFIG_TDLS_AUTOSETUP)
+#if 0
 	struct tdls_info *ptdlsinfo = &(padapter->tdlsinfo);
 	struct tdls_txmgmt txmgmt;
 	const u8 baddr[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
-#endif //CONFIG_TDLS
+#endif //
 
 #ifdef CONFIG_TRAFFIC_PROTECT
 	RT_LINK_DETECT_T * link_detect = &pmlmepriv->LinkDetectInfo;
@@ -2373,7 +2373,7 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 		}
 #endif
 
-#ifdef CONFIG_TDLS
+#if 0
 #ifdef CONFIG_TDLS_AUTOSETUP
 		/* TDLS_WATCHDOG_PERIOD * 2sec, periodically send */
 		if ((ptdlsinfo->watchdog_count % TDLS_WATCHDOG_PERIOD ) == 0) {
@@ -2381,8 +2381,8 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 			issue_tdls_dis_req( padapter, &txmgmt );
 		}
 		ptdlsinfo->watchdog_count++;
-#endif //CONFIG_TDLS_AUTOSETUP
-#endif //CONFIG_TDLS
+#endif //_AUTOSETUP
+#endif //
 
 #ifdef CONFIG_LPS
 		// check traffic for  powersaving.

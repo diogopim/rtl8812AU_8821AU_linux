@@ -1414,7 +1414,7 @@ enum _PUBLIC_ACTION {
 	ACT_PUBLIC_MAX
 };
 
-#ifdef CONFIG_TDLS
+#if 0
 enum TDLS_ACTION_FIELD {
 	TDLS_SETUP_REQUEST = 0,
 	TDLS_SETUP_RESPONSE = 1,
@@ -1432,7 +1432,7 @@ enum TDLS_ACTION_FIELD {
 
 #define	TUNNELED_PROBE_REQ	15
 #define	TUNNELED_PROBE_RSP	16
-#endif //CONFIG_TDLS
+#endif //
 
 /* BACK action code */
 enum rtw_ieee80211_back_actioncode {

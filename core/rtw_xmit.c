@@ -611,7 +611,7 @@ static void update_attrib_phy_info(_adapter *padapter, struct pkt_attrib *pattri
 	//		pattrib->ampdu_en = _TRUE;
 	//}
 
-#ifdef CONFIG_TDLS
+#if 0
 	if (pattrib->direct_link==_TRUE) {
 		psta = pattrib->ptdls_sta;
 
@@ -623,7 +623,7 @@ static void update_attrib_phy_info(_adapter *padapter, struct pkt_attrib *pattri
 		pattrib->sgi= query_ra_short_GI(psta);
 #endif /* CONFIG_80211N_HT */
 	}
-#endif /* CONFIG_TDLS */
+#endif
 
 	pattrib->retry_ctrl = _FALSE;
 
@@ -756,7 +756,7 @@ static s32 update_attrib_sec_info(_adapter *padapter, struct pkt_attrib *pattrib
 	}
 #endif
 
-#ifdef CONFIG_TDLS
+#if 0
 	if(pattrib->direct_link == _TRUE) {
 		pattrib->mac_id = pattrib->ptdls_sta->mac_id;
 		if(pattrib->encrypt>0) {
@@ -766,7 +766,7 @@ static s32 update_attrib_sec_info(_adapter *padapter, struct pkt_attrib *pattrib
 			pattrib->bswenc = _FALSE;
 		}
 	}
-#endif //CONFIG_TDLS
+#endif //
 exit:
 
 	return res;
@@ -832,7 +832,7 @@ static void set_qos(struct pkt_file *ppktfile, struct pkt_attrib *pattrib)
 	pattrib->subtype = WIFI_QOS_DATA_TYPE;
 }
 
-#ifdef CONFIG_TDLS
+#if 0
 u8 rtw_check_tdls_established(_adapter *padapter, struct pkt_attrib *pattrib)
 {
 	pattrib->ptdls_sta = NULL;
@@ -899,7 +899,7 @@ exit:
 	return res;
 }
 
-#endif //CONFIG_TDLS
+#endif //
 
 //get non-qos hw_ssn control register,mapping to REG_HW_SEQ0,1,2,3
 inline u8 rtw_get_hwseq_no(_adapter *padapter)
@@ -948,7 +948,7 @@ static s32 update_attrib(_adapter *padapter, _pkt *pkt, struct pkt_attrib *pattr
 		_rtw_memcpy(pattrib->ta, myid(&padapter->eeprompriv), ETH_ALEN);
 		DBG_COUNTER(padapter->tx_logs.core_tx_upd_attrib_adhoc);
 	} else if (check_fwstate(pmlmepriv, WIFI_STATION_STATE)) {
-#ifdef CONFIG_TDLS
+#if 0
 		if (rtw_check_tdls_established(padapter, pattrib) == _TRUE)
 			_rtw_memcpy(pattrib->ra, pattrib->dst, ETH_ALEN);	/* For TDLS direct link Tx, set ra to be same to dst */
 		else
@@ -1345,14 +1345,14 @@ s32 rtw_make_wlanhdr (_adapter *padapter , u8 *hdr, struct pkt_attrib *pattrib)
 
 	if (pattrib->subtype & WIFI_DATA_TYPE) {
 		if ((check_fwstate(pmlmepriv,  WIFI_STATION_STATE) == _TRUE)) {
-#ifdef CONFIG_TDLS
+#if 0
 			if(pattrib->direct_link == _TRUE) {
 				//TDLS data transfer, ToDS=0, FrDs=0
 				_rtw_memcpy(pwlanhdr->addr1, pattrib->dst, ETH_ALEN);
 				_rtw_memcpy(pwlanhdr->addr2, pattrib->src, ETH_ALEN);
 				_rtw_memcpy(pwlanhdr->addr3, get_bssid(pmlmepriv), ETH_ALEN);
 			} else
-#endif //CONFIG_TDLS
+#endif //
 			{
 				//to_ds = 1, fr_ds = 0;
 				// 1.Data transfer to AP
@@ -1544,7 +1544,7 @@ s32 rtw_txframes_sta_ac_pending(_adapter *padapter, struct pkt_attrib *pattrib)
 	return ptxservq->qcnt;
 }
 
-#ifdef CONFIG_TDLS
+#if 0
 
 int rtw_build_tdls_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe, struct tdls_txmgmt *ptxmgmt)
 {
@@ -1569,7 +1569,7 @@ int rtw_build_tdls_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *
 	case TDLS_PEER_TRAFFIC_INDICATION:
 		rtw_build_tdls_peer_traffic_indication_ies(padapter, pxmitframe, pframe, ptxmgmt);
 		break;
-#ifdef CONFIG_TDLS_CH_SW
+#if 0_CH_SW
 	case TDLS_CHANNEL_SWITCH_REQUEST:
 		rtw_build_tdls_ch_switch_req_ies(padapter, pxmitframe, pframe, ptxmgmt);
 		break;
@@ -1813,7 +1813,7 @@ exit:
 
 	return res;
 }
-#endif //CONFIG_TDLS
+#endif //
 
 /*
  * Calculate wlan 802.11 packet MAX size from pkt_attrib
@@ -2350,13 +2350,13 @@ void rtw_count_tx_stats(PADAPTER padapter, struct xmit_frame *pxmitframe, int sz
 			pstats->tx_pkts += pkt_num;
 
 			pstats->tx_bytes += sz;
-#ifdef CONFIG_TDLS
+#if 0
 			if(pxmitframe->attrib.ptdls_sta != NULL) {
 				pstats = &(pxmitframe->attrib.ptdls_sta->sta_stats);
 				pstats->tx_pkts += pkt_num;
 				pstats->tx_bytes += sz;
 			}
-#endif //CONFIG_TDLS
+#endif //
 		}
 
 #ifdef CONFIG_CHECK_LEAVE_LPS
@@ -3498,7 +3498,7 @@ s32 rtw_xmit(_adapter *padapter, _pkt **ppkt)
 	return 0;
 }
 
-#ifdef CONFIG_TDLS
+#if 0
 sint xmitframe_enqueue_for_tdls_sleeping_sta(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
 	sint ret=_FALSE;
@@ -3566,7 +3566,7 @@ sint xmitframe_enqueue_for_tdls_sleeping_sta(_adapter *padapter, struct xmit_fra
 	return ret;
 
 }
-#endif //CONFIG_TDLS
+#endif //
 
 #define RTW_HIQ_FILTER_ALLOW_ALL 0
 #define RTW_HIQ_FILTER_ALLOW_SPECIAL 1
@@ -3603,7 +3603,7 @@ inline bool xmitframe_hiq_filter(struct xmit_frame *xmitframe)
 	return allow;
 }
 
-#if defined(CONFIG_AP_MODE) || defined(CONFIG_TDLS)
+#if defined(CONFIG_AP_MODE)
 
 sint xmitframe_enqueue_for_sleeping_sta(_adapter *padapter, struct xmit_frame *pxmitframe)
 {
@@ -3615,12 +3615,12 @@ sint xmitframe_enqueue_for_sleeping_sta(_adapter *padapter, struct xmit_frame *p
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	sint bmcst = IS_MCAST(pattrib->ra);
 	bool update_tim = _FALSE;
-#ifdef CONFIG_TDLS
+#if 0
 
 	if( padapter->tdlsinfo.link_established == _TRUE ) {
 		ret = xmitframe_enqueue_for_tdls_sleeping_sta(padapter, pxmitframe);
 	}
-#endif //CONFIG_TDLS
+#endif //
 
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _FALSE) {
 		DBG_COUNTER(padapter->tx_logs.core_tx_ap_enqueue_warn_fwstate);
@@ -3841,9 +3841,9 @@ void stop_sta_xmit(_adapter *padapter, struct sta_info *psta)
 
 	psta->state |= WIFI_SLEEP_STATE;
 
-#ifdef CONFIG_TDLS
+#if 0
 	if( !(psta->tdls_sta_state & TDLS_LINKED_STATE) )
-#endif //CONFIG_TDLS
+#endif //
 		pstapriv->sta_dz_bitmap |= BIT(psta->aid);
 
 
@@ -3863,9 +3863,9 @@ void stop_sta_xmit(_adapter *padapter, struct sta_info *psta)
 	dequeue_xmitframes_to_sleeping_queue(padapter, psta, &pstaxmitpriv->bk_q.sta_pending);
 	rtw_list_delete(&(pstaxmitpriv->bk_q.tx_pending));
 
-#ifdef CONFIG_TDLS
+#if 0
 	if (!(psta->tdls_sta_state & TDLS_LINKED_STATE) && (psta_bmc != NULL)) {
-#endif //CONFIG_TDLS
+#endif //
 
 
 		//for BC/MC Frames
@@ -3874,9 +3874,9 @@ void stop_sta_xmit(_adapter *padapter, struct sta_info *psta)
 		rtw_list_delete(&(pstaxmitpriv->be_q.tx_pending));
 
 
-#ifdef CONFIG_TDLS
+#if 0
 	}
-#endif //CONFIG_TDLS
+#endif //
 	_exit_critical_bh(&pxmitpriv->lock, &irqL0);
 
 
@@ -3961,7 +3961,7 @@ void wakeup_sta_to_xmit(_adapter *padapter, struct sta_info *psta)
 	}
 
 	if(psta->sleepq_len==0) {
-#ifdef CONFIG_TDLS
+#if 0
 		if( psta->tdls_sta_state & TDLS_LINKED_STATE ) {
 			if(psta->state&WIFI_SLEEP_STATE)
 				psta->state ^= WIFI_SLEEP_STATE;
@@ -3969,7 +3969,7 @@ void wakeup_sta_to_xmit(_adapter *padapter, struct sta_info *psta)
 			_exit_critical_bh(&pxmitpriv->lock, &irqL);
 			return;
 		}
-#endif //CONFIG_TDLS
+#endif //
 
 		if (pstapriv->tim_bitmap & BIT(psta->aid)) {
 			//DBG_871X("wakeup to xmit, qlen==0, update_BCNTIM, tim=%x\n", pstapriv->tim_bitmap);
@@ -4119,12 +4119,12 @@ void xmit_delivery_enabled_frames(_adapter *padapter, struct sta_info *psta)
 		rtw_hal_xmitframe_enqueue(padapter, pxmitframe);
 
 		if((psta->sleepq_ac_len==0) && (!psta->has_legacy_ac) && (wmmps_ac)) {
-#ifdef CONFIG_TDLS
+#if 0
 			if(psta->tdls_sta_state & TDLS_LINKED_STATE ) {
 				//_exit_critical_bh(&psta->sleep_q.lock, &irqL);
 				goto exit;
 			}
-#endif //CONFIG_TDLS
+#endif //
 			pstapriv->tim_bitmap &= ~BIT(psta->aid);
 
 			//DBG_871X("wakeup to xmit, qlen==0, update_BCNTIM, tim=%x\n", pstapriv->tim_bitmap);
@@ -4136,7 +4136,7 @@ void xmit_delivery_enabled_frames(_adapter *padapter, struct sta_info *psta)
 
 	}
 
-#ifdef CONFIG_TDLS
+#if 0
 exit:
 #endif
 	//_exit_critical_bh(&psta->sleep_q.lock, &irqL);
