@@ -97,7 +97,7 @@
 #include <linux/earlysuspend.h>
 #endif //CONFIG_HAS_EARLYSUSPEND
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 #include <linux/fs.h>
 #endif //CONFIG_EFUSE_CONFIG_FILE
 

@@ -2370,11 +2370,11 @@ InitAdapterVariablesByPROM_8812AU(
 )
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 	struct file *fp;
 #endif //CONFIG_EFUSE_CONFIG_FILE
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 	if (check_phy_efuse_tx_power_info_valid(Adapter) == _FALSE) {
 		fp = filp_open(EFUSE_MAP_PATH, O_RDONLY, 0);
 		if (fp == NULL || IS_ERR(fp)) {
@@ -2393,7 +2393,7 @@ InitAdapterVariablesByPROM_8812AU(
 	Hal_ReadPROMVersion8812A(Adapter, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
 	hal_ReadIDs_8812AU(Adapter, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 	if (check_phy_efuse_macaddr_info_valid(Adapter) == _TRUE) {
 		DBG_871X("using phy efuse mac\n");
 		Hal_GetPhyEfuseMACAddr(Adapter, pEEPROM->mac_addr);

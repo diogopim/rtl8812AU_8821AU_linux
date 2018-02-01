@@ -5673,7 +5673,7 @@ void rtw_store_phy_info(_adapter *padapter, union recv_frame *prframe)
 }
 #endif
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 int check_phy_efuse_tx_power_info_valid(PADAPTER padapter)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);

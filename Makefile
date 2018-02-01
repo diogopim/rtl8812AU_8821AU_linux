@@ -32,7 +32,6 @@ CONFIG_USB_HCI = y
 ########################## Features ###########################
 CONFIG_MP_INCLUDED = y
 CONFIG_POWER_SAVING = y
-#CONFIG_EFUSE_CONFIG_FILE = n
 CONFIG_TRAFFIC_PROTECT = y
 CONFIG_LOAD_PHY_PARA_FROM_FILE = y
 #CONFIG_RTW_ADAPTIVITY_EN = disable

@@ -3190,7 +3190,7 @@ rtl8812_Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
 	return ret;
 }
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 static s32 _halReadPGDataFromFile(PADAPTER padapter, u8 *pbuf)
 {
 	u32 i;
@@ -3436,7 +3436,7 @@ void InitPGData8812A(PADAPTER padapter)
 
 	pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 	{
 		s32 tmp;
 		u32 addr;
