@@ -585,7 +585,7 @@ u8 PS_RDY_CHECK(_adapter * padapter)
 #endif /* CONFIG_IOCTL_CFG80211 */
 #endif /* CONFIG_P2P */
 
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
+#if defined(CONFIG_AP_WOWLAN)
 	if(_TRUE == pwrpriv->bInSuspend && pwrpriv->wowlan_mode)
 		return _TRUE;
 	else if(_TRUE == pwrpriv->bInSuspend && pwrpriv->wowlan_ap_mode)
@@ -825,7 +825,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 			pwrpriv->pwr_mode = ps_mode;
 			rtw_set_rpwm(padapter, PS_STATE_S4);
 
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN) || defined(CONFIG_P2P_WOWLAN)
+#if defined(CONFIG_AP_WOWLAN) || defined(CONFIG_P2P_WOWLAN)
 			if (pwrpriv->wowlan_mode == _TRUE ||
 			    pwrpriv->wowlan_ap_mode == _TRUE ||
 			    pwrpriv->wowlan_p2p_mode == _TRUE) {
@@ -1948,7 +1948,7 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 	rtw_register_early_suspend(pwrctrlpriv);
 #endif //CONFIG_HAS_EARLYSUSPEND || CONFIG_ANDROID_POWER
 
-#ifdef CONFIG_WOWLAN
+#if 0
 	pwrctrlpriv->wowlan_from_cmd = _FALSE;
 #endif
 #ifdef CONFIG_PNO_SUPPORT

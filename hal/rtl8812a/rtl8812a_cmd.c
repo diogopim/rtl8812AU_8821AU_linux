@@ -1131,7 +1131,7 @@ void rtl8812_set_FwJoinBssReport_cmd(PADAPTER padapter, u8 mstatus)
 			rtw_write8(padapter,  REG_CR+1, pHalData->RegCR_1);
 		}
 	}
-#ifdef CONFIG_WOWLAN
+#if 0
 	if (adapter_to_pwrctl(padapter)->wowlan_mode) {
 		u16	media_status;
 
@@ -1141,7 +1141,7 @@ void rtl8812_set_FwJoinBssReport_cmd(PADAPTER padapter, u8 mstatus)
 	} else {
 		DBG_871X_LEVEL(_drv_info_, "%s wowlan_mode is off\n", __func__);
 	}
-#endif //CONFIG_WOWLAN
+#endif //
 	_func_exit_;
 }
 
@@ -1303,7 +1303,7 @@ static inline void rtl8812_set_FwRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC r
 	FillH2CCmd_8812(padapter, H2C_RSVD_PAGE, H2C_RSVDPAGE_LOC_LEN, u1H2CRsvdPageParm);
 }
 
-#ifdef CONFIG_WOWLAN
+#if 0
 #ifdef CONFIG_PNO_SUPPORT
 static void rtl8812_set_FwScanOffloadInfo_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc, u8 enable)
 {
@@ -1514,7 +1514,7 @@ static void rtl8812_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvd
 	//struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	//u8	res = 0, count = 0;
-#ifdef CONFIG_WOWLAN
+#if 0
 	u8 u1H2CAoacRsvdPageParm[H2C_AOAC_RSVDPAGE_LOC_LEN]= {0};
 
 	DBG_871X("8192EAOACRsvdPageLoc: RWC=%d ArpRsp=%d NbrAdv=%d GtkRsp=%d GtkInfo=%d ProbeReq=%d NetworkList=%d\n",
@@ -1560,7 +1560,7 @@ static void rtl8812_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvd
 		}
 	}
 #endif // CONFIG_PNO_SUPPORT
-#endif // CONFIG_WOWLAN
+#endif
 }
 
 //
@@ -1726,7 +1726,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 	u16	BufIndex, PageSize = 256;
 	u32	TotalPacketLen, MaxRsvdPageBufSize=0;
 	RSVDPAGE_LOC	RsvdPageLoc;
-#ifdef CONFIG_WOWLAN
+#if 0
 #ifdef CONFIG_GTK_OL
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info * psta;
@@ -1854,7 +1854,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 
 	BufIndex += (CurtPktPageNum*PageSize);
 
-#ifdef CONFIG_WOWLAN_OLD
+#if 0
 	if (check_fwstate(pmlmepriv, _FW_LINKED)) {
 		//if (pwrctl->wowlan_mode == _TRUE) {
 		//BufIndex += (CurtPktPageNum*PageSize);
@@ -1959,7 +1959,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		TotalPacketLen = BufIndex-TxDescLen + sizeof (union pn48); //IV len
 #endif //CONFIG_GTK_OL
 	} else
-#endif //CONFIG_WOWLAN
+#endif //
 	{
 #ifdef CONFIG_PNO_SUPPORT
 		if (pwrctl->pno_in_resume == _FALSE) {
@@ -2427,7 +2427,7 @@ void rtl8812_set_wowlan_cmd(_adapter* padapter, u8 enable)
 {
 	rtl8812_set_FwWoWlanRelated_cmd(padapter, enable);
 }
-#endif //CONFIG_WOWLAN
+#endif //
 
 int rtl8812_iqk_wait(_adapter* padapter, u32 timeout_ms)
 {

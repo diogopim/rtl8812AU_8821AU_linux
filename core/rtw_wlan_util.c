@@ -21,7 +21,7 @@
 
 #include <drv_types.h>
 
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
+#if defined(CONFIG_AP_WOWLAN)
 #include <linux/inetdevice.h>
 #endif
 
@@ -3632,7 +3632,7 @@ func_exit:
 
 
 
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
+#if defined(CONFIG_AP_WOWLAN)
 void rtw_get_current_ip_address(PADAPTER padapter, u8 *pcurrentip)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
@@ -3657,7 +3657,7 @@ void rtw_get_current_ip_address(PADAPTER padapter, u8 *pcurrentip)
 	}
 }
 #endif
-#ifdef CONFIG_WOWLAN
+#if 0
 void rtw_get_sec_iv(PADAPTER padapter, u8*pcur_dot11txpn, u8 *StaAddr)
 {
 	struct sta_info		*psta;
@@ -3704,7 +3704,7 @@ void rtw_set_sec_pn(PADAPTER padapter)
 		DBG_871X("%s: dot11txpn: 0x%016llx\n", __func__ ,psta->dot11txpn.val);
 	}
 }
-#endif //CONFIG_WOWLAN
+#endif //
 
 #ifdef CONFIG_PNO_SUPPORT
 #define	CSCAN_TLV_TYPE_SSID_IE	'S'

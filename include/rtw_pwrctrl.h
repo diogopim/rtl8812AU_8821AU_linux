@@ -308,7 +308,7 @@ struct pwrctrl_priv {
 	u8		wowlan_mode;
 	u8		wowlan_p2p_mode;
 	u8		wowlan_pno_enable;
-#ifdef CONFIG_WOWLAN
+#if 0
 	u8		wowlan_pattern;
 	u8		wowlan_magic;
 	u8		wowlan_unicast;
@@ -323,7 +323,7 @@ struct pwrctrl_priv {
 #endif
 	u32		wowlan_pattern_context[8][5];
 	u64		wowlan_fw_iv;
-#endif // CONFIG_WOWLAN
+#endif
 	_timer 	pwr_state_check_timer;
 	int		pwr_state_check_interval;
 	u8		pwr_state_check_cnts;

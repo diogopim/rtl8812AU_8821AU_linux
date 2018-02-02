@@ -144,7 +144,7 @@ BOOLEAN HalDetectPwrDownMode8812(PADAPTER Adapter)
 	return pHalData->pwrdown;
 }	// HalDetectPwrDownMode
 
-#ifdef CONFIG_WOWLAN
+#if 0
 void Hal_DetectWoWMode(PADAPTER pAdapter)
 {
 	adapter_to_pwrctl(pAdapter)->bSupportRemoteWakeup = _TRUE;
@@ -526,12 +526,12 @@ FirmwareDownload8812(
 #endif //CONFIG_FILE_FWIMG
 		break;
 	case FW_SOURCE_HEADER_FILE:
-#ifdef CONFIG_WOWLAN
+#if 0
 		if (bUsedWoWLANFw) {
 			ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_WoWLAN, (u8 *)&(pFirmware->szFwBuffer), &(pFirmware->ulFwLength));
 			DBG_871X("%s fw:%s, size: %d\n", __FUNCTION__, "WoWLAN", pFirmware->ulFwLength);
 		} else
-#endif /* CONFIG_WOWLAN */
+#endif
 			{
 				ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_NIC, (u8 *)&(pFirmware->szFwBuffer), &(pFirmware->ulFwLength));
 				DBG_871X("%s fw:%s, size: %d\n", __FUNCTION__, "NIC", pFirmware->ulFwLength);
@@ -607,7 +607,7 @@ exit:
 	if (pFirmware)
 		rtw_mfree((u8*)pFirmware, sizeof(RT_FIRMWARE_8812));
 
-#ifdef CONFIG_WOWLAN
+#if 0
 	if (adapter_to_pwrctl(Adapter)->wowlan_mode)
 		InitializeFirmwareVars8812(Adapter);
 	else
@@ -1058,7 +1058,7 @@ s32 FirmwareDownloadBT(PADAPTER padapter, PRT_MP_FIRMWARE pFirmware)
 }
 #endif
 
-#ifdef CONFIG_WOWLAN
+#if 0
 //===========================================
 //
 // Description: Prepare some information to Fw for WoWLAN.
@@ -1092,7 +1092,7 @@ SetFwRelatedForWoWLAN8812(
 	//
 	InitializeFirmwareVars8812(padapter);
 }
-#endif //CONFIG_WOWLAN
+#endif //
 
 static void rtl8812_free_hal_data(PADAPTER padapter)
 {
@@ -6075,7 +6075,7 @@ void rtl8812_set_hal_ops(struct hal_ops *pHalFunc)
 
 	pHalFunc->fill_h2c_cmd = &FillH2CCmd_8812;
 	pHalFunc->fill_fake_txdesc = &rtl8812a_fill_fake_txdesc;
-#ifdef CONFIG_WOWLAN
+#if 0
 	pHalFunc->hal_set_wowlan_fw = &SetFwRelatedForWoWLAN8812;
 #endif
 	pHalFunc->hal_get_tx_buff_rsvd_page_num = &GetTxBufferRsvdPageNum8812;

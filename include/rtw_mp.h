@@ -327,7 +327,7 @@ enum {
 	MP_MON,
 	EFUSE_MASK,
 	EFUSE_FILE,
-#ifdef CONFIG_WOWLAN
+#if 0
 	MP_WOW_ENABLE,
 #endif
 #ifdef CONFIG_AP_WOWLAN

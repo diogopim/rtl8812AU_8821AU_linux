@@ -2533,7 +2533,7 @@ void SetHwReg8812AU(PADAPTER Adapter, u8 variable, const u8* val)
 	//HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	//struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	//DM_ODM_T 		*podmpriv = &pHalData->odmpriv;
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN) || defined(CONFIG_P2P_WOWLAN)
+#if defined(CONFIG_AP_WOWLAN) || defined(CONFIG_P2P_WOWLAN)
 	//const struct wowlan_ioctl_param *poidparam;
 	//struct recv_buf *precvbuf;
 	//struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(Adapter);
@@ -2612,7 +2612,7 @@ void SetHwReg8812AU(PADAPTER Adapter, u8 variable, const u8* val)
 		}
 #endif
 		break;
-#ifdef CONFIG_WOWLAN_OLD
+#if 0
 	case HW_VAR_WOWLAN: {
 		poidparam = (const struct wowlan_ioctl_param *)val;
 		switch (poidparam->subcode) {

@@ -38,7 +38,6 @@ CONFIG_LOAD_PHY_PARA_FROM_FILE = y
 #CONFIG_RTW_ADAPTIVITY_MODE = normal
 CONFIG_BR_EXT = y
 ######################## Wake On Lan ##########################
-#CONFIG_WOWLAN = n
 CONFIG_WAKEUP_GPIO_IDX = default
 #CONFIG_PNO_SUPPORT = n
 #CONFIG_PNO_SET_DEBUG = n

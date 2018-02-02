@@ -1352,7 +1352,7 @@ void rtw_hal_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc
 {
 	//struct	pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	//u8	res = 0, count = 0, ret = 0;
-#ifdef CONFIG_WOWLAN
+#if 0
 	u8 ret = 0;
 	struct	hal_ops *pHalFunc = &padapter->HalFunc;
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -1404,10 +1404,10 @@ void rtw_hal_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc
 		}
 	}
 #endif //CONFIG_PNO_SUPPORT
-#endif // CONFIG_WOWLAN
+#endif
 }
 
-#ifdef CONFIG_WOWLAN
+#if 0
 // rtw_hal_check_wow_ctrl
 // chk_type: _TRUE means to check enable, if 0x690 & bit1, WOW enable successful
 //           _FALSE means to check disable, if 0x690 & bit1, WOW disable fail
@@ -2033,7 +2033,7 @@ void rtw_hal_set_fw_wow_related_cmd(_adapter* padapter, u8 enable)
 	_func_exit_;
 	DBG_871X_LEVEL(_drv_always_, "-%s()-\n", __func__);
 }
-#endif //CONFIG_WOWLAN
+#endif //
 
 #ifdef CONFIG_P2P_WOWLAN
 static int update_hidden_ssid(u8 *ies, u32 ies_len, u8 hidden_ssid_mode)
@@ -3757,7 +3757,7 @@ static void rtw_hal_construct_NullFunctionData(
 	*pLength = pktlen;
 }
 
-#ifdef CONFIG_WOWLAN
+#if 0
 //
 // Description:
 //	Construct the ARP response packet to support ARP offload.
@@ -4172,7 +4172,7 @@ static void rtw_hal_construct_GTKRsp(
 
 }
 #endif //CONFIG_GTK_OL
-#endif //CONFIG_WOWLAN
+#endif //
 
 void rtw_hal_fill_fake_txdesc(_adapter* padapter, u8* pDesc, u32 BufferLen,
                               u8 IsPsPoll, u8 IsBTQosNull, u8 bDataFrame)
@@ -4221,7 +4221,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 	u16	BufIndex = 0;
 	u32	TotalPacketLen = 0, MaxRsvdPageBufSize = 0, PageSize = 0;
 	RSVDPAGE_LOC	RsvdPageLoc;
-#ifdef CONFIG_WOWLAN
+#if 0
 	//u32	ARPLegnth = 0, GTKLegnth = 0, PNOLength = 0, ScanInfoLength = 0;
 	u32	ARPLegnth = 0;
 	//u32	SSIDLegnth = 0;
@@ -4355,7 +4355,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 
 	BufIndex += (CurtPktPageNum*PageSize);
 
-#ifdef CONFIG_WOWLAN
+#if 0
 	if (pwrctl->wowlan_mode == _TRUE &&
 	    check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {
 		//ARP RSP * 1 page
@@ -4584,9 +4584,9 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 	} else {
 		TotalPacketLen = BufIndex + QosNullLength;
 	}
-#else //CONFIG_WOWLAN
+#else
 	TotalPacketLen = BufIndex + QosNullLength;
-#endif //CONFIG_WOWLAN
+#endif //
 
 #ifdef CONFIG_P2P_WOWLAN
 	if(_TRUE == pwrctl->wowlan_p2p_mode) {
@@ -4844,7 +4844,7 @@ void SetHwReg(_adapter *adapter, u8 variable, const u8 *val)
 			rtw_write8(adapter, rCCK0_DSPParameter2, 0x00);
 		}
 		break;
-#ifdef CONFIG_WOWLAN
+#if 0
 	case HW_VAR_WOWLAN: {
 		struct wowlan_ioctl_param *poidparam;
 		struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(adapter);
@@ -5011,7 +5011,7 @@ void SetHwReg(_adapter *adapter, u8 variable, const u8 *val)
 		}
 	}
 	break;
-#endif //CONFIG_WOWLAN
+#endif //
 	default:
 		if (0)
 			DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" variable(%d) not defined!\n",

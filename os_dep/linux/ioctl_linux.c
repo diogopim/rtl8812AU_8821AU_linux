@@ -8198,7 +8198,7 @@ FREE_EXT:
 	return ret;
 
 }
-#ifdef CONFIG_WOWLAN
+#if 0
 static int rtw_wowlan_ctrl(struct net_device *dev,
                            struct iw_request_info *info,
                            union iwreq_data *wrqu, char *extra)
@@ -8265,7 +8265,7 @@ _rtw_wowlan_ctrl_exit_free:
 //_rtw_wowlan_ctrl_exit:
 	return ret;
 }
-#endif //CONFIG_WOWLAN
+#endif //
 
 #ifdef CONFIG_AP_WOWLAN
 static int rtw_ap_wowlan_ctrl(struct net_device *dev,
@@ -10796,7 +10796,7 @@ static int rtw_mp_set(struct net_device *dev,
 		DBG_871X("set case MP_DISABLE_BT_COEXIST \n");
 		rtw_mp_disable_bt_coexist(dev, info, wdata, extra);
 		break;
-#ifdef CONFIG_WOWLAN
+#if 0
 	case MP_WOW_ENABLE:
 		DBG_871X("set case MP_WOW_ENABLE: %s \n", extra);
 		rtw_wowlan_ctrl(dev, info, wdata, extra);
@@ -12604,7 +12604,7 @@ static const struct iw_priv_args rtw_private_args[] = {
 	{ EFUSE_FILE, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "efuse_file" },
 	{ CTA_TEST, IW_PRIV_TYPE_CHAR | 1024, 0, "cta_test"},
 #endif
-#ifdef CONFIG_WOWLAN
+#if 0
 	{ MP_WOW_ENABLE , IW_PRIV_TYPE_CHAR | 1024, 0, "wow_mode" }, //set
 #endif
 #ifdef CONFIG_AP_WOWLAN

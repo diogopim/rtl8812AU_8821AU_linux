@@ -1288,7 +1288,7 @@ exit:
 
 }
 
-#ifdef CONFIG_WOWLAN
+#if 0
 void rtw_cancel_dynamic_chk_timer(_adapter *padapter)
 {
 	_cancel_timer_ex(&padapter->mlmepriv.dynamic_chk_timer);
@@ -2927,7 +2927,7 @@ void rtw_dev_unload(PADAPTER padapter)
 		}
 
 		if (padapter->bSurpriseRemoved == _FALSE) {
-#ifdef CONFIG_WOWLAN
+#if 0
 			if (pwrctl->bSupportRemoteWakeup == _TRUE &&
 			    pwrctl->wowlan_mode ==_TRUE) {
 				DBG_871X_LEVEL(_drv_always_, "%s bSupportRemoteWakeup==_TRUE  do not run rtw_hal_deinit()\n",__FUNCTION__);
@@ -3010,7 +3010,7 @@ int rtw_suspend_free_assoc_resource(_adapter *padapter)
 	return _SUCCESS;
 }
 
-#ifdef CONFIG_WOWLAN
+#if 0
 int rtw_suspend_wow(_adapter *padapter)
 {
 	u8 ch, bw, offset;
@@ -3123,7 +3123,7 @@ int rtw_suspend_wow(_adapter *padapter)
 	DBG_871X("<== "FUNC_ADPT_FMT" exit....\n", FUNC_ADPT_ARG(padapter));
 	return ret;
 }
-#endif //#ifdef CONFIG_WOWLAN
+#endif //#if 0
 
 #ifdef CONFIG_AP_WOWLAN
 int rtw_suspend_ap_wow(_adapter *padapter)
@@ -3332,7 +3332,7 @@ int rtw_suspend_common(_adapter *padapter)
 	    && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	   ) {
-#ifdef CONFIG_WOWLAN
+#if 0
 		if (check_fwstate(pmlmepriv, _FW_LINKED)) {
 			pwrpriv->wowlan_mode = _TRUE;
 		} else if (pwrpriv->wowlan_pno_enable == _TRUE) {
@@ -3352,9 +3352,9 @@ int rtw_suspend_common(_adapter *padapter)
 		else
 			rtw_suspend_normal(padapter);
 
-#else //CONFIG_WOWLAN
+#else
 		rtw_suspend_normal(padapter);
-#endif //CONFIG_WOWLAN
+#endif //
 	} else if (check_fwstate(pmlmepriv,WIFI_AP_STATE) == _TRUE
 #ifdef CONFIG_CONCURRENT_MODE
 	           && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
@@ -3389,7 +3389,7 @@ exit:
 	return ret;
 }
 
-#ifdef CONFIG_WOWLAN
+#if 0
 int rtw_resume_process_wow(_adapter *padapter)
 {
 	//struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -3578,7 +3578,7 @@ exit:
 	_func_exit_;
 	return ret;
 }
-#endif //#ifdef CONFIG_WOWLAN
+#endif //#if 0
 
 #ifdef CONFIG_AP_WOWLAN
 int rtw_resume_process_ap_wow(_adapter *padapter)
@@ -3861,7 +3861,7 @@ int rtw_resume_common(_adapter *padapter)
 	    && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	   ) {
-#ifdef CONFIG_WOWLAN
+#if 0
 		if (pwrpriv->wowlan_mode == _TRUE)
 			rtw_resume_process_wow(padapter);
 		else

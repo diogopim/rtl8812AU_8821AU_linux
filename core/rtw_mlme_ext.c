@@ -10616,7 +10616,7 @@ bool rtw_port_switch_chk(_adapter *adapter)
 #ifdef CONFIG_CONCURRENT_MODE
 #ifdef CONFIG_RUNTIME_PORT_SWITCH
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
-#if defined(CONFIG_WOWLAN) || defined(DBG_RUNTIME_PORT_SWITCH)
+#if defined(DBG_RUNTIME_PORT_SWITCH)
 	struct pwrctrl_priv *pwrctl = dvobj_to_pwrctl(dvobj);
 #endif
 	_adapter *if_port0 = NULL;
@@ -10654,7 +10654,7 @@ bool rtw_port_switch_chk(_adapter *adapter)
 	         ADPT_ARG(if_port1), if_port1_mlmeinfo->state, rtw_p2p_state(&if_port1->wdinfo), rtw_p2p_chk_state(&if_port1->wdinfo, P2P_STATE_NONE));
 #endif /* DBG_RUNTIME_PORT_SWITCH */
 
-#ifdef CONFIG_WOWLAN
+#if 0
 	/* WOWLAN interface(primary, for now) should be port0 */
 	if (pwrctl->wowlan_mode == _TRUE) {
 		if(!is_primary_adapter(if_port0)) {
@@ -10663,7 +10663,7 @@ bool rtw_port_switch_chk(_adapter *adapter)
 		}
 		goto exit;
 	}
-#endif /* CONFIG_WOWLAN */
+#endif
 
 	/* AP should use port0 for ctl frame's ack */
 	if ((if_port1_mlmeinfo->state & 0x03) == WIFI_FW_AP_STATE) {

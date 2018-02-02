@@ -113,7 +113,7 @@ enum h2c_cmd {
 #define H2C_P2PRSVDPAGE_LOC_LEN	5
 #define H2C_P2P_OFFLOAD_LEN	3
 
-#ifdef CONFIG_WOWLAN
+#if 0
 #define eqMacAddr(a,b)						( ((a)[0]==(b)[0] && (a)[1]==(b)[1] && (a)[2]==(b)[2] && (a)[3]==(b)[3] && (a)[4]==(b)[4] && (a)[5]==(b)[5]) ? 1:0 )
 #define cpMacAddr(des,src)					((des)[0]=(src)[0],(des)[1]=(src)[1],(des)[2]=(src)[2],(des)[3]=(src)[3],(des)[4]=(src)[4],(des)[5]=(src)[5])
 #define cpIpAddr(des,src)					((des)[0]=(src)[0],(des)[1]=(src)[1],(des)[2]=(src)[2],(des)[3]=(src)[3])
@@ -165,7 +165,7 @@ enum h2c_cmd {
 #define FW_REALWOWLAN_EN				BIT(5)
 #define FW_WOW_FW_UNICAST_EN			BIT(7)
 
-#endif //CONFIG_WOWLAN
+#endif //
 
 //_RSVDPAGE_LOC_CMD_0x00
 #define SET_H2CCMD_RSVDPAGE_LOC_PROBE_RSP(__pH2CCmd, __Value)		SET_BITS_TO_LE_1BYTE_8BIT(__pH2CCmd, 0, 8, __Value)
@@ -284,7 +284,7 @@ typedef struct _RSVDPAGE_LOC {
 	u8 LocNullData;
 	u8 LocQosNull;
 	u8 LocBTQosNull;
-#ifdef CONFIG_WOWLAN
+#if 0
 	u8 LocRemoteCtrlInfo;
 	u8 LocArpRsp;
 	u8 LocNbrAdv;
@@ -301,7 +301,7 @@ typedef struct _RSVDPAGE_LOC {
 	u8 LocSSIDInfo;
 	u8 LocProbePacket;
 #endif //CONFIG_PNO_SUPPORT
-#endif //CONFIG_WOWLAN
+#endif //
 	u8 LocApOffloadBCN;
 #ifdef CONFIG_P2P_WOWLAN
 	u8 LocP2PBeacon;
@@ -316,7 +316,7 @@ typedef struct _RSVDPAGE_LOC {
 void dump_TX_FIFO(PADAPTER padapter, u8 page_num, u16 page_size);
 u8 rtw_check_invalid_mac_address (u8 *mac_addr);
 u8 rtw_hal_set_fw_media_status_cmd(_adapter* adapter, u8 mstatus, u8 macid);
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
+#if defined(CONFIG_AP_WOWLAN)
 void rtw_get_current_ip_address(PADAPTER padapter, u8 *pcurrentip);
 void rtw_get_sec_iv(PADAPTER padapter, u8*pcur_dot11txpn, u8 *StaAddr);
 void rtw_set_sec_pn(_adapter *padapter);
