@@ -3425,13 +3425,13 @@ int rtw_resume_process_wow(_adapter *padapter)
 		goto exit;
 	}
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	pwrpriv->pno_in_resume = _TRUE;
 #ifdef CONFIG_FWLPS_IN_IPS
 	if(pwrpriv->wowlan_pno_enable)
 		rtw_set_fw_in_ips_mode(padapter, _FALSE);
 #endif //CONFIG_FWLPS_IN_IPS
-#endif//CONFIG_PNO_SUPPORT
+#endif //
 
 	if (pwrpriv->wowlan_mode == _TRUE) {
 #ifdef CONFIG_LPS
@@ -3895,7 +3895,7 @@ int rtw_resume_common(_adapter *padapter)
 
 	if (pwrpriv) {
 		pwrpriv->bInSuspend = _FALSE;
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		pwrpriv->pno_in_resume = _FALSE;
 #endif
 	}

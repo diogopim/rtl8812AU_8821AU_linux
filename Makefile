@@ -39,7 +39,6 @@ CONFIG_LOAD_PHY_PARA_FROM_FILE = y
 CONFIG_BR_EXT = y
 ######################## Wake On Lan ##########################
 CONFIG_WAKEUP_GPIO_IDX = default
-#CONFIG_PNO_SUPPORT = n
 #CONFIG_PNO_SET_DEBUG = n
 ######### Notify SDIO Host Keep Power During Syspend ##########
 CONFIG_RTW_SDIO_PM_KEEP_POWER = y

@@ -3706,7 +3706,7 @@ void rtw_set_sec_pn(PADAPTER padapter)
 }
 #endif //
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 #define	CSCAN_TLV_TYPE_SSID_IE	'S'
 #define CIPHER_IE "key_mgmt="
 #define CIPHER_NONE "NONE"
@@ -4052,4 +4052,4 @@ void rtw_dev_pno_debug(struct net_device *net)
 	DBG_871X("*****************\n");
 }
 #endif //CONFIG_PNO_SET_DEBUG
-#endif //CONFIG_PNO_SUPPORT
+#endif //

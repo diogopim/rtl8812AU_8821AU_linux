@@ -58,7 +58,7 @@ const char *android_wifi_cmd_str[ANDROID_WIFI_CMD_MAX] = {
 
 	"MIRACAST",
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	"PNOSSIDCLR",
 	"PNOSETUP",
 	"PNOFORCE",
@@ -84,7 +84,7 @@ const char *android_wifi_cmd_str[ANDROID_WIFI_CMD_MAX] = {
 	"P2P_DISABLE"
 };
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 #define PNO_TLV_PREFIX			'S'
 #define PNO_TLV_VERSION			'1'
 #define PNO_TLV_SUBVERSION 		'2'
@@ -155,7 +155,7 @@ static int g_wifi_on = _TRUE;
 unsigned int oob_irq = 0;
 unsigned int oob_gpio = 0;
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 /*
  * rtw_android_pno_setup
  * Description:
@@ -331,7 +331,7 @@ int rtw_android_pno_enable(struct net_device *net, int pno_enable)
 		return -1;
 	}
 }
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 
 int rtw_android_cmdstr_to_num(char *cmdstr)
 {
@@ -542,7 +542,7 @@ int rtw_android_priv_cmd(struct net_device *net, struct ifreq *ifr, int cmd)
 	char *command = NULL;
 	int cmd_num;
 	int bytes_written = 0;
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	uint cmdlen = 0;
 	uint pno_enable = 0;
 #endif
@@ -708,7 +708,7 @@ int rtw_android_priv_cmd(struct net_device *net, struct ifreq *ifr, int cmd)
 		bytes_written = rtw_android_set_country(net, command, priv_cmd.total_len);
 		break;
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	case ANDROID_WIFI_CMD_PNOSSIDCLR_SET:
 		//bytes_written = dhd_dev_pno_reset(net);
 		break;

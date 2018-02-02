@@ -5192,7 +5192,7 @@ static int cfg80211_rtw_tdls_oper(struct wiphy *wiphy,
 }
 #endif
 
-#if defined(CONFIG_PNO_SUPPORT) && (LINUX_VERSION_CODE >= KERNEL_VERSION(3,0,0))
+#if 0
 static int cfg80211_rtw_sched_scan_start(struct wiphy *wiphy,
         struct net_device *dev,
         struct cfg80211_sched_scan_request *request)
@@ -5241,7 +5241,7 @@ static int cfg80211_rtw_sched_scan_stop(struct wiphy *wiphy,
 {
 	return rtw_android_pno_enable(dev, _FALSE);
 }
-#endif /* CONFIG_PNO_SUPPORT */
+#endif
 
 static int rtw_cfg80211_set_beacon_wpsp2pie(struct net_device *ndev, char *buf, int len)
 {
@@ -5754,7 +5754,7 @@ static void rtw_cfg80211_preinit_wiphy(_adapter *padapter, struct wiphy *wiphy)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4, 12, 0)
 	wiphy->flags |= WIPHY_FLAG_SUPPORTS_SCHED_SCAN;
 #endif
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	wiphy->max_sched_scan_ssids = MAX_PNO_LIST_COUNT;
 #endif
 #endif
@@ -5852,10 +5852,10 @@ static struct cfg80211_ops rtw_cfg80211_ops = {
 	.tdls_oper = cfg80211_rtw_tdls_oper,
 #endif
 
-#if defined(CONFIG_PNO_SUPPORT) && (LINUX_VERSION_CODE >= KERNEL_VERSION(3,0,0))
+#if 0
 	.sched_scan_start = cfg80211_rtw_sched_scan_start,
 	.sched_scan_stop = cfg80211_rtw_sched_scan_stop,
-#endif /* CONFIG_PNO_SUPPORT */
+#endif /*  */
 };
 
 int rtw_wdev_alloc(_adapter *padapter, struct device *dev)

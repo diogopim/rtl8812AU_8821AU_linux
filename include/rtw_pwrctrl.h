@@ -56,7 +56,7 @@ enum Power_Mgnt {
 	PS_MODE_NUM,
 };
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 #define MAX_PNO_LIST_COUNT 16
 #define MAX_SCAN_LIST_COUNT 14	//2.4G only
 #define MAX_HIDDEN_AP 8		//8 hidden AP
@@ -195,7 +195,7 @@ typedef enum _PS_DENY_REASON {
 	PS_DENY_OTHERS = 31
 } PS_DENY_REASON;
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 typedef struct pno_nlo_info {
 	u32 fast_scan_period;				//Fast scan period
 	u8	ssid_num;				//number of entry
@@ -236,7 +236,7 @@ typedef struct pno_scan_info {
 	u64	rfe_type;			//rfe_type && 0x00000000000000ff
 	pno_scan_channel_info_t ssid_channel_info[MAX_SCAN_LIST_COUNT];
 } pno_scan_info_t;
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 
 struct pwrctrl_priv {
 	_pwrlock	lock;
@@ -314,7 +314,7 @@ struct pwrctrl_priv {
 	u8		wowlan_unicast;
 	u8		wowlan_pattern_idx;
 	u8		wowlan_from_cmd;
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	u8		pno_in_resume;
 	u8		pno_inited;
 	pno_nlo_info_t	*pnlo_info;

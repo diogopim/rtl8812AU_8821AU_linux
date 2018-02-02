@@ -661,7 +661,7 @@ void rtw_set_fw_in_ips_mode(PADAPTER padapter, u8 enable)
 		//Enter IPS
 		DBG_871X("%s: issue H2C to FW when entering IPS\n", __func__);
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		parm[0] = 0x03;
 		parm[1] = pwrpriv->pnlo_info->fast_scan_iterations;
 		parm[2] = pwrpriv->pnlo_info->slow_scan_period;
@@ -669,7 +669,7 @@ void rtw_set_fw_in_ips_mode(PADAPTER padapter, u8 enable)
 		parm[0] = 0x03;
 		parm[1] = 0x0;
 		parm[2] = 0x0;
-#endif//CONFIG_PNO_SUPPORT
+#endif //
 
 		pHalFunc->fill_h2c_cmd(padapter, //H2C_FWLPS_IN_IPS_,
 		                       H2C_INACTIVE_PS_,
@@ -749,7 +749,7 @@ void rtw_set_fw_in_ips_mode(PADAPTER padapter, u8 enable)
 		                       H2C_INACTIVE_PS_LEN, parm);
 	}
 }
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 
 void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode, const char *msg)
 {
@@ -1951,7 +1951,7 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 #if 0
 	pwrctrlpriv->wowlan_from_cmd = _FALSE;
 #endif
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	pwrctrlpriv->pno_inited = _FALSE;
 	pwrctrlpriv->pnlo_info = NULL;
 	pwrctrlpriv->pscan_info = NULL;
@@ -1985,7 +1985,7 @@ void rtw_free_pwrctrl_priv(PADAPTER adapter)
 	}
 #endif
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	if (pwrctrlpriv->pnlo_info != NULL)
 		printk("****** pnlo_info memory leak********\n");
 

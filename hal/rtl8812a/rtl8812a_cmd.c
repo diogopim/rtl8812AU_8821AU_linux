@@ -1304,7 +1304,7 @@ static inline void rtl8812_set_FwRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC r
 }
 
 #if 0
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 static void rtl8812_set_FwScanOffloadInfo_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc, u8 enable)
 {
 	u8 u1H2CScanOffloadInfoParm[H2C_SCAN_OFFLOAD_CTRL_LEN]= {0};
@@ -1345,7 +1345,7 @@ static void rtl8812_set_FwScanOffloadInfo_cmd(PADAPTER padapter, PRSVDPAGE_LOC r
 		DBG_871X("0x1b9: 0x%02x\n", res);
 	}
 }
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 
 
 #if 0
@@ -1523,7 +1523,7 @@ static void rtl8812_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvd
 	         rsvdpageloc->LocGTKInfo, rsvdpageloc->LocProbeReq,
 	         rsvdpageloc->LocNetList);
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	DBG_871X("NLO_INFO=%d\n", rsvdpageloc->LocPNOInfo);
 #endif
 	if (check_fwstate(pmlmepriv, _FW_LINKED)) {
@@ -1536,7 +1536,7 @@ static void rtl8812_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvd
 		SET_H2CCMD_AOAC_RSVDPAGE_LOC_GTK_EXT_MEM(u1H2CAoacRsvdPageParm, rsvdpageloc->LocGTKEXTMEM);
 #endif // CONFIG_GTK_OL
 	} else {
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		if(!pwrpriv->pno_in_resume) {
 			SET_H2CCMD_AOAC_RSVDPAGE_LOC_NLO_INFO(u1H2CAoacRsvdPageParm, rsvdpageloc->LocPNOInfo);
 		}
@@ -1546,7 +1546,7 @@ static void rtl8812_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvd
 	RT_PRINT_DATA(_module_hal_init_c_, _drv_always_, "u1H2CAoacRsvdPageParm:", u1H2CAoacRsvdPageParm, H2C_AOAC_RSVDPAGE_LOC_LEN);
 	FillH2CCmd_8812(padapter, H2C_AOAC_RSVD_PAGE, H2C_AOAC_RSVDPAGE_LOC_LEN, u1H2CAoacRsvdPageParm);
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	if (!check_fwstate(pmlmepriv, WIFI_AP_STATE) &&
 	    !check_fwstate(pmlmepriv, _FW_LINKED) &&
 	    pwrpriv->pno_in_resume == _FALSE) {
@@ -1559,7 +1559,7 @@ static void rtl8812_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvd
 			rtw_msleep_os(2);
 		}
 	}
-#endif // CONFIG_PNO_SUPPORT
+#endif //
 #endif
 }
 
@@ -1961,7 +1961,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 	} else
 #endif //
 	{
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		if (pwrctl->pno_in_resume == _FALSE) {
 			//Probe Request
 			RsvdPageLoc.LocProbePacket = TotalPageNum;
@@ -2057,7 +2057,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		} else {
 			TotalPacketLen = BufIndex + BTQosNullLength;
 		}
-#else //CONFIG_PNO_SUPPORT
+#else //
 		TotalPacketLen = BufIndex + BTQosNullLength;
 #endif
 	}
@@ -2080,7 +2080,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		rtl8812_set_FwRsvdPage_cmd(padapter, &RsvdPageLoc);
 		rtl8812_set_FwAoacRsvdPage_cmd(padapter, &RsvdPageLoc);
 	} else {
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		if(pwrctl->pno_in_resume)
 			rtl8812_set_FwScanOffloadInfo_cmd(padapter,
 			                                  &RsvdPageLoc, 0);
@@ -2105,7 +2105,7 @@ static void rtl8812_set_FwRemoteWakeCtrl_Cmd(PADAPTER padapter, u8 benable)
 
 	DBG_871X("%s(): Enable=%d\n", __func__, benable);
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	SET_H2CCMD_REMOTE_WAKECTRL_ENABLE(u1H2CRemoteWakeCtrlParm, benable);
 	SET_H2CCMD_REMOTE_WAKE_CTRL_NLO_OFFLOAD_EN(u1H2CRemoteWakeCtrlParm, benable);
 #endif
@@ -2135,7 +2135,7 @@ static void rtl8812_set_FwRemoteWakeCtrl_Cmd(PADAPTER padapter, u8 benable)
 	RT_PRINT_DATA(_module_hal_init_c_, _drv_always_, "u1H2CRemoteWakeCtrlParm:", u1H2CRemoteWakeCtrlParm, H2C_REMOTE_WAKE_CTRL_LEN);
 	FillH2CCmd_8812(padapter, H2C_REMOTE_WAKE_CTRL,
 	                H2C_REMOTE_WAKE_CTRL_LEN, u1H2CRemoteWakeCtrlParm);
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	if (ppwrpriv->wowlan_pno_enable && ppwrpriv->pno_in_resume == _FALSE) {
 		res = rtw_read8(padapter, REG_PNO_STATUS);
 		DBG_871X("cmd: 0x81 REG_PNO_STATUS: 0x%02x\n", res);
@@ -2147,7 +2147,7 @@ static void rtl8812_set_FwRemoteWakeCtrl_Cmd(PADAPTER padapter, u8 benable)
 		}
 		DBG_871X("cmd: 0x81 REG_PNO_STATUS: 0x%02x\n", res);
 	}
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 }
 
 
@@ -2209,7 +2209,7 @@ static void rtl8812_set_FwWoWlanCtrl_Cmd(PADAPTER padapter, u8 bFuncEn)
 	u8 gpio_high_active = 0; //0: low active, 1: high active
 	u8 magic_pkt = 1;
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	if (!ppwrpriv->wowlan_pno_enable) {
 		magic_pkt = 1;
 	}

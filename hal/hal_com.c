@@ -1383,7 +1383,7 @@ void rtw_hal_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc
 			ret = _FAIL;
 		}
 	}
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	else {
 
 		if(!pwrpriv->pno_in_resume) {
@@ -1403,7 +1403,7 @@ void rtw_hal_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc
 			}
 		}
 	}
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 #endif
 }
 
@@ -1453,7 +1453,7 @@ static u8 rtw_hal_check_wow_ctrl(_adapter* adapter, u8 chk_type)
 	return res;
 }
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 static u8 rtw_hal_check_pno_enabled(_adapter* adapter)
 {
 	struct pwrctrl_priv *ppwrpriv = adapter_to_pwrctl(adapter);
@@ -1887,7 +1887,7 @@ static u8 rtw_hal_set_remote_wake_ctrl_cmd(_adapter *adapter, u8 enable)
 		SET_H2CCMD_REMOTE_WAKE_CTRL_FW_PARSING_UNTIL_WAKEUP(
 		    u1H2CRemoteWakeCtrlParm, 1);
 	}
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	else {
 		SET_H2CCMD_REMOTE_WAKECTRL_ENABLE(
 		    u1H2CRemoteWakeCtrlParm, enable);
@@ -1945,7 +1945,7 @@ static u8 rtw_hal_set_global_info_cmd(_adapter* adapter, u8 group_alg, u8 pairwi
 	return ret;
 }
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 static u8 rtw_hal_set_scan_offload_info_cmd(_adapter* adapter,
         PRSVDPAGE_LOC rsvdpageloc, u8 enable)
 {
@@ -1979,7 +1979,7 @@ static u8 rtw_hal_set_scan_offload_info_cmd(_adapter* adapter,
 	}
 	return ret;
 }
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 
 void rtw_hal_set_fw_wow_related_cmd(_adapter* padapter, u8 enable)
 {
@@ -2015,9 +2015,9 @@ void rtw_hal_set_fw_wow_related_cmd(_adapter* padapter, u8 enable)
 			rtw_hal_set_keep_alive_cmd(padapter, enable, pkt_type);
 		}
 		rtw_hal_set_remote_wake_ctrl_cmd(padapter, enable);
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		rtw_hal_check_pno_enabled(padapter);
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 	} else {
 #if 0
 		{
@@ -3902,7 +3902,7 @@ static void rtw_hal_construct_ARPRsp(
 	}
 }
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 static void rtw_hal_construct_ProbeReq(_adapter *padapter, u8 *pframe,
                                        u32 *pLength, pno_ssid_t *ssid)
 {
@@ -4076,7 +4076,7 @@ static void rtw_hal_construct_scan_info(_adapter *padapter,
 		pScanInfoPkt += 4;
 	}
 }
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 
 #ifdef CONFIG_GTK_OL
 static void rtw_hal_construct_GTKRsp(
@@ -4235,10 +4235,10 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 	u8 kek[RTW_KEK_LEN];
 	u8 kck[RTW_KCK_LEN];
 #endif //CONFIG_GTK_OL
-#ifdef	CONFIG_PNO_SUPPORT
+#if	0
 	int index;
 	u8 ssid_num;
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 #endif
 #ifdef DBG_CONFIG_ERROR_DETECT
 	struct sreset_priv *psrtpriv;
@@ -4495,7 +4495,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 		TotalPacketLen = BufIndex + _AES_IV_LEN_;
 #endif //CONFIG_GTK_OL
 	} else if (pwrctl->wowlan_pno_enable == _TRUE) {
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		if (pwrctl->pno_in_resume == _FALSE &&
 		    pwrctl->pno_inited == _TRUE) {
 
@@ -4580,7 +4580,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 		} else {
 			TotalPacketLen = BufIndex + QosNullLength;
 		}
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 	} else {
 		TotalPacketLen = BufIndex + QosNullLength;
 	}
@@ -4711,7 +4711,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 		if (pwrctl->wowlan_mode == _TRUE)
 			rtw_hal_set_FwAoacRsvdPage_cmd(adapter, &RsvdPageLoc);
 	} else if (pwrctl->wowlan_pno_enable) {
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		rtw_hal_set_FwAoacRsvdPage_cmd(adapter, &RsvdPageLoc);
 		if(pwrctl->pno_in_resume)
 			rtw_hal_set_scan_offload_info_cmd(adapter,
@@ -4719,7 +4719,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 		else
 			rtw_hal_set_scan_offload_info_cmd(adapter,
 			                                  &RsvdPageLoc, 1);
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 	}
 #if 0
 	if(_TRUE == pwrctl->wowlan_p2p_mode)

@@ -8226,12 +8226,12 @@ static int rtw_wowlan_ctrl(struct net_device *dev,
 
 	if (!check_fwstate(pmlmepriv, _FW_LINKED) &&
 	    check_fwstate(pmlmepriv, WIFI_STATION_STATE)) {
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		pwrctrlpriv->wowlan_pno_enable = _TRUE;
 #else
 		DBG_871X("[%s] WARNING: Please Connect With AP First!!\n", __func__);
 		goto _rtw_wowlan_ctrl_exit_free;
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 	}
 
 	if (_rtw_memcmp( extra, "enable", 6 )) {
@@ -8248,9 +8248,9 @@ static int rtw_wowlan_ctrl(struct net_device *dev,
 
 		pwrctrlpriv->wowlan_from_cmd = _FALSE;
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		pwrctrlpriv->wowlan_pno_enable = _FALSE;
-#endif //CONFIG_PNO_SUPPORT
+#endif //
 
 		padapter->registrypriv.mp_mode = 0;
 	} else {
