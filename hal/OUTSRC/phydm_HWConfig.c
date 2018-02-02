@@ -2117,7 +2117,7 @@ ODM_ConfigFWWithHeaderFile(
 			READ_FIRMWARE_MP(8723B,_FW_NIC);
 		else if (ConfigType == CONFIG_FW_WoWLAN)
 			READ_FIRMWARE_MP(8723B,_FW_WoWLAN);
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 		else if (ConfigType == CONFIG_FW_AP_WoWLAN)
 			READ_FIRMWARE(8723B,_FW_AP_WoWLAN);
 #endif
@@ -2155,7 +2155,7 @@ ODM_ConfigFWWithHeaderFile(
 			READ_FIRMWARE_MP(8192E,_FW_NIC);
 		else if (ConfigType == CONFIG_FW_WoWLAN)
 			READ_FIRMWARE_MP(8192E,_FW_WoWLAN);
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 		else if (ConfigType == CONFIG_FW_AP_WoWLAN)
 			READ_FIRMWARE_MP(8192E,_FW_AP_WoWLAN);
 #endif

@@ -330,7 +330,7 @@ enum {
 #if 0
 	MP_WOW_ENABLE,
 #endif
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 	MP_AP_WOW_ENABLE,
 #endif
 	MP_NULL,

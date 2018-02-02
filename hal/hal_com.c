@@ -1896,7 +1896,7 @@ static u8 rtw_hal_set_remote_wake_ctrl_cmd(_adapter *adapter, u8 enable)
 	}
 #endif
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 	if (_TRUE == ppwrpriv->wowlan_p2p_mode) {
 		DBG_871X("P2P OFFLOAD ENABLE\n");
 		SET_H2CCMD_REMOTE_WAKE_CTRL_P2P_OFFLAD_EN(u1H2CRemoteWakeCtrlParm,1);
@@ -2035,7 +2035,7 @@ void rtw_hal_set_fw_wow_related_cmd(_adapter* padapter, u8 enable)
 }
 #endif //
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 static int update_hidden_ssid(u8 *ies, u32 ies_len, u8 hidden_ssid_mode)
 {
 	u8 *ssid_ie;
@@ -4244,7 +4244,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 	struct sreset_priv *psrtpriv;
 #endif // DBG_CONFIG_ERROR_DETECT
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 	u32 P2PNegoRspLength = 0, P2PInviteRspLength = 0, P2PPDRspLength = 0, P2PProbeRspLength = 0, P2PBCNLength = 0;
 #endif
 
@@ -4588,7 +4588,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 	TotalPacketLen = BufIndex + QosNullLength;
 #endif //
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 	if(_TRUE == pwrctl->wowlan_p2p_mode) {
 
 		// P2P Beacon
@@ -4721,7 +4721,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 			                                  &RsvdPageLoc, 1);
 #endif //CONFIG_PNO_SUPPORT
 	}
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 	if(_TRUE == pwrctl->wowlan_p2p_mode)
 		rtw_hal_set_FwP2PRsvdPage_cmd(adapter, &RsvdPageLoc);
 

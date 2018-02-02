@@ -1869,7 +1869,7 @@ ssize_t proc_set_sreset(struct file *file, const char __user *buffer, size_t cou
 }
 #endif /* DBG_CONFIG_ERROR_DETECT */
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 int proc_get_p2p_wowlan_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;

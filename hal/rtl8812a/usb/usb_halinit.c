@@ -2533,7 +2533,7 @@ void SetHwReg8812AU(PADAPTER Adapter, u8 variable, const u8* val)
 	//HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	//struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	//DM_ODM_T 		*podmpriv = &pHalData->odmpriv;
-#if defined(CONFIG_AP_WOWLAN) || defined(CONFIG_P2P_WOWLAN)
+#if 0
 	//const struct wowlan_ioctl_param *poidparam;
 	//struct recv_buf *precvbuf;
 	//struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(Adapter);
@@ -2597,7 +2597,7 @@ void SetHwReg8812AU(PADAPTER Adapter, u8 variable, const u8* val)
 		//rtw_write8(Adapter, REG_CAL_TIMER+1, 0x3);
 		rtw_write8(Adapter, REG_APS_FSMCO+1, 0x80);
 		break;
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 		if (pwrctl->wowlan_ap_mode == _TRUE) {
 			u8	ps_state = *((u8 *)val);
 			DBG_871X("%s, RPWM\n", __func__);
@@ -2713,7 +2713,7 @@ void SetHwReg8812AU(PADAPTER Adapter, u8 variable, const u8* val)
 	}
 	break;
 #endif
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 	case HW_VAR_AP_WOWLAN: {
 		poidparam = (const struct wowlan_ioctl_param *)val;
 		switch (poidparam->subcode) {
@@ -2831,7 +2831,7 @@ void SetHwReg8812AU(PADAPTER Adapter, u8 variable, const u8* val)
 		}
 	}
 	break;
-#endif //CONFIG_AP_WOWLAN
+#endif //
 	default:
 		SetHwReg8812A(Adapter, variable, val);
 		break;

@@ -801,7 +801,7 @@ int rtw_resume_process(_adapter *padapter)
 		return -1;
 	}
 
-#if defined (CONFIG_AP_WOWLAN)
+#if 0
 	/*
 	 * Due to usb wow suspend flow will cancel read/write port via intf_stop and
 	 * bReadPortCancel and bWritePortCancel are set _TRUE in intf_stop.

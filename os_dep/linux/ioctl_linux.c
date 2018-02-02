@@ -8267,7 +8267,7 @@ _rtw_wowlan_ctrl_exit_free:
 }
 #endif //
 
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 static int rtw_ap_wowlan_ctrl(struct net_device *dev,
                               struct iw_request_info *info,
                               union iwreq_data *wrqu, char *extra)
@@ -8361,7 +8361,7 @@ _rtw_ap_wowlan_ctrl_exit_free:
 _rtw_ap_wowlan_ctrl_exit:
 	return ret;
 }
-#endif //CONFIG_AP_WOWLAN
+#endif //
 
 static int rtw_pm_set(struct net_device *dev,
                       struct iw_request_info *info,
@@ -10802,7 +10802,7 @@ static int rtw_mp_set(struct net_device *dev,
 		rtw_wowlan_ctrl(dev, info, wdata, extra);
 		break;
 #endif
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 	case MP_AP_WOW_ENABLE:
 		DBG_871X("set case MP_AP_WOW_ENABLE: %s \n", extra);
 		rtw_ap_wowlan_ctrl(dev, info, wdata, extra);
@@ -12607,7 +12607,7 @@ static const struct iw_priv_args rtw_private_args[] = {
 #if 0
 	{ MP_WOW_ENABLE , IW_PRIV_TYPE_CHAR | 1024, 0, "wow_mode" }, //set
 #endif
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 	{ MP_AP_WOW_ENABLE , IW_PRIV_TYPE_CHAR | 1024, 0, "ap_wow_mode" }, //set
 #endif
 };

@@ -41,7 +41,6 @@ CONFIG_BR_EXT = y
 CONFIG_WAKEUP_GPIO_IDX = default
 #CONFIG_PNO_SUPPORT = n
 #CONFIG_PNO_SET_DEBUG = n
-#CONFIG_AP_WOWLAN = n
 ######### Notify SDIO Host Keep Power During Syspend ##########
 CONFIG_RTW_SDIO_PM_KEEP_POWER = y
 ###################### Platform Related #######################

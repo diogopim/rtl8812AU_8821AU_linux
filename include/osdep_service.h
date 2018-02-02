@@ -494,7 +494,7 @@ extern void rtw_lock_traffic_suspend_timeout(u32 timeout_ms);
 extern void rtw_lock_resume_scan_timeout(u32 timeout_ms);
 extern void rtw_resume_lock_suspend(void);
 extern void rtw_resume_unlock_suspend(void);
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 extern void rtw_softap_lock_suspend(void);
 extern void rtw_softap_unlock_suspend(void);
 #endif

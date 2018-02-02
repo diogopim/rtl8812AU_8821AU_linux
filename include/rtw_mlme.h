@@ -262,7 +262,7 @@ struct cfg80211_wifidirect_info {
 };
 #endif //CONFIG_IOCTL_CFG80211
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 
 enum P2P_WOWLAN_RECV_FRAME_TYPE {
 	P2P_WOWLAN_RECV_NEGO_REQ = 0,
@@ -308,7 +308,7 @@ struct wifidirect_info {
 	struct wifi_display_info		*wfd_info;
 #endif
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 	struct p2p_wowlan_info		p2p_wow_info;
 #endif //CONFIG_P2P_WOWLAN
 

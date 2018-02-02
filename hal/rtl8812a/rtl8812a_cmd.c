@@ -1348,7 +1348,7 @@ static void rtl8812_set_FwScanOffloadInfo_cmd(PADAPTER padapter, PRSVDPAGE_LOC r
 #endif //CONFIG_PNO_SUPPORT
 
 
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 static void rtl8812_set_ap_wow_rsvdpage_cmd(PADAPTER padapter,
         PRSVDPAGE_LOC rsvdpageloc)
 {
@@ -1506,7 +1506,7 @@ static void rtl8812_set_AP_FwRsvdPagePkt(PADAPTER padapter,
 error:
 	rtw_free_xmitframe(pxmitpriv, pcmdframe);
 }
-#endif //CONFIG_AP_WOWLAN
+#endif //
 
 
 static void rtl8812_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc)
@@ -2311,7 +2311,7 @@ void rtl8812_download_rsvd_page(PADAPTER padapter, u8 mstatus)
 		DLBcnCount = 0;
 		poll = 0;
 		do {
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 			if (pwrpriv->wowlan_ap_mode)
 				rtl8192e_set_AP_FwRsvdPagePkt(padapter, 0);
 			else

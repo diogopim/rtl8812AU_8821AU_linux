@@ -585,7 +585,7 @@ u8 PS_RDY_CHECK(_adapter * padapter)
 #endif /* CONFIG_IOCTL_CFG80211 */
 #endif /* CONFIG_P2P */
 
-#if defined(CONFIG_AP_WOWLAN)
+#if 0
 	if(_TRUE == pwrpriv->bInSuspend && pwrpriv->wowlan_mode)
 		return _TRUE;
 	else if(_TRUE == pwrpriv->bInSuspend && pwrpriv->wowlan_ap_mode)
@@ -825,7 +825,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 			pwrpriv->pwr_mode = ps_mode;
 			rtw_set_rpwm(padapter, PS_STATE_S4);
 
-#if defined(CONFIG_AP_WOWLAN) || defined(CONFIG_P2P_WOWLAN)
+#if 0
 			if (pwrpriv->wowlan_mode == _TRUE ||
 			    pwrpriv->wowlan_ap_mode == _TRUE ||
 			    pwrpriv->wowlan_p2p_mode == _TRUE) {
@@ -857,7 +857,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 		}
 	} else {
 		if ((PS_RDY_CHECK(padapter) && check_fwstate(&padapter->mlmepriv, WIFI_ASOC_STATE))
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 		    ||( _TRUE == pwrpriv->wowlan_p2p_mode)
 #endif //CONFIG_P2P_WOWLAN
 		   ) {

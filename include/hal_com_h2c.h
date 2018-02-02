@@ -266,7 +266,7 @@ enum h2c_cmd {
 #define SET_H2CCMD_AOAC_RSVDPAGE_LOC_SSID_INFO(__pH2CCmd, __Value)	SET_BITS_TO_LE_1BYTE_8BIT((__pH2CCmd)+3, 0, 8, __Value)
 #endif //CONFIG_PNO_SUPPORT
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 //P2P_RsvdPage_0x8a
 #define SET_H2CCMD_RSVDPAGE_LOC_P2P_BCN(__pH2CCmd, __Value)			SET_BITS_TO_LE_1BYTE_8BIT(__pH2CCmd, 0, 8, __Value)
 #define SET_H2CCMD_RSVDPAGE_LOC_P2P_PROBE_RSP(__pH2CCmd, __Value)				SET_BITS_TO_LE_1BYTE_8BIT((__pH2CCmd)+1, 0, 8, __Value)
@@ -303,7 +303,7 @@ typedef struct _RSVDPAGE_LOC {
 #endif //CONFIG_PNO_SUPPORT
 #endif //
 	u8 LocApOffloadBCN;
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 	u8 LocP2PBeacon;
 	u8 LocP2PProbeRsp;
 	u8 LocNegoRsp;
@@ -316,14 +316,14 @@ typedef struct _RSVDPAGE_LOC {
 void dump_TX_FIFO(PADAPTER padapter, u8 page_num, u16 page_size);
 u8 rtw_check_invalid_mac_address (u8 *mac_addr);
 u8 rtw_hal_set_fw_media_status_cmd(_adapter* adapter, u8 mstatus, u8 macid);
-#if defined(CONFIG_AP_WOWLAN)
+#if 0
 void rtw_get_current_ip_address(PADAPTER padapter, u8 *pcurrentip);
 void rtw_get_sec_iv(PADAPTER padapter, u8*pcur_dot11txpn, u8 *StaAddr);
 void rtw_set_sec_pn(_adapter *padapter);
 
 //WOW command function
 void rtw_hal_set_fw_wow_related_cmd(_adapter* padapter, u8 enable);
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 //H2C 0x8A
 u8 rtw_hal_set_FwP2PRsvdPage_cmd(_adapter* adapter, PRSVDPAGE_LOC rsvdpageloc);
 //H2C 0x8B

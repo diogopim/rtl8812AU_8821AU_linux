@@ -116,7 +116,7 @@ typedef enum _HW_VARIABLES {
 	HW_VAR_WAKEUP_REASON,
 	HW_VAR_RPWM_TOG,
 #endif
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 	HW_VAR_AP_WOWLAN,
 #endif
 	HW_VAR_SYS_CLKR,

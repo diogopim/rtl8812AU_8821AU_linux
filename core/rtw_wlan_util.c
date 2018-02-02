@@ -21,7 +21,7 @@
 
 #include <drv_types.h>
 
-#if defined(CONFIG_AP_WOWLAN)
+#if 0
 #include <linux/inetdevice.h>
 #endif
 
@@ -3632,7 +3632,7 @@ func_exit:
 
 
 
-#if defined(CONFIG_AP_WOWLAN)
+#if 0
 void rtw_get_current_ip_address(PADAPTER padapter, u8 *pcurrentip)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
