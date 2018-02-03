@@ -41,23 +41,6 @@ static inline VOID dm_CheckProtection(
     IN	PADAPTER	Adapter
 )
 {
-#if 0
-	PMGNT_INFO		pMgntInfo = &(Adapter->MgntInfo);
-	u1Byte			CurRate, RateThreshold;
-
-	if(pMgntInfo->pHTInfo->bCurBW40MHz)
-		RateThreshold = MGN_MCS1;
-	else
-		RateThreshold = MGN_MCS3;
-
-	if(Adapter->TxStats.CurrentInitTxRate <= RateThreshold) {
-		pMgntInfo->bDmDisableProtect = TRUE;
-		DbgPrint("Forced disable protect: %x\n", Adapter->TxStats.CurrentInitTxRate);
-	} else {
-		pMgntInfo->bDmDisableProtect = FALSE;
-		DbgPrint("Enable protect: %x\n", Adapter->TxStats.CurrentInitTxRate);
-	}
-#endif
 }
 
 static VOID
@@ -65,20 +48,6 @@ dm_CheckStatistics(
     IN	PADAPTER	Adapter
 )
 {
-#if 0
-	if(!Adapter->MgntInfo.bMediaConnect)
-		return;
-
-	//2008.12.10 tynli Add for getting Current_Tx_Rate_Reg flexibly.
-	rtw_hal_get_hwreg( Adapter, HW_VAR_INIT_TX_RATE, (pu1Byte)(&Adapter->TxStats.CurrentInitTxRate) );
-
-	// Calculate current Tx Rate(Successful transmited!!)
-
-	// Calculate current Rx Rate(Successful received!!)
-
-	//for tx tx retry count
-	rtw_hal_get_hwreg( Adapter, HW_VAR_RETRY_COUNT, (pu1Byte)(&Adapter->TxStats.NumTxRetryCount) );
-#endif
 }
 #ifdef CONFIG_SUPPORT_HW_WPS_PBC
 static void dm_CheckPbcGPIO(_adapter *padapter)
@@ -404,62 +373,3 @@ void rtl8812_deinit_dm_priv(IN PADAPTER Adapter)
 	//_rtw_spinlock_free(&pHalData->odm_stainfo_lock);
 	ODM_CancelAllTimers(podmpriv);
 }
-
-
-#if 0
-// Add new function to reset the state of antenna diversity before link.
-//
-// Compare RSSI for deciding antenna
-void	AntDivCompare8812(PADAPTER Adapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src)
-{
-	//PADAPTER Adapter = pDM_Odm->Adapter ;
-
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	if(0 != pHalData->AntDivCfg ) {
-		//DBG_8192C("update_network=> orgRSSI(%d)(%d),newRSSI(%d)(%d)\n",dst->Rssi,query_rx_pwr_percentage(dst->Rssi),
-		//	src->Rssi,query_rx_pwr_percentage(src->Rssi));
-		//select optimum_antenna for before linked =>For antenna diversity
-		if(dst->Rssi >=  src->Rssi ) { //keep org parameter
-			src->Rssi = dst->Rssi;
-			src->PhyInfo.Optimum_antenna = dst->PhyInfo.Optimum_antenna;
-		}
-	}
-}
-
-// Add new function to reset the state of antenna diversity before link.
-u8 AntDivBeforeLink8812(PADAPTER Adapter )
-{
-
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	PDM_ODM_T 	pDM_Odm =&pHalData->odmpriv;
-	SWAT_T		*pDM_SWAT_Table = &pDM_Odm->DM_SWAT_Table;
-	struct mlme_priv	*pmlmepriv = &(Adapter->mlmepriv);
-
-	// Condition that does not need to use antenna diversity.
-	if(pHalData->AntDivCfg==0) {
-		//DBG_8192C("odm_AntDivBeforeLink8192C(): No AntDiv Mechanism.\n");
-		return _FALSE;
-	}
-
-	if(check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {
-		return _FALSE;
-	}
-
-
-	if(pDM_SWAT_Table->SWAS_NoLink_State == 0) {
-		//switch channel
-		pDM_SWAT_Table->SWAS_NoLink_State = 1;
-		pDM_SWAT_Table->CurAntenna = (pDM_SWAT_Table->CurAntenna==MAIN_ANT)?AUX_ANT:MAIN_ANT;
-
-		//PHY_SetBBReg(Adapter, rFPGA0_XA_RFInterfaceOE, 0x300, pDM_SWAT_Table->CurAntenna);
-		rtw_antenna_select_cmd(Adapter, pDM_SWAT_Table->CurAntenna, _FALSE);
-		//DBG_8192C("%s change antenna to ANT_( %s ).....\n",__FUNCTION__, (pDM_SWAT_Table->CurAntenna==MAIN_ANT)?"MAIN":"AUX");
-		return _TRUE;
-	} else {
-		pDM_SWAT_Table->SWAS_NoLink_State = 0;
-		return _FALSE;
-	}
-
-}
-#endif
-

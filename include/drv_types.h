@@ -119,14 +119,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_p2p.h>
 #endif // CONFIG_P2P
 
-#if 0
-#include <rtw_tdls.h>
-#endif //
-
-#if 0
-#include <drvext_api.h>
-#endif //
-
 #ifdef CONFIG_MP_INCLUDED
 #include <rtw_mp.h>
 #endif // CONFIG_MP_INCLUDED
@@ -789,10 +781,6 @@ struct _ADAPTER {
 	struct	mp_priv	mppriv;
 #endif
 
-#if 0
-	struct	drvext_priv	drvextpriv;
-#endif
-
 #ifdef CONFIG_AP_MODE
 	struct	hostapd_priv	*phostapdpriv;
 #endif
@@ -806,10 +794,6 @@ struct _ADAPTER {
 #ifdef CONFIG_P2P
 	struct wifidirect_info	wdinfo;
 #endif //CONFIG_P2P
-
-#if 0
-	struct tdls_info	tdlsinfo;
-#endif //
 
 #ifdef CONFIG_WFD
 	struct wifi_display_info wfd_info;
@@ -1041,20 +1025,6 @@ __inline static void RTW_ENABLE_FUNC(_adapter*padapter, int func_bit)
 			 RTW_IS_FUNC_DISABLED((padapter), DF_TX_BIT))
 
 int rtw_handle_dualmac(_adapter *adapter, bool init);
-
-#if 0
-int rtw_parse_ssid_list_tlv(char** list_str, pno_ssid_t* ssid, int max, int *bytes_left);
-int rtw_dev_pno_set(struct net_device *net, pno_ssid_t* ssid, int num,
-                    int pno_time, int pno_repeat, int pno_freq_expo_max);
-#if 0
-void rtw_dev_pno_debug(struct net_device *net);
-#endif //
-#endif //
-
-#if 0
-int rtw_suspend_wow(_adapter *padapter);
-int rtw_resume_process_wow(_adapter *padapter);
-#endif
 
 __inline static u8 *myid(struct eeprom_priv *peepriv)
 {

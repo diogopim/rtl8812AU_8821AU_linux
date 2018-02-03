@@ -382,10 +382,6 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, const u8 *hwaddr)
 
 		init_addba_retry_timer(pstapriv->padapter, psta);
 
-#if 0
-		rtw_init_tdls_timer(pstapriv->padapter, psta);
-#endif //
-
 		//for A-MPDU Rx reordering buffer control
 		for(i=0; i < 16 ; i++) {
 			preorder_ctrl = &psta->recvreorder_ctrl[i];
@@ -522,18 +518,7 @@ u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 	rtw_os_wake_queue_at_free_stainfo(padapter, pending_qcnt);
 
 	_exit_critical_bh(&pxmitpriv->lock, &irqL0);
-
-
-	// re-init sta_info; 20061114 // will be init in alloc_stainfo
-	//_rtw_init_sta_xmit_priv(&psta->sta_xmitpriv);
-	//_rtw_init_sta_recv_priv(&psta->sta_recvpriv);
-
 	_cancel_timer_ex(&psta->addba_retry_timer);
-
-#if 0
-	psta->tdls_sta_state = TDLS_STATE_NONE;
-	rtw_free_tdls_timer(psta);
-#endif //
 
 	//for A-MPDU Rx reordering buffer control, cancel reordering_ctrl_timer
 	for(i=0; i < 16 ; i++) {

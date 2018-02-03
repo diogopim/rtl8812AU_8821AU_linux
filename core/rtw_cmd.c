@@ -1477,16 +1477,6 @@ u8 rtw_joinbss_cmd(_adapter  *padapter, struct wlan_network* pnetwork)
 
 #endif //CONFIG_80211N_HT
 
-#if 0
-	psecuritypriv->supplicant_ie[0]=(u8)psecnetwork->IELength;
-
-	if(psecnetwork->IELength < (256-1)) {
-		_rtw_memcpy(&psecuritypriv->supplicant_ie[1], &psecnetwork->IEs[0], psecnetwork->IELength);
-	} else {
-		_rtw_memcpy(&psecuritypriv->supplicant_ie[1], &psecnetwork->IEs[0], (256-1));
-	}
-#endif
-
 	pcmd->cmdsz = get_WLAN_BSSID_EX_sz(psecnetwork);//get cmdsz before endian conversion
 
 #ifdef CONFIG_RTL8712
@@ -1636,12 +1626,6 @@ u8 rtw_setstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 key_type, bool
 	} else if (key_type == UNICAST_KEY) {
 		_rtw_memcpy(&psetstakey_para->key, &sta->dot118021x_UncstKey, 16);
 	}
-#if 0
-	else if(key_type == TDLS_KEY) {
-		_rtw_memcpy(&psetstakey_para->key, sta->tpk.tk, 16);
-		psetstakey_para->algorithm=(u8)sta->dot118021XPrivacy;
-	}
-#endif
 
 	//jeff: set this becasue at least sw key is ready
 	padapter->securitypriv.busetkipkey=_TRUE;
@@ -2214,45 +2198,8 @@ exit:
 
 u8 rtw_tdls_cmd(_adapter *padapter, const u8 *addr, u8 option)
 {
-#if 0
-	struct	cmd_obj*	pcmdobj;
-	struct	TDLSoption_param	*TDLSoption;
-	struct	cmd_priv   *pcmdpriv = &padapter->cmdpriv;
-#endif
-	//struct 	mlme_priv *pmlmepriv = &padapter->mlmepriv;
-
 	u8	res=_SUCCESS;
-
 	_func_enter_;
-
-#if 0
-
-	RT_TRACE(_module_rtl871x_cmd_c_, _drv_notice_, ("+rtw_set_tdls_cmd\n"));
-
-	pcmdobj = (struct	cmd_obj*)rtw_zmalloc(sizeof(struct	cmd_obj));
-	if(pcmdobj == NULL) {
-		res=_FAIL;
-		goto exit;
-	}
-
-	TDLSoption= (struct TDLSoption_param *)rtw_zmalloc(sizeof(struct TDLSoption_param));
-	if(TDLSoption == NULL) {
-		rtw_mfree((u8 *)pcmdobj, sizeof(struct cmd_obj));
-		res= _FAIL;
-		goto exit;
-	}
-
-	_rtw_spinlock(&(padapter->tdlsinfo.cmd_lock));
-	if (addr != NULL)
-		_rtw_memcpy(TDLSoption->addr, addr, 6);
-	TDLSoption->option = option;
-	_rtw_spinunlock(&(padapter->tdlsinfo.cmd_lock));
-	init_h2fwcmd_w_parm_no_rsp(pcmdobj, TDLSoption, GEN_CMD_CODE(_TDLS));
-	res = rtw_enqueue_cmd(pcmdpriv, pcmdobj);
-
-exit:
-#endif //
-
 	_func_exit_;
 
 	return res;
@@ -2313,11 +2260,6 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 	u8	bHigherBusyTraffic = _FALSE, bHigherBusyRxTraffic = _FALSE, bHigherBusyTxTraffic = _FALSE;
 
 	struct mlme_priv		*pmlmepriv = &(padapter->mlmepriv);
-#if 0
-	struct tdls_info *ptdlsinfo = &(padapter->tdlsinfo);
-	struct tdls_txmgmt txmgmt;
-	const u8 baddr[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
-#endif //
 
 #ifdef CONFIG_TRAFFIC_PROTECT
 	RT_LINK_DETECT_T * link_detect = &pmlmepriv->LinkDetectInfo;
@@ -2372,17 +2314,6 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 			rtw_lock_traffic_suspend_timeout(TRAFFIC_PROTECT_PERIOD_MS);
 		}
 #endif
-
-#if 0
-#ifdef CONFIG_TDLS_AUTOSETUP
-		/* TDLS_WATCHDOG_PERIOD * 2sec, periodically send */
-		if ((ptdlsinfo->watchdog_count % TDLS_WATCHDOG_PERIOD ) == 0) {
-			_rtw_memcpy(txmgmt.peer, baddr, ETH_ALEN);
-			issue_tdls_dis_req( padapter, &txmgmt );
-		}
-		ptdlsinfo->watchdog_count++;
-#endif //_AUTOSETUP
-#endif //
 
 #ifdef CONFIG_LPS
 		// check traffic for  powersaving.
@@ -2820,58 +2751,6 @@ u8 rtw_rpt_timer_cfg_cmd(_adapter*padapter, u16 minRptTime)
 	pdrvextra_cmd_parm->pbuf = NULL;
 	init_h2fwcmd_w_parm_no_rsp(ph2c, pdrvextra_cmd_parm, GEN_CMD_CODE(_Set_Drv_Extra));
 	res = rtw_enqueue_cmd(pcmdpriv, ph2c);
-exit:
-
-	_func_exit_;
-
-	return res;
-
-}
-
-#endif
-
-#if 0
-void antenna_select_wk_hdl(_adapter *padapter, u8 antenna)
-{
-	rtw_hal_set_hwreg(padapter, HW_VAR_ANTENNA_DIVERSITY_SELECT, (u8 *)(&antenna));
-}
-
-u8 rtw_antenna_select_cmd(_adapter*padapter, u8 antenna,u8 enqueue)
-{
-	struct cmd_obj		*ph2c;
-	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
-	struct cmd_priv	*pcmdpriv = &padapter->cmdpriv;
-	u8 	bSupportAntDiv = _FALSE;
-	u8	res = _SUCCESS;
-
-	_func_enter_;
-	rtw_hal_get_def_var(padapter, HAL_DEF_IS_SUPPORT_ANT_DIV, &(bSupportAntDiv));
-	if(_FALSE == bSupportAntDiv )	return res;
-
-	if(_TRUE == enqueue) {
-		ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
-		if(ph2c==NULL) {
-			res= _FAIL;
-			goto exit;
-		}
-
-		pdrvextra_cmd_parm = (struct drvextra_cmd_parm*)rtw_zmalloc(sizeof(struct drvextra_cmd_parm));
-		if(pdrvextra_cmd_parm==NULL) {
-			rtw_mfree((unsigned char *)ph2c, sizeof(struct cmd_obj));
-			res= _FAIL;
-			goto exit;
-		}
-
-		pdrvextra_cmd_parm->ec_id = ANT_SELECT_WK_CID;
-		pdrvextra_cmd_parm->type = antenna;
-		pdrvextra_cmd_parm->size = 0;
-		pdrvextra_cmd_parm->pbuf = NULL;
-		init_h2fwcmd_w_parm_no_rsp(ph2c, pdrvextra_cmd_parm, GEN_CMD_CODE(_Set_Drv_Extra));
-
-		res = rtw_enqueue_cmd(pcmdpriv, ph2c);
-	} else {
-		antenna_select_wk_hdl(padapter,antenna );
-	}
 exit:
 
 	_func_exit_;
@@ -3322,11 +3201,6 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 		rpt_timer_setting_wk_hdl(padapter, pdrvextra_cmd->type);
 		break;
 #endif
-#if 0
-	case ANT_SELECT_WK_CID:
-		antenna_select_wk_hdl(padapter, pdrvextra_cmd->type);
-		break;
-#endif
 #ifdef CONFIG_P2P_PS
 	case P2P_PS_WK_CID:
 		p2p_ps_wk_hdl(padapter, pdrvextra_cmd->type);
@@ -3531,22 +3405,6 @@ void rtw_createbss_cmd_callback(_adapter *padapter, struct cmd_obj *pcmd)
 		//tgt_network->network.Configuration.DSConfig = (u32)rtw_ch2freq(pnetwork->Configuration.DSConfig);
 
 		_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
-
-#if 0
-		if((pmlmepriv->fw_state) & WIFI_AP_STATE) {
-			psta = rtw_alloc_stainfo(&padapter->stapriv, pnetwork->MacAddress);
-
-			if (psta == NULL) { // for AP Mode & Adhoc Master Mode
-				RT_TRACE(_module_rtl871x_cmd_c_,_drv_err_,("\nCan't alloc sta_info when createbss_cmd_callback\n"));
-				goto createbss_cmd_fail ;
-			}
-
-			rtw_indicate_connect( padapter);
-		} else {
-
-			//rtw_indicate_disconnect(dev);
-		}
-#endif
 		_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
 		// we will set _FW_LINKED when there is one more sat to join us (rtw_stassoc_event_callback)
 

@@ -350,16 +350,6 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 		if( br_port && (check_fwstate(pmlmepriv, WIFI_STATION_STATE|WIFI_ADHOC_STATE) == _TRUE) ) {
 			int nat25_handle_frame(_adapter *priv, struct sk_buff *skb);
 			if (nat25_handle_frame(padapter, pkt) == -1) {
-				//priv->ext_stats.rx_data_drops++;
-				//DEBUG_ERR("RX DROP: nat25_handle_frame fail!\n");
-				//return FAIL;
-
-#if 1
-				// bypass this frame to upper layer!!
-#else
-				rtw_skb_free(sub_skb);
-				continue;
-#endif
 			}
 		}
 #endif	// CONFIG_BR_EXT
@@ -501,23 +491,13 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 		if(rx_pid == psta->pid) {
 			int i;
 			u16 len = *(u16*)(skb->data+ETH_HLEN+2);
-			//u16 ctrl_type = *(u16*)(skb->data+ETH_HLEN+4);
-
-			//DBG_871X("eth, RC: len=0x%x, ctrl_type=0x%x\n", len, ctrl_type);
 			DBG_871X("eth, RC: len=0x%x\n", len);
 
 			for(i=0; i<len; i++)
 				DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+4+i));
-			//DBG_871X("0x%x\n", *(skb->data+ETH_HLEN+6+i));
 
 			DBG_871X("eth, RC-end\n");
 
-#if 0
-			//send_sz = ksocket_send(padapter->ksock_send, &padapter->kaddr_send, (skb->data+ETH_HLEN+2), len);
-			rtw_recv_ksocket_send_cmd(padapter, (skb->data+ETH_HLEN+2), len);
-
-			//DBG_871X("ksocket_send size=%d\n", send_sz);
-#endif
 		}
 
 	}
@@ -576,7 +556,6 @@ int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 	struct recv_priv *precvpriv;
 	_queue	*pfree_recv_queue;
 	_pkt *skb;
-	//struct mlme_priv*pmlmepriv = &padapter->mlmepriv;
 	struct rx_pkt_attrib *pattrib;
 
 	if(NULL == precv_frame)
@@ -586,12 +565,6 @@ int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 	pattrib = &precv_frame->u.hdr.attrib;
 	precvpriv = &(padapter->recvpriv);
 	pfree_recv_queue = &(precvpriv->free_recv_queue);
-
-#if 0
-	if (drvext_rx_handler(padapter, precv_frame->u.hdr.rx_data, precv_frame->u.hdr.len) == _SUCCESS) {
-		goto _recv_indicatepkt_drop;
-	}
-#endif
 
 	skb = precv_frame->u.hdr.pkt;
 	if(skb == NULL) {
@@ -612,46 +585,28 @@ int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("\n skb->head=%p skb->data=%p skb->tail=%p skb->end=%p skb->len=%d\n", skb->head, skb->data, skb_tail_pointer(skb), skb_end_pointer(skb), skb->len));
 
 #ifdef CONFIG_AUTO_AP_MODE
-#if 1 //for testing
-#if 1
 	if (0x8899 == pattrib->eth_type) {
 		rtw_os_ksocket_send(padapter, precv_frame);
 
 		//goto _recv_indicatepkt_drop;
 	}
-#else
-	if (0x8899 == pattrib->eth_type) {
-		rtw_auto_ap_mode_rx(padapter, precv_frame);
-
-		goto _recv_indicatepkt_end;
-	}
-#endif
-#endif
 #endif //CONFIG_AUTO_AP_MODE
 
 	rtw_os_recv_indicate_pkt(padapter, skb, pattrib);
 
-//_recv_indicatepkt_end:
-
 	precv_frame->u.hdr.pkt = NULL; // pointers to NULL before rtw_free_recvframe()
-
 	rtw_free_recvframe(precv_frame, pfree_recv_queue);
-
 	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("\n rtw_recv_indicatepkt :after rtw_os_recv_indicate_pkt!!!!\n"));
-
-
 	return _SUCCESS;
 
-_recv_indicatepkt_drop:
+  _recv_indicatepkt_drop:
 
 	//enqueue back to free_recv_queue
 	if(precv_frame)
 		rtw_free_recvframe(precv_frame, pfree_recv_queue);
 
 	DBG_COUNTER(padapter->rx_logs.os_indicate_err);
-
 	return _FAIL;
-
 }
 
 void rtw_os_read_port(_adapter *padapter, struct recv_buf *precvbuf)

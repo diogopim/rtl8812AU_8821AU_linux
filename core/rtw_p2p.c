@@ -338,20 +338,6 @@ static void issue_p2p_provision_resp(struct wifidirect_info *pwdinfo, u8* raddr,
 	RTW_PUT_BE32(wpsie, WPSOUI);
 	wpsielen += 4;
 
-#if 0
-	//	WPS version
-	//	Type:
-	*(u16*) ( wpsie + wpsielen ) = cpu_to_be16( WPS_ATTR_VER1 );
-	wpsielen += 2;
-
-	//	Length:
-	*(u16*) ( wpsie + wpsielen ) = cpu_to_be16( 0x0001 );
-	wpsielen += 2;
-
-	//	Value:
-	wpsie[wpsielen++] = WPS_VERSION_1;	//	Version 1.0
-#endif
-
 	//	Config Method
 	//	Type:
 	//*(u16*) ( wpsie + wpsielen ) = cpu_to_be16( WPS_ATTR_CONF_METHOD );
@@ -888,32 +874,8 @@ u32 build_probe_resp_wfd_ie(struct wifidirect_info *pwdinfo, u8 *pbuf, u8 tunnel
 		//	Todo: to add the list of WFD device info descriptor in WFD group.
 
 	}
-#ifdef CONFIG_CONCURRENT_MODE
-#if 0
-	if ( ( tunneled == 0 ) && ( padapter->pbuddy_adapter->wdinfo.wfd_tdls_enable == 1 ) ) {
-		//	Alternative MAC Address ATTR
-		//	Type:
-		wfdie[ wfdielen++ ] = WFD_ATTR_ALTER_MAC;
-
-		//	Length:
-		//	Note: In the WFD specification, the size of length field is 2.
-		RTW_PUT_BE16(wfdie + wfdielen,  ETH_ALEN );
-		wfdielen += 2;
-
-		//	Value:
-		//	Alternative MAC Address
-		_rtw_memcpy( wfdie + wfdielen, &padapter->pbuddy_adapter->eeprompriv.mac_addr[ 0 ], ETH_ALEN );
-		//	This mac address is used to make the WFD session when TDLS is enable.
-
-		wfdielen += ETH_ALEN;
-	}
-#endif //
-#endif // CONFIG_CONCURRENT_MODE
-
 	pbuf = rtw_set_ie(pbuf, _VENDOR_SPECIFIC_IE_, wfdielen, (unsigned char *) wfdie, &len);
-
 	return len;
-
 }
 
 u32 build_assoc_req_wfd_ie(struct wifidirect_info *pwdinfo, u8 *pbuf)
@@ -2528,17 +2490,7 @@ u8 process_p2p_group_negotation_req( struct wifidirect_info *pwdinfo, u8 *pframe
 #ifdef CONFIG_WFD
 	u8	wfd_ie[ 128 ] = { 0x00 };
 	u32	wfd_ielen = 0;
-#if 0
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-#endif //
 #endif // CONFIG_WFD
-#ifdef CONFIG_CONCURRENT_MODE
-	//_adapter				*pbuddy_adapter = pwdinfo->padapter->pbuddy_adapter;
-	//struct wifidirect_info	*pbuddy_wdinfo = &pbuddy_adapter->wdinfo;
-	//struct mlme_priv		*pbuddy_mlmepriv = &pbuddy_adapter->mlmepriv;
-	//struct mlme_ext_priv	*pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
-#endif
-
 	if ( (wpsie=rtw_get_wps_ie( pframe + _PUBLIC_ACTION_IE_OFFSET_, len - _PUBLIC_ACTION_IE_OFFSET_, NULL, &wps_ielen)) ) {
 		//	Commented by Kurt 20120113
 		//	If some device wants to do p2p handshake without sending prov_disc_req
@@ -2595,11 +2547,6 @@ u8 process_p2p_group_negotation_req( struct wifidirect_info *pwdinfo, u8 *pframe
 		//Check P2P Capability ATTR
 		if(rtw_get_p2p_attr_content(p2p_ie, p2p_ielen, P2P_ATTR_CAPABILITY, (u8*)&cap_attr, (uint*)&attr_contentlen) ) {
 			cap_attr = le16_to_cpu(cap_attr);
-
-#if 0
-			if(!(cap_attr & P2P_GRPCAP_INTRABSS) )
-				ptdlsinfo->ap_prohibited = _TRUE;
-#endif //defined(CONFIG_WFD) && defined(CONFIG_TDLS)
 		}
 
 		if ( rtw_get_p2p_attr_content(p2p_ie, p2p_ielen, P2P_ATTR_GO_INTENT , &attr_content, &attr_contentlen) ) {
@@ -2721,9 +2668,6 @@ u8 process_p2p_group_negotation_resp( struct wifidirect_info *pwdinfo, u8 *pfram
 #ifdef CONFIG_WFD
 	u8	wfd_ie[ 128 ] = { 0x00 };
 	u32	wfd_ielen = 0;
-#if 0
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-#endif //
 #endif // CONFIG_WFD
 
 	ies = pframe + _PUBLIC_ACTION_IE_OFFSET_;
@@ -2763,10 +2707,6 @@ u8 process_p2p_group_negotation_resp( struct wifidirect_info *pwdinfo, u8 *pfram
 			//Check P2P Capability ATTR
 			if(rtw_get_p2p_attr_content(p2p_ie, p2p_ielen, P2P_ATTR_CAPABILITY, (u8*)&cap_attr, (uint*)&attr_contentlen) ) {
 				cap_attr = le16_to_cpu(cap_attr);
-#if 0
-				if(!(cap_attr & P2P_GRPCAP_INTRABSS) )
-					ptdlsinfo->ap_prohibited = _TRUE;
-#endif //
 			}
 
 			rtw_get_p2p_attr_content(p2p_ie, p2p_ielen, P2P_ATTR_STATUS, &attr_content, &attr_contentlen);
@@ -3268,14 +3208,8 @@ static void ro_ch_handler(_adapter *padapter)
 			DBG_871X(FUNC_ADPT_FMT" back to restore ch - ch:%u, bw:%u, offset:%u\n",
 			         FUNC_ADPT_ARG(padapter), ch, bw, offset);
 	}
-
 	set_channel_bwmode(padapter, ch, offset, bw);
-
 	rtw_p2p_set_state(pwdinfo, rtw_p2p_pre_state(pwdinfo));
-#if 0
-	DBG_871X("%s, role=%d, p2p_state=%d\n", __func__, rtw_p2p_role(pwdinfo), rtw_p2p_state(pwdinfo));
-#endif
-
 	pcfg80211_wdinfo->is_ro_ch = _FALSE;
 	pcfg80211_wdinfo->last_ro_ch_time = rtw_get_current_time();
 
@@ -3583,11 +3517,6 @@ void rtw_append_wfd_ie(_adapter *padapter, u8 *buf, u32* len)
 		OUI_Subtype = frame_body[5];
 		dialogToken = frame_body[6];
 
-#if 0
-		DBG_871X("ACTION_CATEGORY_P2P: OUI=0x%x, OUI_Subtype=%d, dialogToken=%d\n",
-		         cpu_to_be32( *( ( u32* ) ( frame_body + 1 ) ) ), OUI_Subtype, dialogToken);
-#endif
-
 		switch(OUI_Subtype) {
 		case P2P_NOTICE_OF_ABSENCE:
 
@@ -3703,11 +3632,6 @@ int rtw_p2p_check_frames(_adapter *padapter, const u8 *buf, u32 len, u8 tx)
 			OUI_Subtype = frame_body[6];
 			dialogToken = frame_body[7];
 			is_p2p_frame = OUI_Subtype;
-#if 0
-			DBG_871X("ACTION_CATEGORY_PUBLIC: ACT_PUBLIC_VENDOR, OUI=0x%x, OUI_Subtype=%d, dialogToken=%d\n",
-			         cpu_to_be32( *( ( u32* ) ( frame_body + 2 ) ) ), OUI_Subtype, dialogToken);
-#endif
-
 			p2p_ie = rtw_get_p2p_ie(
 			             (u8 *)buf+sizeof(struct rtw_ieee80211_hdr_3addr)+_PUBLIC_ACTION_IE_OFFSET_,
 			             len-sizeof(struct rtw_ieee80211_hdr_3addr)-_PUBLIC_ACTION_IE_OFFSET_,
@@ -3962,9 +3886,6 @@ int rtw_p2p_check_frames(_adapter *padapter, const u8 *buf, u32 len, u8 tx)
 						if(rtw_get_p2p_attr_content( p2p_ie, p2p_ielen, P2P_ATTR_GROUP_ID, NULL, &contentlen)) {
 							pwdev_priv->provdisc_req_issued = _FALSE;//case: p2p_client join p2p GO
 						} else {
-#if 0
-							DBG_871X("provdisc_req_issued is _TRUE\n");
-#endif //
 							pwdev_priv->provdisc_req_issued = _TRUE;//case: p2p_devices connection before Nego req.
 						}
 
@@ -3985,12 +3906,6 @@ int rtw_p2p_check_frames(_adapter *padapter, const u8 *buf, u32 len, u8 tx)
 	} else if(category == RTW_WLAN_CATEGORY_P2P) {
 		OUI_Subtype = frame_body[5];
 		dialogToken = frame_body[6];
-
-#if 0
-		DBG_871X("ACTION_CATEGORY_P2P: OUI=0x%x, OUI_Subtype=%d, dialogToken=%d\n",
-		         cpu_to_be32( *( ( u32* ) ( frame_body + 1 ) ) ), OUI_Subtype, dialogToken);
-#endif
-
 		is_p2p_frame = OUI_Subtype;
 
 		switch(OUI_Subtype) {
@@ -4797,21 +4712,7 @@ void dbg_rtw_p2p_set_pre_state(struct wifidirect_info *wdinfo, enum P2P_STATE st
 		        );
 	}
 }
-#if 0
-void dbg_rtw_p2p_restore_state(struct wifidirect_info *wdinfo, const char *caller, int line)
-{
-	if(wdinfo->pre_p2p_state != -1) {
-		DBG_871X("[CONFIG_DBG_P2P]%s:%d restore from %s to %s\n", caller, line
-		         , p2p_state_str[wdinfo->p2p_state], p2p_state_str[wdinfo->pre_p2p_state]
-		        );
-		_rtw_p2p_restore_state(wdinfo);
-	} else {
-		DBG_871X("[CONFIG_DBG_P2P]%s:%d restore no pre state, cur state %s\n", caller, line
-		         , p2p_state_str[wdinfo->p2p_state]
-		        );
-	}
-}
-#endif
+
 void dbg_rtw_p2p_set_role(struct wifidirect_info *wdinfo, enum P2P_ROLE role, const char *caller, int line)
 {
 	if(wdinfo->role != role) {

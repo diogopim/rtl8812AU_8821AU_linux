@@ -351,62 +351,13 @@ static struct dvobj_priv *usb_dvobj_init(struct usb_interface *usb_intf)
 
 	pdvobjpriv->RtNumInPipes = 0;
 	pdvobjpriv->RtNumOutPipes = 0;
-
-	//padapter->EepromAddressSize = 6;
-	//pdvobjpriv->nr_endpoint = 6;
-
 	pdev_desc = &pusbd->descriptor;
-
-#if 0
-	DBG_871X("\n8712_usb_device_descriptor:\n");
-	DBG_871X("bLength=%x\n", pdev_desc->bLength);
-	DBG_871X("bDescriptorType=%x\n", pdev_desc->bDescriptorType);
-	DBG_871X("bcdUSB=%x\n", pdev_desc->bcdUSB);
-	DBG_871X("bDeviceClass=%x\n", pdev_desc->bDeviceClass);
-	DBG_871X("bDeviceSubClass=%x\n", pdev_desc->bDeviceSubClass);
-	DBG_871X("bDeviceProtocol=%x\n", pdev_desc->bDeviceProtocol);
-	DBG_871X("bMaxPacketSize0=%x\n", pdev_desc->bMaxPacketSize0);
-	DBG_871X("idVendor=%x\n", pdev_desc->idVendor);
-	DBG_871X("idProduct=%x\n", pdev_desc->idProduct);
-	DBG_871X("bcdDevice=%x\n", pdev_desc->bcdDevice);
-	DBG_871X("iManufacturer=%x\n", pdev_desc->iManufacturer);
-	DBG_871X("iProduct=%x\n", pdev_desc->iProduct);
-	DBG_871X("iSerialNumber=%x\n", pdev_desc->iSerialNumber);
-	DBG_871X("bNumConfigurations=%x\n", pdev_desc->bNumConfigurations);
-#endif
 
 	phost_conf = pusbd->actconfig;
 	pconf_desc = &phost_conf->desc;
 
-#if 0
-	DBG_871X("\n8712_usb_configuration_descriptor:\n");
-	DBG_871X("bLength=%x\n", pconf_desc->bLength);
-	DBG_871X("bDescriptorType=%x\n", pconf_desc->bDescriptorType);
-	DBG_871X("wTotalLength=%x\n", pconf_desc->wTotalLength);
-	DBG_871X("bNumInterfaces=%x\n", pconf_desc->bNumInterfaces);
-	DBG_871X("bConfigurationValue=%x\n", pconf_desc->bConfigurationValue);
-	DBG_871X("iConfiguration=%x\n", pconf_desc->iConfiguration);
-	DBG_871X("bmAttributes=%x\n", pconf_desc->bmAttributes);
-	DBG_871X("bMaxPower=%x\n", pconf_desc->bMaxPower);
-#endif
-
-	//DBG_871X("\n/****** num of altsetting = (%d) ******/\n", pusb_interface->num_altsetting);
-
 	phost_iface = &usb_intf->altsetting[0];
 	piface_desc = &phost_iface->desc;
-
-#if 0
-	DBG_871X("\n8712_usb_interface_descriptor:\n");
-	DBG_871X("bLength=%x\n", piface_desc->bLength);
-	DBG_871X("bDescriptorType=%x\n", piface_desc->bDescriptorType);
-	DBG_871X("bInterfaceNumber=%x\n", piface_desc->bInterfaceNumber);
-	DBG_871X("bAlternateSetting=%x\n", piface_desc->bAlternateSetting);
-	DBG_871X("bNumEndpoints=%x\n", piface_desc->bNumEndpoints);
-	DBG_871X("bInterfaceClass=%x\n", piface_desc->bInterfaceClass);
-	DBG_871X("bInterfaceSubClass=%x\n", piface_desc->bInterfaceSubClass);
-	DBG_871X("bInterfaceProtocol=%x\n", piface_desc->bInterfaceProtocol);
-	DBG_871X("iInterface=%x\n", piface_desc->iInterface);
-#endif
 
 	pdvobjpriv->NumInterfaces = pconf_desc->bNumInterfaces;
 	pdvobjpriv->InterfaceNumber = piface_desc->bInterfaceNumber;
@@ -801,17 +752,6 @@ int rtw_resume_process(_adapter *padapter)
 		return -1;
 	}
 
-#if 0
-	/*
-	 * Due to usb wow suspend flow will cancel read/write port via intf_stop and
-	 * bReadPortCancel and bWritePortCancel are set _TRUE in intf_stop.
-	 * But they will not be clear in intf_start during wow resume flow.
-	 * It should move to os_intf in the feature.
-	 */
-	RTW_ENABLE_FUNC(padapter, DF_RX_BIT);
-	RTW_ENABLE_FUNC(padapter, DF_TX_BIT);
-#endif
-
 	ret =  rtw_resume_common(padapter);
 
 #ifdef CONFIG_AUTOSUSPEND
@@ -1127,9 +1067,6 @@ exit:
 
 static void rtw_usb_if1_deinit(_adapter *if1)
 {
-#if 0
-	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(if1);
-#endif
 	struct net_device *pnetdev = if1->pnetdev;
 	struct mlme_priv *pmlmepriv= &if1->mlmepriv;
 
@@ -1145,15 +1082,8 @@ static void rtw_usb_if1_deinit(_adapter *if1)
 #endif
 
 	rtw_cancel_all_timer(if1);
-
-#if 0
-	pwrctl->wowlan_mode=_FALSE;
-#endif //
-
 	rtw_dev_unload(if1);
-
 	DBG_871X("+r871xu_dev_remove, hw_init_completed=%d\n", if1->hw_init_completed);
-
 	rtw_handle_dualmac(if1, 0);
 
 #ifdef CONFIG_IOCTL_CFG80211
@@ -1242,11 +1172,6 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 
 	status = _SUCCESS;
 
-#if 0 /* not used now */
-unregister_ndevs:
-	if (status != _SUCCESS)
-		rtw_unregister_netdevs(dvobj);
-#endif
 free_if2:
 	if(status != _SUCCESS && if2) {
 #ifdef CONFIG_CONCURRENT_MODE

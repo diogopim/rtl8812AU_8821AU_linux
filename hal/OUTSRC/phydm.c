@@ -1338,16 +1338,6 @@ GetPSDData(
 	//int	psd_report;
 	u4Byte	psd_report;
 
-	//HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
-	//Debug Message
-	//val = PHY_QueryBBReg(Adapter,0x908, bMaskDWord);
-	//DbgPrint("Reg908 = 0x%x\n",val);
-	//val = PHY_QueryBBReg(Adapter,0xDF4, bMaskDWord);
-	//rfval = PHY_QueryRFReg(Adapter, ODM_RF_PATH_A, 0x00, bRFRegOffsetMask);
-	//DbgPrint("RegDF4 = 0x%x, RFReg00 = 0x%x\n",val, rfval);
-	//DbgPrint("PHYTXON = %x, OFDMCCA_PP = %x, CCKCCA_PP = %x, RFReg00 = %x\n",
-	//(val&BIT25)>>25, (val&BIT14)>>14, (val&BIT15)>>15, rfval);
-
 	//Set DCO frequency index, offset=(40MHz/SamplePts)*point
 	ODM_SetBBReg(pDM_Odm, 0x808, 0x3FF, point);
 
@@ -1359,14 +1349,8 @@ GetPSDData(
 	//Read PSD report, Reg8B4[15:0]
 	psd_report = ODM_GetBBReg(pDM_Odm,0x8B4, bMaskDWord) & 0x0000FFFF;
 
-#if 1//(DEV_BUS_TYPE == RT_PCI_INTERFACE) && ( (RT_PLATFORM == PLATFORM_LINUX) || (RT_PLATFORM == PLATFORM_MACOSX))
 	psd_report = (u4Byte) (odm_ConvertTo_dB(psd_report))+(u4Byte)(initial_gain_psd-0x1c);
-#else
-	psd_report = (int) (20*log10((double)psd_report))+(int)(initial_gain_psd-0x1c);
-#endif
-
 	return psd_report;
-
 }
 #endif
 
@@ -1523,12 +1507,6 @@ void odm_dtc(PDM_ODM_T pDM_Odm)
 	u8 sign;
 	u8 resp_txagc=0;
 
-#if 0
-	/* As DIG is disabled, DTC is also disable */
-	if(!(pDM_Odm->SupportAbility & ODM_XXXXXX))
-		return;
-#endif
-
 	if (DTC_BASE < pDM_Odm->RSSI_Min) {
 		/* need to decade the CTS TX power */
 		sign = 1;
@@ -1539,19 +1517,6 @@ void odm_dtc(PDM_ODM_T pDM_Odm)
 				dtc_steps++;
 		}
 	}
-#if 0
-	else if (DTC_DWN_BASE > pDM_Odm->RSSI_Min) {
-		/* needs to increase the CTS TX power */
-		sign = 0;
-		dtc_steps = 1;
-		for (i=0; i<ARRAY_SIZE(dtc_table_up); i++) {
-			if ((dtc_table_up[i] <= pDM_Odm->RSSI_Min) || (dtc_steps>=10))
-				break;
-			else
-				dtc_steps++;
-		}
-	}
-#endif
 	else {
 		sign = 0;
 		dtc_steps = 0;

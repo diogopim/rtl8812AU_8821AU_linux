@@ -627,17 +627,6 @@ PHY_GetTxPowerLevel8812(
     OUT s32*    		powerlevel
 )
 {
-#if 0
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
-	PMGNT_INFO		pMgntInfo = &(Adapter->MgntInfo);
-	s4Byte			TxPwrDbm = 13;
-	RT_TRACE(COMP_TXAGC, DBG_LOUD, ("PHY_GetTxPowerLevel8812(): TxPowerLevel: %#x\n", TxPwrDbm));
-
-	if ( pMgntInfo->ClientConfigPwrInDbm != UNSPECIFIED_PWR_DBM )
-		*powerlevel = pMgntInfo->ClientConfigPwrInDbm;
-	else
-		*powerlevel = TxPwrDbm;
-#endif
 }
 
 //create new definition of PHY_SetTxPowerLevel8812 by YP.
@@ -730,25 +719,6 @@ PHY_GetTxPowerIndex_8812A(
 		}
 #endif
 		txPower += powerDiffByRate;
-#if 0
-		//
-		// 2013/02/06 MH Add for ASUS requiremen for adjusting TX power limit.
-		// This is a temporarily dirty fix for asus , neeed to revise later!
-		// 2013/03/07 MH Asus add more request.
-		// 2013/03/14 MH Asus add one more request for the power control.
-		//
-		if (Channel >= 36) {
-			txPower += pMgntInfo->RegTPCLvl5g;
-
-			if (txPower > pMgntInfo->RegTPCLvl5gD)
-				txPower -= pMgntInfo->RegTPCLvl5gD;
-		} else {
-			txPower += pMgntInfo->RegTPCLvl;
-
-			if (txPower > pMgntInfo->RegTPCLvlD)
-				txPower -= pMgntInfo->RegTPCLvlD;
-		}
-#endif
 	}
 
 	txPower += PHY_GetTxPowerTrackingOffset( pAdapter, RFPath, Rate );
@@ -2103,25 +2073,8 @@ PHY_HandleSwChnlAndSetBW8812(
 
 	if(pHalData->bSetChnlBW) {
 		pHalData->CurrentChannelBW = ChnlWidth;
-#if 0
-		if(ExtChnlOffsetOf40MHz==EXTCHNL_OFFSET_LOWER)
-			pHalData->nCur40MhzPrimeSC = HAL_PRIME_CHNL_OFFSET_UPPER;
-		else if(ExtChnlOffsetOf40MHz==EXTCHNL_OFFSET_UPPER)
-			pHalData->nCur40MhzPrimeSC = HAL_PRIME_CHNL_OFFSET_LOWER;
-		else
-			pHalData->nCur40MhzPrimeSC = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-
-		if(ExtChnlOffsetOf80MHz==EXTCHNL_OFFSET_LOWER)
-			pHalData->nCur80MhzPrimeSC = HAL_PRIME_CHNL_OFFSET_UPPER;
-		else if(ExtChnlOffsetOf80MHz==EXTCHNL_OFFSET_UPPER)
-			pHalData->nCur80MhzPrimeSC = HAL_PRIME_CHNL_OFFSET_LOWER;
-		else
-			pHalData->nCur80MhzPrimeSC = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-#else
 		pHalData->nCur40MhzPrimeSC = ChnlOffsetOf40MHz;
 		pHalData->nCur80MhzPrimeSC = ChnlOffsetOf80MHz;
-#endif
-
 		pHalData->CurrentCenterFrequencyIndex1 = CenterFrequencyIndex1;
 	}
 
@@ -2140,13 +2093,6 @@ PHY_HandleSwChnlAndSetBW8812(
 			pHalData->CurrentCenterFrequencyIndex1 = tmpCenterFrequencyIndex1;
 		}
 	}
-
-	//DBG_871X("Channel %d ChannelBW %d ",pHalData->CurrentChannel, pHalData->CurrentChannelBW);
-	//DBG_871X("40MhzPrimeSC %d 80MhzPrimeSC %d ",pHalData->nCur40MhzPrimeSC, pHalData->nCur80MhzPrimeSC);
-	//DBG_871X("CenterFrequencyIndex1 %d \n",pHalData->CurrentCenterFrequencyIndex1);
-
-	//DBG_871X("<= PHY_HandleSwChnlAndSetBW8812: bSwChnl %d, bSetChnlBW %d \n",pHalData->bSwChnl,pHalData->bSetChnlBW);
-
 }
 
 VOID
@@ -2157,12 +2103,7 @@ PHY_SetBWMode8812(
 )
 {
 	PHAL_DATA_TYPE		pHalData = GET_HAL_DATA(Adapter);
-
-	//DBG_871X("%s()===>\n",__FUNCTION__);
-
 	PHY_HandleSwChnlAndSetBW8812(Adapter, _FALSE, _TRUE, pHalData->CurrentChannel, Bandwidth, Offset, Offset, pHalData->CurrentChannel);
-
-	//DBG_871X("<==%s()\n",__FUNCTION__);
 }
 
 VOID
@@ -2171,11 +2112,7 @@ PHY_SwChnl8812(
     IN	u8			channel
 )
 {
-	//DBG_871X("%s()===>\n",__FUNCTION__);
-
 	PHY_HandleSwChnlAndSetBW8812(Adapter, _TRUE, _FALSE, channel, 0, 0, 0, channel);
-
-	//DBG_871X("<==%s()\n",__FUNCTION__);
 }
 
 VOID
@@ -2187,11 +2124,8 @@ PHY_SetSwChnlBWMode8812(
     IN	u8					Offset80
 )
 {
-	//DBG_871X("%s()===>\n",__FUNCTION__);
 
 	PHY_HandleSwChnlAndSetBW8812(Adapter, _TRUE, _TRUE, channel, Bandwidth, Offset40, Offset80, channel);
-
-	//DBG_871X("<==%s()\n",__FUNCTION__);
 }
 
 

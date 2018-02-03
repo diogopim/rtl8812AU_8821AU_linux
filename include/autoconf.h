@@ -95,9 +95,6 @@
 //#define CONFIG_ANTENNA_DIVERSITY
 
 //after link
-#if 0
-#define CONFIG_HW_ANTENNA_DIVERSITY
-#endif
 
 
 //#define CONFIG_CONCURRENT_MODE 1
@@ -155,16 +152,6 @@
 #endif
 
 //	Added by Kurt 20110511
-#if 0
-#define CONFIG_TDLS_DRIVER_SETUP
-//	#ifndef CONFIG_WFD
-//		#define CONFIG_WFD
-//	#endif
-//	#define CONFIG_TDLS_AUTOSETUP
-#define CONFIG_TDLS_AUTOCHECKALIVE
-#define CONFIG_TDLS_CH_SW
-#endif
-
 #define BT_30_SUPPORT 0
 
 #define CONFIG_SKB_COPY	1//for amsdu
@@ -196,11 +183,6 @@
 
 #define CONFIG_TX_MCAST2UNI	1	// Support IP multicast->unicast
 //#define CONFIG_CHECK_AC_LIFETIME 1	// Check packet lifetime of 4 ACs.
-
-#if 0
-//#define CONFIG_GTK_OL
-#define CONFIG_ARP_KEEP_ALIVE
-#endif
 
 /*
  * Interface  Related Config
@@ -285,20 +267,6 @@
 #endif
 
 #endif//CONFIG_PLATFORM_MN10300
-
-
-
-#if 0
-#ifdef CONFIG_USB_TX_AGGREGATION
-#undef CONFIG_USB_TX_AGGREGATION
-#endif
-#ifndef CONFIG_USE_USB_BUFFER_ALLOC_TX
-#define CONFIG_USE_USB_BUFFER_ALLOC_TX
-#endif
-#ifndef CONFIG_USE_USB_BUFFER_ALLOC_RX
-#define CONFIG_USE_USB_BUFFER_ALLOC_RX
-#endif
-#endif
 
 
 /*

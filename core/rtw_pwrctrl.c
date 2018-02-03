@@ -585,17 +585,8 @@ u8 PS_RDY_CHECK(_adapter * padapter)
 #endif /* CONFIG_IOCTL_CFG80211 */
 #endif /* CONFIG_P2P */
 
-#if 0
-	if(_TRUE == pwrpriv->bInSuspend && pwrpriv->wowlan_mode)
-		return _TRUE;
-	else if(_TRUE == pwrpriv->bInSuspend && pwrpriv->wowlan_ap_mode)
-		return _TRUE;
-	else if (_TRUE == pwrpriv->bInSuspend)
-		return _FALSE;
-#else
 	if(_TRUE == pwrpriv->bInSuspend )
 		return _FALSE;
-#endif
 
 	curr_time = rtw_get_current_time();
 
@@ -615,11 +606,7 @@ u8 PS_RDY_CHECK(_adapter * padapter)
 	    || !rtw_p2p_chk_state(&(padapter->wdinfo), P2P_STATE_NONE)
 #endif
 	    || rtw_is_scan_deny(padapter)
-#if 0
-	    // TDLS link is established.
-	    || ( padapter->tdlsinfo.link_established == _TRUE )
-#endif //
-	   )
+   )
 		return _FALSE;
 
 	if( (padapter->securitypriv.dot11AuthAlgrthm == dot11AuthAlgrthm_8021X) && (padapter->securitypriv.binstallGrpkey == _FALSE) ) {
@@ -661,15 +648,9 @@ void rtw_set_fw_in_ips_mode(PADAPTER padapter, u8 enable)
 		//Enter IPS
 		DBG_871X("%s: issue H2C to FW when entering IPS\n", __func__);
 
-#if 0
-		parm[0] = 0x03;
-		parm[1] = pwrpriv->pnlo_info->fast_scan_iterations;
-		parm[2] = pwrpriv->pnlo_info->slow_scan_period;
-#else
 		parm[0] = 0x03;
 		parm[1] = 0x0;
 		parm[2] = 0x0;
-#endif //
 
 		pHalFunc->fill_h2c_cmd(padapter, //H2C_FWLPS_IN_IPS_,
 		                       H2C_INACTIVE_PS_,
@@ -757,14 +738,6 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 #ifdef CONFIG_P2P
 	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo );
 #endif //CONFIG_P2P
-#if 0
-	struct sta_priv *pstapriv = &padapter->stapriv;
-	_irqL irqL;
-	int i;
-	_list	*plist, *phead;
-	struct sta_info *ptdls_sta;
-#endif //
-
 	_func_enter_;
 
 	RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_notice_,
@@ -803,64 +776,15 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 				pwrpriv->lps_leave_cnts++;
 			else
 				pwrpriv->lps_leave_cnts = 0;
-#if 0
-			_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-
-			for(i=0; i< NUM_STA; i++) {
-				phead = &(pstapriv->sta_hash[i]);
-				plist = get_next(phead);
-
-				while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
-					ptdls_sta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
-
-					if( ptdls_sta->tdls_sta_state & TDLS_LINKED_STATE )
-						issue_nulldata_to_TDLS_peer_STA(padapter, ptdls_sta->hwaddr, 0, 0, 0);
-					plist = get_next(plist);
-				}
-			}
-
-			_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-#endif //
 
 			pwrpriv->pwr_mode = ps_mode;
 			rtw_set_rpwm(padapter, PS_STATE_S4);
-
-#if 0
-			if (pwrpriv->wowlan_mode == _TRUE ||
-			    pwrpriv->wowlan_ap_mode == _TRUE ||
-			    pwrpriv->wowlan_p2p_mode == _TRUE) {
-				struct dvobj_priv *psdpriv = padapter->dvobj;
-				struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-				u32 start_time, delay_ms;
-				u8 val8;
-				delay_ms = 20;
-				start_time = rtw_get_current_time();
-				do {
-					rtw_hal_get_hwreg(padapter, HW_VAR_SYS_CLKR, &val8);
-					if (!(val8 & BIT(4))) { //0x08 bit4 =1 --> in 32k, bit4 = 0 --> leave 32k
-						pwrpriv->cpwm = PS_STATE_S4;
-						break;
-					}
-					if (rtw_get_passing_time_ms(start_time) > delay_ms) {
-						DBG_871X("%s: Wait for FW 32K leave more than %u ms!!!\n",
-						         __FUNCTION__, delay_ms);
-						pdbgpriv->dbg_wow_leave_ps_fail_cnt++;
-						break;
-					}
-					rtw_usleep_os(100);
-				} while (1);
-			}
-#endif
 			rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_PWRMODE, (u8 *)(&ps_mode));
 			pwrpriv->bFwCurrentInPSMode = _FALSE;
 
 		}
 	} else {
-		if ((PS_RDY_CHECK(padapter) && check_fwstate(&padapter->mlmepriv, WIFI_ASOC_STATE))
-#if 0
-		    ||( _TRUE == pwrpriv->wowlan_p2p_mode)
-#endif //CONFIG_P2P_WOWLAN
-		   ) {
+		if ((PS_RDY_CHECK(padapter) && check_fwstate(&padapter->mlmepriv, WIFI_ASOC_STATE))) {
 			u8 pslv;
 
 			DBG_871X(FUNC_ADPT_FMT" Enter 802.11 power save - %s\n",
@@ -870,25 +794,6 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 				pwrpriv->lps_enter_cnts++;
 			else
 				pwrpriv->lps_enter_cnts = 0;
-#if 0
-			_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-
-			for(i=0; i< NUM_STA; i++) {
-				phead = &(pstapriv->sta_hash[i]);
-				plist = get_next(phead);
-
-				while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
-					ptdls_sta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
-
-					if( ptdls_sta->tdls_sta_state & TDLS_LINKED_STATE )
-						issue_nulldata_to_TDLS_peer_STA(padapter, ptdls_sta->hwaddr, 1, 0, 0);
-					plist = get_next(plist);
-				}
-			}
-
-			_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-#endif //
-
 			pwrpriv->bFwCurrentInPSMode = _TRUE;
 			pwrpriv->pwr_mode = ps_mode;
 			pwrpriv->smart_ps = smart_ps;
@@ -1307,15 +1212,6 @@ void cpwm_int_hdl(
 	_func_enter_;
 
 	pwrpriv = adapter_to_pwrctl(padapter);
-#if 0
-	if (pwrpriv->cpwm_tog == (preportpwrstate->state & PS_TOGGLE)) {
-		RT_TRACE(_module_rtl871x_pwrctrl_c_, _drv_err_,
-		         ("cpwm_int_hdl: tog(old)=0x%02x cpwm(new)=0x%02x toggle bit didn't change!?\n",
-		          pwrpriv->cpwm_tog, preportpwrstate->state));
-		goto exit;
-	}
-#endif
-
 	_enter_pwrlock(&pwrpriv->lock);
 
 #ifdef CONFIG_LPS_RPWM_TIMER
@@ -1380,16 +1276,11 @@ static void rpwmtimeout_workitem_callback(struct work_struct *work)
 	_exit_pwrlock(&pwrpriv->lock);
 
 	if (rtw_read8(padapter, 0x100) != 0xEA) {
-#if 1
 		struct reportpwrstate_parm report;
 
 		report.state = PS_STATE_S2;
 		DBG_871X("\n%s: FW already leave 32K!\n\n", __func__);
 		cpwm_int_hdl(padapter, &report);
-#else
-		DBG_871X("\n%s: FW already leave 32K!\n\n", __func__);
-		cpwm_event_callback(&pwrpriv->cpwm_event);
-#endif
 		return;
 	}
 
@@ -1948,17 +1839,6 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 	rtw_register_early_suspend(pwrctrlpriv);
 #endif //CONFIG_HAS_EARLYSUSPEND || CONFIG_ANDROID_POWER
 
-#if 0
-	pwrctrlpriv->wowlan_from_cmd = _FALSE;
-#endif
-#if 0
-	pwrctrlpriv->pno_inited = _FALSE;
-	pwrctrlpriv->pnlo_info = NULL;
-	pwrctrlpriv->pscan_info = NULL;
-	pwrctrlpriv->pno_ssid_list = NULL;
-	pwrctrlpriv->pno_in_resume = _TRUE;
-#endif
-
 	_func_exit_;
 
 }
@@ -1983,17 +1863,6 @@ void rtw_free_pwrctrl_priv(PADAPTER adapter)
 		flush_workqueue(pwrctrlpriv->rtw_workqueue);
 		destroy_workqueue(pwrctrlpriv->rtw_workqueue);
 	}
-#endif
-
-#if 0
-	if (pwrctrlpriv->pnlo_info != NULL)
-		printk("****** pnlo_info memory leak********\n");
-
-	if (pwrctrlpriv->pscan_info != NULL)
-		printk("****** pscan_info memory leak********\n");
-
-	if (pwrctrlpriv->pno_ssid_list != NULL)
-		printk("****** pno_ssid_list memory leak********\n");
 #endif
 
 #if defined(CONFIG_HAS_EARLYSUSPEND) || defined(CONFIG_ANDROID_POWER)
@@ -2024,16 +1893,8 @@ static void resume_workitem_callback(struct work_struct *work)
 
 void rtw_resume_in_workqueue(struct pwrctrl_priv *pwrpriv)
 {
-	// accquire system's suspend lock preventing from falliing asleep while resume in workqueue
-	//rtw_lock_suspend();
-
 	rtw_resume_lock_suspend();
-
-#if 1
 	queue_work(pwrpriv->rtw_workqueue, &pwrpriv->resume_work);
-#else
-	_set_workitem(&pwrpriv->resume_work);
-#endif
 }
 #endif //CONFIG_RESUME_IN_WORKQUEUE
 

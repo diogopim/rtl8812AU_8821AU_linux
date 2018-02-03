@@ -2538,43 +2538,6 @@ odm_SetNextMACAddrTarget(
 		}
 
 	}
-
-#if 0
-	//
-	//2012.03.26 LukeLee: This should be removed later, the MAC address is changed according to MACID in turn
-	//
-#if( DM_ODM_SUPPORT_TYPE & ODM_WIN)
-	{
-		PADAPTER	Adapter =  pDM_Odm->Adapter;
-		PMGNT_INFO	pMgntInfo = &Adapter->MgntInfo;
-
-		for (i=0; i<6; i++) {
-			Bssid[i] = pMgntInfo->Bssid[i];
-			//DbgPrint("Bssid[%d]=%x\n", i, Bssid[i]);
-		}
-	}
-#endif
-
-	//odm_SetNextMACAddrTarget(pDM_Odm);
-
-	//1 Select MAC Address Filter
-	for (i=0; i<6; i++) {
-		if(Bssid[i] != pDM_FatTable->Bssid[i]) {
-			bMatchBSSID = FALSE;
-			break;
-		}
-	}
-	if(bMatchBSSID == FALSE) {
-		//Match MAC ADDR
-		value32 = (Bssid[5]<<8)|Bssid[4];
-		ODM_SetMACReg(pDM_Odm, 0x7b4, 0xFFFF, value32);
-		value32 = (Bssid[3]<<24)|(Bssid[2]<<16) |(Bssid[1]<<8) |Bssid[0];
-		ODM_SetMACReg(pDM_Odm, 0x7b0, bMaskDWord, value32);
-	}
-
-	return bMatchBSSID;
-#endif
-
 }
 
 VOID
@@ -2655,41 +2618,6 @@ odm_FastAntTraining(
 		}
 
 
-		/*
-		#if(RTL8192E_SUPPORT == 1)
-		//3 [path-B]---------------------------
-		for (i=0; i<(pDM_Odm->fat_comb_b); i++)
-		{
-			if(pDM_FatTable->antRSSIcnt_pathB[i] == 0)
-				pDM_FatTable->antAveRSSI_pathB[i] = 0;
-			else // (antRSSIcnt[i] != 0)
-			{
-				pDM_FatTable->antAveRSSI_pathB[i] = pDM_FatTable->antSumRSSI_pathB[i] /pDM_FatTable->antRSSIcnt_pathB[i];
-				bPktFilterMacth_pathB = TRUE;
-			}
-			if(pDM_FatTable->antAveRSSI_pathB[i] > MaxRSSI_pathB)
-			{
-				MaxRSSI_pathB = pDM_FatTable->antAveRSSI_pathB[i];
-		                        Pckcnt_pathB = pDM_FatTable ->antRSSIcnt_pathB[i];
-				TargetAnt_pathB = (u1Byte) i;
-			}
-		                if(pDM_FatTable->antAveRSSI_pathB[i] == MaxRSSI_pathB)
-			{
-				if(pDM_FatTable ->antRSSIcnt_pathB > Pckcnt_pathB)
-		{
-					MaxRSSI_pathB = pDM_FatTable->antAveRSSI_pathB[i];
-					TargetAnt_pathB = (u1Byte) i;
-				}
-		}
-			if (pDM_Odm->fat_print_rssi==1)
-		{
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("***{Path-B}: Sum RSSI[%d] = (( %d )),      cnt RSSI [%d] = (( %d )),     Avg RSSI[%d] = (( %d )) \n",
-				i, pDM_FatTable->antSumRSSI_pathB[i], i, pDM_FatTable->antRSSIcnt_pathB[i], i, pDM_FatTable->antAveRSSI_pathB[i]));
-			}
-		}
-		#endif
-		*/
-
 		//1 DECISION STATE
 
 		//2 Select TRX Antenna
@@ -2716,45 +2644,12 @@ odm_FastAntTraining(
 			if(TargetAnt_pathA == 0)
 				odm_AntDiv_on_off(pDM_Odm, ANTDIV_OFF);
 		}
-		/*
-		#if(RTL8192E_SUPPORT == 1)
-		//3 [path-B]---------------------------
-		if(bPktFilterMacth_pathB == FALSE)
-		{
-			if (pDM_Odm->fat_print_rssi==1)
-			{
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("***[%d]{Path-B}: None Packet is matched\n\n\n",__LINE__));
-			}
-		}
-		else
-		{
-			if (pDM_Odm->fat_print_rssi==1)
-			{
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD,
-				(" ***TargetAnt_pathB = (( %d )) *** MaxRSSI = (( %d ))***\n\n\n",TargetAnt_pathB,MaxRSSI_pathB));
-			}
-			ODM_SetBBReg(pDM_Odm, 0xB38 , BIT21|BIT20|BIT19, TargetAnt_pathB);	//Default RX is Omni, Optional RX is the best decision by FAT
-			ODM_SetBBReg(pDM_Odm, 0x80c , BIT21, 1); //Reg80c[21]=1'b1		//from TX Info
-
-			pDM_FatTable->antsel_pathB[pDM_FatTable->TrainIdx] = TargetAnt_pathB;
-		}
-		#endif
-		*/
 
 		//2 Reset Counter
 		for(i=0; i<(pDM_Odm->fat_comb_a); i++) {
 			pDM_FatTable->antSumRSSI[i] = 0;
 			pDM_FatTable->antRSSIcnt[i] = 0;
 		}
-		/*
-		#if(RTL8192E_SUPPORT == 1)
-		for(i=0; i<=(pDM_Odm->fat_comb_b); i++)
-		{
-			pDM_FatTable->antSumRSSI_pathB[i] = 0;
-			pDM_FatTable->antRSSIcnt_pathB[i] = 0;
-		}
-		#endif
-		*/
 
 		pDM_FatTable->FAT_State = FAT_NORMAL_STATE;
 		return;
@@ -2788,8 +2683,6 @@ odm_FastAntTrainingCallback(
 	PADAPTER	padapter = pDM_Odm->Adapter;
 	if(padapter->net_closed == _TRUE)
 		return;
-	//if(*pDM_Odm->pbNet_closed == TRUE)
-	// return;
 #endif
 
 #if USE_WORKITEM
@@ -2881,9 +2774,6 @@ ODM_AntDivInit(
 	//2 [--88E---]
 	if(pDM_Odm->SupportICType == ODM_RTL8188E) {
 #if (RTL8188E_SUPPORT == 1)
-		//pDM_Odm->AntDivType = CGCS_RX_HW_ANTDIV;
-		//pDM_Odm->AntDivType = CG_TRX_HW_ANTDIV;
-		//pDM_Odm->AntDivType = CG_TRX_SMART_ANTDIV;
 
 		if( (pDM_Odm->AntDivType != CGCS_RX_HW_ANTDIV)  && (pDM_Odm->AntDivType != CG_TRX_HW_ANTDIV) && (pDM_Odm->AntDivType != CG_TRX_SMART_ANTDIV)) {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("[Return!!!]  88E Not Supprrt This AntDiv Type\n"));
@@ -2905,9 +2795,6 @@ ODM_AntDivInit(
 	//2 [--92E---]
 #if (RTL8192E_SUPPORT == 1)
 	else if(pDM_Odm->SupportICType == ODM_RTL8192E) {
-		//pDM_Odm->AntDivType = CGCS_RX_HW_ANTDIV;
-		//pDM_Odm->AntDivType = CG_TRX_HW_ANTDIV;
-		//pDM_Odm->AntDivType = CG_TRX_SMART_ANTDIV;
 
 		if( (pDM_Odm->AntDivType != CGCS_RX_HW_ANTDIV) && (pDM_Odm->AntDivType != CG_TRX_HW_ANTDIV)   && (pDM_Odm->AntDivType != CG_TRX_SMART_ANTDIV)) {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("[Return!!!]  8192E Not Supprrt This AntDiv Type\n"));
@@ -2930,8 +2817,6 @@ ODM_AntDivInit(
 	//2 [--8723B---]
 #if (RTL8723B_SUPPORT == 1)
 	else if(pDM_Odm->SupportICType == ODM_RTL8723B) {
-		//pDM_Odm->AntDivType = S0S1_SW_ANTDIV;
-		//pDM_Odm->AntDivType = CG_TRX_HW_ANTDIV;
 
 		if(pDM_Odm->AntDivType != S0S1_SW_ANTDIV && pDM_Odm->AntDivType != CG_TRX_HW_ANTDIV) {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("[Return!!!] 8723B  Not Supprrt This AntDiv Type\n"));
@@ -2995,9 +2880,6 @@ ODM_AntDivInit(
 		odm_TRX_HWAntDiv_Init_8812A(pDM_Odm);
 	}
 #endif
-	//ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("*** SupportICType=[%lu] \n",pDM_Odm->SupportICType));
-	//ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("*** AntDiv SupportAbility=[%lu] \n",(pDM_Odm->SupportAbility & ODM_BB_ANT_DIV)>>6));
-	//ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("*** AntDiv Type=[%d] \n",pDM_Odm->AntDivType));
 
 }
 
@@ -3074,10 +2956,6 @@ ODM_AntDiv(
 		if(!(pDM_Odm->SupportICType & ODM_ANTDIV_5G_SUPPORT_IC))
 			return;
 	}
-	//else 	if(pDM_FatTable->AntDiv_2G_5G == (ODM_ANTDIV_2G|ODM_ANTDIV_5G))
-	//{
-	//ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV,ODM_DBG_LOUD,("[ 2G & 5G AntDiv Running ]\n"));
-	//}
 #endif
 
 	//----------
@@ -3341,22 +3219,16 @@ ODM_SetTxAntByTxInfo(
 	if(pDM_Odm->SupportICType == ODM_RTL8723B) {
 #if (RTL8723B_SUPPORT == 1)
 		SET_TX_DESC_ANTSEL_A_8723B(pDesc, pDM_FatTable->antsel_a[macId]);
-		//ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[8723B] SetTxAntByTxInfo_WIN: MacID=%d, antsel_tr_mux=3'b%d%d%d\n",
-		//macId, pDM_FatTable->antsel_c[macId], pDM_FatTable->antsel_b[macId], pDM_FatTable->antsel_a[macId]));
 #endif
 	} else if(pDM_Odm->SupportICType == ODM_RTL8821) {
 #if (RTL8821A_SUPPORT == 1)
 		SET_TX_DESC_ANTSEL_A_8812(pDesc, pDM_FatTable->antsel_a[macId]);
-		//ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[8821A] SetTxAntByTxInfo_WIN: MacID=%d, antsel_tr_mux=3'b%d%d%d\n",
-		//macId, pDM_FatTable->antsel_c[macId], pDM_FatTable->antsel_b[macId], pDM_FatTable->antsel_a[macId]));
 #endif
 	} else if(pDM_Odm->SupportICType == ODM_RTL8188E) {
 #if (RTL8188E_SUPPORT == 1)
 		SET_TX_DESC_ANTSEL_A_88E(pDesc, pDM_FatTable->antsel_a[macId]);
 		SET_TX_DESC_ANTSEL_B_88E(pDesc, pDM_FatTable->antsel_b[macId]);
 		SET_TX_DESC_ANTSEL_C_88E(pDesc, pDM_FatTable->antsel_c[macId]);
-		//ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("[8188E] SetTxAntByTxInfo_WIN: MacID=%d, antsel_tr_mux=3'b%d%d%d\n",
-		//macId, pDM_FatTable->antsel_c[macId], pDM_FatTable->antsel_b[macId], pDM_FatTable->antsel_a[macId]));
 #endif
 	} else if(pDM_Odm->SupportICType == ODM_RTL8192E) {
 

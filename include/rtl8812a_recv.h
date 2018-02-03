@@ -32,10 +32,6 @@
 #else
 #define MAX_RECVBUF_SZ (32768) // 32k
 #endif
-#if 0
-#undef MAX_RECVBUF_SZ
-#define MAX_RECVBUF_SZ (15360) // 15k < 16k
-#endif
 #else
 #define MAX_RECVBUF_SZ (4000) // about 4K
 #endif

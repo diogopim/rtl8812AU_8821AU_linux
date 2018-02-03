@@ -22,36 +22,11 @@
 #ifndef	__ODM_INTERFACE_H__
 #define __ODM_INTERFACE_H__
 
-
-
-//
-// =========== Constant/Structure/Enum/... Define
-//
-
-
-
-//
-// =========== Macro Define
-//
-
 #define _reg_all(_name)			ODM_##_name
 #define _reg_ic(_name, _ic)		ODM_##_name##_ic
 #define _bit_all(_name)			BIT_##_name
 #define _bit_ic(_name, _ic)		BIT_##_name##_ic
-
-// _cat: implemented by Token-Pasting Operator.
-#if 0
-#define _cat(_name, _ic_type, _func)								\
-	( 															\
-		_func##_all(_name)										\
-	)
-#endif
-
 /*===================================
-
-#define ODM_REG_DIG_11N		0xC50
-#define ODM_REG_DIG_11AC	0xDDD
-
 ODM_REG(DIG,_pDM_Odm)
 =====================================*/
 
@@ -74,18 +49,6 @@ ODM_REG(DIG,_pDM_Odm)
 		_func##_11AC(_name)									\
 	)
 #endif
-/*
-// only sample code
-//#define _cat(_name, _ic_type, _func)									\
-//	( 															\
-//		((_ic_type) & ODM_RTL8192C)? _func##_ic(_name, _8192C):		\
-//		((_ic_type) & ODM_RTL8192D)? _func##_ic(_name, _8192D):		\
-//		((_ic_type) & ODM_RTL8192S)? _func##_ic(_name, _8192S):		\
-//		((_ic_type) & ODM_RTL8723A)? _func##_ic(_name, _8723A):		\
-//		((_ic_type) & ODM_RTL8188E)? _func##_ic(_name, _8188E):		\
-//		_func##_ic(_name, _8195)									\
-//	)
-*/
 
 // _name: name of register or bit.
 // Example: "ODM_REG(R_A_AGC_CORE1, pDM_Odm)"
@@ -118,31 +81,7 @@ typedef  void *PRT_WORK_ITEM ;
 typedef  void RT_WORKITEM_HANDLE,*PRT_WORKITEM_HANDLE;
 typedef VOID (*RT_WORKITEM_CALL_BACK)(PVOID pContext);
 
-#if 0
-typedef struct tasklet_struct RT_WORKITEM_HANDLE, *PRT_WORKITEM_HANDLE;
-
-typedef struct _RT_WORK_ITEM {
-
-	RT_WORKITEM_HANDLE			Handle;			// Platform-dependent handle for this workitem, e.g. Ndis Workitem object.
-	PVOID						Adapter;		// Pointer to Adapter object.
-	PVOID						pContext;		// Parameter to passed to CallBackFunc().
-	RT_WORKITEM_CALL_BACK		CallbackFunc;	// Callback function of the workitem.
-	u1Byte						RefCount;		// 0: driver is going to unload, 1: No such workitem scheduled, 2: one workitem is schedueled.
-	PVOID						pPlatformExt;	// Pointer to platform-dependent extension.
-	BOOLEAN						bFree;
-	char						szID[36];		// An identity string of this workitem.
-} RT_WORK_ITEM, *PRT_WORK_ITEM;
-
 #endif
-
-
-#endif
-
-//
-// =========== Extern Variable ??? It should be forbidden.
-//
-
-
 //
 // =========== EXtern Function Prototype
 //

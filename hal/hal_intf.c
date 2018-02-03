@@ -299,17 +299,6 @@ u8 rtw_hal_check_ips_status(_adapter *padapter)
 	return val;
 }
 
-#if 0
-void rtw_hal_clear_interrupt(_adapter *padapter)
-{
-	if (padapter->HalFunc.clear_interrupt)
-		padapter->HalFunc.clear_interrupt(padapter);
-	else
-		DBG_871X("%s: HalFunc.clear_interrupt is NULL!\n", __FUNCTION__);
-
-}
-#endif
-
 u32	rtw_hal_inirp_init(_adapter *padapter)
 {
 	u32 rst = _FAIL;
@@ -575,21 +564,6 @@ void rtw_hal_bcn_related_reg_setting(_adapter *padapter)
 	if(padapter->HalFunc.SetBeaconRelatedRegistersHandler)
 		padapter->HalFunc.SetBeaconRelatedRegistersHandler(padapter);
 }
-
-
-#if 0
-u8	rtw_hal_antdiv_before_linked(_adapter *padapter)
-{
-	if(padapter->HalFunc.AntDivBeforeLinkHandler)
-		return padapter->HalFunc.AntDivBeforeLinkHandler(padapter);
-	return _FALSE;
-}
-void	rtw_hal_antdiv_rssi_compared(_adapter *padapter, const WLAN_BSSID_EX *dst, const WLAN_BSSID_EX *src)
-{
-	if(padapter->HalFunc.AntDivCompareHandler)
-		padapter->HalFunc.AntDivCompareHandler(padapter, dst, src);
-}
-#endif
 
 #ifdef CONFIG_HOSTAPD_MLME
 s32	rtw_hal_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)

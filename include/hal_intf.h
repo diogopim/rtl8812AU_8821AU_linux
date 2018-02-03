@@ -111,14 +111,6 @@ typedef enum _HW_VARIABLES {
 	HW_VAR_APFM_ON_MAC, //Auto FSM to Turn On, include clock, isolation, power control for MAC only
 	// The valid upper nav range for the HW updating, if the true value is larger than the upper range, the HW won't update it.
 	// Unit in microsecond. 0 means disable this function.
-#if 0
-	HW_VAR_WOWLAN,
-	HW_VAR_WAKEUP_REASON,
-	HW_VAR_RPWM_TOG,
-#endif
-#if 0
-	HW_VAR_AP_WOWLAN,
-#endif
 	HW_VAR_SYS_CLKR,
 	HW_VAR_NAV_UPPER,
 	HW_VAR_C2H_HANDLE,
@@ -267,10 +259,6 @@ struct hal_ops {
 	void	(*run_thread)(_adapter *padapter);
 	void	(*cancel_thread)(_adapter *padapter);
 
-#if 0
-	u8	(*AntDivBeforeLinkHandler)(_adapter *padapter);
-	void	(*AntDivCompareHandler)(_adapter *padapter, const WLAN_BSSID_EX *dst, const WLAN_BSSID_EX *src);
-#endif
 	u8	(*interface_ps_func)(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id, const u8* val);
 
 	s32	(*hal_xmit)(_adapter *padapter, struct xmit_frame *pxmitframe);
@@ -323,9 +311,6 @@ struct hal_ops {
 	s32 (*fill_h2c_cmd)(PADAPTER, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer);
 	void (*fill_fake_txdesc)(PADAPTER, u8 *pDesc, u32 BufferLen,
 	                         u8 IsPsPoll, u8 IsBTQosNull, u8 bDataFrame);
-#if 0
-	void (*hal_set_wowlan_fw)(_adapter *adapter, u8 sleep);
-#endif //
 	u8 (*hal_get_tx_buff_rsvd_page_num)(_adapter *adapter, bool wowlan);
 #ifdef CONFIG_GPIO_API
 	void (*update_hisr_hsisr_ind)(PADAPTER padapter, u32 flag);
@@ -602,11 +587,6 @@ void	rtw_hal_dm_watchdog_in_lps(_adapter *padapter);
 
 void	rtw_hal_set_tx_power_level(_adapter *padapter, u8 channel);
 void	rtw_hal_get_tx_power_level(_adapter *padapter, s32 *powerlevel);
-
-#if 0
-u8	rtw_hal_antdiv_before_linked(_adapter *padapter);
-void	rtw_hal_antdiv_rssi_compared(_adapter *padapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);
-#endif
 
 #ifdef CONFIG_HOSTAPD_MLME
 s32	rtw_hal_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt);

@@ -816,24 +816,14 @@ static int wpa_set_auth_algs(struct net_device *dev, u32 value)
 		DBG_871X("wpa_set_auth_algs, AUTH_ALG_SHARED_KEY  [value:0x%x]\n",value);
 		padapter->securitypriv.ndisencryptstatus = Ndis802_11Encryption1Enabled;
 
-#if 0
-		padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeAutoSwitch;
-		padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Auto;
-#else
 		padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeShared;
 		padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Shared;
-#endif
 	} else if(value & AUTH_ALG_OPEN_SYSTEM) {
 		DBG_871X("wpa_set_auth_algs, AUTH_ALG_OPEN_SYSTEM\n");
 		//padapter->securitypriv.ndisencryptstatus = Ndis802_11EncryptionDisabled;
 		if(padapter->securitypriv.ndisauthtype < Ndis802_11AuthModeWPAPSK) {
-#if 0
-			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeAutoSwitch;
-			padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Auto;
-#else
 			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeOpen;
 			padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Open;
-#endif
 		}
 
 	} else if(value & AUTH_ALG_LEAP) {
@@ -1108,20 +1098,6 @@ static int rtw_set_wpa_ie(_adapter *padapter, char *pie, unsigned short ielen)
 			goto exit;
 		}
 
-#if 0
-		pos += RSN_HEADER_LEN;
-		left  = ielen - RSN_HEADER_LEN;
-
-		if (left >= RSN_SELECTOR_LEN) {
-			pos += RSN_SELECTOR_LEN;
-			left -= RSN_SELECTOR_LEN;
-		} else if (left > 0) {
-			RT_TRACE(_module_rtl871x_ioctl_os_c,_drv_err_,("Ie length mismatch, %u too much \n", left));
-			ret =-1;
-			goto exit;
-		}
-#endif
-
 		if(rtw_parse_wpa_ie(buf, ielen, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS) {
 			padapter->securitypriv.dot11AuthAlgrthm= dot11AuthAlgrthm_8021X;
 			padapter->securitypriv.ndisauthtype=Ndis802_11AuthModeWPAPSK;
@@ -1373,9 +1349,6 @@ static int rtw_wx_set_mode(struct net_device *dev, struct iw_request_info *a,
 	switch(wrqu->mode) {
 	case IW_MODE_MONITOR:
 		networkType = Ndis802_11Monitor;
-#if 0
-		dev->type = ARPHRD_IEEE80211; /* IEEE 802.11 : 801 */
-#endif
 		dev->type = ARPHRD_IEEE80211_RADIOTAP; /* IEEE 802.11 + radiotap header : 803 */
 		DBG_871X("set_mode = IW_MODE_MONITOR\n");
 		break;
@@ -1775,19 +1748,6 @@ static int rtw_wx_set_wap(struct net_device *dev,
 	while (1) {
 
 		if ((rtw_end_of_queue_search(phead, pmlmepriv->pscanned)) == _TRUE) {
-#if 0
-			ret = -EINVAL;
-			goto exit;
-
-			if(check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) == _TRUE) {
-				rtw_set_802_11_bssid(padapter, temp->sa_data);
-				goto exit;
-			} else {
-				ret = -EINVAL;
-				goto exit;
-			}
-#endif
-
 			break;
 		}
 
@@ -1864,14 +1824,6 @@ static int rtw_wx_set_mlme(struct net_device *dev,
                            struct iw_request_info *info,
                            union iwreq_data *wrqu, char *extra)
 {
-#if 0
-	/* SIOCSIWMLME data */
-	struct	iw_mlme {
-		__u16		cmd; /* IW_MLME_* */
-		__u16		reason_code;
-		struct sockaddr	addr;
-	};
-#endif
 
 	int ret=0;
 	u16 reason;
@@ -2108,18 +2060,11 @@ static int rtw_wx_set_scan(struct net_device *dev, struct iw_request_info *a,
 					pos+=1;
 					len-=1;
 					break;
-#if 0
-				case WEXT_CSCAN_NPROBE_SECTION:
-					DBG_871X("WEXT_CSCAN_NPROBE_SECTION\n");
-					break;
-#endif
 
 				default:
 					//DBG_871X("Unknown CSCAN section %c\n", section);
 					len = 0; // stop parsing
 				}
-				//DBG_871X("len:%d\n", len);
-
 			}
 
 			//jeff: it has still some scan paramater to parse, we only do this now...
@@ -2208,7 +2153,6 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 	}
 #endif //CONFIG_P2P
 
-#if 1 // Wireless Extension use EAGAIN to try
 	wait_status = _FW_UNDER_SURVEY
 #ifndef CONFIG_ANDROID
 	              | _FW_UNDER_LINKING
@@ -2218,29 +2162,6 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 	while (check_fwstate(pmlmepriv, wait_status) == _TRUE) {
 		return -EAGAIN;
 	}
-#else
-	wait_status = _FW_UNDER_SURVEY
-#ifndef CONFIG_ANDROID
-	              |_FW_UNDER_LINKING
-#endif
-	              ;
-
-#ifdef CONFIG_DUALMAC_CONCURRENT
-	while(dc_check_fwstate(padapter, wait_status)== _TRUE) {
-		rtw_msleep_os(30);
-		cnt++;
-		if(cnt > wait_for_surveydone )
-			break;
-	}
-#endif // CONFIG_DUALMAC_CONCURRENT
-
-	while(check_fwstate(pmlmepriv, wait_status) == _TRUE) {
-		rtw_msleep_os(30);
-		cnt++;
-		if(cnt > wait_for_surveydone )
-			break;
-	}
-#endif
 	_enter_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
 
 	phead = get_list_head(queue);
@@ -2402,17 +2323,6 @@ static int rtw_wx_set_essid(struct net_device *dev,
 
 		while (1) {
 			if (rtw_end_of_queue_search(phead, pmlmepriv->pscanned) == _TRUE) {
-#if 0
-				if(check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) == _TRUE) {
-					rtw_set_802_11_ssid(padapter, &ndis_ssid);
-
-					goto exit;
-				} else {
-					RT_TRACE(_module_rtl871x_ioctl_os_c,_drv_info_,("rtw_wx_set_ssid(): scanned_queue is empty\n"));
-					ret = -EINVAL;
-					goto exit;
-				}
-#endif
 				RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_warning_,
 				         ("rtw_wx_set_essid: scan_q is empty, set ssid to check if scanning again!\n"));
 
@@ -2720,29 +2630,6 @@ static int rtw_wx_get_retry(struct net_device *dev,
 
 }
 
-#if 0
-#define IW_ENCODE_INDEX		0x00FF	/* Token index (if needed) */
-#define IW_ENCODE_FLAGS		0xFF00	/* Flags defined below */
-#define IW_ENCODE_MODE		0xF000	/* Modes defined below */
-#define IW_ENCODE_DISABLED	0x8000	/* Encoding disabled */
-#define IW_ENCODE_ENABLED	0x0000	/* Encoding enabled */
-#define IW_ENCODE_RESTRICTED	0x4000	/* Refuse non-encoded packets */
-#define IW_ENCODE_OPEN		0x2000	/* Accept non-encoded packets */
-#define IW_ENCODE_NOKEY		0x0800  /* Key is write only, so not present */
-#define IW_ENCODE_TEMP		0x0400  /* Temporary key */
-/*
-iwconfig wlan0 key on -> flags = 0x6001 -> maybe it means auto
-iwconfig wlan0 key off -> flags = 0x8800
-iwconfig wlan0 key open -> flags = 0x2800
-iwconfig wlan0 key open 1234567890 -> flags = 0x2000
-iwconfig wlan0 key restricted -> flags = 0x4800
-iwconfig wlan0 key open [3] 1234567890 -> flags = 0x2003
-iwconfig wlan0 key restricted [2] 1234567890 -> flags = 0x4002
-iwconfig wlan0 key open [3] -> flags = 0x2803
-iwconfig wlan0 key restricted [2] -> flags = 0x4802
-*/
-#endif
-
 static int rtw_wx_set_enc(struct net_device *dev,
                           struct iw_request_info *info,
                           union iwreq_data *wrqu, char *keybuf)
@@ -2791,11 +2678,7 @@ static int rtw_wx_set_enc(struct net_device *dev,
 		DBG_871X("rtw_wx_set_enc():IW_ENCODE_OPEN\n");
 		padapter->securitypriv.ndisencryptstatus = Ndis802_11Encryption1Enabled;//Ndis802_11EncryptionDisabled;
 
-#if 0
-		padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Auto;
-#else
 		padapter->securitypriv.dot11AuthAlgrthm= dot11AuthAlgrthm_Open;
-#endif
 
 		padapter->securitypriv.dot11PrivacyAlgrthm=_NO_PRIVACY_;
 		padapter->securitypriv.dot118021XGrpPrivacy=_NO_PRIVACY_;
@@ -2804,13 +2687,7 @@ static int rtw_wx_set_enc(struct net_device *dev,
 	} else if(erq->flags & IW_ENCODE_RESTRICTED) {
 		DBG_871X("rtw_wx_set_enc():IW_ENCODE_RESTRICTED\n");
 		padapter->securitypriv.ndisencryptstatus = Ndis802_11Encryption1Enabled;
-
-#if 0
-		padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Auto;
-#else
 		padapter->securitypriv.dot11AuthAlgrthm= dot11AuthAlgrthm_Shared;
-#endif
-
 		padapter->securitypriv.dot11PrivacyAlgrthm=_WEP40_;
 		padapter->securitypriv.dot118021XGrpPrivacy=_WEP40_;
 		authmode = Ndis802_11AuthModeShared;
@@ -3203,9 +3080,6 @@ static int rtw_wx_get_nick(struct net_device *dev,
                            struct iw_request_info *info,
                            union iwreq_data *wrqu, char *extra)
 {
-	//_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	//struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
-	//struct security_priv *psecuritypriv = &padapter->securitypriv;
 
 	if(extra) {
 		wrqu->data.length = 14;
@@ -3213,55 +3087,7 @@ static int rtw_wx_get_nick(struct net_device *dev,
 		_rtw_memcpy(extra, "<WIFI@REALTEK>", 14);
 	}
 
-	//rtw_signal_process(pid, SIGUSR1); //for test
-
-	//dump debug info here
-	/*
-		u32 dot11AuthAlgrthm;		// 802.11 auth, could be open, shared, and 8021x
-		u32 dot11PrivacyAlgrthm;	// This specify the privacy for shared auth. algorithm.
-		u32 dot118021XGrpPrivacy;	// This specify the privacy algthm. used for Grp key
-		u32 ndisauthtype;
-		u32 ndisencryptstatus;
-	*/
-
-	//DBG_871X("auth_alg=0x%x, enc_alg=0x%x, auth_type=0x%x, enc_type=0x%x\n",
-	//		psecuritypriv->dot11AuthAlgrthm, psecuritypriv->dot11PrivacyAlgrthm,
-	//		psecuritypriv->ndisauthtype, psecuritypriv->ndisencryptstatus);
-
-	//DBG_871X("enc_alg=0x%x\n", psecuritypriv->dot11PrivacyAlgrthm);
-	//DBG_871X("auth_type=0x%x\n", psecuritypriv->ndisauthtype);
-	//DBG_871X("enc_type=0x%x\n", psecuritypriv->ndisencryptstatus);
-
-#if 0
-	DBG_871X("dbg(0x210)=0x%x\n", rtw_read32(padapter, 0x210));
-	DBG_871X("dbg(0x608)=0x%x\n", rtw_read32(padapter, 0x608));
-	DBG_871X("dbg(0x280)=0x%x\n", rtw_read32(padapter, 0x280));
-	DBG_871X("dbg(0x284)=0x%x\n", rtw_read32(padapter, 0x284));
-	DBG_871X("dbg(0x288)=0x%x\n", rtw_read32(padapter, 0x288));
-
-	DBG_871X("dbg(0x664)=0x%x\n", rtw_read32(padapter, 0x664));
-
-
-	DBG_871X("\n");
-
-	DBG_871X("dbg(0x430)=0x%x\n", rtw_read32(padapter, 0x430));
-	DBG_871X("dbg(0x438)=0x%x\n", rtw_read32(padapter, 0x438));
-
-	DBG_871X("dbg(0x440)=0x%x\n", rtw_read32(padapter, 0x440));
-
-	DBG_871X("dbg(0x458)=0x%x\n", rtw_read32(padapter, 0x458));
-
-	DBG_871X("dbg(0x484)=0x%x\n", rtw_read32(padapter, 0x484));
-	DBG_871X("dbg(0x488)=0x%x\n", rtw_read32(padapter, 0x488));
-
-	DBG_871X("dbg(0x444)=0x%x\n", rtw_read32(padapter, 0x444));
-	DBG_871X("dbg(0x448)=0x%x\n", rtw_read32(padapter, 0x448));
-	DBG_871X("dbg(0x44c)=0x%x\n", rtw_read32(padapter, 0x44c));
-	DBG_871X("dbg(0x450)=0x%x\n", rtw_read32(padapter, 0x450));
-#endif
-
 	return 0;
-
 }
 
 static int rtw_wx_read32(struct net_device *dev,
@@ -3428,12 +3254,6 @@ static int rtw_wx_set_channel_plan(struct net_device *dev,
 	//extern int rtw_channel_plan;
 	u8 channel_plan_req = (u8) (*((int *)wrqu));
 
-#if 0
-	rtw_channel_plan = (int)wrqu->data.pointer;
-	pregistrypriv->channel_plan = rtw_channel_plan;
-	pmlmepriv->ChannelPlan = pregistrypriv->channel_plan;
-#endif
-
 	if (_SUCCESS == rtw_set_chplan_cmd(padapter, channel_plan_req, 1, 1)) {
 		DBG_871X("%s set channel_plan = 0x%02X\n", __func__, pmlmepriv->ChannelPlan);
 	} else
@@ -3446,14 +3266,6 @@ static int rtw_wx_set_mtk_wps_probe_ie(struct net_device *dev,
                                        struct iw_request_info *a,
                                        union iwreq_data *wrqu, char *b)
 {
-#if 0
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-
-	RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_notice_,
-	         ("WLAN IOCTL: cmd_code=%x, fwstate=0x%x\n",
-	          a->cmd, get_fwstate(pmlmepriv)));
-#endif
 	return 0;
 }
 
@@ -3461,14 +3273,6 @@ static int rtw_wx_get_sensitivity(struct net_device *dev,
                                   struct iw_request_info *info,
                                   union iwreq_data *wrqu, char *buf)
 {
-#if 0
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-
-	//	Modified by Albert 20110914
-	//	This is in dbm format for MTK platform.
-	wrqu->qual.level = padapter->recvpriv.rssi;
-	DBG_871X(" level = %u\n",  wrqu->qual.level );
-#endif
 	return 0;
 }
 
@@ -3476,13 +3280,7 @@ static int rtw_wx_set_mtk_wps_ie(struct net_device *dev,
                                  struct iw_request_info *info,
                                  union iwreq_data *wrqu, char *extra)
 {
-#if 0
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-
-	return rtw_set_wpa_ie(padapter, wrqu->data.pointer, wrqu->data.length);
-#else
 	return 0;
-#endif
 }
 
 /*
@@ -3496,104 +3294,7 @@ typedef int (*iw_handler)(struct net_device *dev, struct iw_request_info *info,
 static  int rtw_drvext_hdl(struct net_device *dev, struct iw_request_info *info,
                            union iwreq_data *wrqu, char *extra)
 {
-
-#if 0
-	struct	iw_point {
-		void __user	*pointer;	/* Pointer to the data  (in user space) */
-		__u16		length;		/* number of fields or size in bytes */
-		__u16		flags;		/* Optional params */
-	};
-#endif
-
-#if 0
-	u8 res;
-	struct drvext_handler *phandler;
-	struct drvext_oidparam *poidparam;
-	int ret;
-	u16 len;
-	u8 *pparmbuf, bset;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct iw_point *p = &wrqu->data;
-
-	if( (!p->length) || (!p->pointer)) {
-		ret = -EINVAL;
-		goto _rtw_drvext_hdl_exit;
-	}
-
-
-	bset = (u8)(p->flags&0xFFFF);
-	len = p->length;
-	pparmbuf = (u8*)rtw_malloc(len);
-	if (pparmbuf == NULL) {
-		ret = -ENOMEM;
-		goto _rtw_drvext_hdl_exit;
-	}
-
-	if(bset) { //set info
-		if (copy_from_user(pparmbuf, p->pointer,len)) {
-			rtw_mfree(pparmbuf, len);
-			ret = -EFAULT;
-			goto _rtw_drvext_hdl_exit;
-		}
-	} else { //query info
-
-	}
-
-
-	//
-	poidparam = (struct drvext_oidparam *)pparmbuf;
-
-	RT_TRACE(_module_rtl871x_ioctl_os_c,_drv_info_,("drvext set oid subcode [%d], len[%d], InformationBufferLength[%d]\r\n",
-	         poidparam->subcode, poidparam->len, len));
-
-
-	//check subcode
-	if ( poidparam->subcode >= MAX_DRVEXT_HANDLERS) {
-		RT_TRACE(_module_rtl871x_ioctl_os_c,_drv_err_,("no matching drvext handlers\r\n"));
-		ret = -EINVAL;
-		goto _rtw_drvext_hdl_exit;
-	}
-
-
-	if ( poidparam->subcode >= MAX_DRVEXT_OID_SUBCODES) {
-		RT_TRACE(_module_rtl871x_ioctl_os_c,_drv_err_,("no matching drvext subcodes\r\n"));
-		ret = -EINVAL;
-		goto _rtw_drvext_hdl_exit;
-	}
-
-
-	phandler = drvextoidhandlers + poidparam->subcode;
-
-	if (poidparam->len != phandler->parmsize) {
-		RT_TRACE(_module_rtl871x_ioctl_os_c,_drv_err_,("no matching drvext param size %d vs %d\r\n",
-		         poidparam->len , phandler->parmsize));
-		ret = -EINVAL;
-		goto _rtw_drvext_hdl_exit;
-	}
-
-
-	res = phandler->handler(&padapter->drvextpriv, bset, poidparam->data);
-
-	if(res==0) {
-		ret = 0;
-
-		if (bset == 0x00) { //query info
-			//_rtw_memcpy(p->pointer, pparmbuf, len);
-			if (copy_to_user(p->pointer, pparmbuf, len))
-				ret = -EFAULT;
-		}
-	} else
-		ret = -EFAULT;
-
-
-_rtw_drvext_hdl_exit:
-
-	return ret;
-
-#endif
-
 	return 0;
-
 }
 
 static void rtw_dbg_mode_hdl(_adapter *padapter, u32 id, u8 *pdata, u32 len)
@@ -6491,16 +6192,6 @@ static int rtw_dbg_port(struct net_device *dev,
 			}
 		}
 		break;
-#if 0
-		case 0x0d: { //dump cam
-			//u8 entry = (u8) extra_arg;
-			u8 entry=0;
-			//dump cam
-			for(entry=0; entry<32; entry++)
-				read_cam(padapter,entry);
-		}
-		break;
-#endif
 		case 0x0e: {
 			if(arg == 0) {
 				DBG_871X("disable driver ctrl rx_ampdu_factor\n");
@@ -6906,25 +6597,6 @@ static int wpa_set_param(struct net_device *dev, u8 name, u32 value)
 		 * be set.
 		 */
 
-#if 0
-		struct ieee80211_security sec = {
-			.flags = SEC_ENABLED,
-			.enabled = value,
-		};
-		ieee->drop_unencrypted = value;
-		/* We only change SEC_LEVEL for open mode. Others
-		 * are set by ipw_wpa_set_encryption.
-		 */
-		if (!value) {
-			sec.flags |= SEC_LEVEL;
-			sec.level = SEC_LEVEL_0;
-		} else {
-			sec.flags |= SEC_LEVEL;
-			sec.level = SEC_LEVEL_1;
-		}
-		if (ieee->set_security)
-			ieee->set_security(ieee->dev, &sec);
-#endif
 		break;
 
 	}
@@ -7553,36 +7225,9 @@ static int rtw_ioctl_get_sta_data(struct net_device *dev, struct ieee_param *par
 
 	psta = rtw_get_stainfo(pstapriv, param_ex->sta_addr);
 	if(psta) {
-#if 0
-		struct {
-			u16 aid;
-			u16 capability;
-			int flags;
-			u32 sta_set;
-			u8 tx_supp_rates[16];
-			u32 tx_supp_rates_len;
-			struct rtw_ieee80211_ht_cap ht_cap;
-			u64	rx_pkts;
-			u64	rx_bytes;
-			u64	rx_drops;
-			u64	tx_pkts;
-			u64	tx_bytes;
-			u64	tx_drops;
-		} get_sta;
-#endif
 		psta_data->aid = (u16)psta->aid;
 		psta_data->capability = psta->capability;
 		psta_data->flags = psta->flags;
-
-		/*
-				nonerp_set : BIT(0)
-				no_short_slot_time_set : BIT(1)
-				no_short_preamble_set : BIT(2)
-				no_ht_gf_set : BIT(3)
-				no_ht_set : BIT(4)
-				ht_20mhz_set : BIT(5)
-		*/
-
 		psta_data->sta_set =((psta->nonerp_set) |
 		                     (psta->no_short_slot_time_set <<1) |
 		                     (psta->no_short_preamble_set <<2) |
@@ -8032,10 +7677,6 @@ static int rtw_wx_set_priv(struct net_device *dev,
                            char *extra)
 {
 
-#if 0
-	char *ext_dbg;
-#endif
-
 	int ret = 0;
 	int len = 0;
 	char *ext;
@@ -8058,20 +7699,6 @@ static int rtw_wx_set_priv(struct net_device *dev,
 		rtw_vmfree(ext, len);
 		return -EFAULT;
 	}
-
-
-	//RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_notice_,
-	//	 ("rtw_wx_set_priv: %s req=%s\n",
-	//	  dev->name, ext));
-
-#if 0
-	if (!(ext_dbg = rtw_vmalloc(len))) {
-		rtw_vmfree(ext, len);
-		return -ENOMEM;
-	}
-
-	_rtw_memcpy(ext_dbg, ext, len);
-#endif
 
 	//added for wps2.0 @20110524
 	if(dwrq->flags == 0x8766 && len > 8) {
@@ -8166,202 +7793,21 @@ static int rtw_wx_set_priv(struct net_device *dev,
 	}
 	break;
 	default :
-#if 0
-		DBG_871X("%s: %s unknowned req=%s\n", __FUNCTION__,
-		         dev->name, ext_dbg);
-#endif
-
 		sprintf(ext, "OK");
-
 	}
 
 	if (copy_to_user(dwrq->pointer, ext, min(dwrq->length, (u16)(strlen(ext)+1)) ) )
 		ret = -EFAULT;
 
-#if 0
-	DBG_871X("%s: %s req=%s rep=%s dwrq->length=%d, strlen(ext)+1=%d\n", __FUNCTION__,
-	         dev->name, ext_dbg ,ext, dwrq->length, (u16)(strlen(ext)+1));
-#endif
 #endif //end of CONFIG_ANDROID
 
 
 FREE_EXT:
 
 	rtw_vmfree(ext, len);
-#if 0
-	rtw_vmfree(ext_dbg, len);
-#endif
-
-	//DBG_871X("rtw_wx_set_priv: (SIOCSIWPRIV) %s ret=%d\n",
-	//		dev->name, ret);
-
 	return ret;
 
 }
-#if 0
-static int rtw_wowlan_ctrl(struct net_device *dev,
-                           struct iw_request_info *info,
-                           union iwreq_data *wrqu, char *extra)
-{
-	_adapter *padapter =  (_adapter *)rtw_netdev_priv(dev);
-	struct wowlan_ioctl_param poidparam;
-	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
-	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-	//struct net_device *pnetdev = padapter->pnetdev;
-#ifdef CONFIG_CONCURRENT_MODE
-	//struct net_device *pbuddy_netdev = padapter->pbuddy_adapter->pnetdev;
-#endif
-	//struct sta_info	*psta = NULL;
-	int ret = 0;
-	u32 start_time = rtw_get_current_time();
-	poidparam.subcode = 0;
-
-	DBG_871X("+rtw_wowlan_ctrl: %s\n", extra);
-
-	if(pwrctrlpriv->bSupportRemoteWakeup==_FALSE) {
-		ret = -EPERM;
-		DBG_871X("+rtw_wowlan_ctrl: Device didn't support the remote wakeup!!\n");
-		goto _rtw_wowlan_ctrl_exit_free;
-	}
-
-	if (!check_fwstate(pmlmepriv, _FW_LINKED) &&
-	    check_fwstate(pmlmepriv, WIFI_STATION_STATE)) {
-#if 0
-		pwrctrlpriv->wowlan_pno_enable = _TRUE;
-#else
-		DBG_871X("[%s] WARNING: Please Connect With AP First!!\n", __func__);
-		goto _rtw_wowlan_ctrl_exit_free;
-#endif //
-	}
-
-	if (_rtw_memcmp( extra, "enable", 6 )) {
-
-		padapter->registrypriv.mp_mode = 1;
-
-		pwrctrlpriv->wowlan_from_cmd = _TRUE;
-
-		rtw_suspend_common(padapter);
-
-	} else if (_rtw_memcmp( extra, "disable", 6 )) {
-
-		rtw_resume_common(padapter);
-
-		pwrctrlpriv->wowlan_from_cmd = _FALSE;
-
-#if 0
-		pwrctrlpriv->wowlan_pno_enable = _FALSE;
-#endif //
-
-		padapter->registrypriv.mp_mode = 0;
-	} else {
-		DBG_871X("[%s] Invalid Parameter.\n", __func__);
-		goto _rtw_wowlan_ctrl_exit_free;
-	}
-	//mutex_lock(&ioctl_mutex);
-_rtw_wowlan_ctrl_exit_free:
-	DBG_871X("-rtw_wowlan_ctrl( subcode = %d)\n", poidparam.subcode);
-	DBG_871X_LEVEL(_drv_always_, "%s in %d ms\n", __func__,
-	               rtw_get_passing_time_ms(start_time));
-//_rtw_wowlan_ctrl_exit:
-	return ret;
-}
-#endif //
-
-#if 0
-static int rtw_ap_wowlan_ctrl(struct net_device *dev,
-                              struct iw_request_info *info,
-                              union iwreq_data *wrqu, char *extra)
-{
-	_adapter *padapter =  (_adapter *)rtw_netdev_priv(dev);
-	struct wowlan_ioctl_param poidparam;
-	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
-	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-	struct sta_info	*psta = NULL;
-	int ret = 0;
-	u32 start_time = rtw_get_current_time();
-	poidparam.subcode = 0;
-
-	DBG_871X("+rtw_ap_wowlan_ctrl: %s\n", extra);
-
-	if(pwrctrlpriv->bSupportRemoteWakeup==_FALSE) {
-		ret = -EPERM;
-		DBG_871X("+rtw_wowlan_ctrl: Device didn't support the remote wakeup!!\n");
-		goto _rtw_ap_wowlan_ctrl_exit_free;
-	}
-
-	if (!check_fwstate(pmlmepriv, WIFI_AP_STATE)) {
-		DBG_871X("[%s] It is not AP mode!!\n", __func__);
-		goto _rtw_ap_wowlan_ctrl_exit_free;
-	}
-
-	if (_rtw_memcmp( extra, "enable", 6 )) {
-		pwrctrlpriv->wowlan_ap_mode = _TRUE;
-		while (pwrctrlpriv->bips_processing == _TRUE)
-			rtw_msleep_os(1);
-
-		rtw_cancel_all_timer(padapter);
-
-		padapter->bDriverStopped = _TRUE;	//for stop thread
-		rtw_stop_drv_threads(padapter);
-		padapter->bDriverStopped = _FALSE;	//for 32k command
-
-#ifdef CONFIG_LPS
-		LeaveAllPowerSaveModeDirect(padapter);
-#endif
-		rtw_hal_disable_interrupt(padapter); // It need wait for leaving 32K.
-
-		// 2.1 clean interupt
-		if (padapter->HalFunc.clear_interrupt)
-			padapter->HalFunc.clear_interrupt(padapter);
-
-		poidparam.subcode = WOWLAN_AP_ENABLE;
-
-		rtw_hal_set_hwreg(padapter, HW_VAR_AP_WOWLAN,(u8 *)&poidparam);
-	} else if (_rtw_memcmp( extra, "disable", 6 )) {
-#ifdef CONFIG_LPS
-		LeaveAllPowerSaveModeDirect(padapter);
-#endif //CONFIG_LPS
-		pwrctrlpriv->bFwCurrentInPSMode = _FALSE;
-
-		rtw_hal_disable_interrupt(padapter);
-
-		if (padapter->HalFunc.clear_interrupt)
-			padapter->HalFunc.clear_interrupt(padapter);
-
-		poidparam.subcode = WOWLAN_AP_ENABLE;
-
-		rtw_hal_set_hwreg(padapter, HW_VAR_AP_WOWLAN,(u8 *)&poidparam);
-
-		pwrctrlpriv->wowlan_ap_mode = _FALSE;
-
-		psta = rtw_get_stainfo(&padapter->stapriv, get_bssid(&padapter->mlmepriv));
-		if (psta) {
-			set_sta_rate(padapter, psta);
-		}
-
-		padapter->bDriverStopped = _FALSE;
-		DBG_871X("%s: wowmode resuming, DriverStopped:%d\n", __func__, padapter->bDriverStopped);
-		rtw_start_drv_threads(padapter);
-
-		rtw_hal_enable_interrupt(padapter);
-
-		_set_timer(&padapter->mlmepriv.dynamic_chk_timer, 2000);
-		pwrctrlpriv->bips_processing = _FALSE;
-		rtw_set_pwr_state_check_timer(pwrctrlpriv);
-
-	} else {
-		DBG_871X("[%s] Invalid Parameter.\n", __func__);
-		goto _rtw_ap_wowlan_ctrl_exit_free;
-	}
-	//mutex_lock(&ioctl_mutex);
-_rtw_ap_wowlan_ctrl_exit_free:
-	DBG_871X("-rtw_ap_wowlan_ctrl( subcode = %d)\n", poidparam.subcode);
-	DBG_871X_LEVEL(_drv_always_, "%s in %d ms\n", __func__,
-	               rtw_get_passing_time_ms(start_time));
-_rtw_ap_wowlan_ctrl_exit:
-	return ret;
-}
-#endif //
 
 static int rtw_pm_set(struct net_device *dev,
                       struct iw_request_info *info,
@@ -8876,7 +8322,6 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 			goto exit;
 		}
 
-#if 1
 		// unknown bug workaround, need to fix later
 		addr=0x1ff;
 		rtw_write8(padapter, EFUSE_CTRL+1, (addr & 0xff));
@@ -8886,7 +8331,6 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		rtw_write8(padapter, EFUSE_CTRL+3, 0x72);
 		rtw_msleep_os(10);
 		rtw_read8(padapter, EFUSE_CTRL);
-#endif
 
 		addr = simple_strtoul(tmp[1], &ptmp, 16);
 		addr &= 0xFFF;
@@ -9227,7 +8671,7 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 			printk("\n");
 		}
 		printk("\n");
-#if 1
+
 		err = -EFAULT;
 		DBG_871X("%s: rtw_BT_efuse_map_read _rtw_memcmp \n", __FUNCTION__);
 		if ( (rtw_BT_efuse_map_read(padapter, 0x00, EFUSE_BT_MAX_MAP_LEN, pEfuseHal->fakeBTEfuseInitMap) == _SUCCESS ) ) {
@@ -9262,7 +8706,6 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 				goto exit;
 			}
 		}
-#endif
 
 	} else if (strcmp(tmp[0], "wlfk2map") == 0) {
 		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
@@ -10788,20 +10231,7 @@ static int rtw_mp_set(struct net_device *dev,
 		DBG_871X("set case MP_DISABLE_BT_COEXIST \n");
 		rtw_mp_disable_bt_coexist(dev, info, wdata, extra);
 		break;
-#if 0
-	case MP_WOW_ENABLE:
-		DBG_871X("set case MP_WOW_ENABLE: %s \n", extra);
-		rtw_wowlan_ctrl(dev, info, wdata, extra);
-		break;
-#endif
-#if 0
-	case MP_AP_WOW_ENABLE:
-		DBG_871X("set case MP_AP_WOW_ENABLE: %s \n", extra);
-		rtw_ap_wowlan_ctrl(dev, info, wdata, extra);
-		break;
-#endif
 	}
-
 
 	return 0;
 }
@@ -10963,47 +10393,14 @@ static inline int rtw_wfd_tdls_enable(struct net_device *dev,
                                struct iw_request_info *info,
                                union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-#ifdef CONFIG_WFD
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-
-	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	if ( extra[ 0 ] == '0' )
-		padapter->wdinfo.wfd_tdls_enable = 0;
-	else
-		padapter->wdinfo.wfd_tdls_enable = 1;
-
-#endif /* CONFIG_WFD */
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_weaksec(struct net_device *dev,
                             struct iw_request_info *info,
                             union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-
-	//u8 i, j;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-
-	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	if ( extra[ 0 ] == '0' )
-		padapter->wdinfo.wfd_tdls_weaksec = 0;
-	else
-		padapter->wdinfo.wfd_tdls_weaksec = 1;
-
-#endif
-
-	return ret;
+	return 0;
 }
 
 
@@ -11011,507 +10408,98 @@ static inline int rtw_tdls_enable(struct net_device *dev,
                            struct iw_request_info *info,
                            union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct tdls_info	*ptdlsinfo = &padapter->tdlsinfo;
-	_irqL	 irqL;
-	_list	*plist, *phead;
-	s32	index;
-	struct sta_info *psta = NULL;
-	struct	sta_priv *pstapriv = &padapter->stapriv;
-	u8 tdls_sta[NUM_STA][ETH_ALEN];
-	u8 empty_hwaddr[ETH_ALEN] = { 0x00 };
-	struct tdls_txmgmt txmgmt;
-
-	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	_rtw_memset(tdls_sta, 0x00, sizeof(tdls_sta));
-	_rtw_memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
-
-	if (extra[ 0 ] == '0') {
-		ptdlsinfo->tdls_enable = 0;
-
-		if(pstapriv->asoc_sta_count==1)
-			return ret;
-
-		_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-		for (index=0; index< NUM_STA; index++) {
-			phead = &(pstapriv->sta_hash[index]);
-			plist = get_next(phead);
-
-			while (rtw_end_of_queue_search(phead, plist) == _FALSE) {
-				psta = LIST_CONTAINOR(plist, struct sta_info ,hash_list);
-
-				plist = get_next(plist);
-
-				if (psta->tdls_sta_state != TDLS_STATE_NONE) {
-					_rtw_memcpy(tdls_sta[index], psta->hwaddr, ETH_ALEN);
-				}
-			}
-		}
-		_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-
-		for (index=0; index< NUM_STA; index++) {
-			if (!_rtw_memcmp(tdls_sta[index], empty_hwaddr, ETH_ALEN)) {
-				DBG_871X("issue tear down to "MAC_FMT"\n", MAC_ARG(tdls_sta[index]));
-				txmgmt.status_code = _RSON_TDLS_TEAR_UN_RSN_;
-				_rtw_memcpy(txmgmt.peer, tdls_sta[index], ETH_ALEN);
-				issue_tdls_teardown(padapter, &txmgmt, _FALSE);
-			}
-		}
-		rtw_tdls_cmd(padapter, NULL, TDLS_RS_RCR);
-		rtw_reset_tdls_info(padapter);
-	} else if (extra[0] == '1') {
-		ptdlsinfo->tdls_enable = 1;
-	}
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_setup(struct net_device *dev,
                           struct iw_request_info *info,
                           union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-#if 0
-	u8 i, j;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct tdls_txmgmt txmgmt;
-#ifdef CONFIG_WFD
-	struct wifidirect_info *pwdinfo= &(padapter->wdinfo);
-#endif /* CONFIG_WFD */
-
-	DBG_871X("[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1);
-
-	if (wrqu->data.length - 1 != 17) {
-		DBG_871X("[%s] length:%d != 17\n", __FUNCTION__, (wrqu->data.length -1));
-		return ret;
-	}
-
-	_rtw_memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
-	for( i=0, j=0 ; i < ETH_ALEN; i++, j+=3 ) {
-		txmgmt.peer[i]=key_2char2num(*(extra+j), *(extra+j+1));
-	}
-
-#ifdef CONFIG_WFD
-	if (_AES_ != padapter->securitypriv.dot11PrivacyAlgrthm) {
-		/* Weak Security situation with AP. */
-		if (0 == pwdinfo->wfd_tdls_weaksec) {
-			/* Can't send the tdls setup request out!! */
-			DBG_871X("[%s] Current link is not AES, "
-			         "SKIP sending the tdls setup request!!\n", __FUNCTION__);
-		} else {
-			issue_tdls_setup_req(padapter, &txmgmt, _TRUE);
-		}
-	} else
-#endif /* CONFIG_WFD */
-	{
-		issue_tdls_setup_req(padapter, &txmgmt, _TRUE);
-	}
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_teardown(struct net_device *dev,
                              struct iw_request_info *info,
                              union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-
-	u8 i,j;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct sta_info *ptdls_sta = NULL;
-	struct tdls_txmgmt txmgmt;
-
-	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	if (wrqu->data.length - 1 != 17 && wrqu->data.length - 1 != 19) {
-		DBG_871X("[%s] length:%d != 17 or 19\n",
-		         __FUNCTION__, (wrqu->data.length -1));
-		return ret;
-	}
-
-	_rtw_memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
-	for (i=0, j=0; i < ETH_ALEN; i++, j+=3)
-		txmgmt.peer[i]=key_2char2num(*(extra+j), *(extra+j+1));
-
-	ptdls_sta = rtw_get_stainfo( &(padapter->stapriv), txmgmt.peer);
-
-	if (ptdls_sta != NULL) {
-		txmgmt.status_code = _RSON_TDLS_TEAR_UN_RSN_;
-		if(wrqu->data.length - 1 == 17)
-			issue_tdls_teardown(padapter, &txmgmt, _FALSE);
-		else if(wrqu->data.length - 1 == 19)
-			issue_tdls_teardown(padapter, &txmgmt, _TRUE);
-	} else {
-		DBG_871X( "TDLS peer not found\n");
-	}
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_discovery(struct net_device *dev,
                               struct iw_request_info *info,
                               union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct tdls_txmgmt	txmgmt;
-	int i = 0, j=0;
-
-	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	_rtw_memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
-	for( i=0, j=0 ; i < ETH_ALEN; i++, j+=3 ) {
-		txmgmt.peer[i]=key_2char2num(*(extra+j), *(extra+j+1));
-	}
-
-	issue_tdls_dis_req(padapter, &txmgmt);
-
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_ch_switch(struct net_device *dev,
                               struct iw_request_info *info,
                               union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-#if 0_CH_SW
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct tdls_ch_switch *pchsw_info = &padapter->tdlsinfo.chsw_info;
-	u8 i, j;
-	struct sta_info *ptdls_sta = NULL;
-
-	DBG_8192C( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	if (padapter->tdlsinfo.ch_switch_prohibited == _TRUE) {
-		DBG_871X("Can't do TDLS channel switch since ch_switch_prohibited = _TRUE\n");
-		return ret;
-	}
-
-	for( i=0, j=0 ; i < ETH_ALEN; i++, j+=3 ) {
-		pchsw_info->addr[i] = key_2char2num(*(extra+j), *(extra+j+1));
-	}
-
-	ptdls_sta = rtw_get_stainfo(&padapter->stapriv, pchsw_info->addr);
-	if( ptdls_sta == NULL )
-		return ret;
-
-	pchsw_info->ch_sw_state |= TDLS_CH_SW_INITIATOR_STATE;
-
-	if (ptdls_sta != NULL) {
-		if (pchsw_info->off_ch_num == 0)
-			pchsw_info->off_ch_num = 11;
-	} else {
-		DBG_871X( "TDLS peer not found\n");
-	}
-
-
-	//issue_tdls_ch_switch_req(padapter, ptdls_sta);
-	/* DBG_871X("issue tdls ch switch req\n"); */
-
-#endif /* CONFIG_TDLS_CH_SW */
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_ch_switch_off(struct net_device *dev,
                                   struct iw_request_info *info,
                                   union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-#if 0_CH_SW
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct tdls_ch_switch *pchsw_info = &padapter->tdlsinfo.chsw_info;
-	u8 i, j, mac_addr[ETH_ALEN];
-	struct sta_info *ptdls_sta = NULL;
-	struct tdls_txmgmt txmgmt;
-
-	_rtw_memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
-
-	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	if (padapter->tdlsinfo.ch_switch_prohibited == _TRUE) {
-		DBG_871X("Can't do TDLS channel switch since ch_switch_prohibited = _TRUE\n");
-		return ret;
-	}
-
-	if (wrqu->data.length >= 17) {
-		for (i=0, j=0 ; i < ETH_ALEN; i++, j+=3)
-			mac_addr[i]=key_2char2num(*(extra+j), *(extra+j+1));
-		ptdls_sta = rtw_get_stainfo(&padapter->stapriv, mac_addr);
-	}
-
-	if (padapter->mlmeextpriv.cur_channel != rtw_get_oper_ch(padapter)) {
-		SelectChannel(padapter, padapter->mlmeextpriv.cur_channel);
-	}
-
-	pchsw_info->ch_sw_state &= ~(TDLS_CH_SW_INITIATOR_STATE |
-	                             TDLS_CH_SWITCH_ON_STATE |
-	                             TDLS_PEER_AT_OFF_STATE);
-	ATOMIC_SET(&pchsw_info->chsw_on, _FALSE);
-	_rtw_memset(pchsw_info->addr, 0x00, ETH_ALEN);
-
-	if (ptdls_sta != NULL) {
-		ptdls_sta->ch_switch_time = 0;
-		ptdls_sta->ch_switch_timeout = 0;
-		_cancel_timer_ex(&ptdls_sta->ch_sw_timer);
-		_cancel_timer_ex(&ptdls_sta->delay_timer);
-	}
-
-#endif /* CONFIG_TDLS_CH_SW */
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_dump_ch(struct net_device *dev,
                             struct iw_request_info *info,
                             union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-#if 0_CH_SW
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-
-	DBG_8192C("[%s] dump_stack:%s\n", __FUNCTION__, extra);
-
-	extra[ wrqu->data.length ] = 0x00;
-	ptdlsinfo->chsw_info.dump_stack = rtw_atoi( extra );
-
-	return ret;
-
-#endif
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_off_ch_num(struct net_device *dev,
                                struct iw_request_info *info,
                                union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-#if 0_CH_SW
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-
-	DBG_8192C("[%s] off_ch_num:%s\n", __FUNCTION__, extra);
-
-	extra[ wrqu->data.length ] = 0x00;
-	ptdlsinfo->chsw_info.off_ch_num = rtw_atoi(extra);
-
-	return ret;
-
-#endif
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_ch_offset(struct net_device *dev,
                               struct iw_request_info *info,
                               union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-#if 0_CH_SW
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-
-	DBG_8192C("[%s] ch_offset:%s\n", __FUNCTION__, extra);
-
-	extra[ wrqu->data.length ] = 0x00;
-	ptdlsinfo->chsw_info.ch_offset = rtw_atoi( extra );
-
-	return ret;
-
-#endif
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_pson(struct net_device *dev,
                          struct iw_request_info *info,
                          union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	u8 i, j, mac_addr[ETH_ALEN];
-	struct sta_info *ptdls_sta = NULL;
-
-	DBG_871X( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	for (i=0, j=0; i < ETH_ALEN; i++, j+=3)
-		mac_addr[i]=key_2char2num(*(extra+j), *(extra+j+1));
-
-	ptdls_sta = rtw_get_stainfo(&padapter->stapriv, mac_addr);
-
-	issue_nulldata_to_TDLS_peer_STA(padapter, ptdls_sta->hwaddr, 1, 3, 500);
-
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_psoff(struct net_device *dev,
                           struct iw_request_info *info,
                           union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	u8 i, j, mac_addr[ETH_ALEN];
-	struct sta_info *ptdls_sta = NULL;
-
-	DBG_8192C( "[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length -1  );
-
-	for (i=0, j=0; i < ETH_ALEN; i++, j+=3)
-		mac_addr[i]=key_2char2num(*(extra+j), *(extra+j+1));
-
-	ptdls_sta = rtw_get_stainfo(&padapter->stapriv, mac_addr);
-
-	if(ptdls_sta)
-		issue_nulldata_to_TDLS_peer_STA(padapter, ptdls_sta->hwaddr, 0, 3, 500);
-
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_setip(struct net_device *dev,
                           struct iw_request_info *info,
                           union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-#ifdef CONFIG_WFD
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-	struct wifi_display_info *pwfd_info = ptdlsinfo->wfd_info;
-	u8 i=0, j=0, tag=0;
-
-	DBG_871X("[%s] %s %d\n", __FUNCTION__, extra, wrqu->data.length - 1);
-
-	while (i < 4) {
-		for (j=0; j < 4; j++) {
-			if (*( extra + j + tag ) == '.' || *( extra + j + tag ) == '\0') {
-				if( j == 1 )
-					pwfd_info->ip_address[i]=convert_ip_addr( '0', '0', *(extra+(j-1)+tag));
-				if( j == 2 )
-					pwfd_info->ip_address[i]=convert_ip_addr( '0', *(extra+(j-2)+tag), *(extra+(j-1)+tag));
-				if( j == 3 )
-					pwfd_info->ip_address[i]=convert_ip_addr( *(extra+(j-3)+tag), *(extra+(j-2)+tag), *(extra+(j-1)+tag));
-
-				tag += j + 1;
-				break;
-			}
-		}
-		i++;
-	}
-
-	DBG_871X( "[%s] Set IP = %u.%u.%u.%u \n", __FUNCTION__,
-	          ptdlsinfo->wfd_info->ip_address[0],
-	          ptdlsinfo->wfd_info->ip_address[1],
-	          ptdlsinfo->wfd_info->ip_address[2],
-	          ptdlsinfo->wfd_info->ip_address[3]);
-
-#endif /* CONFIG_WFD */
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_getip(struct net_device *dev,
                           struct iw_request_info *info,
                           union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-#ifdef CONFIG_WFD
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-	struct wifi_display_info *pwfd_info = ptdlsinfo->wfd_info;
-
-	DBG_871X( "[%s]\n", __FUNCTION__);
-
-	sprintf( extra, "\n\n%u.%u.%u.%u\n",
-	         pwfd_info->peer_ip_address[0], pwfd_info->peer_ip_address[1],
-	         pwfd_info->peer_ip_address[2], pwfd_info->peer_ip_address[3]);
-
-	DBG_871X( "[%s] IP=%u.%u.%u.%u\n", __FUNCTION__,
-	          pwfd_info->peer_ip_address[0], pwfd_info->peer_ip_address[1],
-	          pwfd_info->peer_ip_address[2], pwfd_info->peer_ip_address[3]);
-
-	wrqu->data.length = strlen( extra );
-
-#endif /* CONFIG_WFD */
-#endif
-
-	return ret;
+	return 0;
 }
 
 static inline int rtw_tdls_getport(struct net_device *dev,
                             struct iw_request_info *info,
                             union iwreq_data *wrqu, char *extra)
 {
-
-	int ret = 0;
-
-#if 0
-#ifdef CONFIG_WFD
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-	struct wifi_display_info *pwfd_info = ptdlsinfo->wfd_info;
-
-	DBG_871X( "[%s]\n", __FUNCTION__);
-
-	sprintf( extra, "\n\n%d\n", pwfd_info->peer_rtsp_ctrlport );
-	DBG_871X( "[%s] remote port = %d\n",
-	          __FUNCTION__, pwfd_info->peer_rtsp_ctrlport );
-
-	wrqu->data.length = strlen( extra );
-
-#endif /* CONFIG_WFD */
-#endif
-
-	return ret;
-
+	return 0;
 }
 
 /* WFDTDLS, for sigma test */
@@ -11519,29 +10507,7 @@ static inline int rtw_tdls_dis_result(struct net_device *dev,
                                struct iw_request_info *info,
                                union iwreq_data *wrqu, char *extra)
 {
-
-	int ret = 0;
-
-#if 0
-#ifdef CONFIG_WFD
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-
-	DBG_871X( "[%s]\n", __FUNCTION__);
-
-	if (ptdlsinfo->dev_discovered == _TRUE) {
-		sprintf( extra, "\n\nDis=1\n" );
-		ptdlsinfo->dev_discovered = _FALSE;
-	}
-
-	wrqu->data.length = strlen( extra );
-
-#endif /* CONFIG_WFD */
-#endif
-
-	return ret;
-
+	return 0;
 }
 
 /* WFDTDLS, for sigma test */
@@ -11549,93 +10515,14 @@ static inline int rtw_wfd_tdls_status(struct net_device *dev,
                                struct iw_request_info *info,
                                union iwreq_data *wrqu, char *extra)
 {
-
-	int ret = 0;
-
-#if 0
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-
-	DBG_871X("[%s]\n", __FUNCTION__);
-
-	sprintf( extra, "\nlink_established:%d \n"
-	         "sta_cnt:%d \n"
-	         "sta_maximum:%d \n"
-	         "cur_channel:%d \n"
-	         "tdls_enable:%d"
-#if 0_CH_SW
-	         "ch_sw_state:%08x\n"
-	         "chsw_on:%d\n"
-	         "off_ch_num:%d\n"
-	         "cur_time:%d\n"
-	         "ch_offset:%d\n"
-	         "delay_swtich_back:%d"
-#endif
-	         ,
-	         ptdlsinfo->link_established, ptdlsinfo->sta_cnt,
-	         ptdlsinfo->sta_maximum, ptdlsinfo->cur_channel,
-	         ptdlsinfo->tdls_enable
-#if 0_CH_SW
-	         ,
-	         ptdlsinfo->chsw_info.ch_sw_state,
-	         ATOMIC_READ(&padapter->tdlsinfo.chsw_info.chsw_on),
-	         ptdlsinfo->chsw_info.off_ch_num,
-	         ptdlsinfo->chsw_info.cur_time,
-	         ptdlsinfo->chsw_info.ch_offset,
-	         ptdlsinfo->chsw_info.delay_switch_back
-#endif
-	       );
-
-	wrqu->data.length = strlen( extra );
-
-#endif
-
-	return ret;
-
+	return 0;
 }
 
 static inline int rtw_tdls_getsta(struct net_device *dev,
                            struct iw_request_info *info,
                            union iwreq_data *wrqu, char *extra)
 {
-
-	int ret = 0;
-#if 0
-	u8 i, j;
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-	u8 addr[ETH_ALEN] = {0};
-	char charmac[17];
-	struct sta_info *ptdls_sta = NULL;
-
-	DBG_871X("[%s] %s %d\n", __FUNCTION__,
-	         (char *)wrqu->data.pointer, wrqu->data.length -1);
-
-	if(copy_from_user(charmac, wrqu->data.pointer+9, 17)) {
-		ret = -EFAULT;
-		goto exit;
-	}
-
-	DBG_871X("[%s] %d, charmac:%s\n", __FUNCTION__, __LINE__, charmac);
-	for (i=0, j=0 ; i < ETH_ALEN; i++, j+=3)
-		addr[i]=key_2char2num(*(charmac+j), *(charmac+j+1));
-
-	DBG_871X("[%s] %d, charmac:%s, addr:"MAC_FMT"\n",
-	         __FUNCTION__, __LINE__, charmac, MAC_ARG(addr));
-	ptdls_sta = rtw_get_stainfo(&padapter->stapriv, addr);
-	if(ptdls_sta) {
-		sprintf(extra, "\n\ntdls_sta_state=0x%08x\n", ptdls_sta->tdls_sta_state);
-		DBG_871X("\n\ntdls_sta_state=%d\n", ptdls_sta->tdls_sta_state);
-	} else {
-		sprintf(extra, "\n\nNot found this sta\n");
-		DBG_871X("\n\nNot found this sta\n");
-	}
-	wrqu->data.length = strlen( extra );
-
-exit:
-#endif
-	return ret;
-
+	return 0;
 }
 
 static inline int rtw_tdls_get_best_ch(struct net_device *dev,
@@ -11683,11 +10570,10 @@ static inline int rtw_tdls_get_best_ch(struct net_device *dev,
 				best_channel_5G = pmlmeext->channel_set[i].ChannelNum;
 			}
 		}
-#if 1 /* debug */
+
 		DBG_871X("The rx cnt of channel %3d = %d\n",
 		         pmlmeext->channel_set[i].ChannelNum,
 		         pmlmeext->channel_set[i].rx_count);
-#endif
 	}
 
 	sprintf( extra, "\nbest_channel_24G = %d\n", best_channel_24G );
@@ -11710,76 +10596,7 @@ static int rtw_tdls(struct net_device *dev,
                     struct iw_request_info *info,
                     union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-
-	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
-
-	DBG_871X( "[%s] extra = %s\n", __FUNCTION__, extra );
-	/* WFD Sigma will use the tdls enable command to let the driver know we want to test the tdls now! */
-	if (_rtw_memcmp(extra, "wfdenable=", 10)) {
-		wrqu->data.length -=10;
-		rtw_wfd_tdls_enable( dev, info, wrqu, &extra[10] );
-		return ret;
-	} else if (_rtw_memcmp(extra, "weaksec=", 8)) {
-		wrqu->data.length -=8;
-		rtw_tdls_weaksec( dev, info, wrqu, &extra[8] );
-		return ret;
-	} else if (_rtw_memcmp( extra, "tdlsenable=", 11)) {
-		wrqu->data.length -=11;
-		rtw_tdls_enable( dev, info, wrqu, &extra[11] );
-		return ret;
-	}
-
-	if (padapter->tdlsinfo.tdls_enable == 0) {
-		DBG_871X("tdls haven't enabled\n");
-		return 0;
-	}
-
-	if (_rtw_memcmp(extra, "setup=", 6)) {
-		wrqu->data.length -=6;
-		rtw_tdls_setup( dev, info, wrqu, &extra[6] );
-	} else if (_rtw_memcmp(extra, "tear=", 5)) {
-		wrqu->data.length -= 5;
-		rtw_tdls_teardown( dev, info, wrqu, &extra[5] );
-	} else if (_rtw_memcmp(extra, "dis=", 4)) {
-		wrqu->data.length -= 4;
-		rtw_tdls_discovery( dev, info, wrqu, &extra[4] );
-	} else if (_rtw_memcmp(extra, "swoff=", 6)) {
-		wrqu->data.length -= 6;
-		rtw_tdls_ch_switch_off(dev, info, wrqu, &extra[6]);
-	} else if (_rtw_memcmp(extra, "sw=", 3)) {
-		wrqu->data.length -= 3;
-		rtw_tdls_ch_switch( dev, info, wrqu, &extra[3] );
-	} else if (_rtw_memcmp(extra, "dumpstack=", 10)) {
-		wrqu->data.length -= 10;
-		rtw_tdls_dump_ch(dev, info, wrqu, &extra[10]);
-	} else if (_rtw_memcmp(extra, "offchnum=", 9)) {
-		wrqu->data.length -= 9;
-		rtw_tdls_off_ch_num(dev, info, wrqu, &extra[9]);
-	} else if (_rtw_memcmp(extra, "choffset=", 9)) {
-		wrqu->data.length -= 9;
-		rtw_tdls_ch_offset(dev, info, wrqu, &extra[9]);
-	} else if (_rtw_memcmp(extra, "pson=", 5)) {
-		wrqu->data.length -= 5;
-		rtw_tdls_pson( dev, info, wrqu, &extra[5] );
-	} else if (_rtw_memcmp(extra, "psoff=", 6)) {
-		wrqu->data.length -= 6;
-		rtw_tdls_psoff( dev, info, wrqu, &extra[6] );
-	}
-#ifdef CONFIG_WFD
-	else if (_rtw_memcmp(extra, "setip=", 6)) {
-		wrqu->data.length -= 6;
-		rtw_tdls_setip( dev, info, wrqu, &extra[6] );
-	} else if (_rtw_memcmp(extra, "tprobe=", 6)) {
-		issue_tunneled_probe_req((_adapter *)rtw_netdev_priv(dev));
-	}
-#endif /* CONFIG_WFD */
-
-#endif
-
-	return ret;
+	return 0;
 }
 
 
@@ -11787,28 +10604,7 @@ static int rtw_tdls_get(struct net_device *dev,
                         struct iw_request_info *info,
                         union iwreq_data *wrqu, char *extra)
 {
-	int ret = 0;
-
-#if 0
-
-	DBG_871X( "[%s] extra = %s\n", __FUNCTION__, (char*) wrqu->data.pointer );
-
-	if ( _rtw_memcmp( wrqu->data.pointer, "ip", 2 ) )
-		rtw_tdls_getip( dev, info, wrqu, extra );
-	else if (_rtw_memcmp(wrqu->data.pointer, "port", 4))
-		rtw_tdls_getport( dev, info, wrqu, extra );
-	/* WFDTDLS, for sigma test */
-	else if ( _rtw_memcmp(wrqu->data.pointer, "dis", 3))
-		rtw_tdls_dis_result( dev, info, wrqu, extra );
-	else if ( _rtw_memcmp(wrqu->data.pointer, "status", 6))
-		rtw_wfd_tdls_status( dev, info, wrqu, extra );
-	else if ( _rtw_memcmp(wrqu->data.pointer, "tdls_sta=", 9))
-		rtw_tdls_getsta( dev, info, wrqu, extra );
-	else if (_rtw_memcmp(wrqu->data.pointer, "best_ch", 7))
-		rtw_tdls_get_best_ch(dev, info, wrqu, extra);
-#endif
-
-	return ret;
+	return 0;
 }
 
 #ifdef CONFIG_MAC_LOOPBACK_DRIVER
@@ -11895,44 +10691,30 @@ static s32 createpseudoadhoc(PADAPTER padapter)
 	pmlmepriv->fw_state = WIFI_ADHOC_MASTER_STATE;
 	_exit_critical_bh(&pmlmepriv->lock, &irqL);
 
-#if 0
-	err = rtw_createbss_cmd(padapter);
-	if (err == _FAIL) return _FAIL;
-#else
-	{
-		struct wlan_network *pcur_network;
-		struct sta_info *psta;
+	struct wlan_network *pcur_network;
+	struct sta_info *psta;
 
-		//3  create a new psta
-		pcur_network = &pmlmepriv->cur_network;
+	//3  create a new psta
+	pcur_network = &pmlmepriv->cur_network;
 
-		//clear psta in the cur_network, if any
-		psta = rtw_get_stainfo(&padapter->stapriv, pcur_network->network.MacAddress);
-		if (psta) rtw_free_stainfo(padapter, psta);
+	//clear psta in the cur_network, if any
+	psta = rtw_get_stainfo(&padapter->stapriv, pcur_network->network.MacAddress);
+	if (psta) rtw_free_stainfo(padapter, psta);
 
-		psta = rtw_alloc_stainfo(&padapter->stapriv, pibss);
-		if (psta == NULL) return _FAIL;
+	psta = rtw_alloc_stainfo(&padapter->stapriv, pibss);
+	if (psta == NULL) return _FAIL;
 
-		//3  join psudo AdHoc
-		pcur_network->join_res = 1;
-		pcur_network->aid = psta->aid = 1;
-		_rtw_memcpy(&pcur_network->network, pdev_network, get_WLAN_BSSID_EX_sz(pdev_network));
+	//3  join psudo AdHoc
+	pcur_network->join_res = 1;
+	pcur_network->aid = psta->aid = 1;
+	_rtw_memcpy(&pcur_network->network, pdev_network, get_WLAN_BSSID_EX_sz(pdev_network));
 
-		// set msr to WIFI_FW_ADHOC_STATE
-#if 0
-		Set_NETYPE0_MSR(padapter, WIFI_FW_ADHOC_STATE);
-#else
-		{
-			u8 val8;
-
-			val8 = rtw_read8(padapter, MSR);
-			val8 &= 0xFC; // clear NETYPE0
-			val8 |= WIFI_FW_ADHOC_STATE & 0x3;
-			rtw_write8(padapter, MSR, val8);
-		}
-#endif
-	}
-#endif
+	// set msr to WIFI_FW_ADHOC_STATE
+	u8 val8;
+	val8 = rtw_read8(padapter, MSR);
+	val8 &= 0xFC; // clear NETYPE0
+	val8 |= WIFI_FW_ADHOC_STATE & 0x3;
+	rtw_write8(padapter, MSR, val8);
 
 	return _SUCCESS;
 }
@@ -12085,11 +10867,6 @@ static void printdata(u8 *pbuf, u32 len)
 		for (; i < len, i++)
 			printk("%02X", pbuf+i);
 #else // CONFIG_LITTLE_ENDIAN
-#if 0
-		val = 0;
-		_rtw_memcpy(&val, pbuf + i, len - i);
-		printk("%8X", val);
-#else
 		u8 str[9];
 		u8 n;
 		val = 0;
@@ -12098,7 +10875,6 @@ static void printdata(u8 *pbuf, u32 len)
 		sprintf(str, "%08X", val);
 		n = (4 - n) * 2;
 		printk("%8s", str+n);
-#endif
 #endif // CONFIG_LITTLE_ENDIAN
 	}
 	printk("\n");
@@ -12511,11 +11287,6 @@ static const struct iw_priv_args rtw_private_args[] = {
 		SIOCIWFIRSTPRIV + 0xD,
 		IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 2, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_FIXED | IFNAMSIZ, "rfr"
 	},
-#if 0
-	{
-		SIOCIWFIRSTPRIV + 0xE,0,0, "wowlan_ctrl"
-	},
-#endif
 	{
 		SIOCIWFIRSTPRIV + 0x10,
 		IW_PRIV_TYPE_CHAR | 1024, 0, "p2p_set"
@@ -12595,12 +11366,6 @@ static const struct iw_priv_args rtw_private_args[] = {
 	{ EFUSE_MASK, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "efuse_mask" },
 	{ EFUSE_FILE, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "efuse_file" },
 	{ CTA_TEST, IW_PRIV_TYPE_CHAR | 1024, 0, "cta_test"},
-#endif
-#if 0
-	{ MP_WOW_ENABLE , IW_PRIV_TYPE_CHAR | 1024, 0, "wow_mode" }, //set
-#endif
-#if 0
-	{ MP_AP_WOW_ENABLE , IW_PRIV_TYPE_CHAR | 1024, 0, "ap_wow_mode" }, //set
 #endif
 };
 

@@ -165,16 +165,6 @@ struct P2P_PS_CTWPeriod_t {
 	u8 CTWPeriod;	//TU
 };
 
-#if 0
-
-struct P2P_WoWlan_Offload_t {
-	u8 Disconnect_Wkup_Drv:1;
-	u8 role:2;
-	u8 Wps_Config[2];
-};
-
-#endif //CONFIG_P2P_WOWLAN
-
 extern u32 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *obj);
 extern struct cmd_obj *rtw_dequeue_cmd(struct cmd_priv *pcmdpriv);
 extern void rtw_free_cmd_obj(struct cmd_obj *pcmd);
@@ -1020,10 +1010,6 @@ u8 rtw_lps_change_dtim_cmd(_adapter*padapter, u8 dtim);
 
 #if (RATE_ADAPTIVE_SUPPORT==1)
 u8 rtw_rpt_timer_cfg_cmd(_adapter*padapter, u16 minRptTime);
-#endif
-
-#if 0
-extern  u8 rtw_antenna_select_cmd(_adapter*padapter, u8 antenna,u8 enqueue);
 #endif
 
 u8 rtw_dm_ra_mask_wk_cmd(_adapter*padapter, u8 *psta);

@@ -95,19 +95,6 @@ static inline void Hal_disable_dm(PADAPTER padapter)
  *---------------------------------------------------------------------------*/
 void Hal_mpt_SwitchRfSetting(PADAPTER pAdapter)
 {
-	//HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	//struct mp_priv	*pmp = &pAdapter->mppriv;
-	//u1Byte				ChannelToSw = pmp->channel;
-	//ULONG				ulRateIdx = pmp->rateidx;
-	//ULONG				ulbandwidth = pmp->bandwidth;
-	//HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(pAdapter);
-#if 0
-	// <20120525, Kordan> Dynamic mechanism for APK, asked by Dennis.
-	pmp->MptCtx.backup0x52_RF_A = (u1Byte)PHY_QueryRFReg(pAdapter, RF_PATH_A, RF_0x52, 0x000F0);
-	pmp->MptCtx.backup0x52_RF_B = (u1Byte)PHY_QueryRFReg(pAdapter, RF_PATH_B, RF_0x52, 0x000F0);
-	PHY_SetRFReg(pAdapter, RF_PATH_A, RF_0x52, 0x000F0, 0xD);
-	PHY_SetRFReg(pAdapter, RF_PATH_B, RF_0x52, 0x000F0, 0xD);
-#endif
 	return ;
 }
 /*---------------------------hal\rtl8192c\MPT_Phy.c---------------------------*/
@@ -191,7 +178,6 @@ void Hal_MPT_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven)
 	s32		TempCCk;
 	u8		CCK_index, CCK_index_old = 0;
 	u8		Action = 0;	//0: no action, 1: even->odd, 2:odd->even
-	//u8		TimeOut = 100;
 	s32		i = 0;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	PMPT_CONTEXT	pMptCtx = &pAdapter->mppriv.MptCtx;
@@ -202,17 +188,6 @@ void Hal_MPT_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven)
 
 	if (!IS_92C_SERIAL(pHalData->VersionID))
 		return;
-#if 0
-	while(PlatformAtomicExchange(&Adapter->IntrCCKRefCount, TRUE) == TRUE) {
-		PlatformSleepUs(100);
-		TimeOut--;
-		if(TimeOut <= 0) {
-			RTPRINT(FINIT, INIT_TxPower,
-			        ("!!!MPT_CCKTxPowerAdjustbyIndex Wait for check CCK gain index too long!!!\n" ));
-			break;
-		}
-	}
-#endif
 	if (beven && !pMptCtx->bMptIndexEven) {	//odd->even
 		Action = 2;
 		pMptCtx->bMptIndexEven = _TRUE;
@@ -228,15 +203,11 @@ void Hal_MPT_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven)
 			if (pDM_Odm->RFCalibrateInfo.bCCKinCH14) {
 				if (_rtw_memcmp((void*)&TempCCk, (void*)&CCKSwingTable_Ch14[i][2], 4) == _TRUE) {
 					CCK_index_old = (u8) i;
-//					RTPRINT(FINIT, INIT_TxPower,("MPT_CCKTxPowerAdjustbyIndex: Initial reg0x%x = 0x%lx, CCK_index=0x%x, ch 14 %d\n",
-//						rCCK0_TxFilter2, TempCCk, CCK_index_old, pHalData->bCCKinCH14));
 					break;
 				}
 			} else {
 				if (_rtw_memcmp((void*)&TempCCk, (void*)&CCKSwingTable_Ch1_Ch13[i][2], 4) == _TRUE) {
 					CCK_index_old = (u8) i;
-//					RTPRINT(FINIT, INIT_TxPower,("MPT_CCKTxPowerAdjustbyIndex: Initial reg0x%x = 0x%lx, CCK_index=0x%x, ch14 %d\n",
-//						rCCK0_TxFilter2, TempCCk, CCK_index_old, pHalData->bCCKinCH14));
 					break;
 				}
 			}
@@ -254,9 +225,6 @@ void Hal_MPT_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven)
 			CCK_index = CCK_TABLE_SIZE -1;
 			RT_TRACE(_module_mp_, _drv_info_, ("CCK_index == CCK_TABLE_SIZE\n"));
 		}
-
-//		RTPRINT(FINIT, INIT_TxPower,("MPT_CCKTxPowerAdjustbyIndex: new CCK_index=0x%x\n",
-//			 CCK_index));
 
 		//Adjust CCK according to gain index
 		if (!pDM_Odm->RFCalibrateInfo.bCCKinCH14) {
@@ -279,12 +247,6 @@ void Hal_MPT_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven)
 			rtw_write8(pAdapter, 0xa29, CCKSwingTable_Ch14[CCK_index][7]);
 		}
 	}
-#if 0
-	RTPRINT(FINIT, INIT_TxPower,
-	        ("MPT_CCKTxPowerAdjustbyIndex 0xa20=%x\n", PlatformEFIORead4Byte(Adapter, 0xa20)));
-
-	PlatformAtomicExchange(&Adapter->IntrCCKRefCount, FALSE);
-#endif
 }
 /*---------------------------hal\rtl8192c\MPT_HelperFunc.c---------------------------*/
 
@@ -296,27 +258,15 @@ void Hal_MPT_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven)
  */
 void Hal_SetChannel(PADAPTER pAdapter)
 {
-#if 0
-	struct mp_priv *pmp = &pAdapter->mppriv;
-
-//	SelectChannel(pAdapter, pmp->channel);
-	set_channel_bwmode(pAdapter, pmp->channel, pmp->channel_offset, pmp->bandwidth);
-#else
-	//u8 		eRFPath;
 
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	struct mp_priv	*pmp = &pAdapter->mppriv;
-	//struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 
-	u8		channel = pmp->channel;
-	//u8		bandwidth = pmp->bandwidth;
+	u8 channel = pmp->channel;
 
 	pHalData->bSwChnl = _TRUE;
-	//SelectChannel(pAdapter, channel);
 	PHY_SwChnl8812(pAdapter, channel);
-	//PHY_HandleSwChnlAndSetBW8812(pAdapter, _TRUE, _FALSE, channel, bandwidth, 0, 0, channel);
-	//set_channel_bwmode(pAdapter, pAdapter->mppriv.channel, HAL_PRIME_CHNL_OFFSET_DONT_CARE, pAdapter->mppriv.bandwidth);
 	if (pHalData->CurrentChannel == 14 && !pDM_Odm->RFCalibrateInfo.bCCKinCH14) {
 		pDM_Odm->RFCalibrateInfo.bCCKinCH14 = _TRUE;
 		Hal_MPT_CCKTxPowerAdjust(pAdapter, pDM_Odm->RFCalibrateInfo.bCCKinCH14);
@@ -324,8 +274,6 @@ void Hal_SetChannel(PADAPTER pAdapter)
 		pDM_Odm->RFCalibrateInfo.bCCKinCH14 = _FALSE;
 		Hal_MPT_CCKTxPowerAdjust(pAdapter, pDM_Odm->RFCalibrateInfo.bCCKinCH14);
 	}
-
-#endif
 }
 
 /*
@@ -697,17 +645,9 @@ u8 Hal_ReadRFThermalMeter(PADAPTER pAdapter)
 
 void Hal_GetThermalMeter(PADAPTER pAdapter, u8 *value)
 {
-#if 0
-	fw_cmd(pAdapter, IOCMD_GET_THERMAL_METER);
-	rtw_msleep_os(1000);
-	fw_cmd_data(pAdapter, value, 1);
-	*value &= 0xFF;
-#else
-
 	Hal_TriggerRFThermalMeter(pAdapter);
 	rtw_msleep_os(1000);
 	*value = Hal_ReadRFThermalMeter(pAdapter);
-#endif
 }
 
 void Hal_SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart)
@@ -934,27 +874,7 @@ void Hal_SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart)
 		else
 			PHY_SetBBReg(pAdapter, rOFDM1_LSTF, BIT30|BIT29|BIT28, OFDM_ALL_OFF);
 		//Set CCK Tx Test Rate
-#if 0
-		switch(pAdapter->mppriv.rateidx) {
-		case 2:
-			cckrate = 0;
-			break;
-		case 4:
-			cckrate = 1;
-			break;
-		case 11:
-			cckrate = 2;
-			break;
-		case 22:
-			cckrate = 3;
-			break;
-		default:
-			cckrate = 0;
-			break;
-		}
-#else
 		cckrate  = pAdapter->mppriv.rateidx;
-#endif
 		PHY_SetBBReg(pAdapter, rCCK0_System, bCCKTxRate, cckrate);
 
 		PHY_SetBBReg(pAdapter, rCCK0_System, bCCKBBMode, 0x2);    //transmit mode
@@ -1035,13 +955,6 @@ void Hal_SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart)
 
 void Hal_SetContinuousTx(PADAPTER pAdapter, u8 bStart)
 {
-#if 0
-	// ADC turn off [bit24-21] adc port0 ~ port1
-	if (bStart) {
-		write_bbreg(pAdapter, rRx_Wait_CCCA, read_bbreg(pAdapter, rRx_Wait_CCCA) & 0xFE1FFFFF);
-		rtw_usleep_os(100);
-	}
-#endif
 	RT_TRACE(_module_mp_, _drv_info_,
 	         ("SetContinuousTx: rate:%d\n", pAdapter->mppriv.rateidx));
 
@@ -1061,13 +974,6 @@ void Hal_SetContinuousTx(PADAPTER pAdapter, u8 bStart)
 	} else {
 		RT_TRACE(_module_mp_,_drv_err_,("\nERROR: incorrect rateidx=%d\n",pAdapter->mppriv.rateidx));
 	}
-
-#if 0
-	// ADC turn on [bit24-21] adc port0 ~ port1
-	if (!bStart) {
-		write_bbreg(pAdapter, rRx_Wait_CCCA, read_bbreg(pAdapter, rRx_Wait_CCCA) | 0x01E00000);
-	}
-#endif
 }
 
 #endif // CONFIG_MP_INCLUDE

@@ -921,41 +921,7 @@ odm_RSSIMonitorCheckMP(
 //
 //sherry move from DUSC to here 20110517
 //
-static inline VOID FindMinimumRSSI_Dmsp(
-    IN	PADAPTER	pAdapter
-)
-{
-#if 0
-	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
-	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
-	s32	Rssi_val_min_back_for_mac0;
-	BOOLEAN		bGetValueFromBuddyAdapter = dm_DualMacGetParameterFromBuddyAdapter(pAdapter);
-	BOOLEAN		bRestoreRssi = _FALSE;
-	PADAPTER	BuddyAdapter = pAdapter->BuddyAdapter;
-
-	if(pHalData->MacPhyMode92D == DUALMAC_SINGLEPHY) {
-		if(BuddyAdapter!= NULL) {
-			if(pHalData->bSlaveOfDMSP) {
-				//ODM_RT_TRACE(pDM_Odm,COMP_EASY_CONCURRENT,DBG_LOUD,("bSlavecase of dmsp\n"));
-				BuddyAdapter->DualMacDMSPControl.RssiValMinForAnotherMacOfDMSP = pdmpriv->MinUndecoratedPWDBForDM;
-			} else {
-				if(bGetValueFromBuddyAdapter) {
-					//ODM_RT_TRACE(pDM_Odm,COMP_EASY_CONCURRENT,DBG_LOUD,("get new RSSI\n"));
-					bRestoreRssi = _TRUE;
-					Rssi_val_min_back_for_mac0 = pdmpriv->MinUndecoratedPWDBForDM;
-					pdmpriv->MinUndecoratedPWDBForDM = pAdapter->DualMacDMSPControl.RssiValMinForAnotherMacOfDMSP;
-				}
-			}
-		}
-
-	}
-
-	if(bRestoreRssi) {
-		bRestoreRssi = _FALSE;
-		pdmpriv->MinUndecoratedPWDBForDM = Rssi_val_min_back_for_mac0;
-	}
-#endif
-}
+static inline VOID FindMinimumRSSI_Dmsp(IN PADAPTER pAdapter) {}
 
 static void
 FindMinimumRSSI(
@@ -1017,10 +983,7 @@ odm_RSSIMonitorCheckCE(
 
 	FirstConnect = (pDM_Odm->bLinked) && (pRA_Table->firstconnect == FALSE);
 	pRA_Table->firstconnect = pDM_Odm->bLinked;
-
-	//if(check_fwstate(&Adapter->mlmepriv, WIFI_AP_STATE|WIFI_ADHOC_STATE|WIFI_ADHOC_MASTER_STATE) == _TRUE)
 	{
-#if 1
 		struct sta_info *psta;
 
 		for(i=0; i<ODM_ASSOCIATE_ENTRY_NUM; i++) {
@@ -1036,11 +999,6 @@ odm_RSSIMonitorCheckCE(
 
 				if(psta->rssi_stat.UndecoratedSmoothedPWDB > tmpEntryMaxPWDB)
 					tmpEntryMaxPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
-
-#if 0
-				DBG_871X("%s mac_id:%u, mac:"MAC_FMT", rssi:%d\n", __func__,
-				         psta->mac_id, MAC_ARG(psta->hwaddr), psta->rssi_stat.UndecoratedSmoothedPWDB);
-#endif
 
 				if(psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)) {
 
@@ -1078,54 +1036,6 @@ odm_RSSIMonitorCheckCE(
 				}
 			}
 		}
-#else
-		_irqL irqL;
-		_list	*plist, *phead;
-		struct sta_info *psta;
-		struct sta_priv *pstapriv = &Adapter->stapriv;
-		u8 bcast_addr[ETH_ALEN]= {0xff,0xff,0xff,0xff,0xff,0xff};
-
-		_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-
-		for(i=0; i< NUM_STA; i++) {
-			phead = &(pstapriv->sta_hash[i]);
-			plist = get_next(phead);
-
-			while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
-				psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
-
-				plist = get_next(plist);
-
-				if(_rtw_memcmp(psta->hwaddr, bcast_addr, ETH_ALEN) ||
-				   _rtw_memcmp(psta->hwaddr, myid(&Adapter->eeprompriv), ETH_ALEN))
-					continue;
-
-				if(psta->state & WIFI_ASOC_STATE) {
-
-					if(psta->rssi_stat.UndecoratedSmoothedPWDB < tmpEntryMinPWDB)
-						tmpEntryMinPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
-
-					if(psta->rssi_stat.UndecoratedSmoothedPWDB > tmpEntryMaxPWDB)
-						tmpEntryMaxPWDB = psta->rssi_stat.UndecoratedSmoothedPWDB;
-
-					if(psta->rssi_stat.UndecoratedSmoothedPWDB != (-1)) {
-						//printk("%s==> mac_id(%d),rssi(%d)\n",__FUNCTION__,psta->mac_id,psta->rssi_stat.UndecoratedSmoothedPWDB);
-#if(RTL8192D_SUPPORT==1)
-						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) | ((Adapter->stapriv.asoc_sta_count+1) << 8));
-#else
-						PWDB_rssi[sta_cnt++] = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB<<16) );
-#endif
-					}
-				}
-
-			}
-
-		}
-
-		_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-#endif
-
-		//printk("%s==> sta_cnt(%d)\n",__FUNCTION__,sta_cnt);
 
 		for(i=0; i< sta_cnt; i++) {
 			if(PWDB_rssi[i] != (0)) {

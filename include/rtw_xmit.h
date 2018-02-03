@@ -23,13 +23,7 @@
 #if defined (CONFIG_USB_HCI)
 
 #ifdef CONFIG_USB_TX_AGGREGATION
-#if 0
-#define MAX_XMITBUF_SZ (12288)  //12k 1536*8
-#elif defined (CONFIG_PLATFORM_MSTAR)
-#define MAX_XMITBUF_SZ	7680	// 7.5k
-#else
 #define MAX_XMITBUF_SZ	(20480)	// 20k
-#endif
 #else
 #define MAX_XMITBUF_SZ	(2048)
 #endif
@@ -191,56 +185,6 @@ struct	hw_xmit {
 	int	accnt;
 };
 
-#if 0
-struct pkt_attrib {
-	u8	type;
-	u8	subtype;
-	u8	bswenc;
-	u8	dhcp_pkt;
-	u16	ether_type;
-	int	pktlen;		//the original 802.3 pkt raw_data len (not include ether_hdr data)
-	int	pkt_hdrlen;	//the original 802.3 pkt header len
-	int	hdrlen;		//the WLAN Header Len
-	int	nr_frags;
-	int	last_txcmdsz;
-	int	encrypt;	//when 0 indicate no encrypt. when non-zero, indicate the encrypt algorith
-	u8	iv[8];
-	int	iv_len;
-	u8	icv[8];
-	int	icv_len;
-	int	priority;
-	int	ack_policy;
-	int	mac_id;
-	int	vcs_mode;	//virtual carrier sense method
-
-	u8 	dst[ETH_ALEN];
-	u8	src[ETH_ALEN];
-	u8	ta[ETH_ALEN];
-	u8 	ra[ETH_ALEN];
-
-	u8	key_idx;
-
-	u8	qos_en;
-	u8	ht_en;
-	u8	raid;//rate adpative id
-	u8	bwmode;
-	u8	ch_offset;//PRIME_CHNL_OFFSET
-	u8	sgi;//short GI
-	u8	ampdu_en;//tx ampdu enable
-	u8	mdata;//more data bit
-	u8	eosp;
-
-	u8	triggered;//for ap mode handling Power Saving sta
-
-	u32	qsel;
-	u16	seqnum;
-
-	struct sta_info * psta;
-#ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
-	u8	hw_tcp_csum;
-#endif
-};
-#else
 //reduce size
 struct pkt_attrib {
 	u8	type;
@@ -299,16 +243,9 @@ struct pkt_attrib {
 	union Keytype	dot11tkiptxmickey;
 	//union Keytype	dot11tkiprxmickey;
 	union Keytype	dot118021x_UncstKey;
-
-#if 0
-	u8 direct_link;
-	struct sta_info *ptdls_sta;
-#endif //
-
 	u8 icmp_pkt;
 
 };
-#endif
 
 #ifdef PLATFORM_FREEBSD
 #define ETH_ALEN	6		/* Octets in one ethernet addr	 */
@@ -652,11 +589,7 @@ extern s32 rtw_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_fra
 #ifdef CONFIG_IEEE80211W
 extern s32 rtw_mgmt_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame *pxmitframe);
 #endif //CONFIG_IEEE80211W
-#if 0
-extern struct tdls_txmgmt *ptxmgmt;
-s32 rtw_xmit_tdls_coalesce(_adapter *padapter, struct xmit_frame *pxmitframe, struct tdls_txmgmt *ptxmgmt);
-s32 update_tdls_attrib(_adapter *padapter, struct pkt_attrib *pattrib);
-#endif
+
 s32 _rtw_init_hw_txqueue(struct hw_txqueue* phw_txqueue, u8 ac_tag);
 void _rtw_init_sta_xmit_priv(struct sta_xmit_priv *psta_xmitpriv);
 

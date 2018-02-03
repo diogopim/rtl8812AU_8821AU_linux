@@ -335,11 +335,6 @@ struct	ss_res {
 	struct rtw_ieee80211_channel ch[RTW_CHANNEL_SCAN_AMOUNT];
 };
 
-//#define AP_MODE				0x0C
-//#define STATION_MODE	0x08
-//#define AD_HOC_MODE		0x04
-//#define NO_LINK_MODE	0x00
-
 #define 	WIFI_FW_NULL_STATE			_HW_STATE_NOLINK_
 #define	WIFI_FW_STATION_STATE		_HW_STATE_STATION_
 #define	WIFI_FW_AP_STATE				_HW_STATE_AP_
@@ -353,20 +348,6 @@ struct	ss_res {
 #define	WIFI_FW_ASSOC_SUCCESS		0x00004000
 
 #define	WIFI_FW_LINKING_STATE		(WIFI_FW_AUTH_NULL | WIFI_FW_AUTH_STATE | WIFI_FW_AUTH_SUCCESS |WIFI_FW_ASSOC_STATE)
-
-#if 0
-enum TDLS_option {
-	TDLS_ESTABLISHED	= 	1,
-	TDLS_ISSUE_PTI				=	2,
-	TDLS_CH_SW_RESP			=	3,
-	TDLS_CH_SW				=	4,
-	TDLS_CH_SW_BACK			=	5,
-	TDLS_RS_RCR				=	6,
-	TDLS_TEAR_STA				=	7,
-	maxTDLS,
-};
-
-#endif //
 
 struct FW_Sta_Info {
 	struct sta_info	*psta;

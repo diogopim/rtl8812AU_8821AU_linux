@@ -179,13 +179,10 @@ typedef unsigned char			u1Byte,*pu1Byte;
 typedef unsigned short			u2Byte,*pu2Byte;
 typedef unsigned int			u4Byte,*pu4Byte;
 typedef unsigned long long		u8Byte,*pu8Byte;
-#if 1
 /* In ARM platform, system would use the type -- "char" as "unsigned char"
  * And we only use s1Byte/ps1Byte as INT8 now, so changes the type of s1Byte.*/
 typedef signed char				s1Byte,*ps1Byte;
-#else
-typedef char					s1Byte,*ps1Byte;
-#endif
+
 typedef short					s2Byte,*ps2Byte;
 typedef long					s4Byte,*ps4Byte;
 typedef long long				s8Byte,*ps8Byte;
@@ -206,16 +203,6 @@ typedef  void *				RT_TIMER_CALL_BACK;
 //#define CONFIG_ANT_DETECTION
 //#define CONFIG_PATH_DIVERSITY
 
-#if 0
-typedef u8					u1Byte, *pu1Byte;
-typedef u16					u2Byte,*pu2Byte;
-typedef u32					u4Byte,*pu4Byte;
-typedef u64					u8Byte,*pu8Byte;
-typedef s8					s1Byte,*ps1Byte;
-typedef s16					s2Byte,*ps2Byte;
-typedef s32					s4Byte,*ps4Byte;
-typedef s64					s8Byte,*ps8Byte;
-#else
 #define u1Byte 		u8
 #define	pu1Byte 	u8*
 
@@ -240,7 +227,6 @@ typedef s64					s8Byte,*ps8Byte;
 #define s8Byte 		s64
 #define	ps8Byte 	s64*
 
-#endif
 #ifdef CONFIG_USB_HCI
 #define DEV_BUS_TYPE  	RT_USB_INTERFACE
 #endif

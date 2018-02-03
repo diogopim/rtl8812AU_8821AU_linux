@@ -678,9 +678,6 @@ const struct rtw_proc_hdl adapter_proc_hdls [] = {
 	{"int_logs", proc_get_int_logs, NULL},
 #endif
 
-#if 0
-	{"p2p_wowlan_info", proc_get_p2p_wowlan_info, NULL},
-#endif
 	{"chan_plan",proc_get_chan_plan,proc_set_chan_plan},
 	{"new_bcn_max", proc_get_new_bcn_max, proc_set_new_bcn_max},
 	{"sink_udpport",proc_get_udpport,proc_set_udpport},
@@ -689,9 +686,6 @@ const struct rtw_proc_hdl adapter_proc_hdls [] = {
 #endif
 #ifdef CONFIG_POWER_SAVING
 	{"ps_info",proc_get_ps_info, NULL},
-#endif
-#if 0
-	{"tdls_info", proc_get_tdls_info, NULL},
 #endif
 	{"monitor", proc_get_monitor, proc_set_monitor},
 };

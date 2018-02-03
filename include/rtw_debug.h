@@ -248,77 +248,6 @@ extern u64 GlobalDebugComponents;
 
 #endif /* defined(_dbgdump) */
 
-#if 0
-#if	defined(_dbgdump)
-#undef DBG_871X
-#define DBG_871X(...)     do {\
-		_dbgdump(DRIVER_PREFIX __VA_ARGS__);\
-	}while(0)
-
-#undef MSG_8192C
-#define MSG_8192C(...)     do {\
-		_dbgdump(DRIVER_PREFIX __VA_ARGS__);\
-	}while(0)
-
-#undef DBG_8192C
-#define DBG_8192C(...)     do {\
-		_dbgdump(DRIVER_PREFIX __VA_ARGS__);\
-	}while(0)
-#endif /* defined(_dbgdump) */
-#endif /*  */
-
-#if 0
-
-#if	defined(_dbgdump) && defined(_MODULE_DEFINE_)
-
-#undef RT_TRACE
-#define RT_TRACE(_Comp, _Level, Fmt)\
-	do {\
-		if((_Comp & GlobalDebugComponents) && (_Level <= GlobalDebugLevel)) {\
-			_dbgdump("%s [0x%08x,%d]", DRIVER_PREFIX, (unsigned int)_Comp, _Level);\
-			_dbgdump Fmt;\
-		}\
-	}while(0)
-
-#endif /* defined(_dbgdump) && defined(_MODULE_DEFINE_) */
-
-
-#if	defined(_dbgdump)
-#undef  _func_enter_
-#define _func_enter_ \
-	do {	\
-		if (GlobalDebugLevel >= _drv_debug_) \
-		{																	\
-			_dbgdump("\n %s : %s enters at %d\n", DRIVER_PREFIX, __FUNCTION__, __LINE__);\
-		}		\
-	} while(0)
-
-#undef  _func_exit_
-#define _func_exit_ \
-	do {	\
-		if (GlobalDebugLevel >= _drv_debug_) \
-		{																	\
-			_dbgdump("\n %s : %s exits at %d\n", DRIVER_PREFIX, __FUNCTION__, __LINE__); \
-		}	\
-	} while(0)
-
-#undef RT_PRINT_DATA
-#define RT_PRINT_DATA(_Comp, _Level, _TitleString, _HexData, _HexDataLen)			\
-		if(((_Comp) & GlobalDebugComponents) && (_Level <= GlobalDebugLevel))	\
-		{									\
-			int __i;								\
-			u8	*ptr = (u8 *)_HexData;				\
-			_dbgdump("%s", DRIVER_PREFIX);						\
-			_dbgdump(_TitleString);						\
-			for( __i=0; __i<(int)_HexDataLen; __i++ )				\
-			{								\
-				_dbgdump("%02X%s", ptr[__i], (((__i + 1) % 4) == 0)?"  ":" ");	\
-				if (((__i + 1) % 16) == 0)	_dbgdump("\n");			\
-			}								\
-			_dbgdump("\n");							\
-		}
-#endif /* defined(_dbgdump) */
-#endif /*  */
 
 #ifdef CONFIG_DBG_COUNTER
 #define DBG_COUNTER(counter) counter++
@@ -452,20 +381,12 @@ int proc_get_tx_logs(struct seq_file *m, void *v);
 int proc_get_int_logs(struct seq_file *m, void *v);
 #endif
 
-#if 0
-int proc_get_p2p_wowlan_info(struct seq_file *m, void *v);
-#endif /* CONFIG_P2P_WOWLAN */
-
 int proc_get_new_bcn_max(struct seq_file *m, void *v);
 ssize_t proc_set_new_bcn_max(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
 #ifdef CONFIG_POWER_SAVING
 int proc_get_ps_info(struct seq_file *m, void *v);
 #endif //CONFIG_POWER_SAVING
-
-#if 0
-int proc_get_tdls_info(struct seq_file *m, void *v);
-#endif
 
 int proc_get_monitor(struct seq_file *m, void *v);
 ssize_t proc_set_monitor(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);

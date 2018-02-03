@@ -37,26 +37,9 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 	_rtw_memcpy(&(pHalData->IntArray[0]), &(pbuf[USB_INTR_CONTENT_HISR_OFFSET]), 4);
 	_rtw_memcpy(&(pHalData->IntArray[1]), &(pbuf[USB_INTR_CONTENT_HISRE_OFFSET]), 4);
 
-#if 0 //DBG
-	{
-		u32 hisr=0 ,hisr_ex=0;
-		_rtw_memcpy(&hisr,&(pHalData->IntArray[0]),4);
-		hisr = le32_to_cpu(hisr);
-
-		_rtw_memcpy(&hisr_ex,&(pHalData->IntArray[1]),4);
-		hisr_ex = le32_to_cpu(hisr_ex);
-
-		if((hisr != 0) || (hisr_ex!=0))
-			DBG_871X("===> %s hisr:0x%08x ,hisr_ex:0x%08x \n",__FUNCTION__,hisr,hisr_ex);
-	}
-#endif
-
-
 #ifdef CONFIG_LPS_LCLK
 	if(  pHalData->IntArray[0]  & IMR_CPWM_88E ) {
 		_rtw_memcpy(&pwr_rpt.state, &(pbuf[USB_INTR_CONTENT_CPWM1_OFFSET]), 1);
-		//_rtw_memcpy(&pwr_rpt.state2, &(pbuf[USB_INTR_CONTENT_CPWM2_OFFSET]), 1);
-
 		//88e's cpwm value only change BIT0, so driver need to add PS_STATE_S2 for LPS flow.
 		pwr_rpt.state |= PS_STATE_S2;
 		_set_workitem(&(adapter_to_pwrctl(padapter)->cpwm_event));
@@ -73,16 +56,6 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 #endif
 		{
 			struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-#if 0
-			if(pHalData->IntArray[0] & IMR_BCNDMAINT0_88E)
-				DBG_8192C("%s: HISR_BCNERLY_INT\n", __func__);
-			if(pHalData->IntArray[0] & IMR_TBDOK_88E)
-				DBG_8192C("%s: HISR_TXBCNOK\n", __func__);
-			if(pHalData->IntArray[0] & IMR_TBDER_88E)
-				DBG_8192C("%s: HISR_TXBCNERR\n", __func__);
-#endif
-
-
 			if(check_fwstate(pmlmepriv, WIFI_AP_STATE)) {
 				//send_beacon(padapter);
 				if(pmlmepriv->update_bcn == _TRUE) {
@@ -246,69 +219,6 @@ static inline s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 	} else { // Handle BC/MC Packets
 
 		u8 clone = _TRUE;
-#if 0
-		u8 type, subtype, *paddr2, *paddr3;
-
-		type =  GetFrameType(pbuf);
-		subtype = GetFrameSubType(pbuf); //bit(7)~bit(2)
-
-		switch (type) {
-		case WIFI_MGT_TYPE: //Handle BC/MC mgnt Packets
-			if(subtype == WIFI_BEACON) {
-				paddr3 = GetAddr3Ptr(precvframe->u.hdr.rx_data);
-
-				if (check_fwstate(&secondary_padapter->mlmepriv, _FW_LINKED) &&
-				    _rtw_memcmp(paddr3, get_bssid(&secondary_padapter->mlmepriv), ETH_ALEN)) {
-					//change to secondary interface
-					precvframe->u.hdr.adapter = secondary_padapter;
-					clone = _FALSE;
-				}
-
-				if(check_fwstate(&primary_padapter->mlmepriv, _FW_LINKED) &&
-				   _rtw_memcmp(paddr3, get_bssid(&primary_padapter->mlmepriv), ETH_ALEN)) {
-					if(clone==_FALSE) {
-						clone = _TRUE;
-					} else {
-						clone = _FALSE;
-					}
-
-					precvframe->u.hdr.adapter = primary_padapter;
-				}
-
-				if(check_fwstate(&primary_padapter->mlmepriv, _FW_UNDER_SURVEY|_FW_UNDER_LINKING) ||
-				   check_fwstate(&secondary_padapter->mlmepriv, _FW_UNDER_SURVEY|_FW_UNDER_LINKING)) {
-					clone = _TRUE;
-					precvframe->u.hdr.adapter = primary_padapter;
-				}
-
-			} else if(subtype == WIFI_PROBEREQ) {
-				//probe req frame is only for interface2
-				//change to secondary interface
-				precvframe->u.hdr.adapter = secondary_padapter;
-				clone = _FALSE;
-			}
-			break;
-		case WIFI_CTRL_TYPE: // Handle BC/MC ctrl Packets
-
-			break;
-		case WIFI_DATA_TYPE: //Handle BC/MC data Packets
-			//Notes: AP MODE never rx BC/MC data packets
-
-			paddr2 = GetAddr2Ptr(precvframe->u.hdr.rx_data);
-
-			if(_rtw_memcmp(paddr2, get_bssid(&secondary_padapter->mlmepriv), ETH_ALEN)) {
-				//change to secondary interface
-				precvframe->u.hdr.adapter = secondary_padapter;
-				clone = _FALSE;
-			}
-
-			break;
-		default:
-
-			break;
-		}
-#endif
-
 		if(_TRUE == clone) {
 			//clone/copy to if2
 			struct rx_pkt_attrib *pattrib = NULL;
@@ -343,10 +253,6 @@ static inline s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 		}
 
 	}
-	//if (precvframe->u.hdr.attrib.physt)
-	//	rx_query_phy_status(precvframe, pphy_status);
-
-	//ret = rtw_recv_entry(precvframe);
 
 #endif
 

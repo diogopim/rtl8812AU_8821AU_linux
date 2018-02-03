@@ -201,17 +201,6 @@ static s32 update_txdesc(struct xmit_frame *pxmitframe, u8 *pmem, s32 sz ,u8 bag
 			SET_TX_DESC_TX_RATE_8812(ptxdesc, MRateToHwRate(pmlmeext->tx_rate));
 		}
 
-#if 0
-#ifdef CONFIG_XMIT_ACK
-		/* CCX-TXRPT ack for xmit mgmt frames. */
-		if (pxmitframe->ack_report) {
-			SET_TX_DESC_SPE_RPT_8812(ptxdesc, 1);
-#ifdef DBG_CCX
-			DBG_871X("%s set tx report\n", __func__);
-#endif
-		}
-#endif /* CONFIG_XMIT_ACK */
-#endif
 	} else if((pxmitframe->frame_tag&0x0f)== MGNT_FRAMETAG) {
 		//DBG_8192C("pxmitframe->frame_tag == MGNT_FRAMETAG\n");
 
@@ -241,15 +230,7 @@ static s32 update_txdesc(struct xmit_frame *pxmitframe, u8 *pmem, s32 sz ,u8 bag
 			SET_TX_DESC_RETRY_LIMIT_ENABLE_8812(ptxdesc, 1);
 			SET_TX_DESC_DATA_RETRY_LIMIT_8812(ptxdesc, 5);
 			SET_TX_DESC_DISABLE_FB_8812(ptxdesc, 1);
-
-			//if(pattrib->rts_cca)
-			//{
-			//	SET_TX_DESC_NDPA_8812(ptxdesc, 2);
-			//}
-			//else
-			{
-				SET_TX_DESC_NDPA_8812(ptxdesc, 1);
-			}
+			SET_TX_DESC_NDPA_8812(ptxdesc, 1);
 		} else {
 			SET_TX_DESC_RETRY_LIMIT_ENABLE_8812(ptxdesc, 1);
 			if (pattrib->retry_ctrl == _TRUE) {

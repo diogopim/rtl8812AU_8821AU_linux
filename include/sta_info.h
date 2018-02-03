@@ -25,10 +25,6 @@
 #define NUM_STA 32
 #define NUM_ACL 16
 
-#if 0
-#define MAX_ALLOWED_TDLS_STA_NUM	4
-#endif
-
 //if mode ==0, then the sta is allowed once the addr is hit.
 //if mode ==1, then the sta is rejected once the addr is non-hit.
 struct rtw_wlan_acl_node {
@@ -82,13 +78,6 @@ struct	stainfo_stats {
 	u64	tx_bytes;
 	u64  tx_drops;
 };
-
-#if 0
-struct TDLS_PeerKey {
-	u8 kck[16]; /* TPK-KCK */
-	u8 tk[16]; /* TPK-TK; only CCMP will be used */
-} ;
-#endif //
 
 struct sta_info {
 
@@ -147,27 +136,6 @@ struct sta_info {
 	u8	stbc;
 
 	struct stainfo_stats sta_stats;
-
-#if 0
-	u32	tdls_sta_state;
-	u8	SNonce[32];
-	u8	ANonce[32];
-	u32	TDLS_PeerKey_Lifetime;
-	u16	TPK_count;
-	_timer	TPK_timer;
-	struct TDLS_PeerKey	tpk;
-#if 0_CH_SW
-	u16	ch_switch_time;
-	u16	ch_switch_timeout;
-	//u8	option;
-	_timer	ch_sw_timer;
-	_timer	delay_timer;
-#endif
-	_timer handshake_timer;
-	u8 alive_count;
-	_timer	pti_timer;
-	u8	TDLS_RSNIE[20];	/* Save peer's RSNIE, used for sending TDLS_SETUP_RSP */
-#endif
 
 	//for A-MPDU TX, ADDBA timeout check
 	_timer addba_retry_timer;

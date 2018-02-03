@@ -169,11 +169,7 @@ typedef struct _RT_FIRMWARE_8812 {
 
 //For WoWLan , more reserved page
 //ARP Rsp:1, RWC:1, GTK Info:1,GTK RSP:1,GTK EXT MEM:1, PNO: 6
-#if 0
-#define WOWLAN_PAGE_NUM_8812	0x05
-#else
 #define WOWLAN_PAGE_NUM_8812	0x00
-#endif
 
 #define TX_TOTAL_PAGE_NUMBER_8812	(0xFF - BCNQ_PAGE_NUM_8812 - WOWLAN_PAGE_NUM_8812)
 #define TX_PAGE_BOUNDARY_8812			(TX_TOTAL_PAGE_NUMBER_8812 + 1)
@@ -216,11 +212,7 @@ typedef struct _RT_FIRMWARE_8812 {
 
 //For WoWLan , more reserved page
 //ARP Rsp:1, RWC:1, GTK Info:1,GTK RSP:1,GTK EXT MEM:1, PNO: 6
-#if 0
-#define WOWLAN_PAGE_NUM_8821	0x06
-#else
 #define WOWLAN_PAGE_NUM_8821	0x00
-#endif
 
 #define TX_TOTAL_PAGE_NUMBER_8821	(0xFF - BCNQ_PAGE_NUM_8821 - BCNQ1_PAGE_NUM_8821 - WOWLAN_PAGE_NUM_8821)
 #define TX_PAGE_BOUNDARY_8821				(TX_TOTAL_PAGE_NUMBER_8821 + 1)
@@ -307,10 +299,6 @@ int 	FirmwareDownloadBT(PADAPTER Adapter, PRT_MP_FIRMWARE pFirmware);
 void	Hal_ReadRemoteWakeup_8812A(PADAPTER padapter, u8* hwinfo, BOOLEAN AutoLoadFail);
 
 BOOLEAN HalDetectPwrDownMode8812(PADAPTER Adapter);
-
-#if 0
-void Hal_DetectWoWMode(PADAPTER pAdapter);
-#endif //
 
 void _InitBeaconParameters_8812A(PADAPTER padapter);
 void SetBeaconRelatedRegisters8812A(PADAPTER padapter);

@@ -460,14 +460,6 @@ void rtw_wep_decrypt(_adapter *padapter, u8  *precvframe);
 #ifdef CONFIG_IEEE80211W
 u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe);
 #endif //CONFIG_IEEE80211W
-#if 0
-void wpa_tdls_generate_tpk(_adapter *padapter, PVOID sta);
-int wpa_tdls_ftie_mic(u8 *kck, u8 trans_seq,
-                      u8 *lnkid, u8 *rsnie, u8 *timeoutie, u8 *ftie,
-                      u8 *mic);
-int tdls_verify_mic(u8 *kck, u8 trans_seq,
-                    u8 *lnkid, u8 *rsnie, u8 *timeoutie, u8 *ftie);
-#endif //
 
 void rtw_use_tkipkey_handler(RTW_TIMER_HDL_ARGS);
 
