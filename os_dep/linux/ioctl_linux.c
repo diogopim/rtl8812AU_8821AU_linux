@@ -3505,7 +3505,7 @@ static  int rtw_drvext_hdl(struct net_device *dev, struct iw_request_info *info,
 	};
 #endif
 
-#ifdef CONFIG_DRVEXT_MODULE
+#if 0
 	u8 res;
 	struct drvext_handler *phandler;
 	struct drvext_oidparam *poidparam;
@@ -8032,7 +8032,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
                            char *extra)
 {
 
-#ifdef CONFIG_DEBUG_RTW_WX_SET_PRIV
+#if 0
 	char *ext_dbg;
 #endif
 
@@ -8064,7 +8064,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 	//	 ("rtw_wx_set_priv: %s req=%s\n",
 	//	  dev->name, ext));
 
-#ifdef CONFIG_DEBUG_RTW_WX_SET_PRIV
+#if 0
 	if (!(ext_dbg = rtw_vmalloc(len))) {
 		rtw_vmfree(ext, len);
 		return -ENOMEM;
@@ -8166,7 +8166,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 	}
 	break;
 	default :
-#ifdef  CONFIG_DEBUG_RTW_WX_SET_PRIV
+#if 0
 		DBG_871X("%s: %s unknowned req=%s\n", __FUNCTION__,
 		         dev->name, ext_dbg);
 #endif
@@ -8178,7 +8178,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 	if (copy_to_user(dwrq->pointer, ext, min(dwrq->length, (u16)(strlen(ext)+1)) ) )
 		ret = -EFAULT;
 
-#ifdef CONFIG_DEBUG_RTW_WX_SET_PRIV
+#if 0
 	DBG_871X("%s: %s req=%s rep=%s dwrq->length=%d, strlen(ext)+1=%d\n", __FUNCTION__,
 	         dev->name, ext_dbg ,ext, dwrq->length, (u16)(strlen(ext)+1));
 #endif
@@ -8188,7 +8188,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 FREE_EXT:
 
 	rtw_vmfree(ext, len);
-#ifdef CONFIG_DEBUG_RTW_WX_SET_PRIV
+#if 0
 	rtw_vmfree(ext_dbg, len);
 #endif
 
@@ -8912,12 +8912,8 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 /**
  TODO: check this logic
 */
-//#ifndef CONFIG_RTL8188E
-//		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
-//#else
  		//Change to check TYPE_EFUSE_MAP_LEN ,beacuse 8188E raw 256,logic map over 256.
  		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&max_available_size, _FALSE);
-//#endif
 		if ((addr+cnts) > max_available_size) {
 			DBG_871X("%s: addr(0x%X)+cnts(%d) parameter error!\n", __FUNCTION__, addr, cnts);
 			err = -EFAULT;
@@ -9017,12 +9013,8 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 /**
  TODO: check this logic
 */
-//#ifndef CONFIG_RTL8188E
-//		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
-//#else
  		//Change to check TYPE_EFUSE_MAP_LEN ,beacuse 8188E raw 256,logic map over 256.
  		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&max_available_size, _FALSE);
-//#endif
 		if ((addr+cnts) > max_available_size) {
 			DBG_871X("%s: addr(0x%X)+cnts(%d) parameter error!\n", __FUNCTION__, addr, cnts);
 			err = -EFAULT;

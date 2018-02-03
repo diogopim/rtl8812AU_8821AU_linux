@@ -23,7 +23,7 @@
 #if defined (CONFIG_USB_HCI)
 
 #ifdef CONFIG_USB_TX_AGGREGATION
-#if defined(CONFIG_PLATFORM_ARM_SUNxI) || defined(CONFIG_PLATFORM_ARM_SUN6I) || defined(CONFIG_PLATFORM_ARM_SUN7I) || defined(CONFIG_PLATFORM_ARM_SUN8I)
+#if 0
 #define MAX_XMITBUF_SZ (12288)  //12k 1536*8
 #elif defined (CONFIG_PLATFORM_MSTAR)
 #define MAX_XMITBUF_SZ	7680	// 7.5k
@@ -120,7 +120,7 @@ do{\
 
 #define HWXMIT_ENTRY	4
 
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)|| defined(CONFIG_RTL8723B)
+#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 #define TXDESC_SIZE 40
 #else
 #define TXDESC_SIZE 32

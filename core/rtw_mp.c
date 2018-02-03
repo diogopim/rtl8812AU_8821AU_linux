@@ -26,7 +26,7 @@
 #endif
 
 #include "../hal/OUTSRC/phydm_precomp.h"
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B) || defined(CONFIG_RTL8821A)
+#if defined(CONFIG_RTL8821A)
 #include <rtw_bt_mp.h>
 #endif
 
@@ -476,12 +476,8 @@ static void disable_dm(PADAPTER padapter)
 	Switch_DM_Func(padapter, DYNAMIC_FUNC_DISABLE, _FALSE);
 
 	// enable APK, LCK and IQK but disable power tracking
-#if !(defined(CONFIG_RTL8188E) || defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)|| defined(CONFIG_RTL8192E))
-	pdmpriv->TxPowerTrackControl = _FALSE;
-#endif
 	Switch_DM_Func(padapter, DYNAMIC_RF_CALIBRATION, _TRUE);
 }
-
 
 void MPT_PwrCtlDM(PADAPTER padapter, u32 bstart)
 {

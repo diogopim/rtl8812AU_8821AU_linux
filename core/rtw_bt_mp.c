@@ -22,7 +22,7 @@
 #include <drv_types.h>
 #include <rtw_bt_mp.h>
 
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B) || defined(CONFIG_RTL8821A)
+#if defined(CONFIG_RTL8821A)
 void MPh2c_timeout_handle(void *FunctionContext)
 {
 	PADAPTER pAdapter;

@@ -248,7 +248,7 @@ extern u64 GlobalDebugComponents;
 
 #endif /* defined(_dbgdump) */
 
-#ifdef CONFIG_DEBUG
+#if 0
 #if	defined(_dbgdump)
 #undef DBG_871X
 #define DBG_871X(...)     do {\
@@ -265,9 +265,9 @@ extern u64 GlobalDebugComponents;
 		_dbgdump(DRIVER_PREFIX __VA_ARGS__);\
 	}while(0)
 #endif /* defined(_dbgdump) */
-#endif /* CONFIG_DEBUG */
+#endif /*  */
 
-#ifdef CONFIG_DEBUG_RTL871X
+#if 0
 
 #if	defined(_dbgdump) && defined(_MODULE_DEFINE_)
 
@@ -318,7 +318,7 @@ extern u64 GlobalDebugComponents;
 			_dbgdump("\n");							\
 		}
 #endif /* defined(_dbgdump) */
-#endif /* CONFIG_DEBUG_RTL871X */
+#endif /*  */
 
 #ifdef CONFIG_DBG_COUNTER
 #define DBG_COUNTER(counter) counter++

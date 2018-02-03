@@ -1012,7 +1012,7 @@ s32 c2h_evt_read_88xx(_adapter *adapter, u8 *buf)
 	if (buf == NULL)
 		goto exit;
 
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A) || defined(CONFIG_RTL8192E) || defined(CONFIG_RTL8723B)
+#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 
 	trigger = rtw_read8(adapter, REG_C2HEVT_CLEAR);
 
@@ -1817,7 +1817,7 @@ static u8 rtw_hal_set_wowlan_ctrl_cmd(_adapter *adapter, u8 enable)
 	SET_H2CCMD_WOWLAN_GPIONUM(u1H2CWoWlanCtrlParm, gpionum);
 	SET_H2CCMD_WOWLAN_DATAPIN_WAKE_UP(u1H2CWoWlanCtrlParm, sdio_wakeup_enable);
 	SET_H2CCMD_WOWLAN_GPIO_DURATION(u1H2CWoWlanCtrlParm, gpio_dur);
-#ifdef CONFIG_PLATFORM_ARM_RK3188
+#if 0
 	SET_H2CCMD_WOWLAN_GPIO_PULSE_EN(u1H2CWoWlanCtrlParm, 1);
 	SET_H2CCMD_WOWLAN_GPIO_PULSE_COUNT(u1H2CWoWlanCtrlParm, 0x04);
 #else
@@ -5812,7 +5812,7 @@ u32 Hal_readPGDataFromConfigFile(
 	set_fs(fs);
 	pEEPROM->bloadfile_fail_flag = _FALSE;
 
-#ifdef CONFIG_DEBUG
+#if 0
 	DBG_871X("Efuse configure file:\n");
 	for (i=0; i<HWSET_MAX_SIZE; i++) {
 		if (i % 16 == 0)

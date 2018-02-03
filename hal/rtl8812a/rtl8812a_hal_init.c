@@ -3221,7 +3221,7 @@ static s32 _halReadPGDataFromFile(PADAPTER padapter, u8 *pbuf)
 	set_fs(fs);
 	filp_close(fp, NULL);
 
-#ifdef CONFIG_DEBUG
+#if 0
 	DBG_8192C("Efuse configure file:\n");
 	for (i=0; i<HWSET_MAX_SIZE_JAGUAR; i++) {
 		if (i % 16 == 0)

@@ -3272,7 +3272,7 @@ static void ro_ch_handler(_adapter *padapter)
 	set_channel_bwmode(padapter, ch, offset, bw);
 
 	rtw_p2p_set_state(pwdinfo, rtw_p2p_pre_state(pwdinfo));
-#ifdef CONFIG_DEBUG_CFG80211
+#if 0
 	DBG_871X("%s, role=%d, p2p_state=%d\n", __func__, rtw_p2p_role(pwdinfo), rtw_p2p_state(pwdinfo));
 #endif
 
@@ -3583,7 +3583,7 @@ void rtw_append_wfd_ie(_adapter *padapter, u8 *buf, u32* len)
 		OUI_Subtype = frame_body[5];
 		dialogToken = frame_body[6];
 
-#ifdef CONFIG_DEBUG_CFG80211
+#if 0
 		DBG_871X("ACTION_CATEGORY_P2P: OUI=0x%x, OUI_Subtype=%d, dialogToken=%d\n",
 		         cpu_to_be32( *( ( u32* ) ( frame_body + 1 ) ) ), OUI_Subtype, dialogToken);
 #endif
@@ -3703,7 +3703,7 @@ int rtw_p2p_check_frames(_adapter *padapter, const u8 *buf, u32 len, u8 tx)
 			OUI_Subtype = frame_body[6];
 			dialogToken = frame_body[7];
 			is_p2p_frame = OUI_Subtype;
-#ifdef CONFIG_DEBUG_CFG80211
+#if 0
 			DBG_871X("ACTION_CATEGORY_PUBLIC: ACT_PUBLIC_VENDOR, OUI=0x%x, OUI_Subtype=%d, dialogToken=%d\n",
 			         cpu_to_be32( *( ( u32* ) ( frame_body + 2 ) ) ), OUI_Subtype, dialogToken);
 #endif
@@ -3962,9 +3962,9 @@ int rtw_p2p_check_frames(_adapter *padapter, const u8 *buf, u32 len, u8 tx)
 						if(rtw_get_p2p_attr_content( p2p_ie, p2p_ielen, P2P_ATTR_GROUP_ID, NULL, &contentlen)) {
 							pwdev_priv->provdisc_req_issued = _FALSE;//case: p2p_client join p2p GO
 						} else {
-#ifdef CONFIG_DEBUG_CFG80211
+#if 0
 							DBG_871X("provdisc_req_issued is _TRUE\n");
-#endif //CONFIG_DEBUG_CFG80211
+#endif //
 							pwdev_priv->provdisc_req_issued = _TRUE;//case: p2p_devices connection before Nego req.
 						}
 
@@ -3986,7 +3986,7 @@ int rtw_p2p_check_frames(_adapter *padapter, const u8 *buf, u32 len, u8 tx)
 		OUI_Subtype = frame_body[5];
 		dialogToken = frame_body[6];
 
-#ifdef CONFIG_DEBUG_CFG80211
+#if 0
 		DBG_871X("ACTION_CATEGORY_P2P: OUI=0x%x, OUI_Subtype=%d, dialogToken=%d\n",
 		         cpu_to_be32( *( ( u32* ) ( frame_body + 1 ) ) ), OUI_Subtype, dialogToken);
 #endif

@@ -1156,13 +1156,13 @@ void LeaveAllPowerSaveModeDirect(PADAPTER Adapter)
 			} else
 #endif
 			{
-#if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS) || defined(CONFIG_RTL8188E)
+#if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS)
 #ifdef CONFIG_IPS
 				if(_FALSE == ips_leave(pri_padapter)) {
 					DBG_871X("======> ips_leave fail.............\n");
 				}
 #endif
-#endif //CONFIG_SWLPS_IN_IPS || (CONFIG_PLATFORM_SPRD && CONFIG_RTL8188E)
+#endif //CONFIG_SWLPS_IN_IPS
 			}
 		}
 	}
@@ -1232,13 +1232,13 @@ void LeaveAllPowerSaveMode(IN PADAPTER Adapter)
 			} else
 #endif
 			{
-#if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS) || (defined(CONFIG_PLATFORM_SPRD) && defined(CONFIG_RTL8188E))
+#if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS)
 #ifdef CONFIG_IPS
 				if(_FALSE == ips_leave(Adapter)) {
 					DBG_871X("======> ips_leave fail.............\n");
 				}
 #endif
-#endif //CONFIG_SWLPS_IN_IPS || (CONFIG_PLATFORM_SPRD && CONFIG_RTL8188E)
+#endif //CONFIG_SWLPS_IN_IPS
 			}
 		}
 	}

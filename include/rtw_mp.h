@@ -133,7 +133,7 @@ struct mp_tx {
 	_thread_hdl_ PktTxThread;
 };
 
-#if defined(CONFIG_RTL8192C) || defined(CONFIG_RTL8192D) || defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8188E) || defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A) ||defined(CONFIG_RTL8192E) || defined(CONFIG_RTL8723B)
+#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 
 #define MP_MAX_LINES		1000
 #define MP_MAX_LINES_BYTES	256

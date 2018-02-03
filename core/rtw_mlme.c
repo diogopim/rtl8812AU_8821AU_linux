@@ -1293,7 +1293,7 @@ void rtw_surveydone_event_callback(_adapter	*adapter, u8 *pbuf)
 	dc_resume_xmit(adapter);
 #endif
 
-#ifdef CONFIG_DRVEXT_MODULE_WSC
+#if 0
 	drvext_surveydone_callback(&adapter->drvextpriv);
 #endif
 
@@ -1508,7 +1508,7 @@ void rtw_indicate_connect(_adapter *padapter)
 		rtw_led_control(padapter, LED_CTL_LINK);
 
 
-#ifdef CONFIG_DRVEXT_MODULE
+#if 0
 		if(padapter->drvextpriv.enable_wpa) {
 			indicate_l2_connect(padapter);
 		} else
@@ -2490,7 +2490,7 @@ void _rtw_join_timeout_handler (_adapter *adapter)
 	_exit_critical_bh(&pmlmepriv->lock, &irqL);
 
 
-#ifdef CONFIG_DRVEXT_MODULE_WSC
+#if 0
 	drvext_assoc_fail_indicate(&adapter->drvextpriv);
 #endif
 
@@ -3400,7 +3400,7 @@ sint rtw_restruct_sec_ie(_adapter *adapter,u8 *in_ie, u8 *out_ie, uint in_len)
 		ielength+=psecuritypriv->supplicant_ie[1]+2;
 		rtw_report_sec_ie(adapter, authmode, psecuritypriv->supplicant_ie);
 
-#ifdef CONFIG_DRVEXT_MODULE
+#if 0
 		drvext_report_sec_ie(&adapter->drvextpriv, authmode, sec_ie);
 #endif
 	}

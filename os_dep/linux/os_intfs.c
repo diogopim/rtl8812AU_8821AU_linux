@@ -1335,10 +1335,6 @@ void rtw_cancel_all_timer(_adapter *padapter)
 #endif
 	//cancel dm timer
 	rtw_hal_dm_deinit(padapter);
-
-#ifdef CONFIG_PLATFORM_FS_MX61
-	msleep(50);
-#endif
 }
 
 u8 rtw_free_drv_sw(_adapter *padapter)
@@ -1395,7 +1391,7 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 
 	//rtw_mfree((void *)padapter, sizeof (padapter));
 
-#ifdef CONFIG_DRVEXT_MODULE
+#if 0
 	free_drvext(&padapter->drvextpriv);
 #endif
 
@@ -2259,7 +2255,7 @@ int _netdev_open(struct net_device *pnetdev)
 			goto netdev_open_error;
 		}
 
-#ifdef CONFIG_DRVEXT_MODULE
+#if 0
 		init_drvext(padapter);
 #endif
 
