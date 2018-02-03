@@ -4000,7 +4000,7 @@ failing:
 	return -1;
 }
 
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 void rtw_dev_pno_debug(struct net_device *net)
 {
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(net);
@@ -4051,5 +4051,5 @@ void rtw_dev_pno_debug(struct net_device *net)
 	}
 	DBG_871X("*****************\n");
 }
-#endif //CONFIG_PNO_SET_DEBUG
+#endif //
 #endif //

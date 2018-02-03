@@ -1046,9 +1046,9 @@ int rtw_handle_dualmac(_adapter *adapter, bool init);
 int rtw_parse_ssid_list_tlv(char** list_str, pno_ssid_t* ssid, int max, int *bytes_left);
 int rtw_dev_pno_set(struct net_device *net, pno_ssid_t* ssid, int num,
                     int pno_time, int pno_repeat, int pno_freq_expo_max);
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 void rtw_dev_pno_debug(struct net_device *net);
-#endif //CONFIG_PNO_SET_DEBUG
+#endif //
 #endif //
 
 #if 0

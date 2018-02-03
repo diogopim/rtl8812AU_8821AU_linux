@@ -101,7 +101,7 @@ typedef struct cmd_tlv {
 	char reserved;
 } cmd_tlv_t;
 
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 char pno_in_example[] = {
 	'P', 'N', 'O', 'S', 'E', 'T', 'U', 'P', ' ',
 	'S', '1', '2', '0',
@@ -125,7 +125,7 @@ char pno_in_example[] = {
 	'2',
 	0x00
 };
-#endif /* CONFIG_PNO_SET_DEBUG */
+#endif /*  */
 #endif /* PNO_SUPPORT */
 
 typedef struct android_wifi_priv_cmd {
@@ -180,7 +180,7 @@ static int rtw_android_pno_setup(struct net_device *net, char *command, int tota
 	int pno_freq_expo_max = 0;
 	int cmdlen = strlen(android_wifi_cmd_str[ANDROID_WIFI_CMD_PNOSETUP_SET]) + 1;
 
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 	int i;
 	char *p;
 	p = pno_in_example;
@@ -249,7 +249,7 @@ static int rtw_android_pno_setup(struct net_device *net, char *command, int tota
 
 	res = rtw_dev_pno_set(net, pno_ssids_local, nssid, pno_time, pno_repeat, pno_freq_expo_max);
 
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 	rtw_dev_pno_debug(net);
 #endif
 

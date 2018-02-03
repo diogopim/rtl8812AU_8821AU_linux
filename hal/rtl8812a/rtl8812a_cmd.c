@@ -1973,7 +1973,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 			rtl8812a_fill_fake_txdesc(padapter,
 			                          &ReservedPagePacket[BufIndex-TxDescLen],
 			                          ProbeReqLength, _FALSE, _FALSE, _FALSE);
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 			{
 				int gj;
 				printk("probe req pkt=> \n");
@@ -1995,7 +1995,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 			//PNO INFO Page
 			RsvdPageLoc.LocPNOInfo = TotalPageNum;
 			ConstructPnoInfo(padapter, &ReservedPagePacket[BufIndex -TxDescLen], &PNOLength);
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 			{
 				int gj;
 				printk("PNO pkt=> \n");
@@ -2016,7 +2016,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 			//SSID List Page
 			RsvdPageLoc.LocSSIDInfo = TotalPageNum;
 			ConstructSSIDList(padapter, &ReservedPagePacket[BufIndex-TxDescLen], &SSIDLegnth);
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 			{
 				int gj;
 				printk("SSID list pkt=> \n");
@@ -2036,7 +2036,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 			//Scan Info Page
 			RsvdPageLoc.LocScanInfo = TotalPageNum;
 			ConstructScanInfo(padapter, &ReservedPagePacket[BufIndex-TxDescLen], &ScanInfoLength);
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 			{
 				int gj;
 				printk("Scan info pkt=> \n");
