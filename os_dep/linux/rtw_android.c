@@ -820,15 +820,6 @@ static void shutdown_card(void)
 	g_test_adapter->bSurpriseRemoved = _TRUE;
 	DBG_871X(FUNC_ADPT_FMT ": bSurpriseRemoved=%d\n",
 	         FUNC_ADPT_ARG(g_test_adapter), g_test_adapter->bSurpriseRemoved);
-#if 0
-	if (g_test_adapter->pbuddy_adapter) {
-		PADAPTER pbuddy;
-		pbuddy = g_test_adapter->pbuddy_adapter;
-		pbuddy->bSurpriseRemoved = _TRUE;
-		DBG_871X(FUNC_ADPT_FMT ": buddy(" ADPT_FMT ") bSurpriseRemoved=%d\n",
-		         FUNC_ADPT_ARG(g_test_adapter), ADPT_ARG(pbuddy), pbuddy->bSurpriseRemoved);
-	}
-#endif //
 }
 #endif // RTW_SUPPORT_PLATFORM_SHUTDOWN
 

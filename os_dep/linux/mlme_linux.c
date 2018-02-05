@@ -63,17 +63,6 @@ void Linkdown_workitem_callback(struct work_struct *work)
 #endif
 
 
-/*
-void sitesurvey_ctrl_handler(void *FunctionContext)
-{
-	_adapter *adapter = (_adapter *)FunctionContext;
-
-	_sitesurvey_ctrl_handler(adapter);
-
-	_set_timer(&adapter->mlmepriv.sitesurveyctrl.sitesurvey_ctrl_timer, 3000);
-}
-*/
-
 void rtw_join_timeout_handler (void *FunctionContext)
 {
 	_adapter *adapter = (_adapter *)FunctionContext;
@@ -99,11 +88,6 @@ void _dynamic_check_timer_handlder (void *FunctionContext)
 		return;
 	}
 #endif
-
-#if 0
-	if(adapter->pbuddy_adapter)
-		rtw_dynamic_check_timer_handlder(adapter->pbuddy_adapter);
-#endif //
 
 	rtw_dynamic_check_timer_handlder(adapter);
 
@@ -352,20 +336,6 @@ void init_addba_retry_timer(_adapter *padapter, struct sta_info *psta)
 	_init_timer(&psta->addba_retry_timer, padapter->pnetdev, _addba_timer_hdl, psta);
 }
 
-/*
-void _reauth_timer_hdl(void *FunctionContext)
-{
-	_adapter *padapter = (_adapter *)FunctionContext;
-	reauth_timer_hdl(padapter);
-}
-
-void _reassoc_timer_hdl(void *FunctionContext)
-{
-	_adapter *padapter = (_adapter *)FunctionContext;
-	reassoc_timer_hdl(padapter);
-}
-*/
-
 void init_mlme_ext_timer(_adapter *padapter)
 {
 	struct	mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
@@ -375,10 +345,6 @@ void init_mlme_ext_timer(_adapter *padapter)
 #ifdef CONFIG_IEEE80211W
 	_init_timer(&pmlmeext->sa_query_timer, padapter->pnetdev, _sa_query_timer_hdl, padapter);
 #endif //CONFIG_IEEE80211W
-	//_init_timer(&pmlmeext->ADDBA_timer, padapter->pnetdev, _addba_timer_hdl, padapter);
-
-	//_init_timer(&pmlmeext->reauth_timer, padapter->pnetdev, _reauth_timer_hdl, padapter);
-	//_init_timer(&pmlmeext->reassoc_timer, padapter->pnetdev, _reassoc_timer_hdl, padapter);
 }
 
 #ifdef CONFIG_AP_MODE
@@ -530,18 +496,9 @@ int hostapd_mode_init(_adapter *padapter)
 	pnetdev->stop = mgnt_netdev_close;
 
 	pnetdev->hard_start_xmit = mgnt_xmit_entry;
-
-	//pnetdev->set_mac_address = r871x_net_set_mac_address;
-
-	//pnetdev->get_stats = r871x_net_get_stats;
-
-	//pnetdev->do_ioctl = r871x_mp_ioctl;
-
 #endif
 
 	pnetdev->watchdog_timeo = HZ; /* 1 second timeout */
-
-	//pnetdev->wireless_handlers = NULL;
 
 #ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
 	pnetdev->features |= NETIF_F_IP_CSUM;

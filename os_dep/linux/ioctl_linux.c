@@ -1695,25 +1695,6 @@ static int rtw_wx_set_wap(struct net_device *dev,
 	NDIS_802_11_AUTHENTICATION_MODE	authmode;
 
 	_func_enter_;
-	/*
-	#if 0
-		if(padapter->iface_type > PRIMARY_IFACE)
-		{
-			ret = -EINVAL;
-			goto exit;
-		}
-	#endif
-	*/
-
-#if 0
-	if (check_buddy_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING) == _TRUE) {
-		DBG_871X("set bssid, but buddy_intf is under scanning or linking\n");
-
-		ret = -EINVAL;
-
-		goto exit;
-	}
-#endif
 
 #ifdef CONFIG_DUALMAC_CONCURRENT
 	if (dc_check_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING)== _TRUE) {
@@ -1880,30 +1861,12 @@ static int rtw_wx_set_scan(struct net_device *dev, struct iw_request_info *a,
 #ifdef DBG_IOCTL
 	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
 #endif
-	/*
-	#if 0
-		if(padapter->iface_type > PRIMARY_IFACE)
-		{
-			ret = -1;
-			goto exit;
-		}
-	#endif
-	*/
 #ifdef CONFIG_MP_INCLUDED
 	if (padapter->registrypriv.mp_mode == 1) {
 		DBG_871X(FUNC_ADPT_FMT ": MP mode block Scan request\n", FUNC_ADPT_ARG(padapter));
 		ret = -1;
 		goto exit;
 	}
-#if 0
-	if (padapter->pbuddy_adapter) {
-		if (padapter->pbuddy_adapter->registrypriv.mp_mode == 1) {
-			DBG_871X(FUNC_ADPT_FMT ": MP mode block Scan request\n", FUNC_ADPT_ARG(padapter->pbuddy_adapter));
-			ret = -1;
-			goto exit;
-		}
-	}
-#endif //
 #endif
 
 	rtw_ps_deny(padapter, PS_DENY_SCAN);
@@ -1931,11 +1894,7 @@ static int rtw_wx_set_scan(struct net_device *dev, struct iw_request_info *a,
 	// When Busy Traffic, driver do not site survey. So driver return success.
 	// wpa_supplicant will not issue SIOCSIWSCAN cmd again after scan timeout.
 	// modify by thomas 2011-02-22.
-	if (pmlmepriv->LinkDetectInfo.bBusyTraffic == _TRUE
-#if 0
-	    || rtw_get_buddy_bBusyTraffic(padapter) == _TRUE
-#endif //
-	   ) {
+	if (pmlmepriv->LinkDetectInfo.bBusyTraffic == _TRUE) {
 		indicate_wx_scan_complete_event(padapter);
 		goto exit;
 	}
@@ -1944,14 +1903,6 @@ static int rtw_wx_set_scan(struct net_device *dev, struct iw_request_info *a,
 		indicate_wx_scan_complete_event(padapter);
 		goto exit;
 	}
-
-#if 0
-	if (check_buddy_fwstate(padapter,
-	                        _FW_UNDER_SURVEY|_FW_UNDER_LINKING|WIFI_UNDER_WPS) == _TRUE) {
-		indicate_wx_scan_complete_event(padapter);
-		goto exit;
-	}
-#endif
 
 #ifdef CONFIG_DUALMAC_CONCURRENT
 	if (dc_check_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING)== _TRUE) {
@@ -2107,10 +2058,6 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 	//u32 cnt=0;
 	u32 wait_for_surveydone;
 	sint wait_status;
-#if 0
-	//PADAPTER pbuddy_adapter = padapter->pbuddy_adapter;
-	//struct mlme_priv *pbuddy_mlmepriv = &(pbuddy_adapter->mlmepriv);
-#endif
 #ifdef CONFIG_P2P
 	struct	wifidirect_info*	pwdinfo = &padapter->wdinfo;
 #endif //CONFIG_P2P
@@ -2122,15 +2069,6 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 #ifdef DBG_IOCTL
 	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
 #endif
-	/*
-	#if 0
-		if(padapter->iface_type > PRIMARY_IFACE)
-		{
-			ret = -EINVAL;
-			goto exit;
-		}
-	#endif
-	*/
 	if(adapter_to_pwrctl(padapter)->brfoffbyhw && padapter->bDriverStopped) {
 		ret = -EINVAL;
 		goto exit;
@@ -2233,26 +2171,6 @@ static int rtw_wx_set_essid(struct net_device *dev,
 
 #ifdef DBG_IOCTL
 	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
-#endif
-
-	/*
-	#if 0
-		if(padapter->iface_type > PRIMARY_IFACE)
-		{
-			ret = -EINVAL;
-			goto exit;
-		}
-	#endif
-	*/
-
-#if 0
-	if (check_buddy_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING) == _TRUE) {
-		DBG_871X("set ssid, but buddy_intf is under scanning or linking\n");
-
-		ret = -EINVAL;
-
-		goto exit;
-	}
 #endif
 
 #ifdef CONFIG_DUALMAC_CONCURRENT
@@ -3708,26 +3626,6 @@ static int rtw_wext_p2p_enable(struct net_device *dev,
 			ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
 			bwmode = CHANNEL_WIDTH_20;
 		}
-#if 0
-		else if(rtw_p2p_chk_state(pwdinfo, P2P_STATE_IDLE)) {
-			_adapter				*pbuddy_adapter = padapter->pbuddy_adapter;
-			//struct wifidirect_info	*pbuddy_wdinfo = &pbuddy_adapter->wdinfo;
-			struct mlme_priv		*pbuddy_mlmepriv = &pbuddy_adapter->mlmepriv;
-			struct mlme_ext_priv	*pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
-
-			_set_timer( &pwdinfo->ap_p2p_switch_timer, pwdinfo->ext_listen_interval );
-			if ( check_fwstate( pbuddy_mlmepriv, _FW_LINKED ) ) {
-				pwdinfo->operating_channel = pbuddy_mlmeext->cur_channel;
-				//	How about the ch_offset and bwmode ??
-			} else {
-				pwdinfo->operating_channel = pwdinfo->listen_channel;
-			}
-
-			channel = pbuddy_mlmeext->cur_channel;
-			ch_offset = pbuddy_mlmeext->cur_ch_offset;
-			bwmode = pbuddy_mlmeext->cur_bwmode;
-		}
-#endif
 		else {
 			pwdinfo->operating_channel = pmlmeext->cur_channel;
 
@@ -3923,12 +3821,6 @@ static int rtw_p2p_get_status(struct net_device *dev,
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	//struct iw_point *pdata = &wrqu->data;
 	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo );
-#if 0
-	//_adapter				*pbuddy_adapter = padapter->pbuddy_adapter;
-	//struct wifidirect_info	*pbuddy_wdinfo = &pbuddy_adapter->wdinfo;
-	//struct mlme_priv		*pbuddy_mlmepriv = &pbuddy_adapter->mlmepriv;
-	//struct mlme_ext_priv	*pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
-#endif
 
 	if ( padapter->bShowGetP2PState ) {
 		DBG_871X( "[%s] Role = %d, Status = %d, peer addr = %.2X:%.2X:%.2X:%.2X:%.2X:%.2X\n", __FUNCTION__, rtw_p2p_role(pwdinfo), rtw_p2p_state(pwdinfo),
@@ -4556,12 +4448,6 @@ static int rtw_p2p_connect(struct net_device *dev,
 	_queue				*queue	= &(pmlmepriv->scanned_queue);
 	struct	wlan_network	*pnetwork = NULL;
 	uint					uintPeerChannel = 0;
-#if 0
-	_adapter				*pbuddy_adapter = padapter->pbuddy_adapter;
-	struct mlme_priv		*pbuddy_mlmepriv = &pbuddy_adapter->mlmepriv;
-	struct mlme_ext_priv	*pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
-#endif //
-
 	//	Commented by Albert 20110304
 	//	The input data contains two informations.
 	//	1. First information is the MAC address which wants to formate with
@@ -4606,11 +4492,6 @@ static int rtw_p2p_connect(struct net_device *dev,
 	_exit_critical_bh(&(pmlmepriv->scanned_queue.lock), &irqL);
 
 	if ( uintPeerChannel ) {
-#if 0
-		if ( check_fwstate( pbuddy_mlmepriv, _FW_LINKED ) ) {
-			_cancel_timer_ex( &pwdinfo->ap_p2p_switch_timer );
-		}
-#endif //
 
 		_rtw_memset( &pwdinfo->nego_req_info, 0x00, sizeof( struct tx_nego_req_info ) );
 		_rtw_memset( &pwdinfo->groupid_info, 0x00, sizeof( struct group_id_info ) );
@@ -4628,26 +4509,9 @@ static int rtw_p2p_connect(struct net_device *dev,
 		rtw_p2p_set_pre_state(pwdinfo, rtw_p2p_state(pwdinfo));
 		rtw_p2p_set_state(pwdinfo, P2P_STATE_GONEGO_ING);
 
-#if 0
-		if ( check_fwstate( pbuddy_mlmepriv, _FW_LINKED ) ) {
-			//	Have to enter the power saving with the AP
-			set_channel_bwmode(padapter, pbuddy_mlmeext->cur_channel, pbuddy_mlmeext->cur_ch_offset, pbuddy_mlmeext->cur_bwmode);
-
-			issue_nulldata(pbuddy_adapter, NULL, 1, 3, 500);
-		}
-#endif //
-
 		DBG_871X( "[%s] Start PreTx Procedure!\n", __FUNCTION__ );
 		_set_timer( &pwdinfo->pre_tx_scan_timer, P2P_TX_PRESCAN_TIMEOUT );
-#if 0
-		if ( check_fwstate( pbuddy_mlmepriv, _FW_LINKED ) ) {
-			_set_timer( &pwdinfo->restore_p2p_state_timer, P2P_CONCURRENT_GO_NEGO_TIMEOUT );
-		} else {
-			_set_timer( &pwdinfo->restore_p2p_state_timer, P2P_GO_NEGO_TIMEOUT );
-		}
-#else
 		_set_timer( &pwdinfo->restore_p2p_state_timer, P2P_GO_NEGO_TIMEOUT );
-#endif //
 
 	} else {
 		DBG_871X( "[%s] Not Found in Scanning Queue~\n", __FUNCTION__ );
@@ -4679,11 +4543,6 @@ static int rtw_p2p_invite_req(struct net_device *dev,
 	_irqL					irqL;
 	struct tx_invite_req_info*	pinvite_req_info = &pwdinfo->invitereq_info;
 	u8 ie_offset = 12;
-#if 0
-	_adapter					*pbuddy_adapter = padapter->pbuddy_adapter;
-	struct mlme_priv			*pbuddy_mlmepriv = &pbuddy_adapter->mlmepriv;
-	struct mlme_ext_priv		*pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
-#endif //
 
 #ifdef CONFIG_WFD
 	struct wifi_display_info*	pwfd_info = pwdinfo->wfd_info;
@@ -4796,12 +4655,6 @@ static int rtw_p2p_invite_req(struct net_device *dev,
 #endif // CONFIG_WFD
 
 	if ( uintPeerChannel ) {
-#if 0
-		if ( check_fwstate( pbuddy_mlmepriv, _FW_LINKED ) ) {
-			_cancel_timer_ex( &pwdinfo->ap_p2p_switch_timer );
-		}
-#endif //
-
 		//	Store the GO's bssid
 		for( jj = 0, kk = 18; jj < ETH_ALEN; jj++, kk += 3 ) {
 			pinvite_req_info->go_bssid[ jj ] = key_2char2num( extra[kk], extra[kk+ 1] );
@@ -4816,31 +4669,11 @@ static int rtw_p2p_invite_req(struct net_device *dev,
 		rtw_p2p_set_pre_state(pwdinfo, rtw_p2p_state(pwdinfo));
 		rtw_p2p_set_state(pwdinfo, P2P_STATE_TX_INVITE_REQ);
 
-#if 0
-		if ( check_fwstate( pbuddy_mlmepriv, _FW_LINKED ) ) {
-			//	Have to enter the power saving with the AP
-			set_channel_bwmode(padapter, pbuddy_mlmeext->cur_channel, pbuddy_mlmeext->cur_ch_offset, pbuddy_mlmeext->cur_bwmode);
-
-			issue_nulldata(pbuddy_adapter, NULL, 1, 3, 500);
-		} else {
-			set_channel_bwmode(padapter, uintPeerChannel, HAL_PRIME_CHNL_OFFSET_DONT_CARE, CHANNEL_WIDTH_20);
-		}
-#else
 		set_channel_bwmode(padapter, uintPeerChannel, HAL_PRIME_CHNL_OFFSET_DONT_CARE, CHANNEL_WIDTH_20);
-#endif
 
 		_set_timer( &pwdinfo->pre_tx_scan_timer, P2P_TX_PRESCAN_TIMEOUT );
 
-#if 0
-		if ( check_fwstate( pbuddy_mlmepriv, _FW_LINKED ) ) {
-			_set_timer( &pwdinfo->restore_p2p_state_timer, P2P_CONCURRENT_INVITE_TIMEOUT );
-		} else {
-			_set_timer( &pwdinfo->restore_p2p_state_timer, P2P_INVITE_TIMEOUT );
-		}
-#else
 		_set_timer( &pwdinfo->restore_p2p_state_timer, P2P_INVITE_TIMEOUT );
-#endif //
-
 
 	} else {
 		DBG_871X( "[%s] NOT Found in the Scanning Queue!\n", __FUNCTION__ );
@@ -4858,29 +4691,7 @@ static int rtw_p2p_set_persistent(struct net_device *dev,
 
 	int ret = 0;
 	_adapter 					*padapter = (_adapter *)rtw_netdev_priv(dev);
-	//struct iw_point 			*pdata = &wrqu->data;
 	struct wifidirect_info		*pwdinfo = &( padapter->wdinfo );
-	//int 						jj,kk;
-	//u8   						peerMACStr[ ETH_ALEN * 2 ] = { 0x00 };
-	//struct mlme_priv			*pmlmepriv = &padapter->mlmepriv;
-	//_list						*plist, *phead;
-	//_queue					*queue	= &(pmlmepriv->scanned_queue);
-	//struct	wlan_network		*pnetwork = NULL;
-	//uint						uintPeerChannel = 0;
-	//u8						attr_content[50] = { 0x00 }, _status = 0;
-	//u8 						*p2pie;
-	//uint						p2pielen = 0, attr_contentlen = 0;
-	//_irqL					irqL;
-	//struct tx_invite_req_info*	pinvite_req_info = &pwdinfo->invitereq_info;
-#if 0
-	//_adapter					*pbuddy_adapter = padapter->pbuddy_adapter;
-	//struct mlme_priv			*pbuddy_mlmepriv = &pbuddy_adapter->mlmepriv;
-	//struct mlme_ext_priv		*pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
-#endif //
-
-#ifdef CONFIG_WFD
-	//struct wifi_display_info*	pwfd_info = pwdinfo->wfd_info;
-#endif // CONFIG_WFD
 
 	//	Commented by Albert 20120328
 	//	The input data is 0 or 1
@@ -4989,11 +4800,9 @@ static int rtw_p2p_set_pc(struct net_device *dev,
 
 	int ret = 0;
 	_adapter 				*padapter = (_adapter *)rtw_netdev_priv(dev);
-	//struct iw_point 		*pdata = &wrqu->data;
 	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo );
 	u8					peerMAC[ ETH_ALEN ] = { 0x00 };
 	int 					jj,kk;
-	//u8   					peerMACStr[ ETH_ALEN * 2 ] = { 0x00 };
 	struct mlme_priv		*pmlmepriv = &padapter->mlmepriv;
 	_list					*plist, *phead;
 	_queue				*queue	= &(pmlmepriv->scanned_queue);
@@ -5003,10 +4812,6 @@ static int rtw_p2p_set_pc(struct net_device *dev,
 	uint					p2pielen = 0, attr_contentlen = 0;
 	_irqL				irqL;
 	uint					uintPeerChannel = 0;
-#if 0
-	//_adapter				*pbuddy_adapter = padapter->pbuddy_adapter;
-	//struct mlme_ext_priv	*pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
-#endif //
 
 	struct wifi_display_info*	pwfd_info = pwdinfo->wfd_info;
 
@@ -5221,7 +5026,6 @@ static int rtw_p2p_prov_disc(struct net_device *dev,
 	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo );
 	u8					peerMAC[ ETH_ALEN ] = { 0x00 };
 	int 					jj,kk;
-	//u8   					peerMACStr[ ETH_ALEN * 2 ] = { 0x00 };
 	struct mlme_priv		*pmlmepriv = &padapter->mlmepriv;
 	_list					*plist, *phead;
 	_queue				*queue	= &(pmlmepriv->scanned_queue);
@@ -5232,11 +5036,6 @@ static int rtw_p2p_prov_disc(struct net_device *dev,
 	uint					p2pielen = 0, attr_contentlen = 0;
 	_irqL				irqL;
 	u8 					ie_offset = 12;
-#if 0
-	_adapter				*pbuddy_adapter = padapter->pbuddy_adapter;
-	struct mlme_priv		*pbuddy_mlmepriv = &pbuddy_adapter->mlmepriv;
-	struct mlme_ext_priv	*pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
-#endif //
 #ifdef CONFIG_WFD
 	struct wifi_display_info*	pwfd_info = pwdinfo->wfd_info;
 #endif // CONFIG_WFD
@@ -5369,11 +5168,6 @@ static int rtw_p2p_prov_disc(struct net_device *dev,
 #endif // CONFIG_WFD
 
 		DBG_871X( "[%s] peer channel: %d!\n", __FUNCTION__, uintPeerChannel );
-#if 0
-		if ( check_fwstate( pbuddy_mlmepriv, _FW_LINKED ) ) {
-			_cancel_timer_ex( &pwdinfo->ap_p2p_switch_timer );
-		}
-#endif //
 		_rtw_memcpy( pwdinfo->tx_prov_disc_info.peerIFAddr, pnetwork->network.MacAddress, ETH_ALEN );
 		_rtw_memcpy( pwdinfo->tx_prov_disc_info.peerDevAddr, peerMAC, ETH_ALEN );
 		pwdinfo->tx_prov_disc_info.peer_channel_num[0] = ( u16 ) uintPeerChannel;
@@ -5388,30 +5182,10 @@ static int rtw_p2p_prov_disc(struct net_device *dev,
 			pwdinfo->tx_prov_disc_info.ssid.SsidLength= P2P_WILDCARD_SSID_LEN;
 		}
 
-#if 0
-		if ( check_fwstate( pbuddy_mlmepriv, _FW_LINKED ) ) {
-			//	Have to enter the power saving with the AP
-			set_channel_bwmode(padapter, pbuddy_mlmeext->cur_channel, pbuddy_mlmeext->cur_ch_offset, pbuddy_mlmeext->cur_bwmode);
-
-			issue_nulldata(pbuddy_adapter, NULL, 1, 3, 500);
-		} else {
-			set_channel_bwmode(padapter, uintPeerChannel, HAL_PRIME_CHNL_OFFSET_DONT_CARE, CHANNEL_WIDTH_20);
-		}
-#else
 		set_channel_bwmode(padapter, uintPeerChannel, HAL_PRIME_CHNL_OFFSET_DONT_CARE, CHANNEL_WIDTH_20);
-#endif
-
 		_set_timer( &pwdinfo->pre_tx_scan_timer, P2P_TX_PRESCAN_TIMEOUT );
 
-#if 0
-		if ( check_fwstate( pbuddy_mlmepriv, _FW_LINKED ) ) {
-			_set_timer( &pwdinfo->restore_p2p_state_timer, P2P_CONCURRENT_PROVISION_TIMEOUT );
-		} else {
-			_set_timer( &pwdinfo->restore_p2p_state_timer, P2P_PROVISION_TIMEOUT );
-		}
-#else
 		_set_timer( &pwdinfo->restore_p2p_state_timer, P2P_PROVISION_TIMEOUT );
-#endif //
 
 	} else {
 		DBG_871X( "[%s] NOT Found in the Scanning Queue!\n", __FUNCTION__ );
@@ -5696,12 +5470,7 @@ static int rtw_rereg_nd_name(struct net_device *dev,
 
 	if(rereg_priv->old_ifname[0] == 0) {
 		char *reg_ifname;
-#if 0
-		if (padapter->isprimary)
-			reg_ifname = padapter->registrypriv.ifname;
-		else
-#endif
-			reg_ifname = padapter->registrypriv.if2name;
+		reg_ifname = padapter->registrypriv.if2name;
 
 		strncpy(rereg_priv->old_ifname, reg_ifname, IFNAMSIZ);
 		rereg_priv->old_ifname[IFNAMSIZ-1] = 0;

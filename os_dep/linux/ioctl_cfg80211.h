@@ -99,11 +99,6 @@ struct rtw_wdev_priv {
 	bool block;
 	bool power_mgmt;
 
-#if 0
-	ATOMIC_T ro_ch_to;
-	ATOMIC_T switch_ch_to;
-#endif
-
 };
 
 #define wiphy_to_adapter(x) (*((_adapter**)wiphy_priv(x)))
