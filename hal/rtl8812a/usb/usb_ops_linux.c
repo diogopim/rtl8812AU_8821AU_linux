@@ -63,7 +63,7 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 					set_tx_beacon_cmd(padapter);
 				}
 			}
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 			if(check_buddy_fwstate(padapter, WIFI_AP_STATE)) {
 				//send_beacon(padapter);
 				if(padapter->pbuddy_adapter->mlmepriv.update_bcn == _TRUE) {
@@ -191,7 +191,7 @@ static u32 usb_read_interrupt(struct intf_hdl *pintfhdl, u32 addr)
 static inline s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 {
 	s32 ret=_SUCCESS;
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	u8 *secondary_myid, *paddr1;
 	union recv_frame	*precvframe_if2 = NULL;
 	_adapter *primary_padapter = precvframe->u.hdr.adapter;
@@ -339,14 +339,14 @@ int recvbuf2recvframe(PADAPTER padapter, void *ptr)
 			if(pattrib->physt)
 				pphy_status = (pbuf + RXDESC_OFFSET);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 			if(rtw_buddy_adapter_up(padapter)) {
 				if(pre_recv_entry(precvframe, pphy_status) != _SUCCESS) {
 					RT_TRACE(_module_rtl871x_recv_c_,_drv_err_,
 					         ("recvbuf2recvframe: recv_entry(precvframe) != _SUCCESS\n"));
 				}
 			}
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 			if(pattrib->physt && pphy_status)
 				rx_query_phy_status(precvframe, pphy_status);
@@ -394,7 +394,7 @@ void rtl8812au_xmit_tasklet(void *priv)
 		}
 
 		if(check_fwstate(&padapter->mlmepriv, _FW_UNDER_SURVEY) == _TRUE
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		   || check_buddy_fwstate(padapter, _FW_UNDER_SURVEY) == _TRUE
 #endif
 		  ) {

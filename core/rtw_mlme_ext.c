@@ -1015,7 +1015,7 @@ _non_rc_device:
 #endif //CONFIG_AUTO_AP_MODE
 
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE) &&
 	   check_buddy_fwstate(padapter, _FW_UNDER_LINKING|_FW_UNDER_SURVEY)) {
 		//don't process probe req
@@ -1106,7 +1106,7 @@ unsigned int OnProbeRsp(_adapter *padapter, union recv_frame *precv_frame)
 
 	if (pmlmeext->sitesurvey_res.state == SCAN_PROCESS) {
 		report_survey_event(padapter, precv_frame);
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		report_survey_event(padapter->pbuddy_adapter, precv_frame);
 #endif
 #ifdef CONFIG_DUALMAC_CONCURRENT
@@ -1147,7 +1147,7 @@ unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame)
 
 	if (pmlmeext->sitesurvey_res.state == SCAN_PROCESS) {
 		report_survey_event(padapter, precv_frame);
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		report_survey_event(padapter->pbuddy_adapter, precv_frame);
 #endif
 
@@ -1202,7 +1202,7 @@ unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame)
 			process_p2p_ps_ie(padapter, (pframe + WLAN_HDR_A3_LEN), (len - WLAN_HDR_A3_LEN));
 #endif //CONFIG_P2P_PS
 
-#if defined(CONFIG_P2P)&&defined(CONFIG_CONCURRENT_MODE)
+#if 0
 			if (padapter->registrypriv.wifi_spec) {
 				if (process_p2p_cross_connect_ie(padapter, (pframe + WLAN_HDR_A3_LEN), (len - WLAN_HDR_A3_LEN)) == _FALSE) {
 					if((padapter->pbuddy_adapter->mlmeextpriv.mlmext_info.state&0x03) == WIFI_FW_AP_STATE) {
@@ -1211,7 +1211,7 @@ unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame)
 					}
 				}
 			}
-#endif // CONFIG_P2P CONFIG_P2P and CONFIG_CONCURRENT_MODE
+#endif // CONFIG_P2P CONFIG_P2P
 
 			//start auth
 			start_clnt_auth(padapter);
@@ -1312,13 +1312,13 @@ unsigned int OnAuth(_adapter *padapter, union recv_frame *precv_frame)
 	u8	offset = 0;
 
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE) &&
 	   check_buddy_fwstate(padapter, _FW_UNDER_LINKING|_FW_UNDER_SURVEY)) {
 		//don't process auth request;
 		return _SUCCESS;
 	}
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 	if((pmlmeinfo->state&0x03) != WIFI_FW_AP_STATE)
 		return _FAIL;
@@ -1631,13 +1631,13 @@ unsigned int OnAssocReq(_adapter *padapter, union recv_frame *precv_frame)
 #endif // CONFIG_WFD
 #endif //CONFIG_P2P
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE) &&
 	   check_buddy_fwstate(padapter, _FW_UNDER_LINKING|_FW_UNDER_SURVEY)) {
 		//don't process assoc request;
 		return _SUCCESS;
 	}
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 	if((pmlmeinfo->state&0x03) != WIFI_FW_AP_STATE)
 		return _FAIL;
@@ -3176,7 +3176,7 @@ void issue_p2p_GO_request(_adapter *padapter, u8* raddr)
 	                       + (1 + 1) * (u16)(pmlmeext->channel_list.reg_classes)
 	                       + get_reg_classes_full_count(pmlmeext->channel_list);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if ( check_buddy_fwstate(padapter, _FW_LINKED ) ) {
 		*(u16*) ( p2pie + p2pielen ) = cpu_to_le16( 5 + 1 );
 	} else {
@@ -3200,7 +3200,7 @@ void issue_p2p_GO_request(_adapter *padapter, u8* raddr)
 
 	//	Channel Entry List
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if ( check_buddy_fwstate(padapter, _FW_LINKED ) ) {
 		_adapter *pbuddy_adapter = padapter->pbuddy_adapter;
 		struct mlme_ext_priv	*pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
@@ -3237,7 +3237,7 @@ void issue_p2p_GO_request(_adapter *padapter, u8* raddr)
 			}
 		}
 	}
-#else // CONFIG_CONCURRENT_MODE
+#else //
 	{
 		int i,j;
 		for (j = 0; j < pmlmeext->channel_list.reg_classes; j++) {
@@ -3253,7 +3253,7 @@ void issue_p2p_GO_request(_adapter *padapter, u8* raddr)
 			}
 		}
 	}
-#endif // CONFIG_CONCURRENT_MODE
+#endif //
 
 	//	Device Info
 	//	Type:
@@ -3631,7 +3631,7 @@ void issue_p2p_GO_response(_adapter *padapter, u8* raddr, u8* frame_body,uint le
 	                       + (1 + 1) * (u16)pmlmeext->channel_list.reg_classes
 	                       + get_reg_classes_full_count(pmlmeext->channel_list);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if ( check_buddy_fwstate(padapter, _FW_LINKED ) ) {
 		*(u16*) ( p2pie + p2pielen ) = cpu_to_le16( 5 + 1 );
 	} else {
@@ -3655,7 +3655,7 @@ void issue_p2p_GO_response(_adapter *padapter, u8* raddr, u8* frame_body,uint le
 
 	//	Channel Entry List
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if ( check_buddy_fwstate(padapter, _FW_LINKED ) ) {
 		_adapter *pbuddy_adapter = padapter->pbuddy_adapter;
 		struct mlme_ext_priv	*pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
@@ -3692,7 +3692,7 @@ void issue_p2p_GO_response(_adapter *padapter, u8* raddr, u8* frame_body,uint le
 			}
 		}
 	}
-#else // CONFIG_CONCURRENT_MODE
+#else //
 	{
 		int i, j;
 		for (j = 0; j < pmlmeext->channel_list.reg_classes; j++) {
@@ -3708,7 +3708,7 @@ void issue_p2p_GO_response(_adapter *padapter, u8* raddr, u8* frame_body,uint le
 			}
 		}
 	}
-#endif // CONFIG_CONCURRENT_MODE
+#endif //
 
 
 	//	Device Info
@@ -4049,7 +4049,7 @@ void issue_p2p_invitation_request(_adapter *padapter, u8* raddr )
 #ifdef CONFIG_WFD
 	u32					wfdielen = 0;
 #endif //CONFIG_WFD
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	//_adapter				*pbuddy_adapter = padapter->pbuddy_adapter;
 	//struct wifidirect_info	*pbuddy_wdinfo = &pbuddy_adapter->wdinfo;
 	//struct mlme_priv		*pbuddy_mlmepriv = &pbuddy_adapter->mlmepriv;
@@ -4199,7 +4199,7 @@ void issue_p2p_invitation_request(_adapter *padapter, u8* raddr )
 	                       + (1 + 1) * (u16)pmlmeext->channel_list.reg_classes
 	                       + get_reg_classes_full_count(pmlmeext->channel_list);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if ( check_buddy_fwstate(padapter, _FW_LINKED ) ) {
 		*(u16*) ( p2pie + p2pielen ) = cpu_to_le16( 5 + 1 );
 	} else {
@@ -4222,7 +4222,7 @@ void issue_p2p_invitation_request(_adapter *padapter, u8* raddr )
 	p2pie[ p2pielen++ ] = 0x04;
 
 	//	Channel Entry List
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if ( check_buddy_fwstate(padapter, _FW_LINKED ) ) {
 		_adapter *pbuddy_adapter = padapter->pbuddy_adapter;
 		struct mlme_ext_priv	*pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
@@ -4259,7 +4259,7 @@ void issue_p2p_invitation_request(_adapter *padapter, u8* raddr )
 			}
 		}
 	}
-#else // CONFIG_CONCURRENT_MODE
+#else //
 	{
 		int i, j;
 		for (j = 0; j < pmlmeext->channel_list.reg_classes; j++) {
@@ -4275,7 +4275,7 @@ void issue_p2p_invitation_request(_adapter *padapter, u8* raddr )
 			}
 		}
 	}
-#endif // CONFIG_CONCURRENT_MODE
+#endif //
 
 
 	//	P2P Group ID
@@ -4372,7 +4372,7 @@ void issue_p2p_invitation_response(_adapter *padapter, u8* raddr, u8 dialogToken
 	u8			p2pielen = 0;
 	//u8			channel_cnt_24g = 0, channel_cnt_5gl = 0, channel_cnt_5gh = 0;
 	u16			len_channellist_attr = 0;
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	//_adapter				*pbuddy_adapter = padapter->pbuddy_adapter;
 	//struct wifidirect_info	*pbuddy_wdinfo = &pbuddy_adapter->wdinfo;
 	//struct mlme_priv		*pbuddy_mlmepriv = &pbuddy_adapter->mlmepriv;
@@ -4530,7 +4530,7 @@ void issue_p2p_invitation_response(_adapter *padapter, u8* raddr, u8 dialogToken
 		                       + (1 + 1) * (u16)pmlmeext->channel_list.reg_classes
 		                       + get_reg_classes_full_count(pmlmeext->channel_list);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if ( check_buddy_fwstate(padapter, _FW_LINKED ) ) {
 			*(u16*) ( p2pie + p2pielen ) = cpu_to_le16( 5 + 1 );
 		} else {
@@ -4553,7 +4553,7 @@ void issue_p2p_invitation_response(_adapter *padapter, u8* raddr, u8 dialogToken
 		p2pie[ p2pielen++ ] = 0x04;
 
 		//	Channel Entry List
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if ( check_buddy_fwstate(padapter, _FW_LINKED ) ) {
 			_adapter *pbuddy_adapter = padapter->pbuddy_adapter;
 			struct mlme_ext_priv	*pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
@@ -4590,7 +4590,7 @@ void issue_p2p_invitation_response(_adapter *padapter, u8* raddr, u8 dialogToken
 				}
 			}
 		}
-#else // CONFIG_CONCURRENT_MODE
+#else //
 		{
 			int i, j;
 			for (j = 0; j < pmlmeext->channel_list.reg_classes; j++) {
@@ -4606,7 +4606,7 @@ void issue_p2p_invitation_response(_adapter *padapter, u8* raddr, u8 dialogToken
 				}
 			}
 		}
-#endif // CONFIG_CONCURRENT_MODE
+#endif //
 	}
 
 	pframe = rtw_set_ie(pframe, _VENDOR_SPECIFIC_IE_, p2pielen, (unsigned char *) p2pie, &pattrib->pktlen );
@@ -5526,11 +5526,11 @@ unsigned int on_action_public_p2p(union recv_frame *precv_frame)
 				rtw_p2p_set_state(pwdinfo, rtw_p2p_pre_state(pwdinfo));
 				DBG_871X( "[%s] Restore the previous p2p state to %d\n", __FUNCTION__, rtw_p2p_state(pwdinfo) );
 			}
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 			if ( check_buddy_fwstate(padapter, _FW_LINKED ) ) {
 				_cancel_timer_ex( &pwdinfo->ap_p2p_switch_timer );
 			}
-#endif // CONFIG_CONCURRENT_MODE
+#endif //
 
 			//	Commented by Kurt 20110902
 			//Add if statement to avoid receiving duplicate prov disc req. such that pre_p2p_state would be covered.
@@ -5546,12 +5546,12 @@ unsigned int on_action_public_p2p(union recv_frame *precv_frame)
 			issue_p2p_GO_response( padapter, GetAddr2Ptr(pframe), frame_body, len, result );
 			//	Commented by Albert 20110718
 			//	No matter negotiating or negotiation failure, the driver should set up the restore P2P state timer.
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 			//	Commented by Albert 20120107
 			_set_timer( &pwdinfo->restore_p2p_state_timer, 3000 );
-#else // CONFIG_CONCURRENT_MODE
+#else //
 			_set_timer( &pwdinfo->restore_p2p_state_timer, 5000 );
-#endif // CONFIG_CONCURRENT_MODE
+#endif //
 			break;
 		}
 		case P2P_GO_NEGO_RESP: {
@@ -6271,7 +6271,7 @@ s32 dump_mgntframe_and_wait_ack(_adapter *padapter, struct xmit_frame *pmgntfram
 	s32 ret = _FAIL;
 	u32 timeout_ms = 500;//  500ms
 	struct xmit_priv	*pxmitpriv = &padapter->xmitpriv;
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if (padapter->pbuddy_adapter && !padapter->isprimary)
 		pxmitpriv = &(padapter->pbuddy_adapter->xmitpriv);
 #endif
@@ -6378,7 +6378,7 @@ void issue_beacon(_adapter *padapter, int timeout_ms)
 	pattrib = &pmgntframe->attrib;
 	update_mgntframe_attrib(padapter, pattrib);
 	pattrib->qsel = QSLT_BEACON;
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(padapter->iface_type == IFACE_PORT1)
 		pattrib->mbssid = 1;
 #endif
@@ -9073,7 +9073,7 @@ void site_survey(_adapter *padapter)
 
 #ifdef CONFIG_P2P
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 
 #if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE) || defined(CONFIG_ATMEL_RC_PATCH)
 	u8 stay_buddy_ch = 0;
@@ -9082,7 +9082,7 @@ void site_survey(_adapter *padapter)
 	PADAPTER pbuddy_adapter = padapter->pbuddy_adapter;
 	struct mlme_ext_priv *pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
 
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 	struct wifidirect_info *pwdinfo= &(padapter->wdinfo);
 	//static unsigned char  prev_survey_channel = 0;
 	//static unsigned int p2p_scan_count = 0;
@@ -9262,7 +9262,7 @@ void site_survey(_adapter *padapter)
 
 		//	channel number is 0 or this channel is not valid.
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		u8 cur_channel;
 		u8 cur_bwmode;
 		u8 cur_ch_offset;
@@ -9327,7 +9327,7 @@ void site_survey(_adapter *padapter)
 
 #ifdef CONFIG_P2P
 			if(rtw_p2p_chk_state(pwdinfo, P2P_STATE_SCAN) || rtw_p2p_chk_state(pwdinfo, P2P_STATE_FIND_PHASE_SEARCH)) {
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 				if( pwdinfo->driver_interface == DRIVER_WEXT ) {
 					if ( check_buddy_fwstate(padapter, _FW_LINKED ) ) {
 						_set_timer( &pwdinfo->ap_p2p_switch_timer, 500 );
@@ -9347,7 +9347,7 @@ void site_survey(_adapter *padapter)
 			//SelectChannel(padapter, pmlmeext->cur_channel, pmlmeext->cur_ch_offset);
 
 			{
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 				set_channel_bwmode(padapter, cur_channel, cur_ch_offset, cur_bwmode);
 #else
 #ifdef CONFIG_DUALMAC_CONCURRENT
@@ -9362,7 +9362,7 @@ void site_survey(_adapter *padapter)
 					set_channel_bwmode(padapter, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
 
 #endif //CONFIG_DUALMAC_CONCURRENT
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 			}
 
 			//flush 4-AC Queue after site_survey
@@ -9383,7 +9383,7 @@ void site_survey(_adapter *padapter)
 			if (is_client_associated_to_ap(padapter) == _TRUE) {
 				issue_nulldata(padapter, NULL, 0, 3, 500);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 				if(is_client_associated_to_ap(padapter->pbuddy_adapter) == _TRUE) {
 					DBG_871X("adapter is surveydone(buddy_adapter is linked), issue nulldata(pwrbit=0)\n");
 
@@ -9391,7 +9391,7 @@ void site_survey(_adapter *padapter)
 				}
 #endif
 			}
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 			else if(is_client_associated_to_ap(padapter->pbuddy_adapter) == _TRUE) {
 				issue_nulldata(padapter->pbuddy_adapter, NULL, 0, 3, 500);
 			}
@@ -9411,7 +9411,7 @@ void site_survey(_adapter *padapter)
 
 		}
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if(check_buddy_mlmeinfo_state(padapter, WIFI_FW_AP_STATE) &&
 		   check_buddy_fwstate(padapter, _FW_LINKED)) {
 
@@ -10375,7 +10375,7 @@ void report_add_sta_event(_adapter *padapter, unsigned char* MacAddr, int cam_id
 bool rtw_port_switch_chk(_adapter *adapter)
 {
 	bool switch_needed = _FALSE;
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 #ifdef CONFIG_RUNTIME_PORT_SWITCH
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 #if defined(DBG_RUNTIME_PORT_SWITCH)
@@ -10449,7 +10449,7 @@ exit:
 	DBG_871X(FUNC_ADPT_FMT" ret:%d\n", FUNC_ADPT_ARG(adapter), switch_needed);
 #endif /* DBG_RUNTIME_PORT_SWITCH */
 #endif /* CONFIG_RUNTIME_PORT_SWITCH */
-#endif /* CONFIG_CONCURRENT_MODE */
+#endif /**/
 	return switch_needed;
 }
 
@@ -10586,17 +10586,17 @@ static void rtw_mlmeext_disconnect(_adapter *padapter)
 #ifdef CONFIG_DUALMAC_CONCURRENT
 	dc_set_channel_bwmode_disconnect(padapter);
 #else //!CONFIG_DUALMAC_CONCURRENT
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if((check_buddy_fwstate(padapter, _FW_LINKED)) != _TRUE) {
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 		//switch to the 20M Hz mode after disconnect
 		pmlmeext->cur_bwmode = CHANNEL_WIDTH_20;
 		pmlmeext->cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
 
 		set_channel_bwmode(padapter, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	}
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 #ifdef CONFIG_FCS_MODE
 	else {
 		PADAPTER pbuddy_adapter;
@@ -10674,8 +10674,7 @@ void mlmeext_joinbss_event_callback(_adapter *padapter, int join_res)
 	VHTOnAssocRsp(padapter);
 #endif
 
-#ifndef CONFIG_CONCURRENT_MODE
-	//	Call set_channel_bwmode when the CONFIG_CONCURRENT_MODE doesn't be defined.
+#if 1
 	//Set cur_channel&cur_bwmode&cur_ch_offset
 	set_channel_bwmode(padapter, pmlmeext->cur_channel, pmlmeext->cur_ch_offset, pmlmeext->cur_bwmode);
 #endif
@@ -10726,7 +10725,7 @@ exit_mlmeext_joinbss_event_callback:
 #ifdef CONFIG_DUALMAC_CONCURRENT
 	dc_handle_join_done(padapter, join_res);
 #endif
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	concurrent_chk_joinbss_done(padapter, join_res);
 #endif
 
@@ -11503,10 +11502,6 @@ u8 join_cmd_hdl(_adapter *padapter, u8 *pbuf)
 #ifdef CONFIG_80211N_HT
 			pmlmeinfo->HT_info_enable = 1;
 
-			//spec case only for cisco's ap because cisco's ap issue assoc rsp using mcs rate @40MHz or @20MHz
-//#if !defined(CONFIG_CONCURRENT_MODE) && !defined(CONFIG_DUALMAC_CONCURRENT)
-//				if(pmlmeinfo->assoc_AP_vendor == ciscoAP)
-//#endif
 			{
 				struct HT_info_element *pht_info = (struct HT_info_element *)(pIE->data);
 
@@ -11758,10 +11753,10 @@ u8 sitesurvey_cmd_hdl(_adapter *padapter, u8 *pbuf)
 #endif //DBG_CHECK_FW_PS_STATE
 
 	if (pmlmeext->sitesurvey_res.state == SCAN_DISABLE) {
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		//for first time sitesurvey_cmd
 		rtw_hal_set_hwreg(padapter, HW_VAR_CHECK_TXBUF, 0);
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 		pmlmeext->sitesurvey_res.state = SCAN_START;
 		pmlmeext->sitesurvey_res.bss_cnt = 0;
@@ -11793,7 +11788,7 @@ u8 sitesurvey_cmd_hdl(_adapter *padapter, u8 *pbuf)
 
 			issue_nulldata(padapter, NULL, 1, 3, 500);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 			if(is_client_associated_to_ap(padapter->pbuddy_adapter) == _TRUE) {
 				DBG_871X("adapter is scanning(buddy_adapter is linked), issue nulldata(pwrbit=1)\n");
 
@@ -11802,7 +11797,7 @@ u8 sitesurvey_cmd_hdl(_adapter *padapter, u8 *pbuf)
 #endif
 			bdelayscan = _TRUE;
 		}
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		else if(is_client_associated_to_ap(padapter->pbuddy_adapter) == _TRUE) {
 			pmlmeext->sitesurvey_res.state = SCAN_TXNULL;
 			issue_nulldata(padapter->pbuddy_adapter, NULL, 1, 3, 500);
@@ -12726,7 +12721,7 @@ u8	dc_check_xmit(_adapter *padapter)
 }
 #endif
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 sint check_buddy_mlmeinfo_state(_adapter *padapter, u32 state)
 {
 	PADAPTER pbuddy_adapter;
@@ -12983,7 +12978,7 @@ void concurrent_chk_joinbss_done(_adapter *padapter, int join_res)
 	}
 
 }
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 int rtw_chk_start_clnt_join(_adapter *padapter, u8 *ch, u8 *bw, u8 *offset)
 {
@@ -12993,7 +12988,7 @@ int rtw_chk_start_clnt_join(_adapter *padapter, u8 *ch, u8 *bw, u8 *offset)
 	unsigned char	cur_ch_offset = pmlmeext->cur_ch_offset;
 	bool connect_allow = _TRUE;
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	bool chbw_allow = _TRUE;
 	PADAPTER pbuddy_adapter;
 	struct mlme_ext_priv *pbuddy_mlmeext;
@@ -13015,7 +13010,7 @@ int rtw_chk_start_clnt_join(_adapter *padapter, u8 *ch, u8 *bw, u8 *offset)
 		goto exit;
 	}
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if (!rtw_buddy_adapter_up(padapter)) {
 		goto exit;
 	}
@@ -13122,7 +13117,7 @@ int rtw_chk_start_clnt_join(_adapter *padapter, u8 *ch, u8 *bw, u8 *offset)
 		}
 	}
 
-#endif /* CONFIG_CONCURRENT_MODE */
+#endif /**/
 
 exit:
 

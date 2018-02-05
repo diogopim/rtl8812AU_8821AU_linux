@@ -242,7 +242,7 @@ int rtw_free_recvframe(union recv_frame *precvframe, _queue *pfree_recv_queue)
 
 	_func_enter_;
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(padapter->adapter_type > PRIMARY_ADAPTER) {
 		padapter = padapter->pbuddy_adapter;//get primary_padapter
 		precvpriv = &padapter->recvpriv;
@@ -605,7 +605,7 @@ union recv_frame * decryptor(_adapter *padapter,union recv_frame *precv_frame)
 
 	if((prxattrib->encrypt>0) && ((prxattrib->bdecrypted==0) ||(psecuritypriv->sw_decrypt==_TRUE))) {
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if(!IS_MCAST(prxattrib->ra))//bc/mc packets use sw decryption for concurrent mode
 #endif
 			psecuritypriv->hw_decrypted=_FALSE;
@@ -3692,7 +3692,7 @@ void rtw_signal_stat_timer_hdl(RTW_TIMER_HDL_ARGS)
 			goto set_timer;
 		}
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if (check_buddy_fwstate(adapter, _FW_UNDER_SURVEY) == _TRUE)
 			goto set_timer;
 #endif

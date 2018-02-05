@@ -292,7 +292,7 @@ void sreset_reset(_adapter *padapter)
 	pwrpriv->change_rfpwrstate = rf_off;
 
 	sreset_stop_adapter(padapter);
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	sreset_stop_adapter(padapter->pbuddy_adapter);
 #endif
 
@@ -302,7 +302,7 @@ void sreset_reset(_adapter *padapter)
 #endif
 
 	sreset_start_adapter(padapter);
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	sreset_start_adapter(padapter->pbuddy_adapter);
 #endif
 

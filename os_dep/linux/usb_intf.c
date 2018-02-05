@@ -927,7 +927,7 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	dvobj->padapters[dvobj->iface_nums++] = padapter;
 	padapter->iface_id = IFACE_ID0;
 
-#if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_DUALMAC_CONCURRENT)
+#if defined(CONFIG_DUALMAC_CONCURRENT)
 	//set adapter_type/iface type for primary padapter
 	padapter->isprimary = _TRUE;
 	padapter->adapter_type = PRIMARY_ADAPTER;
@@ -1130,7 +1130,7 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 		goto free_dvobj;
 	}
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if((if2 = rtw_drv_if2_init(if1, usb_set_intf_ops)) == NULL) {
 		goto free_if1;
 	}
@@ -1174,12 +1174,12 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 
 free_if2:
 	if(status != _SUCCESS && if2) {
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		rtw_drv_if2_stop(if2);
 		rtw_drv_if2_free(if2);
 #endif
 	}
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 free_if1:
 #endif
 	if (status != _SUCCESS && if1) {
@@ -1233,21 +1233,21 @@ static void rtw_dev_remove(struct usb_interface *pusb_intf)
 
 	LeaveAllPowerSaveMode(padapter);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 #ifdef CONFIG_MULTI_VIR_IFACES
 	rtw_drv_stop_vir_ifaces(dvobj);
 #endif //CONFIG_MULTI_VIR_IFACES
 	rtw_drv_if2_stop(dvobj->if2);
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 	rtw_usb_if1_deinit(padapter);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 #ifdef CONFIG_MULTI_VIR_IFACES
 	rtw_drv_free_vir_ifaces(dvobj);
 #endif //CONFIG_MULTI_VIR_IFACES
 	rtw_drv_if2_free(dvobj->if2);
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 	usb_dvobj_deinit(pusb_intf);
 

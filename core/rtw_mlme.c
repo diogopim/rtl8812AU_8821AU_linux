@@ -1237,7 +1237,7 @@ void rtw_surveydone_event_callback(_adapter	*adapter, u8 *pbuf)
 #endif // CONFIG_P2P_PS
 
 	rtw_os_xmit_schedule(adapter);
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	rtw_os_xmit_schedule(adapter->pbuddy_adapter);
 #endif
 #ifdef CONFIG_DUALMAC_CONCURRENT
@@ -1259,7 +1259,7 @@ void rtw_surveydone_event_callback(_adapter	*adapter, u8 *pbuf)
 
 	rtw_indicate_scan_done(adapter, _FALSE);
 
-#if defined(CONFIG_CONCURRENT_MODE) && defined(CONFIG_IOCTL_CFG80211)
+#if 0
 	if (adapter->pbuddy_adapter) {
 		_adapter *buddy_adapter = adapter->pbuddy_adapter;
 		struct mlme_priv *buddy_mlme = &(buddy_adapter->mlmepriv);
@@ -1281,7 +1281,7 @@ void rtw_surveydone_event_callback(_adapter	*adapter, u8 *pbuf)
 			rtw_indicate_scan_done(buddy_adapter, _FALSE);
 		}
 	}
-#endif /* CONFIG_CONCURRENT_MODE */
+#endif /**/
 
 	_func_exit_;
 
@@ -1946,7 +1946,7 @@ void rtw_joinbss_event_callback(_adapter *adapter, u8 *pbuf)
 
 	rtw_os_xmit_schedule(adapter);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	rtw_os_xmit_schedule(adapter->pbuddy_adapter);
 #endif
 
@@ -2354,7 +2354,7 @@ void rtw_scan_timeout_handler (_adapter *adapter)
 
 	rtw_indicate_scan_done(adapter, _TRUE);
 
-#if defined(CONFIG_CONCURRENT_MODE) && defined(CONFIG_IOCTL_CFG80211)
+#if 0
 	if (adapter->pbuddy_adapter) {
 		_adapter *buddy_adapter = adapter->pbuddy_adapter;
 		struct mlme_priv *buddy_mlme = &(buddy_adapter->mlmepriv);
@@ -2373,7 +2373,7 @@ void rtw_scan_timeout_handler (_adapter *adapter)
 			rtw_indicate_scan_done(buddy_adapter, _TRUE);
 		}
 	}
-#endif /* CONFIG_CONCURRENT_MODE */
+#endif /**/
 }
 
 void rtw_mlme_reset_auto_scan_int(_adapter *adapter)
@@ -2425,7 +2425,7 @@ static void rtw_auto_scan_handler(_adapter *padapter)
 			}
 		}
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if (rtw_buddy_adapter_up(padapter)) {
 			if ((check_buddy_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING) == _TRUE) ||
 			    (padapter->pbuddy_adapter->mlmepriv.LinkDetectInfo.bBusyTraffic == _TRUE)) {
@@ -2451,7 +2451,7 @@ void rtw_dynamic_check_timer_handlder(_adapter *adapter)
 	struct mlme_priv *pmlmepriv = &adapter->mlmepriv;
 #endif //CONFIG_AP_MODE
 	//struct registry_priv *pregistrypriv = &adapter->registrypriv;
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	PADAPTER pbuddy_adapter = adapter->pbuddy_adapter;
 #endif
 
@@ -2465,13 +2465,13 @@ void rtw_dynamic_check_timer_handlder(_adapter *adapter)
 		return;
 
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(pbuddy_adapter) {
 		if(adapter->net_closed == _TRUE && pbuddy_adapter->net_closed == _TRUE) {
 			return;
 		}
 	} else
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 		if(adapter->net_closed == _TRUE) {
 			return;
 		}
@@ -2567,7 +2567,7 @@ void rtw_set_scan_deny_timer_hdl(_adapter *adapter)
 void rtw_set_scan_deny(_adapter *adapter, u32 ms)
 {
 	struct mlme_priv *mlmepriv = &adapter->mlmepriv;
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	struct mlme_priv *b_mlmepriv;
 #endif
 
@@ -2576,7 +2576,7 @@ void rtw_set_scan_deny(_adapter *adapter, u32 ms)
 	ATOMIC_SET(&mlmepriv->set_scan_deny, 1);
 	_set_timer(&mlmepriv->set_scan_deny_timer, ms);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if (!adapter->pbuddy_adapter)
 		return;
 
@@ -3883,7 +3883,7 @@ sint rtw_linked_check(_adapter *padapter)
 	return _FALSE;
 }
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 sint rtw_buddy_adapter_up(_adapter *padapter)
 {
 	sint res = _FALSE;
@@ -3934,4 +3934,4 @@ u8 rtw_get_buddy_bBusyTraffic(_adapter *padapter)
 	return padapter->pbuddy_adapter->mlmepriv.LinkDetectInfo.bBusyTraffic;
 }
 
-#endif //CONFIG_CONCURRENT_MODE
+#endif //

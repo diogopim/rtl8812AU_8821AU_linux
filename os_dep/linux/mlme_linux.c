@@ -100,10 +100,10 @@ void _dynamic_check_timer_handlder (void *FunctionContext)
 	}
 #endif
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(adapter->pbuddy_adapter)
 		rtw_dynamic_check_timer_handlder(adapter->pbuddy_adapter);
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 	rtw_dynamic_check_timer_handlder(adapter);
 

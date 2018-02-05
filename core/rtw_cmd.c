@@ -412,7 +412,7 @@ u32 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 
 	cmd_obj->padapter = padapter;
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	//change pcmdpriv to primary's pcmdpriv
 	if (padapter->adapter_type != PRIMARY_ADAPTER && padapter->pbuddy_adapter)
 		pcmdpriv = &(padapter->pbuddy_adapter->cmdpriv);
@@ -1971,7 +1971,7 @@ u8 rtw_dynamic_chk_wk_cmd(_adapter*padapter)
 
 	//only  primary padapter does this cmd
 	/*
-	#ifdef CONFIG_CONCURRENT_MODE
+	#if 0
 		if (padapter->adapter_type != PRIMARY_ADAPTER && padapter->pbuddy_adapter)
 			pcmdpriv = &(padapter->pbuddy_adapter->cmdpriv);
 	#endif
@@ -2209,7 +2209,7 @@ static void collect_traffic_statistics(_adapter *padapter)
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if (padapter->adapter_type != PRIMARY_ADAPTER)
 		return;
 #endif
@@ -2224,7 +2224,7 @@ static void collect_traffic_statistics(_adapter *padapter)
 	pdvobjpriv->traffic_stat.rx_pkts = padapter->recvpriv.rx_pkts;
 	pdvobjpriv->traffic_stat.rx_drop = padapter->recvpriv.rx_drop;
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	// Add secondary adapter statistics
 	if(rtw_buddy_adapter_up(padapter)) {
 		// Tx
@@ -2399,7 +2399,7 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 			if(!from_timer) {
 				LPS_Leave(padapter, "TRAFFIC_BUSY");
 			} else {
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 				if(padapter->iface_type == IFACE_PORT0)
 #endif
 					rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_TRAFFIC_BUSY, 1);
@@ -2682,7 +2682,7 @@ u8 rtw_lps_change_dtim_cmd(_adapter*padapter, u8 dtim)
 	struct cmd_priv	*pcmdpriv = &padapter->cmdpriv;
 	u8	res = _SUCCESS;
 	/*
-	#ifdef CONFIG_CONCURRENT_MODE
+	#if 0
 		if (padapter->iface_type != IFACE_PORT0)
 			return res;
 	#endif
@@ -2874,7 +2874,7 @@ u8 rtw_ps_cmd(_adapter*padapter)
 	u8	res = _SUCCESS;
 	_func_enter_;
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if (padapter->adapter_type != PRIMARY_ADAPTER)
 		goto exit;
 #endif
@@ -3175,11 +3175,11 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 
 	switch(pdrvextra_cmd->ec_id) {
 	case DYNAMIC_CHK_WK_CID://only  primary padapter go to this cmd, but execute dynamic_chk_wk_hdl() for two interfaces
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if(padapter->pbuddy_adapter) {
 			dynamic_chk_wk_hdl(padapter->pbuddy_adapter);
 		}
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 		dynamic_chk_wk_hdl(padapter);
 		break;
 	case POWER_SAVING_CTRL_WK_CID:

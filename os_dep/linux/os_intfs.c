@@ -924,9 +924,9 @@ u32 rtw_start_drv_threads(_adapter *padapter)
 #endif
 
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(padapter->isprimary == _TRUE)
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 	{
 		padapter->cmdThread = kthread_run(rtw_cmd_thread, padapter, "RTW_CMD_THREAD");
 		if(IS_ERR(padapter->cmdThread))
@@ -951,9 +951,9 @@ void rtw_stop_drv_threads (_adapter *padapter)
 {
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtw_stop_drv_threads\n"));
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(padapter->isprimary == _TRUE)
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 	{
 		rtw_stop_cmd_thread(padapter);
 	}
@@ -1332,9 +1332,9 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 			_cancel_timer_ex( &pwdinfo->find_phase_timer );
 			_cancel_timer_ex( &pwdinfo->restore_p2p_state_timer );
 			_cancel_timer_ex( &pwdinfo->pre_tx_scan_timer);
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 			_cancel_timer_ex( &pwdinfo->ap_p2p_switch_timer );
-#endif // CONFIG_CONCURRENT_MODE
+#endif //
 			rtw_p2p_set_state(pwdinfo, P2P_STATE_NONE);
 		}
 	}
@@ -1375,7 +1375,7 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 
 }
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 #ifdef CONFIG_MULTI_VIR_IFACES
 int _netdev_vir_if_open(struct net_device *pnetdev)
 {
@@ -2046,7 +2046,7 @@ void rtw_drv_if2_stop(_adapter *if2)
 		padapter->bup = _FALSE;
 	}
 }
-#endif //end of CONFIG_CONCURRENT_MODE
+#endif
 
 #ifdef CONFIG_BR_EXT
 void netdev_br_init(struct net_device *netdev)
@@ -2234,7 +2234,7 @@ int _netdev_open(struct net_device *pnetdev)
 
 netdev_open_normal_process:
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	{
 		_adapter *sec_adapter = padapter->pbuddy_adapter;
 		if(sec_adapter && (sec_adapter->bup == _FALSE))
@@ -2948,7 +2948,7 @@ int rtw_suspend_normal(_adapter *padapter)
 {
 	//struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct net_device *pnetdev = padapter->pnetdev;
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	struct net_device *pbuddy_netdev = padapter->pbuddy_adapter->pnetdev;
 #endif
 	//struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
@@ -2959,7 +2959,7 @@ int rtw_suspend_normal(_adapter *padapter)
 		netif_carrier_off(pnetdev);
 		rtw_netif_stop_queue(pnetdev);
 	}
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(rtw_buddy_adapter_up(padapter)) {
 		pbuddy_netdev = padapter->pbuddy_adapter->pnetdev;
 		netif_carrier_off(pbuddy_netdev);
@@ -2969,7 +2969,7 @@ int rtw_suspend_normal(_adapter *padapter)
 
 	rtw_suspend_free_assoc_resource(padapter);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(rtw_buddy_adapter_up(padapter)) {
 		rtw_suspend_free_assoc_resource(padapter->pbuddy_adapter);
 	}
@@ -2982,7 +2982,7 @@ int rtw_suspend_normal(_adapter *padapter)
 
 	}
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(rtw_buddy_adapter_up(padapter)) {
 		rtw_dev_unload(padapter->pbuddy_adapter);
 	}
@@ -3035,11 +3035,11 @@ int rtw_suspend_common(_adapter *padapter)
 	rtw_ps_deny(padapter, PS_DENY_SUSPEND);
 
 	rtw_cancel_all_timer(padapter);
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if (padapter->pbuddy_adapter) {
 		rtw_cancel_all_timer(padapter->pbuddy_adapter);
 	}
-#endif // CONFIG_CONCURRENT_MODE
+#endif //
 
 	LeaveAllPowerSaveModeDirect(padapter);
 
@@ -3047,18 +3047,18 @@ int rtw_suspend_common(_adapter *padapter)
 	rtw_ps_deny_cancel(padapter, PS_DENY_SUSPEND);
 
 	if (check_fwstate(pmlmepriv,WIFI_STATION_STATE) == _TRUE
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	    && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	   ) {
 		rtw_suspend_normal(padapter);
 	} else if (check_fwstate(pmlmepriv,WIFI_AP_STATE) == _TRUE
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	           && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	          ) {
 		rtw_suspend_normal(padapter);
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	} else if (check_fwstate(pmlmepriv,WIFI_STATION_STATE) == _TRUE
 	           && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _TRUE) {
 		rtw_suspend_normal(padapter);
@@ -3082,7 +3082,7 @@ exit:
 int rtw_resume_process_normal(_adapter *padapter)
 {
 	struct net_device *pnetdev;
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	struct net_device *pbuddy_netdev;
 #endif
 	struct pwrctrl_priv *pwrpriv;
@@ -3121,7 +3121,7 @@ int rtw_resume_process_normal(_adapter *padapter)
 	}
 
 	rtw_reset_drv_sw(padapter);
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	rtw_reset_drv_sw(padapter->pbuddy_adapter);
 #endif
 
@@ -3137,7 +3137,7 @@ int rtw_resume_process_normal(_adapter *padapter)
 	netif_device_attach(pnetdev);
 	netif_carrier_on(pnetdev);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(rtw_buddy_adapter_up(padapter)) {
 		pbuddy_netdev = padapter->pbuddy_adapter->pnetdev;
 
@@ -3168,7 +3168,7 @@ int rtw_resume_process_normal(_adapter *padapter)
 		DBG_871X(FUNC_ADPT_FMT" fwstate:0x%08x - ???\n", FUNC_ADPT_ARG(padapter), get_fwstate(pmlmepriv));
 	}
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(rtw_buddy_adapter_up(padapter)) {
 		_adapter *buddy = padapter->pbuddy_adapter;
 		struct mlme_priv *buddy_mlme = &padapter->pbuddy_adapter->mlmepriv;
@@ -3215,19 +3215,19 @@ int rtw_resume_common(_adapter *padapter)
 	DBG_871X("==> %s (%s:%d)\n",__FUNCTION__, current->comm, current->pid);
 
 	if (check_fwstate(pmlmepriv,WIFI_STATION_STATE) == _TRUE
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	    && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	   ) {
 		rtw_resume_process_normal(padapter);
 
 	} else if (check_fwstate(pmlmepriv,WIFI_AP_STATE) == _TRUE
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	           && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	          ) {
 		rtw_resume_process_normal(padapter);
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	} else if (check_fwstate(pmlmepriv,WIFI_STATION_STATE) == _TRUE
 	           && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _TRUE) {
 		rtw_resume_process_normal(padapter);

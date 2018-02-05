@@ -861,10 +861,10 @@ extern void adaptive_early_32k(struct mlme_ext_priv *pmlmeext, u8 *pframe, uint 
 extern u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer);
 
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 sint check_buddy_mlmeinfo_state(_adapter *padapter, u32 state);
 void concurrent_chk_joinbss_done(_adapter *padapter, int join_res);
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 #ifdef CONFIG_DUALMAC_CONCURRENT
 void	dc_SelectChannel(_adapter *padapter, unsigned char channel);

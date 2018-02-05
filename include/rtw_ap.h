@@ -62,9 +62,9 @@ void start_ap_mode(_adapter *padapter);
 void stop_ap_mode(_adapter *padapter);
 #endif
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 void concurrent_set_ap_chbw(_adapter *padapter, u8 channel, u8 channel_offset, u8 bwmode);
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 
 #ifdef CONFIG_AUTO_AP_MODE

@@ -127,7 +127,7 @@ int rtw_ips_pwr_up(_adapter *padapter);
 void rtw_ips_pwr_down(_adapter *padapter);
 #endif
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 struct _io_ops;
 _adapter *rtw_drv_if2_init(_adapter *primary_padapter, void (*set_intf_ops)(_adapter *primary_padapter,struct _io_ops *pops));
 void rtw_drv_if2_free(_adapter *if2);

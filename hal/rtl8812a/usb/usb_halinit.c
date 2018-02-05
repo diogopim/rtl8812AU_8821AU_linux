@@ -467,7 +467,7 @@ _InitTxBufferBoundary_8821AUsb(
 	rtw_write8(Adapter, REG_TRXFF_BNDY, txpktbuf_bndy);
 	rtw_write8(Adapter, REG_TDECTRL+1, txpktbuf_bndy);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	rtw_write8(Adapter, REG_BCNQ1_BDNY, txpktbuf_bndy+8);
 	rtw_write8(Adapter, REG_DWBCN1_CTRL_8812+1, txpktbuf_bndy+8);//BCN1_HEAD
 	// BIT1- BIT_SW_BCN_SEL_EN
@@ -1391,7 +1391,7 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 	value8 = rtw_read8(Adapter, REG_CR);
 	rtw_write8(Adapter, REG_CR, (value8|MACTXEN|MACRXEN));
 
-#if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_TX_MCAST2UNI)
+#if defined(CONFIG_TX_MCAST2UNI)
 
 #ifdef CONFIG_CHECK_AC_LIFETIME
 	// Enable lifetime check for the four ACs
@@ -1405,7 +1405,7 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 	rtw_write16(Adapter, REG_PKT_VO_VI_LIFE_TIME, 0x3000);	// unit: 256us. 3s
 	rtw_write16(Adapter, REG_PKT_BE_BK_LIFE_TIME, 0x3000);	// unit: 256us. 3s
 #endif	// CONFIG_TX_MCAST2UNI
-#endif	// CONFIG_CONCURRENT_MODE || CONFIG_TX_MCAST2UNI
+#endif	// CONFIG_TX_MCAST2UNI
 
 
 #ifdef CONFIG_LED
@@ -1536,7 +1536,7 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 		int i;
 		u8 mac_addr[6];
 		for(i=0; i<6; i++) {
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 			if(Adapter->iface_type == IFACE_PORT1)
 				mac_addr[i] = rtw_read8(Adapter, REG_MACID1+i);
 			else

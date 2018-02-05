@@ -455,7 +455,7 @@ static void Set_NETYPE0_MSR(_adapter *padapter, u8 type)
 
 void Set_MSR(_adapter *padapter, u8 type)
 {
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(padapter->iface_type == IFACE_PORT1) {
 		Set_NETYPE1_MSR(padapter, type);
 	} else
@@ -1193,7 +1193,7 @@ void flush_all_cam_entry(_adapter *padapter)
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info *pmlmeinfo = &(pmlmeext->mlmext_info);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	if(check_buddy_fwstate(padapter, _FW_LINKED) == _TRUE) {
 		if(check_fwstate(pmlmepriv, WIFI_STATION_STATE)) {
@@ -1229,7 +1229,7 @@ void flush_all_cam_entry(_adapter *padapter)
 			/* leave pairwise key when ap free per sta_info */
 		}
 	} else
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 	{
 		invalidate_cam_all(padapter);
 		/* clear default key related key search setting */

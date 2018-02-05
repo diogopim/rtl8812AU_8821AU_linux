@@ -967,7 +967,7 @@ Hal_MappingOutPipe(
 void hal_init_macaddr(_adapter *adapter)
 {
 	rtw_hal_set_hwreg(adapter, HW_VAR_MAC_ADDR, adapter->eeprompriv.mac_addr);
-#ifdef  CONFIG_CONCURRENT_MODE
+#if 0
 	if (adapter->pbuddy_adapter)
 		rtw_hal_set_hwreg(adapter->pbuddy_adapter, HW_VAR_MAC_ADDR, adapter->pbuddy_adapter->eeprompriv.mac_addr);
 #endif
@@ -1131,7 +1131,7 @@ void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta)
 
 void hw_var_port_switch(_adapter *adapter)
 {
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 #ifdef CONFIG_RUNTIME_PORT_SWITCH
 	/*
 	0x102: MSR
@@ -1317,7 +1317,7 @@ void hw_var_port_switch(_adapter *adapter)
 #endif /* DBG_RUNTIME_PORT_SWITCH */
 
 #endif /* CONFIG_RUNTIME_PORT_SWITCH */
-#endif /* CONFIG_CONCURRENT_MODE */
+#endif /**/
 }
 
 void rtw_hal_set_FwRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc)
@@ -1772,7 +1772,7 @@ void SetHwReg(_adapter *adapter, u8 variable, const u8 *val)
 	}
 	break;
 	case HW_VAR_SEC_CFG: {
-#if defined(CONFIG_CONCURRENT_MODE) && !defined(DYNAMIC_CAMID_ALLOC)
+#if 0
 		// enable tx enc and rx dec engine, and no key search for MC/BC
 		rtw_write8(adapter, REG_SECCFG, SCR_NoSKMC|SCR_RxDecEnable|SCR_TxEncEnable);
 #elif defined(DYNAMIC_CAMID_ALLOC)
@@ -2574,9 +2574,9 @@ void dm_DynamicUsbTxAgg(_adapter *padapter, u8 from_timer)
 	struct mlme_ext_priv	*pmlmeextpriv = &(padapter->mlmeextpriv);
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	u8 cur_wireless_mode = pmlmeextpriv->cur_wireless_mode;
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	struct mlme_ext_priv	*pbuddymlmeextpriv = &(padapter->pbuddy_adapter->mlmeextpriv);
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 #ifdef CONFIG_USB_RX_AGGREGATION
 	if(IS_HARDWARE_TYPE_8821U(padapter) ) { //|| IS_HARDWARE_TYPE_8192EU(padapter))
@@ -2592,7 +2592,7 @@ void dm_DynamicUsbTxAgg(_adapter *padapter, u8 from_timer)
 			//DBG_871X("TX_TP=%u, RX_TP=%u \n", pdvobjpriv->traffic_stat.cur_tx_tp, pdvobjpriv->traffic_stat.cur_rx_tp);
 		}
 	} else if(IS_HARDWARE_TYPE_8812(padapter)) {
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if(rtw_linked_check(padapter) == _TRUE && rtw_linked_check(padapter->pbuddy_adapter) == _TRUE) {
 			if(pbuddymlmeextpriv->cur_wireless_mode >= pmlmeextpriv->cur_wireless_mode)
 				cur_wireless_mode = pbuddymlmeextpriv->cur_wireless_mode;
@@ -2603,9 +2603,9 @@ void dm_DynamicUsbTxAgg(_adapter *padapter, u8 from_timer)
 		} else if (rtw_linked_check(padapter) == _TRUE && rtw_linked_check(padapter->pbuddy_adapter) == _FALSE) {
 			rtw_set_usb_agg_by_mode(padapter,cur_wireless_mode);
 		}
-#else //!CONFIG_CONCURRENT_MODE
+#else
 		rtw_set_usb_agg_by_mode(padapter,cur_wireless_mode);
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 	}
 #endif
 }

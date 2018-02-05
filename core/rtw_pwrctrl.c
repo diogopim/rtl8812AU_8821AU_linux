@@ -195,7 +195,7 @@ bool rtw_pwr_unassociated_idle(_adapter *adapter)
 	    || check_fwstate(pmlmepriv, WIFI_UNDER_LINKING|WIFI_UNDER_WPS)
 	    || check_fwstate(pmlmepriv, WIFI_AP_STATE)
 	    || check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE|WIFI_ADHOC_STATE)
-#if defined(CONFIG_P2P) && defined(CONFIG_IOCTL_CFG80211) && defined(CONFIG_P2P_IPS)
+#if 0
 	    || pcfg80211_wdinfo->is_ro_ch
 #elif defined(CONFIG_P2P)
 	    || !rtw_p2p_chk_state(&(adapter->wdinfo), P2P_STATE_NONE)
@@ -221,7 +221,7 @@ bool rtw_pwr_unassociated_idle(_adapter *adapter)
 		    || check_fwstate(b_pmlmepriv, WIFI_UNDER_LINKING|WIFI_UNDER_WPS)
 		    || check_fwstate(b_pmlmepriv, WIFI_AP_STATE)
 		    || check_fwstate(b_pmlmepriv, WIFI_ADHOC_MASTER_STATE|WIFI_ADHOC_STATE)
-#if defined(CONFIG_P2P) && defined(CONFIG_IOCTL_CFG80211) && defined(CONFIG_P2P_IPS)
+#if 0
 		    || b_pcfg80211_wdinfo->is_ro_ch
 #elif defined(CONFIG_P2P)
 		    || !rtw_p2p_chk_state(&(buddy->wdinfo), P2P_STATE_NONE)
@@ -600,7 +600,7 @@ u8 PS_RDY_CHECK(_adapter * padapter)
 	    || check_fwstate(pmlmepriv, WIFI_UNDER_LINKING|WIFI_UNDER_WPS)
 	    || check_fwstate(pmlmepriv, WIFI_AP_STATE)
 	    || check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE|WIFI_ADHOC_STATE)
-#if defined(CONFIG_P2P) && defined(CONFIG_IOCTL_CFG80211) && defined(CONFIG_P2P_IPS)
+#if 0
 	    || padapter->cfg80211_wdinfo.is_ro_ch
 #elif defined(CONFIG_P2P)
 	    || !rtw_p2p_chk_state(&(padapter->wdinfo), P2P_STATE_NONE)
@@ -982,7 +982,7 @@ void LeaveAllPowerSaveModeDirect(PADAPTER Adapter)
 	}
 
 	if ((check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	    || (check_buddy_fwstate(Adapter,_FW_LINKED) == _TRUE)
 #endif
 	   ) {
@@ -1625,7 +1625,7 @@ void rtw_unregister_tx_alive(PADAPTER padapter)
 	if(padapter->wdinfo.p2p_ps_mode > P2P_PS_NONE) {
 		pslv = PS_STATE_S2;
 	}
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	else if(rtw_buddy_adapter_up(padapter)) {
 		if(padapter->pbuddy_adapter->wdinfo.p2p_ps_mode > P2P_PS_NONE)
 			pslv = PS_STATE_S2;
@@ -1675,7 +1675,7 @@ void rtw_unregister_cmd_alive(PADAPTER padapter)
 	if(padapter->wdinfo.p2p_ps_mode > P2P_PS_NONE) {
 		pslv = PS_STATE_S2;
 	}
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	else if(rtw_buddy_adapter_up(padapter)) {
 		if(padapter->pbuddy_adapter->wdinfo.p2p_ps_mode > P2P_PS_NONE)
 			pslv = PS_STATE_S2;
@@ -1756,7 +1756,7 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 {
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
 
-#if defined(CONFIG_CONCURRENT_MODE)
+#if 0
 	if (padapter->adapter_type != PRIMARY_ADAPTER)
 		return;
 #endif
@@ -1848,7 +1848,7 @@ void rtw_free_pwrctrl_priv(PADAPTER adapter)
 {
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(adapter);
 
-#if defined(CONFIG_CONCURRENT_MODE)
+#if 0
 	if (adapter->adapter_type != PRIMARY_ADAPTER)
 		return;
 #endif

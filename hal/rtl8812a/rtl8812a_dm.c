@@ -262,9 +262,9 @@ rtl8812_HalDmWatchDog(
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	//struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	//PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	PADAPTER pbuddy_adapter = Adapter->pbuddy_adapter;
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 	_func_enter_;
 
@@ -315,13 +315,13 @@ rtl8812_HalDmWatchDog(
 				bsta_state = _TRUE;
 		}
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if(pbuddy_adapter && rtw_linked_check(pbuddy_adapter)) {
 			bLinked = _TRUE;
 			if(pbuddy_adapter && check_fwstate(&pbuddy_adapter->mlmepriv, WIFI_STATION_STATE))
 				bsta_state = _TRUE;
 		}
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_STATION_STATE, bsta_state);

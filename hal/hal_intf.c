@@ -535,7 +535,7 @@ void	rtw_hal_get_tx_power_level(_adapter *padapter, s32 *powerlevel)
 
 void	rtw_hal_dm_watchdog(_adapter *padapter)
 {
-#if defined(CONFIG_CONCURRENT_MODE)
+#if 0
 	if (padapter->adapter_type != PRIMARY_ADAPTER)
 		return;
 #endif
@@ -547,7 +547,7 @@ void	rtw_hal_dm_watchdog(_adapter *padapter)
 
 void	rtw_hal_dm_watchdog_in_lps(_adapter *padapter)
 {
-#if defined(CONFIG_CONCURRENT_MODE)
+#if 0
 	if (padapter->iface_type != IFACE_PORT0)
 		return;
 #endif

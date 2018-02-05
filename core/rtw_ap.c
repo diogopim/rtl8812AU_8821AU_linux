@@ -1086,7 +1086,7 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 	rtw_hal_set_hwreg(padapter, HW_VAR_BSSID, pnetwork->MacAddress);
 
 	//Set EDCA param reg
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	acparm = 0x005ea42b;
 #else
 	acparm = 0x002F3217; // VO
@@ -1177,16 +1177,16 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 #ifdef CONFIG_DUALMAC_CONCURRENT
 	dc_set_ap_channel_bandwidth(padapter, cur_channel, cur_ch_offset, cur_bwmode);
 #else //!CONFIG_DUALMAC_CONCURRENT
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	//TODO: need to judge the phy parameters on concurrent mode for single phy
 	concurrent_set_ap_chbw(padapter, cur_channel, cur_ch_offset, cur_bwmode);
-#else //!CONFIG_CONCURRENT_MODE
+#else
 	set_channel_bwmode(padapter, cur_channel, cur_ch_offset, cur_bwmode);
 	DBG_871X("CH=%d, BW=%d, offset=%d\n", cur_channel, cur_bwmode, cur_ch_offset);
 	pmlmeext->cur_channel = cur_channel;
 	pmlmeext->cur_bwmode = cur_bwmode;
 	pmlmeext->cur_ch_offset = cur_ch_offset;
-#endif //!CONFIG_CONCURRENT_MODE
+#endif
 #endif //!CONFIG_DUALMAC_CONCURRENT
 
 	pmlmeext->cur_wireless_mode = pmlmepriv->cur_network.network_type;
@@ -2872,7 +2872,7 @@ void stop_ap_mode(_adapter *padapter)
 
 #endif //CONFIG_NATIVEAP_MLME
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 void concurrent_set_ap_chbw(_adapter *padapter, u8 channel, u8 channel_offset, u8 bwmode)
 {
 	u8 *p;
@@ -3056,7 +3056,7 @@ void concurrent_set_ap_chbw(_adapter *padapter, u8 channel, u8 channel_offset, u
 		change_band_update_ie(padapter, pnetwork);
 
 }
-#endif //CONFIG_CONCURRENT_MODE
+#endif //
 
 #endif //CONFIG_AP_MODE
 

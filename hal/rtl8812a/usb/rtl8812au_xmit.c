@@ -843,7 +843,7 @@ static s32 pre_xmitframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY|_FW_UNDER_LINKING) == _TRUE)
 		goto enqueue;
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if (check_buddy_fwstate(padapter, _FW_UNDER_SURVEY|_FW_UNDER_LINKING) == _TRUE)
 		goto enqueue;
 #endif

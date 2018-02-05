@@ -3533,7 +3533,7 @@ void SetBeaconRelatedRegisters8812A(PADAPTER padapter)
 	//REG_BCN_CTRL //(0x550)
 
 	//BCN interval
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if (padapter->iface_type == IFACE_PORT1) {
 		bcn_ctrl_reg = REG_BCN_CTRL_1;
 	}
@@ -3583,7 +3583,7 @@ SetBeamformingCLK_8812(
 	DBG_871X(" ==>%s\n", __FUNCTION__);
 
 	if ( (check_fwstate(&Adapter->mlmepriv, _FW_UNDER_SURVEY)==_TRUE)
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	     || (check_buddy_fwstate(Adapter, _FW_UNDER_SURVEY) == _TRUE)
 #endif
 	   ) {
@@ -4099,7 +4099,7 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 		return;
 	}
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(Adapter->iface_type == IFACE_PORT1) {
 		// disable Port1 TSF update
 		rtw_write8(Adapter, REG_BCN_CTRL_1, rtw_read8(Adapter, REG_BCN_CTRL_1)|DIS_TSF_UDT);
@@ -4180,7 +4180,7 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 				rtw_write8(Adapter, REG_CCK_CHECK_8812,	 rtw_read8(Adapter, REG_CCK_CHECK_8812)|BIT(5));
 			}
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 			if(check_buddy_fwstate(Adapter, WIFI_FW_NULL_STATE))
 				rtw_write8(Adapter, REG_BCN_CTRL,
 				           rtw_read8(Adapter, REG_BCN_CTRL) & ~EN_BCN_FUNCTION);
@@ -4202,7 +4202,7 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 #endif	// CONFIG_TSF_RESET_OFFLOAD
 		}
 	} else //else for port0
-#endif // CONFIG_CONCURRENT_MODE
+#endif //
 	{
 		// disable Port0 TSF update
 		rtw_write8(Adapter, REG_BCN_CTRL, rtw_read8(Adapter, REG_BCN_CTRL)|DIS_TSF_UDT);
@@ -4215,9 +4215,9 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 		DBG_871X("%s()-%d mode = %d\n", __FUNCTION__, __LINE__, mode);
 
 		if((mode == _HW_STATE_STATION_) || (mode == _HW_STATE_NOLINK_)) {
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 			if(!check_buddy_mlmeinfo_state(Adapter, WIFI_FW_AP_STATE))
-#endif // CONFIG_CONCURRENT_MODE
+#endif //
 			{
 				StopTxBeacon(Adapter);
 
@@ -4287,7 +4287,7 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 				rtw_write8(Adapter, REG_CCK_CHECK_8812,	rtw_read8(Adapter, REG_CCK_CHECK_8812)&(~BIT(5)));
 			}
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 			if(check_buddy_fwstate(Adapter, WIFI_FW_NULL_STATE))
 				rtw_write8(Adapter, REG_BCN_CTRL_1,
 				           rtw_read8(Adapter, REG_BCN_CTRL_1) & ~EN_BCN_FUNCTION);
@@ -4313,7 +4313,7 @@ static void hw_var_set_macaddr(PADAPTER Adapter, u8 variable, const u8* val)
 	u8 idx = 0;
 	u32 reg_macid;
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(Adapter->iface_type == IFACE_PORT1) {
 		reg_macid = REG_MACID1;
 	} else
@@ -4333,7 +4333,7 @@ static void hw_var_set_bssid(PADAPTER Adapter, u8 variable, const u8* val)
 	u8	idx = 0;
 	u32 reg_bssid;
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(Adapter->iface_type == IFACE_PORT1) {
 		reg_bssid = REG_BSSID1;
 	} else
@@ -4352,7 +4352,7 @@ static void hw_var_set_bcn_func(PADAPTER Adapter, u8 variable, const u8* val)
 {
 	u32 bcn_ctrl_reg;
 	//u8 val8;
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(Adapter->iface_type == IFACE_PORT1) {
 		bcn_ctrl_reg = REG_BCN_CTRL_1;
 	} else
@@ -4378,7 +4378,7 @@ static void hw_var_set_bcn_func(PADAPTER Adapter, u8 variable, const u8* val)
 
 static inline void hw_var_set_correct_tsf(PADAPTER Adapter, u8 variable, const u8* val)
 {
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	u64	tsf;
 	struct mlme_ext_priv	*pmlmeext = &Adapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
@@ -4468,7 +4468,7 @@ static inline void hw_var_set_correct_tsf(PADAPTER Adapter, u8 variable, const u
 
 static inline void hw_var_set_mlme_disconnect(PADAPTER Adapter, u8 variable, const u8* val)
 {
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 
 	if(check_buddy_mlmeinfo_state(Adapter, _HW_STATE_NOLINK_))
 		rtw_write16(Adapter, REG_RXFLTMAP2, 0x00);
@@ -4500,7 +4500,7 @@ static void hw_var_set_mlme_sitesurvey(PADAPTER Adapter, u8 variable, const u8* 
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
 	struct mlme_priv *pmlmepriv=&(Adapter->mlmepriv);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	if(Adapter->iface_type == IFACE_PORT1)
 		reg_bcn_ctl = REG_BCN_CTRL_1;
 	else
@@ -4524,7 +4524,7 @@ static void hw_var_set_mlme_sitesurvey(PADAPTER Adapter, u8 variable, const u8* 
 #endif /* CONFIG_FIND_BEST_CHANNEL */
 
 	if( (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE)
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	    || (check_buddy_fwstate(Adapter, WIFI_AP_STATE) == _TRUE)
 #endif
 	  ) {
@@ -4547,7 +4547,7 @@ static void hw_var_set_mlme_sitesurvey(PADAPTER Adapter, u8 variable, const u8* 
 		// Save orignal RRSR setting.
 		pHalData->RegRRSR = rtw_read16(Adapter, REG_RRSR);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if(check_buddy_mlmeinfo_state(Adapter, WIFI_FW_AP_STATE) &&
 		   check_buddy_fwstate(Adapter, _FW_LINKED)) {
 			StopTxBeacon(Adapter);
@@ -4555,7 +4555,7 @@ static void hw_var_set_mlme_sitesurvey(PADAPTER Adapter, u8 variable, const u8* 
 #endif
 	} else { //sitesurvey done
 		if(check_fwstate(pmlmepriv, (_FW_LINKED|WIFI_AP_STATE))
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		   || check_buddy_fwstate(Adapter, (_FW_LINKED|WIFI_AP_STATE))
 #endif
 		  ) {
@@ -4574,7 +4574,7 @@ static void hw_var_set_mlme_sitesurvey(PADAPTER Adapter, u8 variable, const u8* 
 		// Restore orignal RRSR setting.
 		rtw_write16(Adapter, REG_RRSR, pHalData->RegRRSR);
 
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if(check_buddy_mlmeinfo_state(Adapter, WIFI_FW_AP_STATE) &&
 		   check_buddy_fwstate(Adapter, _FW_LINKED)) {
 			ResumeTxBeacon(Adapter);
@@ -4585,7 +4585,7 @@ static void hw_var_set_mlme_sitesurvey(PADAPTER Adapter, u8 variable, const u8* 
 
 static inline void hw_var_set_mlme_join(PADAPTER Adapter, u8 variable, const u8* val)
 {
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 	u8	RetryLimit = 0x30;
 	u8	type = *((const u8 *)val);
 	//HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
@@ -4744,7 +4744,7 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 		break;
 
 	case HW_VAR_CORRECT_TSF:
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		hw_var_set_correct_tsf(padapter, variable, pval);
 #else
 		{
@@ -4790,7 +4790,7 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 		break;
 
 	case HW_VAR_MLME_DISCONNECT:
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		hw_var_set_mlme_disconnect(padapter, variable, pval);
 #else
 		{
@@ -4820,9 +4820,9 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 		break;
 
 	case HW_VAR_MLME_JOIN:
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		hw_var_set_mlme_join(padapter, variable, pval);
-#else // !CONFIG_CONCURRENT_MODE
+#else
 		{
 			u8 RetryLimit = 0x30;
 			u8 type = *(u8*)pval;
@@ -4862,7 +4862,7 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 			val16 = RetryLimit << RETRY_LIMIT_SHORT_SHIFT | RetryLimit << RETRY_LIMIT_LONG_SHIFT;
 			rtw_write16(padapter, REG_RL, val16);
 		}
-#endif // !CONFIG_CONCURRENT_MODE
+#endif
 
 		break;
 
@@ -5203,7 +5203,7 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 	break;
 
 	case HW_VAR_BCN_VALID:
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if (IS_HARDWARE_TYPE_8821(padapter) && padapter->iface_type == IFACE_PORT1) {
 			val8 = rtw_read8(padapter, REG_DWBCN1_CTRL_8812+2);
 			val8 |= BIT(0);
@@ -5219,7 +5219,7 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 		break;
 
 	case HW_VAR_DL_BCN_SEL:
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if (IS_HARDWARE_TYPE_8821(padapter) && padapter->iface_type == IFACE_PORT1) {
 			// SW_BCN_SEL - Port1
 			val8 = rtw_read8(padapter, REG_DWBCN1_CTRL_8812+2);
@@ -5476,7 +5476,7 @@ void GetHwReg8812A(PADAPTER padapter, u8 variable, u8 *pval)
 		break;
 
 	case HW_VAR_BCN_VALID:
-#ifdef CONFIG_CONCURRENT_MODE
+#if 0
 		if (IS_HARDWARE_TYPE_8821(padapter) && padapter->iface_type == IFACE_PORT1) {
 			val8 = rtw_read8(padapter, REG_DWBCN1_CTRL_8812+2);
 			*pval = (BIT(0) & val8) ? _TRUE:_FALSE;
