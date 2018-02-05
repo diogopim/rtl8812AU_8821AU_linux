@@ -162,7 +162,7 @@ extern void autosuspend_enter(_adapter* padapter);
 extern int autoresume_enter(_adapter* padapter);
 #endif
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 int rtw_hw_suspend(_adapter *padapter );
 int rtw_hw_resume(_adapter *padapter);
 #endif
@@ -273,9 +273,9 @@ void rtw_ps_processor(_adapter*padapter)
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 	rt_rf_power_state rfpwrstate;
-#endif //SUPPORT_HW_RFOFF_DETECTED
+#endif
 	u32 ps_deny = 0;
 
 	_enter_pwrlock(&adapter_to_pwrctl(padapter)->lock);
@@ -295,7 +295,7 @@ void rtw_ps_processor(_adapter*padapter)
 
 	pwrpriv->ps_processing = _TRUE;
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 	if(pwrpriv->bips_processing == _TRUE)
 		goto exit;
 
@@ -341,7 +341,7 @@ void rtw_ps_processor(_adapter*padapter)
 		}
 		pwrpriv->pwr_state_check_cnts ++;
 	}
-#endif //SUPPORT_HW_RFOFF_DETECTED
+#endif
 
 	if (pwrpriv->ips_mode_req == IPS_NONE)
 		goto exit;
@@ -462,7 +462,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 #endif // CONFIG_LPS_RPWM_TIMER
 	{
 		if ( (pwrpriv->rpwm == pslv)
-#ifdef CONFIG_LPS_LCLK
+#if 0
 		     || ((pwrpriv->rpwm >= PS_STATE_S2)&&(pslv >= PS_STATE_S2))
 #endif
 		   ) {
@@ -495,7 +495,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 	}
 
 	rpwm = pslv | pwrpriv->tog;
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	// only when from PS_STATE S0/S1 to S2 and higher needs ACK
 	if ((pwrpriv->cpwm < PS_STATE_S2) && (pslv >= PS_STATE_S2))
 		rpwm |= PS_ACK;
@@ -520,7 +520,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 
 	pwrpriv->tog += 0x80;
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	// No LPS 32K, No Ack
 	if (rpwm & PS_ACK) {
 #ifdef CONFIG_DETECT_CPWM_BY_POLLING
@@ -565,7 +565,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 		} while (1);
 #endif // CONFIG_DETECT_CPWM_BY_POLLING
 	} else
-#endif // CONFIG_LPS_LCLK
+#endif
 	{
 		pwrpriv->cpwm = pslv;
 	}
@@ -758,7 +758,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 		}
 	}
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	_enter_pwrlock(&pwrpriv->lock);
 #endif
 
@@ -807,16 +807,16 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 #endif //CONFIG_P2P_PS
 
 			pslv = PS_STATE_S2;
-#ifdef CONFIG_LPS_LCLK
+#if 0
 			if (pwrpriv->alives == 0)
 				pslv = PS_STATE_S0;
-#endif // CONFIG_LPS_LCLK
+#endif
 
 			rtw_set_rpwm(padapter, pslv);
 		}
 	}
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	_exit_pwrlock(&pwrpriv->lock);
 #endif
 
@@ -993,7 +993,7 @@ void LeaveAllPowerSaveModeDirect(PADAPTER Adapter)
 			return;
 		}
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 		_enter_pwrlock(&pwrpriv->lock);
 
 #ifndef CONFIG_DETECT_CPWM_BY_POLLING
@@ -1110,7 +1110,7 @@ void LeaveAllPowerSaveMode(IN PADAPTER Adapter)
 
 	if (n_assoc_iface) {
 		//connect
-#ifdef CONFIG_LPS_LCLK
+#if 0
 		enqueue = 1;
 #endif
 
@@ -1122,7 +1122,7 @@ void LeaveAllPowerSaveMode(IN PADAPTER Adapter)
 		rtw_lps_ctrl_wk_cmd(Adapter, LPS_CTRL_LEAVE, enqueue);
 #endif
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 		LPS_Leave_check(Adapter);
 #endif
 	} else {
@@ -1151,7 +1151,7 @@ void LeaveAllPowerSaveMode(IN PADAPTER Adapter)
 	_func_exit_;
 }
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 void LPS_Leave_check(
     PADAPTER padapter)
 {
@@ -1746,7 +1746,7 @@ void rtw_unregister_evt_alive(PADAPTER padapter)
 
 	_func_exit_;
 }
-#endif	/* CONFIG_LPS_LCLK */
+#endif
 
 #ifdef CONFIG_RESUME_IN_WORKQUEUE
 static void resume_workitem_callback(struct work_struct *work);
@@ -1786,7 +1786,7 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 	pwrctrlpriv->bkeepfwalive = _FALSE;
 
 #ifdef CONFIG_AUTOSUSPEND
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 	pwrctrlpriv->pwr_state_check_interval = (pwrctrlpriv->bHWPwrPindetect) ?1000:2000;
 #endif
 #endif
@@ -1811,7 +1811,7 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 
 	pwrctrlpriv->tog = 0x80;
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	rtw_hal_set_hwreg(padapter, HW_VAR_SET_RPWM, (u8 *)(&pwrctrlpriv->rpwm));
 
 	_init_workitem(&pwrctrlpriv->cpwm_event, cpwm_event_callback, NULL);
@@ -1821,7 +1821,7 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 	_init_workitem(&pwrctrlpriv->rpwmtimeoutwi, rpwmtimeout_workitem_callback, NULL);
 	_init_timer(&pwrctrlpriv->pwr_rpwm_timer, padapter->pnetdev, pwr_rpwm_timeout_handler, padapter);
 #endif // CONFIG_LPS_RPWM_TIMER
-#endif // CONFIG_LPS_LCLK
+#endif
 
 	rtw_init_timer(&pwrctrlpriv->pwr_state_check_timer, padapter, pwr_state_check_handler);
 

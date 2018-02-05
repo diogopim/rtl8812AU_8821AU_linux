@@ -59,7 +59,7 @@ int rtw_power_mgnt = PS_MODE_MAX;
 #else
 int rtw_power_mgnt = PS_MODE_MIN;
 #endif
-#ifdef CONFIG_IPS_LEVEL_2
+#if 0
 int rtw_ips_mode = IPS_LEVEL_2;
 #else
 int rtw_ips_mode = IPS_NORMAL;
@@ -202,10 +202,10 @@ MODULE_PARM_DESC(if2name, "The default name to allocate for second interface");
 
 char* rtw_initmac = 0;  // temp mac address if users want to use instead of the mac address in Efuse
 
-#ifdef CONFIG_MULTI_VIR_IFACES
+#if 0
 int rtw_ext_iface_num  = 1;//primary/secondary iface is excluded
 module_param(rtw_ext_iface_num, int, 0644);
-#endif //CONFIG_MULTI_VIR_IFACES
+#endif
 
 module_param(rtw_initmac, charp, 0644);
 module_param(rtw_channel_plan, int, 0644);
@@ -270,7 +270,7 @@ module_param(rtw_fw_iol, int, 0644);
 MODULE_PARM_DESC(rtw_fw_iol, "FW IOL. 0:Disable, 1:enable, 2:by usb speed");
 #endif //CONFIG_IOL
 
-#ifdef CONFIG_FILE_FWIMG
+#if 0
 char *rtw_fw_file_path = "/system/etc/firmware/rtlwifi/FW_NIC.BIN";
 module_param(rtw_fw_file_path, charp, 0644);
 MODULE_PARM_DESC(rtw_fw_file_path, "The path of fw image");
@@ -284,7 +284,7 @@ char *rtw_fw_mp_bt_file_path = "";
 module_param(rtw_fw_mp_bt_file_path, charp, 0644);
 MODULE_PARM_DESC(rtw_fw_mp_bt_file_path, "The path of fw for MP-BT image");
 #endif // CONFIG_MP_INCLUDED
-#endif // CONFIG_FILE_FWIMG
+#endif
 
 #ifdef CONFIG_TX_MCAST2UNI
 module_param(rtw_mc2u_disable, int, 0644);
@@ -495,7 +495,7 @@ uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)
 #ifdef CONFIG_AUTOSUSPEND
 	registry_par->usbss_enable = (u8)rtw_enusbss;//0:disable,1:enable
 #endif
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 	registry_par->hwpdn_mode = (u8)rtw_hwpdn_mode;//0:disable,1:enable,2:by EFUSE config
 	registry_par->hwpwrp_detect = (u8)rtw_hwpwrp_detect;//0:disable,1:enable
 #endif
@@ -533,9 +533,9 @@ uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)
 	registry_par->force_igi = (u8)rtw_force_igi;
 #endif
 
-#ifdef CONFIG_MULTI_VIR_IFACES
+#if 0
 	registry_par->ext_iface_num = (u8)rtw_ext_iface_num;
-#endif //CONFIG_MULTI_VIR_IFACES
+#endif
 
 #ifdef CONFIG_SW_LED
        registry_par->led_enable = (u8)rtw_led_enable;
@@ -911,7 +911,7 @@ u32 rtw_start_drv_threads(_adapter *padapter)
 	u32 _status = _SUCCESS;
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtw_start_drv_threads\n"));
-#ifdef CONFIG_XMIT_THREAD_MODE
+#if 0
 		padapter->xmitThread = kthread_run(rtw_xmit_thread, padapter, "RTW_XMIT_THREAD");
 		if(IS_ERR(padapter->xmitThread))
 			_status = _FAIL;
@@ -965,7 +965,7 @@ void rtw_stop_drv_threads (_adapter *padapter)
 	}
 #endif
 
-#ifdef CONFIG_XMIT_THREAD_MODE
+#if 0
 	// Below is to termindate tx_thread...
 	{
 		_rtw_up_sema(&padapter->xmitpriv.xmit_sema);

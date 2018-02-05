@@ -19,7 +19,6 @@
  ******************************************************************************/
 //***** temporarily flag *******
 #define CONFIG_SINGLE_IMG
-//#define CONFIG_DISABLE_ODM
 
 //***** temporarily flag *******
 /*
@@ -39,7 +38,7 @@
 //#define CONFIG_IOCTL_CFG80211 1
 
 #ifdef CONFIG_IOCTL_CFG80211
-//#define RTW_USE_CFG80211_STA_EVENT /* Indecate new sta asoc through cfg80211_new_sta */
+//#define RTW_USE_CFG80211_STA_EVENT /* Indicate new sta asoc through cfg80211_new_sta */
 #define CONFIG_CFG80211_FORCE_COMPATIBLE_2_6_37_UNDER
 #define CONFIG_SET_SCAN_DENY_TIMER
 #define CONFIG_IEEE80211_BAND_5GHZ
@@ -48,10 +47,8 @@
 /*
  * Internal  General Config
  */
-//#define CONFIG_H2CLBK
 
 #define CONFIG_EMBEDDED_FWIMG	1
-//#define CONFIG_FILE_FWIMG
 
 #define CONFIG_XMIT_ACK
 #ifdef CONFIG_XMIT_ACK
@@ -66,46 +63,18 @@
 #endif
 
 #define CONFIG_RECV_REORDERING_CTRL	1
-
 #define CONFIG_DFS	1
 
-//#define CONFIG_SUPPORT_USB_INT
-#ifdef	CONFIG_SUPPORT_USB_INT
-//#define CONFIG_USB_INTERRUPT_IN_PIPE	1
-#endif
-
-//#ifndef CONFIG_MP_INCLUDED
 #define CONFIG_IPS	1
 #ifdef CONFIG_IPS
-//#define CONFIG_IPS_LEVEL_2	1 //enable this to set default IPS mode to IPS_LEVEL_2
 #define CONFIG_IPS_CHECK_IN_WD // Do IPS Check in WatchDog.
 #endif
-//#define SUPPORT_HW_RFOFF_DETECTED	1
 
 #define CONFIG_LPS	1
-#if defined(CONFIG_LPS) && defined(CONFIG_SUPPORT_USB_INT)
-//#define CONFIG_LPS_LCLK	1
-#endif
-
-#ifdef CONFIG_LPS_LCLK
-#define CONFIG_XMIT_THREAD_MODE
-#endif
-
-//befor link
-//#define CONFIG_ANTENNA_DIVERSITY
-
-//after link
-
 
 #if 0
-//#define CONFIG_HWPORT_SWAP				//Port0->Sec , Port1 -> Pri
 #define CONFIG_RUNTIME_PORT_SWITCH
 //#define DBG_RUNTIME_PORT_SWITCH
-#define CONFIG_STA_MODE_SCAN_UNDER_AP_MODE
-//#ifdef CONFIG_RTL8812A
-//#define CONFIG_TSF_RESET_OFFLOAD 1		// For 2 PORT TSF SYNC.
-//#endif
-//#define CONFIG_MULTI_VIR_IFACES //besides primary&secondary interfaces, extend to support more interfaces
 #endif
 
 //#else 	//#ifndef CONFIG_MP_INCLUDED

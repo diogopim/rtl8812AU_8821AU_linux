@@ -3576,7 +3576,7 @@ void xmit_delivery_enabled_frames(_adapter *padapter, struct sta_info *psta)
 
 #endif /* defined(CONFIG_AP_MODE) || defined(CONFIG_TDLS) */
 
-#ifdef CONFIG_XMIT_THREAD_MODE
+#if 0
 void enqueue_pending_xmitbuf(
     struct xmit_priv *pxmitpriv,
     struct xmit_buf *pxmitbuf)

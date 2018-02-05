@@ -271,7 +271,7 @@ static s32 update_txdesc(struct xmit_frame *pxmitframe, u8 *pmem, s32 sz ,u8 bag
 }
 
 
-#ifdef CONFIG_XMIT_THREAD_MODE
+#if 0
 /*
  * Description
  *	Transmit xmitbuf to hardware tx fifo
@@ -309,7 +309,7 @@ s32 rtl8812au_xmit_buf_handler(PADAPTER padapter)
 	if(check_pending_xmitbuf(pxmitpriv) == _FALSE)
 		return _SUCCESS;
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	ret = rtw_register_tx_alive(padapter);
 	if (ret != _SUCCESS) {
 		RT_TRACE(_module_hal_xmit_c_, _drv_notice_,
@@ -326,7 +326,7 @@ s32 rtl8812au_xmit_buf_handler(PADAPTER padapter)
 
 	} while (1);
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	rtw_unregister_tx_alive(padapter);
 #endif
 
@@ -388,7 +388,7 @@ static s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 
 		ff_hwaddr = rtw_get_ff_hwaddr(pxmitframe);
 
-#ifdef CONFIG_XMIT_THREAD_MODE
+#if 0
 		pxmitbuf->len = w_sz;
 		pxmitbuf->ff_hwaddr = ff_hwaddr;
 		enqueue_pending_xmitbuf(pxmitpriv, pxmitbuf);

@@ -9145,7 +9145,7 @@ void site_survey(_adapter *padapter)
 		//rtw_hal_get_hwreg(padapter, HW_VAR_TXPAUSE, (u8 *)(&val8));
 		//val8 |= 0x0f;
 		//rtw_hal_set_hwreg(padapter, HW_VAR_TXPAUSE, (u8 *)(&val8));
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE) || defined(CONFIG_ATMEL_RC_PATCH)
+#if defined(CONFIG_ATMEL_RC_PATCH)
 		if((padapter->pbuddy_adapter->mlmeextpriv.mlmext_info.state&0x03) == WIFI_FW_AP_STATE) {
 			if( pmlmeinfo->scan_cnt == RTW_SCAN_NUM_OF_CH ) {
 				pmlmeinfo->scan_cnt = 0;
@@ -9174,7 +9174,7 @@ void site_survey(_adapter *padapter)
 				SelectChannel(padapter, survey_channel);
 		}
 
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE) || defined(CONFIG_ATMEL_RC_PATCH)
+#if defined(CONFIG_ATMEL_RC_PATCH)
 		if( stay_buddy_ch == 1 ) {
 			val8 = 0; //survey done
 			rtw_hal_set_hwreg(padapter, HW_VAR_MLME_SITESURVEY, (u8 *)(&val8));
@@ -9237,11 +9237,6 @@ void site_survey(_adapter *padapter)
 			else
 				channel_scan_time_ms = 40
 			}
-#elif defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE)
-		if( stay_buddy_ch == 1 )
-			channel_scan_time_ms = pmlmeext->chan_scan_time * RTW_STAY_AP_CH_MILLISECOND ;
-		else
-			channel_scan_time_ms = pmlmeext->chan_scan_time;
 #else
 		channel_scan_time_ms = pmlmeext->chan_scan_time;
 #endif
@@ -9321,7 +9316,7 @@ void site_survey(_adapter *padapter)
 #endif //CONFIG_P2P
 		{
 
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE) || defined(CONFIG_ATMEL_RC_PATCH)
+#if defined(CONFIG_ATMEL_RC_PATCH)
 			pmlmeinfo->scan_cnt = 0;
 #endif
 
@@ -10918,7 +10913,7 @@ void linked_status_chk(_adapter *padapter, u8 from_timer)
 
 #if defined(DBG_ROAMING_TEST)
 		rx_chk_limit = 1;
-#elif defined(CONFIG_ACTIVE_KEEP_ALIVE_CHECK) && !defined(CONFIG_LPS_LCLK_WD_TIMER)
+#elif defined(CONFIG_ACTIVE_KEEP_ALIVE_CHECK)
 		rx_chk_limit = 4;
 #else
 		rx_chk_limit = 8;
@@ -10950,7 +10945,7 @@ void linked_status_chk(_adapter *padapter, u8 from_timer)
 			if (pxmitpriv->last_tx_pkts == pxmitpriv->tx_pkts)
 				tx_chk = _FAIL;
 
-#if defined(CONFIG_ACTIVE_KEEP_ALIVE_CHECK) && !defined(CONFIG_LPS_LCLK_WD_TIMER)
+#if defined(CONFIG_ACTIVE_KEEP_ALIVE_CHECK)
 			if (pmlmeext->active_keep_alive_check && (rx_chk == _FAIL || tx_chk == _FAIL)) {
 				u8 backup_oper_channel=0;
 
@@ -11066,7 +11061,7 @@ void survey_timer_hdl(_adapter *padapter)
 	//issue rtw_sitesurvey_cmd
 	if (pmlmeext->sitesurvey_res.state > SCAN_START) {
 		if(pmlmeext->sitesurvey_res.state ==  SCAN_PROCESS) {
-#if defined(CONFIG_STA_MODE_SCAN_UNDER_AP_MODE) || defined(CONFIG_ATMEL_RC_PATCH)
+#if defined(CONFIG_ATMEL_RC_PATCH)
 			if( padapter->mlmeextpriv.mlmext_info.scan_cnt != RTW_SCAN_NUM_OF_CH )
 #endif
 				pmlmeext->sitesurvey_res.channel_idx++;

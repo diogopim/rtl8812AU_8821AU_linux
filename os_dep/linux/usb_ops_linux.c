@@ -374,7 +374,7 @@ void usb_read_port_cancel(struct intf_hdl *pintfhdl)
 		precvbuf++;
 	}
 
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
+#if 0
 	usb_kill_urb(padapter->recvpriv.int_in_urb);
 #endif
 }

@@ -639,7 +639,7 @@ int rtw_hal_iol_cmd(ADAPTER *adapter, struct xmit_frame *xmit_frame, u32 max_wat
 }
 #endif
 
-#ifdef CONFIG_XMIT_THREAD_MODE
+#if 0
 s32 rtw_hal_xmit_thread_handler(_adapter *padapter)
 {
 	if(padapter->HalFunc.xmit_thread_handler)

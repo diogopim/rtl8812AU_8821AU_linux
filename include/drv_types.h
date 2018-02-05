@@ -295,7 +295,7 @@ struct registry_priv {
 	u8	RegDecryptCustomFile;
 #endif
 
-#ifdef CONFIG_MULTI_VIR_IFACES
+#if 0
 	u8 ext_iface_num;//primary/secondary iface is excluded
 #endif
 	u8 qos_opt_enable;

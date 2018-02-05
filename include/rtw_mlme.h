@@ -30,10 +30,10 @@
 //	Increase the scanning timeout because of increasing the SURVEY_TO value.
 
 #define 	SCANNING_TIMEOUT 	8000
-#ifdef CONFIG_STA_MODE_SCAN_UNDER_AP_MODE
+#if 0
 #define		CONC_SCANNING_TIMEOUT_SINGLE_BAND 10000
 #define		CONC_SCANNING_TIMEOUT_DUAL_BAND 15000
-#endif //CONFIG_STA_MODE_SCAN_UNDER_AP_MODE
+#endif
 
 #ifdef PALTFORM_OS_WINCE
 #define	SCANQUEUE_LIFETIME 12000000 // unit:us

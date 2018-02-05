@@ -620,7 +620,7 @@ u8	query_ra_short_GI(struct sta_info *psta);
 
 u8	qos_acm(u8 acm_mask, u8 priority);
 
-#ifdef CONFIG_XMIT_THREAD_MODE
+#if 0
 void	enqueue_pending_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 void enqueue_pending_xmitbuf_to_head(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 struct xmit_buf*	dequeue_pending_xmitbuf(struct xmit_priv *pxmitpriv);

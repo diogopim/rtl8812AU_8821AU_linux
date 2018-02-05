@@ -585,7 +585,7 @@ static void process_spec_devid(const struct usb_device_id *pdid)
 	}
 }
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 int rtw_hw_suspend(_adapter *padapter )
 {
 	struct pwrctrl_priv *pwrpriv;
@@ -720,14 +720,14 @@ static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 #ifdef CONFIG_AUTOSUSPEND
 		if(pwrpriv->bInternalAutoSuspend ) {
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 			// The FW command register update must after MAC and FW init ready.
 			if((padapter->bFWReady) && (pwrpriv->bHWPwrPindetect ) && (padapter->registrypriv.usbss_enable )) {
 				u8 bOpen = _TRUE;
 				rtw_interface_ps_func(padapter,HAL_USB_SELECT_SUSPEND,&bOpen);
 				//rtl8192c_set_FwSelectSuspend_cmd(padapter,_TRUE ,500);//note fw to support hw power down ping detect
 			}
-#endif//SUPPORT_HW_RFOFF_DETECTED
+#endif
 		}
 #endif//CONFIG_AUTOSUSPEND
 	}
@@ -756,7 +756,7 @@ int rtw_resume_process(_adapter *padapter)
 
 #ifdef CONFIG_AUTOSUSPEND
 	if(pwrpriv->bInternalAutoSuspend ) {
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 		// The FW command register update must after MAC and FW init ready.
 		if((padapter->bFWReady) && (pwrpriv->bHWPwrPindetect) && (padapter->registrypriv.usbss_enable )) {
 			//rtl8192c_set_FwSelectSuspend_cmd(padapter,_FALSE ,500);//note fw to support hw power down ping detect
@@ -933,8 +933,6 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	padapter->adapter_type = PRIMARY_ADAPTER;
 #ifndef CONFIG_HWPORT_SWAP
 	padapter->iface_type = IFACE_PORT0;
-#else
-	padapter->iface_type = IFACE_PORT1;
 #endif
 #endif
 
@@ -1109,9 +1107,9 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 	_adapter *if1 = NULL, *if2 = NULL;
 	int status = _FAIL;
 	struct dvobj_priv *dvobj;
-#ifdef CONFIG_MULTI_VIR_IFACES
+#if 0
 	int i;
-#endif //CONFIG_MULTI_VIR_IFACES
+#endif
 
 	RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("+rtw_drv_init\n"));
 	//DBG_871X("+rtw_drv_init\n");

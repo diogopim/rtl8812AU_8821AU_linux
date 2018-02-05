@@ -463,14 +463,14 @@ exit:
 	return ret;
 }
 
-#ifdef CONFIG_FILE_FWIMG
+#if 0
 extern char *rtw_fw_file_path;
 u8	FwBuffer8812[FW_SIZE_8812];
 #ifdef CONFIG_MP_INCLUDED
 extern char *rtw_fw_mp_bt_file_path;
 #endif // CONFIG_MP_INCLUDED
 u8 FwBuffer[FW_SIZE_8812];
-#endif //CONFIG_FILE_FWIMG
+#endif
 
 s32
 FirmwareDownload8812(
@@ -498,12 +498,12 @@ FirmwareDownload8812(
 		goto exit;
 	}
 
-#ifdef CONFIG_FILE_FWIMG
+#if 0
 	if(rtw_is_file_readable(rtw_fw_file_path) == _TRUE) {
 		DBG_871X("%s accquire FW from file:%s\n", __FUNCTION__, rtw_fw_file_path);
 		pFirmware->eFWSource = FW_SOURCE_IMG_FILE;
 	} else
-#endif //CONFIG_FILE_FWIMG
+#endif
 	{
 		DBG_871X("%s fw source from Header\n", __FUNCTION__);
 		pFirmware->eFWSource = FW_SOURCE_HEADER_FILE;
@@ -511,11 +511,11 @@ FirmwareDownload8812(
 
 	switch(pFirmware->eFWSource) {
 	case FW_SOURCE_IMG_FILE:
-#ifdef CONFIG_FILE_FWIMG
+#if 0
 		rtStatus = rtw_retrive_from_file(rtw_fw_file_path, FwBuffer8812, FW_SIZE_8812);
 		pFirmware->ulFwLength = rtStatus>=0?rtStatus:0;
 		pFirmware->szFwBuffer = FwBuffer8812;
-#endif //CONFIG_FILE_FWIMG
+#endif
 		break;
 	case FW_SOURCE_HEADER_FILE:
 			ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_NIC, (u8 *)&(pFirmware->szFwBuffer), &(pFirmware->ulFwLength));
@@ -958,7 +958,7 @@ s32 FirmwareDownloadBT(PADAPTER padapter, PRT_MP_FIRMWARE pFirmware)
 		return _FAIL;
 	}
 
-#ifdef CONFIG_FILE_FWIMG
+#if 0
 	if (rtw_is_file_readable(rtw_fw_mp_bt_file_path) == _TRUE) {
 		DBG_8192C("%s: accquire MP BT FW from file:%s\n", __FUNCTION__, rtw_fw_mp_bt_file_path);
 
@@ -966,7 +966,7 @@ s32 FirmwareDownloadBT(PADAPTER padapter, PRT_MP_FIRMWARE pFirmware)
 		BTFirmwareLen = rtStatus>=0?rtStatus:0;
 		pBTFirmwareBuf = FwBuffer;
 	} else
-#endif // CONFIG_FILE_FWIMG
+#endif
 	{
 #ifdef CONFIG_EMBEDDED_FWIMG
 		DBG_8192C("%s: Download MP BT FW from header\n", __FUNCTION__);
@@ -4192,14 +4192,14 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 			//dis BCN0 ATIM  WND if if1 is station
 			rtw_write8(Adapter, REG_BCN_CTRL, rtw_read8(Adapter, REG_BCN_CTRL)|DIS_ATIM);
 
-#ifdef CONFIG_TSF_RESET_OFFLOAD
+#if 0
 			// Reset TSF for STA+AP concurrent mode
 			if ( check_buddy_fwstate(Adapter, (WIFI_STATION_STATE|WIFI_ASOC_STATE)) ) {
 				if (reset_tsf(Adapter, IFACE_PORT1) == _FALSE)
 					DBG_871X("ERROR! %s()-%d: Reset port1 TSF fail\n",
 					         __FUNCTION__, __LINE__);
 			}
-#endif	// CONFIG_TSF_RESET_OFFLOAD
+#endif
 		}
 	} else //else for port0
 #endif //
@@ -4295,14 +4295,14 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 
 			//dis BCN1 ATIM  WND if if2 is station
 			rtw_write8(Adapter, REG_BCN_CTRL_1, rtw_read8(Adapter, REG_BCN_CTRL_1)|DIS_ATIM);
-#ifdef CONFIG_TSF_RESET_OFFLOAD
+#if 0
 			// Reset TSF for STA+AP concurrent mode
 			if ( check_buddy_fwstate(Adapter, (WIFI_STATION_STATE|WIFI_ASOC_STATE)) ) {
 				if (reset_tsf(Adapter, IFACE_PORT0) == _FALSE)
 					DBG_871X("ERROR! %s()-%d: Reset port0 TSF fail\n",
 					         __FUNCTION__, __LINE__);
 			}
-#endif	// CONFIG_TSF_RESET_OFFLOAD
+#endif
 		}
 	}
 
@@ -4415,13 +4415,13 @@ static inline void hw_var_set_correct_tsf(PADAPTER Adapter, u8 variable, const u
 
 			//enable related TSF function
 			rtw_write8(Adapter, REG_BCN_CTRL, rtw_read8(Adapter, REG_BCN_CTRL)|BIT(3));
-#ifdef CONFIG_TSF_RESET_OFFLOAD
+#if 0
 			// Update buddy port's TSF(TBTT) if it is SoftAP for beacon TX issue!
 			if (reset_tsf(Adapter, IFACE_PORT0) == _FALSE)
 				DBG_871X("ERROR! %s()-%d: Reset port0 TSF fail\n",
 				         __FUNCTION__, __LINE__);
 
-#endif	// CONFIG_TSF_RESET_OFFLOAD
+#endif
 		}
 
 
@@ -4447,12 +4447,12 @@ static inline void hw_var_set_correct_tsf(PADAPTER Adapter, u8 variable, const u
 
 			//enable related TSF function
 			rtw_write8(Adapter, REG_BCN_CTRL_1, rtw_read8(Adapter, REG_BCN_CTRL_1)|BIT(3));
-#ifdef CONFIG_TSF_RESET_OFFLOAD
+#if 0
 			// Update buddy port's TSF if it is SoftAP for beacon TX issue!
 			if (reset_tsf(Adapter, IFACE_PORT1) == _FALSE)
 				DBG_871X("ERROR! %s()-%d: Reset port1 TSF fail\n",
 				         __FUNCTION__, __LINE__);
-#endif	// CONFIG_TSF_RESET_OFFLOAD
+#endif
 		}
 
 	}

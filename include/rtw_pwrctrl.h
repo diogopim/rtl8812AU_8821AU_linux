@@ -310,7 +310,7 @@ struct pwrctrl_priv {
 extern void rtw_init_pwrctrl_priv(_adapter *adapter);
 extern void rtw_free_pwrctrl_priv(_adapter * adapter);
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 s32 rtw_register_task_alive(PADAPTER, u32 task);
 void rtw_unregister_task_alive(PADAPTER, u32 task);
 extern s32 rtw_register_tx_alive(PADAPTER padapter);
@@ -339,7 +339,7 @@ void rtw_ps_processor(_adapter*padapter);
 #ifdef CONFIG_AUTOSUSPEND
 int autoresume_enter(_adapter* padapter);
 #endif
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 rt_rf_power_state RfOnOffDetect(IN	PADAPTER pAdapter );
 #endif
 

@@ -101,7 +101,7 @@ struct	evt_priv {
 #define C2H_QUEUE_MAX_LEN 10
 #endif
 
-#ifdef CONFIG_H2CLBK
+#if 0
 	_sema	lbkevt_done;
 	u8	lbkevt_limit;
 	u8	lbkevt_num;
@@ -659,7 +659,7 @@ struct Tx_Beacon_param {
 
 */
 
-#ifdef CONFIG_H2CLBK
+#if 0
 
 struct seth2clbk_parm {
 	u8 mac[6];
@@ -687,7 +687,7 @@ struct geth2clbk_rsp {
 	u32	w1;
 };
 
-#endif	/* CONFIG_H2CLBK */
+#endif
 
 // CMD param Formart for driver extra cmd handler
 struct drvextra_cmd_parm {

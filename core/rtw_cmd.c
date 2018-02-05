@@ -80,7 +80,7 @@ sint _rtw_init_evt_priv(struct evt_priv *pevtpriv)
 
 	_func_enter_;
 
-#ifdef CONFIG_H2CLBK
+#if 0
 	_rtw_init_sema(&(pevtpriv->lbkevt_done), 0);
 	pevtpriv->lbkevt_limit = 0;
 	pevtpriv->lbkevt_num = 0;
@@ -355,7 +355,7 @@ int rtw_cmd_filter(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 {
 	u8 bAllow = _FALSE; //set to _TRUE to allow enqueuing cmd when hw_init_completed is _FALSE
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 	//To decide allow or not
 	if( (adapter_to_pwrctl(pcmdpriv->padapter)->bHWPwrPindetect)
 	    &&(!pcmdpriv->padapter->registrypriv.usbss_enable)
@@ -542,7 +542,7 @@ thread_return rtw_cmd_thread(thread_context context)
 		}
 		_exit_critical(&pcmdpriv->cmd_queue.lock, &irqL);
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 		if (rtw_register_cmd_alive(padapter) != _SUCCESS) {
 			RT_TRACE(_module_hal_xmit_c_, _drv_notice_,
 			         ("%s: wait to leave LPS_LCLK\n", __FUNCTION__));
@@ -558,7 +558,7 @@ _next:
 		}
 
 		if(!(pcmd = rtw_dequeue_cmd(pcmdpriv))) {
-#ifdef CONFIG_LPS_LCLK
+#if 0
 			rtw_unregister_cmd_alive(padapter);
 #endif
 			continue;
@@ -659,7 +659,7 @@ post_process:
 	do {
 		pcmd = rtw_dequeue_cmd(pcmdpriv);
 		if(pcmd==NULL) {
-#ifdef CONFIG_LPS_LCLK
+#if 0
 			rtw_unregister_cmd_alive(padapter);
 #endif
 			break;
@@ -887,7 +887,7 @@ u8 rtw_sitesurvey_cmd(_adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid_num,
 
 		pmlmepriv->scan_start_time = rtw_get_current_time();
 
-#ifdef CONFIG_STA_MODE_SCAN_UNDER_AP_MODE
+#if 0
 		if((padapter->pbuddy_adapter->mlmeextpriv.mlmext_info.state&0x03) == WIFI_FW_AP_STATE) {
 			if(IsSupported5G(padapter->registrypriv.wireless_mode)
 			   && IsSupported24G(padapter->registrypriv.wireless_mode)) //dual band
@@ -895,7 +895,7 @@ u8 rtw_sitesurvey_cmd(_adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid_num,
 			else //single band
 				mlme_set_scan_to_timer(pmlmepriv, CONC_SCANNING_TIMEOUT_SINGLE_BAND);
 		} else
-#endif //CONFIG_STA_MODE_SCAN_UNDER_AP_MODE
+#endif
 			mlme_set_scan_to_timer(pmlmepriv, SCANNING_TIMEOUT);
 
 		rtw_led_control(padapter, LED_CTL_SITE_SURVEY);
@@ -2648,7 +2648,7 @@ void rtw_lps_change_dtim_hdl(_adapter *padapter, u8 dtim)
 	if(dtim <=0 || dtim > 16)
 		return;
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	_enter_pwrlock(&pwrpriv->lock);
 #endif
 
@@ -2667,7 +2667,7 @@ void rtw_lps_change_dtim_hdl(_adapter *padapter, u8 dtim)
 		rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_PWRMODE, (u8 *)(&ps_mode));
 	}
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	_exit_pwrlock(&pwrpriv->lock);
 #endif
 

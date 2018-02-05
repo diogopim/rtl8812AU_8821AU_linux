@@ -1147,7 +1147,7 @@ void rtl8812_set_p2p_ps_offload_cmd(_adapter* padapter, u8 p2p_ps_state)
 }
 #endif //CONFIG_P2P
 
-#ifdef CONFIG_TSF_RESET_OFFLOAD
+#if 0
 /*
 	ask FW to Reset sync register at Beacon early interrupt
 */
@@ -1195,7 +1195,7 @@ int reset_tsf(PADAPTER Adapter, u8 reset_port )
 }
 
 
-#endif	// CONFIG_TSF_RESET_OFFLOAD
+#endif
 
 static inline void rtl8812_set_FwRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc)
 {
