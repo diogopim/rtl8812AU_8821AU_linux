@@ -80,13 +80,6 @@ sint _rtw_init_evt_priv(struct evt_priv *pevtpriv)
 
 	_func_enter_;
 
-#if 0
-	_rtw_init_sema(&(pevtpriv->lbkevt_done), 0);
-	pevtpriv->lbkevt_limit = 0;
-	pevtpriv->lbkevt_num = 0;
-	pevtpriv->cmdevt_parm = NULL;
-#endif
-
 	//allocate DMA-able/Non-Page memory for cmd_buf and rsp_buf
 	ATOMIC_SET(&pevtpriv->event_seq, 0);
 	pevtpriv->evt_done_cnt = 0;
@@ -355,21 +348,6 @@ int rtw_cmd_filter(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 {
 	u8 bAllow = _FALSE; //set to _TRUE to allow enqueuing cmd when hw_init_completed is _FALSE
 
-#if 0
-	//To decide allow or not
-	if( (adapter_to_pwrctl(pcmdpriv->padapter)->bHWPwrPindetect)
-	    &&(!pcmdpriv->padapter->registrypriv.usbss_enable)
-	  ) {
-		if(cmd_obj->cmdcode == GEN_CMD_CODE(_Set_Drv_Extra) ) {
-			struct drvextra_cmd_parm	*pdrvextra_cmd_parm = (struct drvextra_cmd_parm *)cmd_obj->parmbuf;
-			if(pdrvextra_cmd_parm->ec_id == POWER_SAVING_CTRL_WK_CID) {
-				//DBG_871X("==>enqueue POWER_SAVING_CTRL_WK_CID\n");
-				bAllow = _TRUE;
-			}
-		}
-	}
-#endif
-
 #ifndef CONFIG_C2H_PACKET_EN
 	/* C2H should be always allowed */
 	if(cmd_obj->cmdcode == GEN_CMD_CODE(_Set_Drv_Extra)) {
@@ -411,12 +389,6 @@ u32 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 	}
 
 	cmd_obj->padapter = padapter;
-
-#if 0
-	//change pcmdpriv to primary's pcmdpriv
-	if (padapter->adapter_type != PRIMARY_ADAPTER && padapter->pbuddy_adapter)
-		pcmdpriv = &(padapter->pbuddy_adapter->cmdpriv);
-#endif
 
 	if( _FAIL == (res=rtw_cmd_filter(pcmdpriv, cmd_obj)) ) {
 		rtw_free_cmd_obj(cmd_obj);
@@ -542,14 +514,6 @@ thread_return rtw_cmd_thread(thread_context context)
 		}
 		_exit_critical(&pcmdpriv->cmd_queue.lock, &irqL);
 
-#if 0
-		if (rtw_register_cmd_alive(padapter) != _SUCCESS) {
-			RT_TRACE(_module_hal_xmit_c_, _drv_notice_,
-			         ("%s: wait to leave LPS_LCLK\n", __FUNCTION__));
-			continue;
-		}
-#endif
-
 _next:
 		if ((padapter->bDriverStopped == _TRUE)||(padapter->bSurpriseRemoved== _TRUE)) {
 			DBG_871X_LEVEL(_drv_always_, "%s: DriverStopped(%d) SurpriseRemoved(%d) break at line %d\n",
@@ -558,9 +522,6 @@ _next:
 		}
 
 		if(!(pcmd = rtw_dequeue_cmd(pcmdpriv))) {
-#if 0
-			rtw_unregister_cmd_alive(padapter);
-#endif
 			continue;
 		}
 
@@ -659,9 +620,6 @@ post_process:
 	do {
 		pcmd = rtw_dequeue_cmd(pcmdpriv);
 		if(pcmd==NULL) {
-#if 0
-			rtw_unregister_cmd_alive(padapter);
-#endif
 			break;
 		}
 		//DBG_871X("%s: leaving... drop cmdcode:%u size:%d\n", __FUNCTION__, pcmd->cmdcode, pcmd->cmdsz);
@@ -887,16 +845,7 @@ u8 rtw_sitesurvey_cmd(_adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid_num,
 
 		pmlmepriv->scan_start_time = rtw_get_current_time();
 
-#if 0
-		if((padapter->pbuddy_adapter->mlmeextpriv.mlmext_info.state&0x03) == WIFI_FW_AP_STATE) {
-			if(IsSupported5G(padapter->registrypriv.wireless_mode)
-			   && IsSupported24G(padapter->registrypriv.wireless_mode)) //dual band
-				mlme_set_scan_to_timer(pmlmepriv, CONC_SCANNING_TIMEOUT_DUAL_BAND);
-			else //single band
-				mlme_set_scan_to_timer(pmlmepriv, CONC_SCANNING_TIMEOUT_SINGLE_BAND);
-		} else
-#endif
-			mlme_set_scan_to_timer(pmlmepriv, SCANNING_TIMEOUT);
+		mlme_set_scan_to_timer(pmlmepriv, SCANNING_TIMEOUT);
 
 		rtw_led_control(padapter, LED_CTL_SITE_SURVEY);
 	} else {
@@ -1969,14 +1918,6 @@ u8 rtw_dynamic_chk_wk_cmd(_adapter*padapter)
 
 	_func_enter_;
 
-	//only  primary padapter does this cmd
-	/*
-	#if 0
-		if (padapter->adapter_type != PRIMARY_ADAPTER && padapter->pbuddy_adapter)
-			pcmdpriv = &(padapter->pbuddy_adapter->cmdpriv);
-	#endif
-	*/
-
 	ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
 	if(ph2c==NULL) {
 		res= _FAIL;
@@ -2209,11 +2150,6 @@ static void collect_traffic_statistics(_adapter *padapter)
 {
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
 
-#if 0
-	if (padapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif
-
 	// Tx
 	pdvobjpriv->traffic_stat.tx_bytes = padapter->xmitpriv.tx_bytes;
 	pdvobjpriv->traffic_stat.tx_pkts = padapter->xmitpriv.tx_pkts;
@@ -2223,21 +2159,6 @@ static void collect_traffic_statistics(_adapter *padapter)
 	pdvobjpriv->traffic_stat.rx_bytes = padapter->recvpriv.rx_bytes;
 	pdvobjpriv->traffic_stat.rx_pkts = padapter->recvpriv.rx_pkts;
 	pdvobjpriv->traffic_stat.rx_drop = padapter->recvpriv.rx_drop;
-
-#if 0
-	// Add secondary adapter statistics
-	if(rtw_buddy_adapter_up(padapter)) {
-		// Tx
-		pdvobjpriv->traffic_stat.tx_bytes += padapter->pbuddy_adapter->xmitpriv.tx_bytes;
-		pdvobjpriv->traffic_stat.tx_pkts += padapter->pbuddy_adapter->xmitpriv.tx_pkts;
-		pdvobjpriv->traffic_stat.tx_drop += padapter->pbuddy_adapter->xmitpriv.tx_drop;
-
-		// Rx
-		pdvobjpriv->traffic_stat.rx_bytes += padapter->pbuddy_adapter->recvpriv.rx_bytes;
-		pdvobjpriv->traffic_stat.rx_pkts += padapter->pbuddy_adapter->recvpriv.rx_pkts;
-		pdvobjpriv->traffic_stat.rx_drop += padapter->pbuddy_adapter->recvpriv.rx_drop;
-	}
-#endif
 
 	// Calculate throughput in last interval
 	pdvobjpriv->traffic_stat.cur_tx_bytes = pdvobjpriv->traffic_stat.tx_bytes - pdvobjpriv->traffic_stat.last_tx_bytes;
@@ -2399,9 +2320,6 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 			if(!from_timer) {
 				LPS_Leave(padapter, "TRAFFIC_BUSY");
 			} else {
-#if 0
-				if(padapter->iface_type == IFACE_PORT0)
-#endif
 					rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_TRAFFIC_BUSY, 1);
 			}
 		}
@@ -2648,10 +2566,6 @@ void rtw_lps_change_dtim_hdl(_adapter *padapter, u8 dtim)
 	if(dtim <=0 || dtim > 16)
 		return;
 
-#if 0
-	_enter_pwrlock(&pwrpriv->lock);
-#endif
-
 	if(pwrpriv->dtim!=dtim) {
 		DBG_871X("change DTIM from %d to %d, bFwCurrentInPSMode=%d, ps_mode=%d\n", pwrpriv->dtim, dtim,
 		         pwrpriv->bFwCurrentInPSMode, pwrpriv->pwr_mode);
@@ -2667,10 +2581,6 @@ void rtw_lps_change_dtim_hdl(_adapter *padapter, u8 dtim)
 		rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_PWRMODE, (u8 *)(&ps_mode));
 	}
 
-#if 0
-	_exit_pwrlock(&pwrpriv->lock);
-#endif
-
 }
 
 #endif
@@ -2681,12 +2591,6 @@ u8 rtw_lps_change_dtim_cmd(_adapter*padapter, u8 dtim)
 	struct drvextra_cmd_parm	*pdrvextra_cmd_parm;
 	struct cmd_priv	*pcmdpriv = &padapter->cmdpriv;
 	u8	res = _SUCCESS;
-	/*
-	#if 0
-		if (padapter->iface_type != IFACE_PORT0)
-			return res;
-	#endif
-	*/
 	{
 		ph2c = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
 		if(ph2c==NULL) {
@@ -2873,11 +2777,6 @@ u8 rtw_ps_cmd(_adapter*padapter)
 
 	u8	res = _SUCCESS;
 	_func_enter_;
-
-#if 0
-	if (padapter->adapter_type != PRIMARY_ADAPTER)
-		goto exit;
-#endif
 
 	ppscmd = (struct cmd_obj*)rtw_zmalloc(sizeof(struct cmd_obj));
 	if(ppscmd==NULL) {
@@ -3175,11 +3074,6 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 
 	switch(pdrvextra_cmd->ec_id) {
 	case DYNAMIC_CHK_WK_CID://only  primary padapter go to this cmd, but execute dynamic_chk_wk_hdl() for two interfaces
-#if 0
-		if(padapter->pbuddy_adapter) {
-			dynamic_chk_wk_hdl(padapter->pbuddy_adapter);
-		}
-#endif //
 		dynamic_chk_wk_hdl(padapter);
 		break;
 	case POWER_SAVING_CTRL_WK_CID:

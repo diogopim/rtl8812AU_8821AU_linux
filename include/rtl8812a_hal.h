@@ -204,11 +204,7 @@ typedef struct _RT_FIRMWARE_8812 {
 #define RX_DMA_BOUNDARY_8821		(MAX_RX_DMA_BUFFER_SIZE_8821 - RX_DMA_RESERVED_SIZE_8821 - 1)
 
 #define BCNQ_PAGE_NUM_8821		0x08
-#if 0
-#define BCNQ1_PAGE_NUM_8821		0x04
-#else
 #define BCNQ1_PAGE_NUM_8821		0x00
-#endif
 
 //For WoWLan , more reserved page
 //ARP Rsp:1, RWC:1, GTK Info:1,GTK RSP:1,GTK EXT MEM:1, PNO: 6

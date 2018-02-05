@@ -718,11 +718,6 @@ static s32 update_attrib_sec_info(_adapter *padapter, struct pkt_attrib *pattrib
 		RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("update_attrib: bswenc=_FALSE\n"));
 	}
 
-#if 0
-	if((pattrib->encrypt && bmcast) || (pattrib->encrypt ==_WEP40_) || (pattrib->encrypt ==_WEP104_)) {
-		pattrib->bswenc = _TRUE;//force using sw enc.
-	}
-#endif
 exit:
 	return res;
 }
@@ -790,12 +785,6 @@ static void set_qos(struct pkt_file *ppktfile, struct pkt_attrib *pattrib)
 inline u8 rtw_get_hwseq_no(_adapter *padapter)
 {
 	u8 hwseq_num = 0;
-#if 0
-	if(padapter->adapter_type == SECONDARY_ADAPTER)
-		hwseq_num = 1;
-	//else
-	//	hwseq_num = 2;
-#endif //
 	return hwseq_num;
 }
 static s32 update_attrib(_adapter *padapter, _pkt *pkt, struct pkt_attrib *pattrib)
@@ -2946,11 +2935,6 @@ static void do_queue_select(_adapter	*padapter, struct pkt_attrib *pattrib)
 	qsel = pattrib->priority;
 	RT_TRACE(_module_rtl871x_xmit_c_,_drv_info_,("### do_queue_select priority=%d ,qsel = %d\n",pattrib->priority ,qsel));
 
-#if 0
-//	if (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == _TRUE)
-//		qsel = 7;//
-#endif
-
 	pattrib->qsel = qsel;
 }
 
@@ -3576,163 +3560,6 @@ void xmit_delivery_enabled_frames(_adapter *padapter, struct sta_info *psta)
 
 #endif /* defined(CONFIG_AP_MODE) || defined(CONFIG_TDLS) */
 
-#if 0
-void enqueue_pending_xmitbuf(
-    struct xmit_priv *pxmitpriv,
-    struct xmit_buf *pxmitbuf)
-{
-	_irqL irql;
-	_queue *pqueue;
-	_adapter *pri_adapter = pxmitpriv->adapter;
-
-	pqueue = &pxmitpriv->pending_xmitbuf_queue;
-
-	_enter_critical_bh(&pqueue->lock, &irql);
-	rtw_list_delete(&pxmitbuf->list);
-	rtw_list_insert_tail(&pxmitbuf->list, get_list_head(pqueue));
-	_exit_critical_bh(&pqueue->lock, &irql);
-
-	_rtw_up_sema(&(pri_adapter->xmitpriv.xmit_sema));
-
-}
-
-void enqueue_pending_xmitbuf_to_head(
-    struct xmit_priv *pxmitpriv,
-    struct xmit_buf *pxmitbuf)
-{
-	_irqL irql;
-	_queue *pqueue;
-	_adapter *pri_adapter = pxmitpriv->adapter;
-
-	pqueue = &pxmitpriv->pending_xmitbuf_queue;
-
-	_enter_critical_bh(&pqueue->lock, &irql);
-	rtw_list_delete(&pxmitbuf->list);
-	rtw_list_insert_head(&pxmitbuf->list, get_list_head(pqueue));
-	_exit_critical_bh(&pqueue->lock, &irql);
-}
-
-struct xmit_buf* dequeue_pending_xmitbuf(
-    struct xmit_priv *pxmitpriv)
-{
-	_irqL irql;
-	struct xmit_buf *pxmitbuf;
-	_queue *pqueue;
-
-
-	pxmitbuf = NULL;
-	pqueue = &pxmitpriv->pending_xmitbuf_queue;
-
-	_enter_critical_bh(&pqueue->lock, &irql);
-
-	if (_rtw_queue_empty(pqueue) == _FALSE) {
-		_list *plist, *phead;
-
-		phead = get_list_head(pqueue);
-		plist = get_next(phead);
-		pxmitbuf = LIST_CONTAINOR(plist, struct xmit_buf, list);
-		rtw_list_delete(&pxmitbuf->list);
-	}
-
-	_exit_critical_bh(&pqueue->lock, &irql);
-
-	return pxmitbuf;
-}
-
-struct xmit_buf* dequeue_pending_xmitbuf_under_survey(
-    struct xmit_priv *pxmitpriv)
-{
-	_irqL irql;
-	struct xmit_buf *pxmitbuf;
-#ifdef CONFIG_USB_HCI
-	struct xmit_frame *pxmitframe;
-#endif
-	_queue *pqueue;
-
-
-	pxmitbuf = NULL;
-	pqueue = &pxmitpriv->pending_xmitbuf_queue;
-
-	_enter_critical_bh(&pqueue->lock, &irql);
-
-	if (_rtw_queue_empty(pqueue) == _FALSE) {
-		_list *plist, *phead;
-		u8 type;
-
-		phead = get_list_head(pqueue);
-		plist = phead;
-		do {
-			plist = get_next(plist);
-			if (plist == phead) break;
-
-			pxmitbuf = LIST_CONTAINOR(plist, struct xmit_buf, list);
-
-#ifdef CONFIG_USB_HCI
-			pxmitframe = (struct xmit_frame*)pxmitbuf->priv_data;
-			if(pxmitframe) {
-				type = GetFrameSubType(pxmitbuf->pbuf + TXDESC_SIZE + pxmitframe->pkt_offset * PACKET_OFFSET_SZ);
-			} else {
-				DBG_871X("%s, !!!ERROR!!! For USB, TODO ITEM \n", __FUNCTION__);
-			}
-#else
-			type = GetFrameSubType(pxmitbuf->pbuf + TXDESC_OFFSET);
-#endif
-
-			if ((type == WIFI_PROBEREQ) ||
-			    (type == WIFI_DATA_NULL) ||
-			    (type == WIFI_QOS_DATA_NULL)) {
-				rtw_list_delete(&pxmitbuf->list);
-				break;
-			}
-			pxmitbuf = NULL;
-		} while (1);
-	}
-
-	_exit_critical_bh(&pqueue->lock, &irql);
-
-	return pxmitbuf;
-}
-
-sint check_pending_xmitbuf(
-    struct xmit_priv *pxmitpriv)
-{
-	_irqL irql;
-	_queue *pqueue;
-	sint	ret = _FALSE;
-
-	pqueue = &pxmitpriv->pending_xmitbuf_queue;
-
-	_enter_critical_bh(&pqueue->lock, &irql);
-
-	if(_rtw_queue_empty(pqueue) == _FALSE)
-		ret = _TRUE;
-
-	_exit_critical_bh(&pqueue->lock, &irql);
-
-	return ret;
-}
-
-thread_return rtw_xmit_thread(thread_context context)
-{
-	s32 err;
-	PADAPTER padapter;
-
-
-	err = _SUCCESS;
-	padapter = (PADAPTER)context;
-
-	thread_enter("RTW_XMIT_THREAD");
-
-	do {
-		err = rtw_hal_xmit_thread_handler(padapter);
-		flush_signals_thread();
-	} while (_SUCCESS == err);
-
-	_rtw_up_sema(&padapter->xmitpriv.terminate_xmitthread_sema);
-
-	thread_exit();
-}
-#endif
 
 void rtw_sctx_init(struct submit_ctx *sctx, int timeout_ms)
 {

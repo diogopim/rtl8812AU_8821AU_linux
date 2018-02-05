@@ -46,23 +46,6 @@ int	usb_init_recv_priv(_adapter *padapter, u16 ini_in_buf_sz)
 #endif /* CONFIG_RX_INDICATE_QUEUE */
 #endif /* PLATFORM_FREEBSD */
 
-#if 0
-#ifdef PLATFORM_LINUX
-	precvpriv->int_in_urb = usb_alloc_urb(0, GFP_KERNEL);
-	if(precvpriv->int_in_urb == NULL) {
-		res = _FAIL;
-		DBG_8192C("alloc_urb for interrupt in endpoint fail !!!!\n");
-		goto exit;
-	}
-#endif /* PLATFORM_LINUX */
-	precvpriv->int_in_buf = rtw_zmalloc(ini_in_buf_sz);
-	if(precvpriv->int_in_buf == NULL) {
-		res = _FAIL;
-		DBG_8192C("alloc_mem for interrupt in endpoint fail !!!!\n");
-		goto exit;
-	}
-#endif
-
 	/* init recv_buf */
 	_rtw_init_queue(&precvpriv->free_recv_buf_queue);
 	_rtw_init_queue(&precvpriv->recv_buf_pending_queue);
@@ -168,16 +151,6 @@ void usb_free_recv_priv (_adapter *padapter, u16 ini_in_buf_sz)
 
 	if(precvpriv->pallocated_recv_buf)
 		rtw_mfree(precvpriv->pallocated_recv_buf, NR_RECVBUFF *sizeof(struct recv_buf) + 4);
-
-#if 0
-#ifdef PLATFORM_LINUX
-	if(precvpriv->int_in_urb) {
-		usb_free_urb(precvpriv->int_in_urb);
-	}
-#endif
-	if(precvpriv->int_in_buf)
-		rtw_mfree(precvpriv->int_in_buf, ini_in_buf_sz);
-#endif
 
 #ifdef PLATFORM_LINUX
 

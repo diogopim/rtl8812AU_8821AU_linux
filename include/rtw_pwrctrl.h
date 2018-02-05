@@ -310,21 +310,6 @@ struct pwrctrl_priv {
 extern void rtw_init_pwrctrl_priv(_adapter *adapter);
 extern void rtw_free_pwrctrl_priv(_adapter * adapter);
 
-#if 0
-s32 rtw_register_task_alive(PADAPTER, u32 task);
-void rtw_unregister_task_alive(PADAPTER, u32 task);
-extern s32 rtw_register_tx_alive(PADAPTER padapter);
-extern void rtw_unregister_tx_alive(PADAPTER padapter);
-extern s32 rtw_register_rx_alive(PADAPTER padapter);
-extern void rtw_unregister_rx_alive(PADAPTER padapter);
-extern s32 rtw_register_cmd_alive(PADAPTER padapter);
-extern void rtw_unregister_cmd_alive(PADAPTER padapter);
-extern s32 rtw_register_evt_alive(PADAPTER padapter);
-extern void rtw_unregister_evt_alive(PADAPTER padapter);
-extern void cpwm_int_hdl(PADAPTER padapter, struct reportpwrstate_parm *preportpwrstate);
-extern void LPS_Leave_check(PADAPTER padapter);
-#endif
-
 extern void LeaveAllPowerSaveMode(PADAPTER Adapter);
 extern void LeaveAllPowerSaveModeDirect(PADAPTER Adapter);
 #ifdef CONFIG_IPS
@@ -339,10 +324,6 @@ void rtw_ps_processor(_adapter*padapter);
 #ifdef CONFIG_AUTOSUSPEND
 int autoresume_enter(_adapter* padapter);
 #endif
-#if 0
-rt_rf_power_state RfOnOffDetect(IN	PADAPTER pAdapter );
-#endif
-
 
 int rtw_fw_ps_state(PADAPTER padapter);
 

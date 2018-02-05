@@ -535,23 +535,12 @@ void	rtw_hal_get_tx_power_level(_adapter *padapter, s32 *powerlevel)
 
 void	rtw_hal_dm_watchdog(_adapter *padapter)
 {
-#if 0
-	if (padapter->adapter_type != PRIMARY_ADAPTER)
-		return;
-#endif
-
 	if(padapter->HalFunc.hal_dm_watchdog)
 		padapter->HalFunc.hal_dm_watchdog(padapter);
-
 }
 
 void	rtw_hal_dm_watchdog_in_lps(_adapter *padapter)
 {
-#if 0
-	if (padapter->iface_type != IFACE_PORT0)
-		return;
-#endif
-
 	if (adapter_to_pwrctl(padapter)->bFwCurrentInPSMode ==_TRUE ) {
 		if(padapter->HalFunc.hal_dm_watchdog_in_lps) {
 			padapter->HalFunc.hal_dm_watchdog_in_lps(padapter);//this fuction caller is in interrupt context
@@ -635,15 +624,6 @@ int rtw_hal_iol_cmd(ADAPTER *adapter, struct xmit_frame *xmit_frame, u32 max_wat
 {
 	if(adapter->HalFunc.IOL_exec_cmds_sync)
 		return adapter->HalFunc.IOL_exec_cmds_sync(adapter, xmit_frame, max_wating_ms,bndy_cnt);
-	return _FAIL;
-}
-#endif
-
-#if 0
-s32 rtw_hal_xmit_thread_handler(_adapter *padapter)
-{
-	if(padapter->HalFunc.xmit_thread_handler)
-		return padapter->HalFunc.xmit_thread_handler(padapter);
 	return _FAIL;
 }
 #endif

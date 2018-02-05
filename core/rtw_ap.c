@@ -1086,11 +1086,7 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 	rtw_hal_set_hwreg(padapter, HW_VAR_BSSID, pnetwork->MacAddress);
 
 	//Set EDCA param reg
-#if 0
-	acparm = 0x005ea42b;
-#else
 	acparm = 0x002F3217; // VO
-#endif
 	rtw_hal_set_hwreg(padapter, HW_VAR_AC_PARAM_VO, (u8 *)(&acparm));
 	acparm = 0x005E4317; // VI
 	rtw_hal_set_hwreg(padapter, HW_VAR_AC_PARAM_VI, (u8 *)(&acparm));
@@ -1177,16 +1173,11 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 #ifdef CONFIG_DUALMAC_CONCURRENT
 	dc_set_ap_channel_bandwidth(padapter, cur_channel, cur_ch_offset, cur_bwmode);
 #else //!CONFIG_DUALMAC_CONCURRENT
-#if 0
-	//TODO: need to judge the phy parameters on concurrent mode for single phy
-	concurrent_set_ap_chbw(padapter, cur_channel, cur_ch_offset, cur_bwmode);
-#else
 	set_channel_bwmode(padapter, cur_channel, cur_ch_offset, cur_bwmode);
 	DBG_871X("CH=%d, BW=%d, offset=%d\n", cur_channel, cur_bwmode, cur_ch_offset);
 	pmlmeext->cur_channel = cur_channel;
 	pmlmeext->cur_bwmode = cur_bwmode;
 	pmlmeext->cur_ch_offset = cur_ch_offset;
-#endif
 #endif //!CONFIG_DUALMAC_CONCURRENT
 
 	pmlmeext->cur_wireless_mode = pmlmepriv->cur_network.network_type;
@@ -2871,192 +2862,5 @@ void stop_ap_mode(_adapter *padapter)
 }
 
 #endif //CONFIG_NATIVEAP_MLME
-
-#if 0
-void concurrent_set_ap_chbw(_adapter *padapter, u8 channel, u8 channel_offset, u8 bwmode)
-{
-	u8 *p;
-	int	ie_len=0;
-	u8 cur_channel, cur_bwmode, cur_ch_offset, change_band;
-	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
-	WLAN_BSSID_EX *pnetwork = (WLAN_BSSID_EX *)&pmlmepriv->cur_network.network;
-	struct mlme_ext_priv	*pmlmeext = &(padapter->mlmeextpriv);
-	struct HT_info_element *pht_info=NULL;
-
-	cur_channel = channel;
-	cur_bwmode = bwmode;
-	cur_ch_offset = channel_offset;
-	change_band = _FALSE;
-
-	p = rtw_get_ie((pnetwork->IEs + sizeof(NDIS_802_11_FIXED_IEs)), _HT_ADD_INFO_IE_, &ie_len, (pnetwork->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
-	if( p && ie_len) {
-		pht_info = (struct HT_info_element *)(p+2);
-	}
-
-
-	if(!check_buddy_fwstate(padapter, _FW_LINKED|_FW_UNDER_LINKING|_FW_UNDER_SURVEY)) {
-		set_channel_bwmode(padapter, cur_channel, cur_ch_offset, cur_bwmode);
-	} else if(check_buddy_fwstate(padapter, _FW_LINKED)==_TRUE) {
-		_adapter *pbuddy_adapter = padapter->pbuddy_adapter;
-		struct mlme_ext_priv *pbuddy_mlmeext = &pbuddy_adapter->mlmeextpriv;
-
-		//To sync cur_channel/cur_bwmode/cur_ch_offset with buddy adapter
-		DBG_871X(ADPT_FMT" is at linked state\n", ADPT_ARG(pbuddy_adapter));
-		DBG_871X(ADPT_FMT": CH=%d, BW=%d, offset=%d\n", ADPT_ARG(pbuddy_adapter), pbuddy_mlmeext->cur_channel, pbuddy_mlmeext->cur_bwmode, pbuddy_mlmeext->cur_ch_offset);
-		DBG_871X(ADPT_FMT": CH=%d, BW=%d, offset=%d\n", ADPT_ARG(padapter), cur_channel, cur_bwmode, cur_ch_offset);
-
-		if((cur_channel <= 14 && pbuddy_mlmeext->cur_channel >= 36) ||
-		   (cur_channel >= 36 && pbuddy_mlmeext->cur_channel <= 14))
-			change_band = _TRUE;
-
-		cur_channel = pbuddy_mlmeext->cur_channel;
-
-#ifdef CONFIG_80211AC_VHT
-		if(cur_bwmode == CHANNEL_WIDTH_80) {
-			u8 *pvht_cap_ie, *pvht_op_ie;
-			int vht_cap_ielen, vht_op_ielen;
-
-			pvht_cap_ie = rtw_get_ie((pnetwork->IEs + sizeof(NDIS_802_11_FIXED_IEs)), EID_VHTCapability, &vht_cap_ielen, (pnetwork->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
-			pvht_op_ie = rtw_get_ie((pnetwork->IEs + sizeof(NDIS_802_11_FIXED_IEs)), EID_VHTOperation, &vht_op_ielen, (pnetwork->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
-
-			if(pbuddy_mlmeext->cur_channel <= 14) { // downgrade to 20/40Mhz
-				//modify vht cap ie
-				if( pvht_cap_ie && vht_cap_ielen) {
-					SET_VHT_CAPABILITY_ELE_SHORT_GI80M(pvht_cap_ie+2, 0);
-				}
-
-				//modify vht op ie
-				if( pvht_op_ie && vht_op_ielen) {
-					SET_VHT_OPERATION_ELE_CHL_WIDTH(pvht_op_ie+2, 0); //change to 20/40Mhz
-					SET_VHT_OPERATION_ELE_CHL_CENTER_FREQ1(pvht_op_ie+2, 0);
-					SET_VHT_OPERATION_ELE_CHL_CENTER_FREQ2(pvht_op_ie+2, 0);
-					//SET_VHT_OPERATION_ELE_BASIC_MCS_SET(p+2, 0xFFFF);
-					cur_bwmode = CHANNEL_WIDTH_40;
-				}
-			} else {
-				u8	center_freq;
-
-				cur_bwmode = CHANNEL_WIDTH_80;
-
-				if(pbuddy_mlmeext->cur_bwmode == CHANNEL_WIDTH_40 ||
-				   pbuddy_mlmeext->cur_bwmode == CHANNEL_WIDTH_80) {
-					cur_ch_offset = pbuddy_mlmeext->cur_ch_offset;
-				} else if(pbuddy_mlmeext->cur_bwmode == CHANNEL_WIDTH_20) {
-					cur_ch_offset =  rtw_get_offset_by_ch(cur_channel);
-				}
-
-				//modify ht info ie
-				if(pht_info)
-					pht_info->infos[0] &= ~HT_INFO_HT_PARAM_SECONDARY_CHNL_OFF_MASK;
-
-				switch(cur_ch_offset) {
-				case HAL_PRIME_CHNL_OFFSET_LOWER:
-					if(pht_info)
-						pht_info->infos[0] |= HT_INFO_HT_PARAM_SECONDARY_CHNL_ABOVE;
-					//cur_bwmode = CHANNEL_WIDTH_40;
-					break;
-				case HAL_PRIME_CHNL_OFFSET_UPPER:
-					if(pht_info)
-						pht_info->infos[0] |= HT_INFO_HT_PARAM_SECONDARY_CHNL_BELOW;
-					//cur_bwmode = CHANNEL_WIDTH_40;
-					break;
-				case HAL_PRIME_CHNL_OFFSET_DONT_CARE:
-				default:
-					if(pht_info)
-						pht_info->infos[0] &= ~HT_INFO_HT_PARAM_SECONDARY_CHNL_OFF_MASK;
-					cur_bwmode = CHANNEL_WIDTH_20;
-					cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-					break;
-				}
-
-				//modify vht op ie
-				center_freq = rtw_get_center_ch(cur_channel, cur_bwmode, HAL_PRIME_CHNL_OFFSET_LOWER);
-				if( pvht_op_ie && vht_op_ielen)
-					SET_VHT_OPERATION_ELE_CHL_CENTER_FREQ1(pvht_op_ie+2, center_freq);
-
-				set_channel_bwmode(padapter, cur_channel, cur_ch_offset, cur_bwmode);
-
-			}
-
-		}
-#endif //CONFIG_80211AC_VHT
-
-		if(cur_bwmode == CHANNEL_WIDTH_40) {
-			if(pht_info)
-				pht_info->infos[0] &= ~HT_INFO_HT_PARAM_SECONDARY_CHNL_OFF_MASK;
-
-			if(pbuddy_mlmeext->cur_bwmode == CHANNEL_WIDTH_40 ||
-			   pbuddy_mlmeext->cur_bwmode == CHANNEL_WIDTH_80) {
-				cur_ch_offset = pbuddy_mlmeext->cur_ch_offset;
-
-				//to update cur_ch_offset value in beacon
-				if(pht_info) {
-					switch(cur_ch_offset) {
-					case HAL_PRIME_CHNL_OFFSET_LOWER:
-						pht_info->infos[0] |= HT_INFO_HT_PARAM_SECONDARY_CHNL_ABOVE;
-						break;
-					case HAL_PRIME_CHNL_OFFSET_UPPER:
-						pht_info->infos[0] |= HT_INFO_HT_PARAM_SECONDARY_CHNL_BELOW;
-						break;
-					case HAL_PRIME_CHNL_OFFSET_DONT_CARE:
-					default:
-						break;
-					}
-				}
-
-			} else if(pbuddy_mlmeext->cur_bwmode == CHANNEL_WIDTH_20) {
-				cur_ch_offset =  rtw_get_offset_by_ch(cur_channel);
-
-				switch(cur_ch_offset) {
-				case HAL_PRIME_CHNL_OFFSET_LOWER:
-					if(pht_info)
-						pht_info->infos[0] |= HT_INFO_HT_PARAM_SECONDARY_CHNL_ABOVE;
-					cur_bwmode = CHANNEL_WIDTH_40;
-					break;
-				case HAL_PRIME_CHNL_OFFSET_UPPER:
-					if(pht_info)
-						pht_info->infos[0] |= HT_INFO_HT_PARAM_SECONDARY_CHNL_BELOW;
-					cur_bwmode = CHANNEL_WIDTH_40;
-					break;
-				case HAL_PRIME_CHNL_OFFSET_DONT_CARE:
-				default:
-					if(pht_info)
-						pht_info->infos[0] &= ~HT_INFO_HT_PARAM_SECONDARY_CHNL_OFF_MASK;
-					cur_bwmode = CHANNEL_WIDTH_20;
-					cur_ch_offset = HAL_PRIME_CHNL_OFFSET_DONT_CARE;
-					break;
-				}
-
-			}
-
-			set_channel_bwmode(padapter, cur_channel, cur_ch_offset, cur_bwmode);
-
-		} else {
-			set_channel_bwmode(padapter, cur_channel, pbuddy_mlmeext->cur_ch_offset, pbuddy_mlmeext->cur_bwmode);
-		}
-
-		// to update channel value in beacon
-		pnetwork->Configuration.DSConfig = cur_channel;
-		p = rtw_get_ie((pnetwork->IEs + sizeof(NDIS_802_11_FIXED_IEs)), _DSSET_IE_, &ie_len, (pnetwork->IELength - sizeof(NDIS_802_11_FIXED_IEs)));
-		if(p && ie_len>0)
-			*(p + 2) = cur_channel;
-
-		if(pht_info)
-			pht_info->primary_channel = cur_channel;
-	}
-
-	DBG_871X(FUNC_ADPT_FMT" CH=%d, BW=%d, offset=%d\n", FUNC_ADPT_ARG(padapter), cur_channel, cur_bwmode, cur_ch_offset);
-
-	pmlmeext->cur_channel = cur_channel;
-	pmlmeext->cur_bwmode = cur_bwmode;
-	pmlmeext->cur_ch_offset = cur_ch_offset;
-
-	//buddy interface band is different from current interface, update ERP, support rate, ext support rate IE
-	if(change_band == _TRUE)
-		change_band_update_ie(padapter, pnetwork);
-
-}
-#endif //
-
 #endif //CONFIG_AP_MODE
 

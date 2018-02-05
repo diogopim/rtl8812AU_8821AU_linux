@@ -20,10 +20,6 @@
 #ifndef _RTW_EVENT_H_
 #define _RTW_EVENT_H_
 
-#if 0
-#include <h2clbk.h>
-#endif
-
 /*
 Used to report a bss has been scanned
 
@@ -84,19 +80,6 @@ struct addba_event {
 struct wmm_event {
 	unsigned char wmm;
 };
-
-#if 0
-struct c2hlbk_event {
-	unsigned char mac[6];
-	unsigned short	s0;
-	unsigned short	s1;
-	unsigned int	w0;
-	unsigned char	b0;
-	unsigned short  s2;
-	unsigned char	b1;
-	unsigned int	w1;
-};
-#endif
 
 #define GEN_EVT_CODE(event)	event ## _EVT_
 

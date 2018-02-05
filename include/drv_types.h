@@ -295,9 +295,6 @@ struct registry_priv {
 	u8	RegDecryptCustomFile;
 #endif
 
-#if 0
-	u8 ext_iface_num;//primary/secondary iface is excluded
-#endif
 	u8 qos_opt_enable;
 
 	u8 hiq_filter;
@@ -330,13 +327,8 @@ struct registry_priv {
 #define BSSID_OFT(field) ((ULONG)FIELD_OFFSET(WLAN_BSSID_EX,field))
 #define BSSID_SZ(field)   sizeof(((PWLAN_BSSID_EX) 0)->field)
 
-#if 0
-#define is_primary_adapter(adapter) (adapter->adapter_type == PRIMARY_ADAPTER)
-#define get_iface_type(adapter) (adapter->iface_type)
-#else
 #define is_primary_adapter(adapter) (1)
 #define get_iface_type(adapter) (IFACE_PORT0)
-#endif
 #define GET_PRIMARY_ADAPTER(padapter) (((_adapter *)padapter)->dvobj->if1)
 #define GET_IFACE_NUMS(padapter) (((_adapter *)padapter)->dvobj->iface_nums)
 #define GET_ADAPTER(padapter, iface_id) (((_adapter *)padapter)->dvobj->padapters[iface_id])

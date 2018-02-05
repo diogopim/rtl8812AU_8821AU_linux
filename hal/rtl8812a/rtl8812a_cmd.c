@@ -1147,55 +1147,6 @@ void rtl8812_set_p2p_ps_offload_cmd(_adapter* padapter, u8 p2p_ps_state)
 }
 #endif //CONFIG_P2P
 
-#if 0
-/*
-	ask FW to Reset sync register at Beacon early interrupt
-*/
-u8 rtl8812_reset_tsf(_adapter *padapter, u8 reset_port )
-{
-	u8	buf[2];
-	u8	res=_SUCCESS;
-
-	s32 ret;
-	_func_enter_;
-	if (IFACE_PORT0==reset_port) {
-		buf[0] = 0x1;
-		buf[1] = 0;
-	} else {
-		buf[0] = 0x0;
-		buf[1] = 0x1;
-	}
-
-	ret = FillH2CCmd_8812(padapter, H2C_8812_TSF_RESET, 2, buf);
-
-	_func_exit_;
-
-	return res;
-}
-
-int reset_tsf(PADAPTER Adapter, u8 reset_port )
-{
-	u8 reset_cnt_before = 0, reset_cnt_after = 0, loop_cnt = 0;
-	u32 reg_reset_tsf_cnt = (IFACE_PORT0==reset_port) ?
-	                        REG_FW_RESET_TSF_CNT_0:REG_FW_RESET_TSF_CNT_1;
-	u32 reg_bcncrtl = (IFACE_PORT0==reset_port) ?
-	                  REG_BCN_CTRL_1:REG_BCN_CTRL;
-
-	rtw_scan_abort(Adapter->pbuddy_adapter);	/*	site survey will cause reset_tsf fail	*/
-	reset_cnt_after = reset_cnt_before = rtw_read8(Adapter,reg_reset_tsf_cnt);
-	rtl8812_reset_tsf(Adapter, reset_port);
-
-	while ((reset_cnt_after == reset_cnt_before ) && (loop_cnt < 10)) {
-		rtw_msleep_os(100);
-		loop_cnt++;
-		reset_cnt_after = rtw_read8(Adapter, reg_reset_tsf_cnt);
-	}
-
-	return(loop_cnt >= 10) ? _FAIL : _TRUE;
-}
-
-
-#endif
 
 static inline void rtl8812_set_FwRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc)
 {

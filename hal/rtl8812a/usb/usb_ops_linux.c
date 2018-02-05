@@ -19,245 +19,11 @@
  ******************************************************************************/
 #define _HCI_OPS_OS_C_
 
-//#include <drv_types.h>
 #include <rtl8812a_hal.h>
-
-#if 0
-void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
-{
-	HAL_DATA_TYPE	*pHalData=GET_HAL_DATA(padapter);
-	struct reportpwrstate_parm pwr_rpt;
-
-	if ( pkt_len != INTERRUPT_MSG_FORMAT_LEN ) {
-		DBG_8192C("%s Invalid interrupt content length (%d)!\n", __FUNCTION__, pkt_len);
-		return ;
-	}
-
-	// HISR
-	_rtw_memcpy(&(pHalData->IntArray[0]), &(pbuf[USB_INTR_CONTENT_HISR_OFFSET]), 4);
-	_rtw_memcpy(&(pHalData->IntArray[1]), &(pbuf[USB_INTR_CONTENT_HISRE_OFFSET]), 4);
-
-#if 0
-	if(  pHalData->IntArray[0]  & IMR_CPWM_88E ) {
-		_rtw_memcpy(&pwr_rpt.state, &(pbuf[USB_INTR_CONTENT_CPWM1_OFFSET]), 1);
-		//88e's cpwm value only change BIT0, so driver need to add PS_STATE_S2 for LPS flow.
-		pwr_rpt.state |= PS_STATE_S2;
-		_set_workitem(&(adapter_to_pwrctl(padapter)->cpwm_event));
-	}
-#endif
-
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN
-
-#ifdef  CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
-	if (pHalData->IntArray[0] & IMR_BCNDMAINT0_88E)
-#endif
-#ifdef  CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
-		if (pHalData->IntArray[0] & (IMR_TBDER_88E|IMR_TBDOK_88E))
-#endif
-		{
-			struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
-			if(check_fwstate(pmlmepriv, WIFI_AP_STATE)) {
-				//send_beacon(padapter);
-				if(pmlmepriv->update_bcn == _TRUE) {
-					//tx_beacon_hdl(padapter, NULL);
-					set_tx_beacon_cmd(padapter);
-				}
-			}
-#if 0
-			if(check_buddy_fwstate(padapter, WIFI_AP_STATE)) {
-				//send_beacon(padapter);
-				if(padapter->pbuddy_adapter->mlmepriv.update_bcn == _TRUE) {
-					//tx_beacon_hdl(padapter, NULL);
-					set_tx_beacon_cmd(padapter->pbuddy_adapter);
-				}
-			}
-#endif
-
-		}
-#endif //CONFIG_INTERRUPT_BASED_TXBCN
-
-
-
-
-#ifdef DBG_CONFIG_ERROR_DETECT_INT
-	if(  pHalData->IntArray[1]  & IMR_TXERR_88E )
-		DBG_871X("===> %s Tx Error Flag Interrupt Status \n",__FUNCTION__);
-	if(  pHalData->IntArray[1]  & IMR_RXERR_88E )
-		DBG_871X("===> %s Rx Error Flag INT Status \n",__FUNCTION__);
-	if(  pHalData->IntArray[1]  & IMR_TXFOVW_88E )
-		DBG_871X("===> %s Transmit FIFO Overflow \n",__FUNCTION__);
-	if(  pHalData->IntArray[1]  & IMR_RXFOVW_88E )
-		DBG_871X("===> %s Receive FIFO Overflow \n",__FUNCTION__);
-#endif//DBG_CONFIG_ERROR_DETECT_INT
-
-
-	// C2H Event
-	if(pbuf[0]!= 0) {
-		_rtw_memcpy(&(pHalData->C2hArray[0]), &(pbuf[USB_INTR_CONTENT_C2H_OFFSET]), 16);
-		//rtw_c2h_wk_cmd(padapter); to do..
-	}
-
-}
-#endif
-
-#if 0
-static void usb_read_interrupt_complete(struct urb *purb, struct pt_regs *regs)
-{
-	int	err;
-	_adapter		*padapter = (_adapter	 *)purb->context;
-
-	if(RTW_CANNOT_RX(padapter)) {
-		DBG_8192C("%s() RX Warning! bDriverStopped(%d) OR bSurpriseRemoved(%d)\n",
-		          __FUNCTION__,padapter->bDriverStopped, padapter->bSurpriseRemoved,);
-		return;
-	}
-
-	if(purb->status==0) { //SUCCESS
-		if (purb->actual_length > INTERRUPT_MSG_FORMAT_LEN) {
-			DBG_8192C("usb_read_interrupt_complete: purb->actual_length > INTERRUPT_MSG_FORMAT_LEN(%d)\n",INTERRUPT_MSG_FORMAT_LEN);
-		}
-
-		interrupt_handler_8188eu(padapter, purb->actual_length,purb->transfer_buffer );
-
-		err = usb_submit_urb(purb, GFP_ATOMIC);
-		if((err) && (err != (-EPERM))) {
-			DBG_8192C("cannot submit interrupt in-token(err = 0x%08x),urb_status = %d\n",err, purb->status);
-		}
-	} else {
-		DBG_8192C("###=> usb_read_interrupt_complete => urb status(%d)\n", purb->status);
-
-		switch(purb->status) {
-		case -EINVAL:
-		case -EPIPE:
-		case -ENODEV:
-		case -ESHUTDOWN:
-		//padapter->bSurpriseRemoved=_TRUE;
-		//RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port_complete:bSurpriseRemoved=TRUE\n"));
-		case -ENOENT:
-			padapter->bDriverStopped=_TRUE;
-			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port_complete:bDriverStopped=TRUE\n"));
-			break;
-		case -EPROTO:
-			break;
-		case -EINPROGRESS:
-			DBG_8192C("ERROR: URB IS IN PROGRESS!/n");
-			break;
-		default:
-			break;
-		}
-	}
-
-}
-
-static u32 usb_read_interrupt(struct intf_hdl *pintfhdl, u32 addr)
-{
-	int	err;
-	unsigned int pipe;
-	u32	ret = _SUCCESS;
-	_adapter			*adapter = pintfhdl->padapter;
-	struct dvobj_priv	*pdvobj = adapter_to_dvobj(adapter);
-	struct recv_priv	*precvpriv = &adapter->recvpriv;
-	struct usb_device	*pusbd = pdvobj->pusbdev;
-
-	_func_enter_;
-
-	if (RTW_CANNOT_RX(adapter)) {
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_interrupt:( RTW_CANNOT_RX )!!!\n"));
-		return _FAIL;
-	}
-
-	//translate DMA FIFO addr to pipehandle
-	pipe = ffaddr2pipehdl(pdvobj, addr);
-
-	usb_fill_int_urb(precvpriv->int_in_urb, pusbd, pipe,
-	                 precvpriv->int_in_buf,
-	                 INTERRUPT_MSG_FORMAT_LEN,
-	                 usb_read_interrupt_complete,
-	                 adapter,
-	                 1);
-
-	err = usb_submit_urb(precvpriv->int_in_urb, GFP_ATOMIC);
-	if((err) && (err != (-EPERM))) {
-		DBG_8192C("cannot submit interrupt in-token(err = 0x%08x),urb_status = %d\n",err, precvpriv->int_in_urb->status);
-		ret = _FAIL;
-	}
-
-	_func_exit_;
-
-	return ret;
-}
-#endif
 
 static inline s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 {
-	s32 ret=_SUCCESS;
-#if 0
-	u8 *secondary_myid, *paddr1;
-	union recv_frame	*precvframe_if2 = NULL;
-	_adapter *primary_padapter = precvframe->u.hdr.adapter;
-	_adapter *secondary_padapter = primary_padapter->pbuddy_adapter;
-	struct recv_priv *precvpriv = &primary_padapter->recvpriv;
-	_queue *pfree_recv_queue = &precvpriv->free_recv_queue;
-	u8	*pbuf = precvframe->u.hdr.rx_data;
-
-	if(!secondary_padapter)
-		return ret;
-
-	paddr1 = GetAddr1Ptr(pbuf);
-
-	if(IS_MCAST(paddr1) == _FALSE) { //unicast packets
-		//primary_myid = myid(&primary_padapter->eeprompriv);
-		secondary_myid = myid(&secondary_padapter->eeprompriv);
-
-		if(_rtw_memcmp(paddr1, secondary_myid, ETH_ALEN)) {
-			//change to secondary interface
-			precvframe->u.hdr.adapter = secondary_padapter;
-		}
-
-		//ret = recv_entry(precvframe);
-
-	} else { // Handle BC/MC Packets
-
-		u8 clone = _TRUE;
-		if(_TRUE == clone) {
-			//clone/copy to if2
-			struct rx_pkt_attrib *pattrib = NULL;
-
-			precvframe_if2 = rtw_alloc_recvframe(pfree_recv_queue);
-			if(precvframe_if2) {
-				precvframe_if2->u.hdr.adapter = secondary_padapter;
-
-				_rtw_init_listhead(&precvframe_if2->u.hdr.list);
-				precvframe_if2->u.hdr.precvbuf = NULL;	//can't access the precvbuf for new arch.
-				precvframe_if2->u.hdr.len=0;
-
-				_rtw_memcpy(&precvframe_if2->u.hdr.attrib, &precvframe->u.hdr.attrib, sizeof(struct rx_pkt_attrib));
-
-				pattrib = &precvframe_if2->u.hdr.attrib;
-
-				if(rtw_os_alloc_recvframe(secondary_padapter, precvframe_if2, pbuf, NULL) == _SUCCESS) {
-					recvframe_put(precvframe_if2, pattrib->pkt_len);
-					//recvframe_pull(precvframe_if2, drvinfo_sz + RXDESC_SIZE);
-
-					if (pattrib->physt && pphy_status)
-						rx_query_phy_status(precvframe_if2, pphy_status);
-
-					ret = rtw_recv_entry(precvframe_if2);
-				} else {
-					rtw_free_recvframe(precvframe_if2, pfree_recv_queue);
-					DBG_8192C("%s()-%d: alloc_skb() failed!\n", __FUNCTION__, __LINE__);
-				}
-
-			}
-
-		}
-
-	}
-
-#endif
-
-	return ret;
-
+	return _SUCCESS; //TODO
 }
 
 int recvbuf2recvframe(PADAPTER padapter, void *ptr)
@@ -339,15 +105,6 @@ int recvbuf2recvframe(PADAPTER padapter, void *ptr)
 			if(pattrib->physt)
 				pphy_status = (pbuf + RXDESC_OFFSET);
 
-#if 0
-			if(rtw_buddy_adapter_up(padapter)) {
-				if(pre_recv_entry(precvframe, pphy_status) != _SUCCESS) {
-					RT_TRACE(_module_rtl871x_recv_c_,_drv_err_,
-					         ("recvbuf2recvframe: recv_entry(precvframe) != _SUCCESS\n"));
-				}
-			}
-#endif //
-
 			if(pattrib->physt && pphy_status)
 				rx_query_phy_status(precvframe, pphy_status);
 
@@ -393,11 +150,7 @@ void rtl8812au_xmit_tasklet(void *priv)
 			break;
 		}
 
-		if(check_fwstate(&padapter->mlmepriv, _FW_UNDER_SURVEY) == _TRUE
-#if 0
-		   || check_buddy_fwstate(padapter, _FW_UNDER_SURVEY) == _TRUE
-#endif
-		  ) {
+		if(check_fwstate(&padapter->mlmepriv, _FW_UNDER_SURVEY) == _TRUE ) {
 			break;
 		}
 
@@ -437,10 +190,6 @@ void rtl8812au_set_intf_ops(struct _io_ops	*pops)
 
 	pops->_read_port_cancel = &usb_read_port_cancel;
 	pops->_write_port_cancel = &usb_write_port_cancel;
-
-#if 0
-	pops->_read_interrupt = &usb_read_interrupt;
-#endif
 
 	_func_exit_;
 

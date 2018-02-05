@@ -147,10 +147,6 @@ void rtl8812_set_p2p_ps_offload_cmd(PADAPTER padapter, u8 p2p_ps_state);
 void CheckFwRsvdPageContent(PADAPTER padapter);
 void rtl8812_set_FwMediaStatus_cmd(PADAPTER padapter, u16 mstatus_rpt );
 
-#if 0
-int reset_tsf(PADAPTER Adapter, u8 reset_port );
-#endif
-
 //------------------------------------
 //     C2H format
 //------------------------------------

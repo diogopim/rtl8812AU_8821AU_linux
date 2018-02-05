@@ -62,11 +62,6 @@ void start_ap_mode(_adapter *padapter);
 void stop_ap_mode(_adapter *padapter);
 #endif
 
-#if 0
-void concurrent_set_ap_chbw(_adapter *padapter, u8 channel, u8 channel_offset, u8 bwmode);
-#endif //
-
-
 #ifdef CONFIG_AUTO_AP_MODE
 extern void rtw_start_auto_ap(_adapter *adapter);
 #endif //CONFIG_AUTO_AP_MODE

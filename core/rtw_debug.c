@@ -569,15 +569,8 @@ int proc_get_adapter_state(struct seq_file *m, void *v)
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
-#if 0
-	DBG_871X_SEL_NL(m, "name=%s, iface_type=%d, bSurpriseRemoved=%d, bDriverStopped=%d\n",
-	                dev->name, padapter->iface_type,
-	                padapter->bSurpriseRemoved, padapter->bDriverStopped);
-#else
 	DBG_871X_SEL_NL(m, "name=%s, bSurpriseRemoved=%d, bDriverStopped=%d\n",
 	                dev->name, padapter->bSurpriseRemoved, padapter->bDriverStopped);
-#endif
-
 	return 0;
 }
 

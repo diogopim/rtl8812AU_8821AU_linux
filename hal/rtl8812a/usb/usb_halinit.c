@@ -467,13 +467,6 @@ _InitTxBufferBoundary_8821AUsb(
 	rtw_write8(Adapter, REG_TRXFF_BNDY, txpktbuf_bndy);
 	rtw_write8(Adapter, REG_TDECTRL+1, txpktbuf_bndy);
 
-#if 0
-	rtw_write8(Adapter, REG_BCNQ1_BDNY, txpktbuf_bndy+8);
-	rtw_write8(Adapter, REG_DWBCN1_CTRL_8812+1, txpktbuf_bndy+8);//BCN1_HEAD
-	// BIT1- BIT_SW_BCN_SEL_EN
-	rtw_write8(Adapter, REG_DWBCN1_CTRL_8812+2, rtw_read8(Adapter, REG_DWBCN1_CTRL_8812+2)|BIT1);
-#endif
-
 }
 
 static VOID
@@ -1536,11 +1529,6 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 		int i;
 		u8 mac_addr[6];
 		for(i=0; i<6; i++) {
-#if 0
-			if(Adapter->iface_type == IFACE_PORT1)
-				mac_addr[i] = rtw_read8(Adapter, REG_MACID1+i);
-			else
-#endif
 				mac_addr[i] = rtw_read8(Adapter, REG_MACID+i);
 		}
 
@@ -1658,14 +1646,6 @@ u32 rtl8812au_hal_deinit(PADAPTER Adapter)
 	rtw_write32(Adapter, REG_HIMR0_8812, IMR_DISABLED_8812);
 	rtw_write32(Adapter, REG_HIMR1_8812, IMR_DISABLED_8812);
 
-#if 0
-	DBG_8192C("bkeepfwalive(%x)\n", pwrctl->bkeepfwalive);
-	if(pwrctl->bkeepfwalive) {
-		_ps_close_RF(Adapter);
-		if((pwrctl->bHWPwrPindetect) && (pwrctl->bHWPowerdown))
-			rtl8812au_hw_power_down(Adapter);
-	} else
-#endif
 	{
 		if(Adapter->hw_init_completed == _TRUE) {
 			hal_poweroff_8812au(Adapter);
@@ -1687,10 +1667,6 @@ unsigned int rtl8812au_inirp_init(PADAPTER Adapter)
 	struct intf_hdl * pintfhdl=&Adapter->iopriv.intf;
 	struct recv_priv *precvpriv = &(Adapter->recvpriv);
 	u32 (*_read_port)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pmem);
-#if 0
-	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
-	u32 (*_read_interrupt)(struct intf_hdl *pintfhdl, u32 addr);
-#endif
 
 	_func_enter_;
 
@@ -1714,19 +1690,6 @@ unsigned int rtl8812au_inirp_init(PADAPTER Adapter)
 		precvbuf++;
 		precvpriv->free_recv_buf_queue_cnt--;
 	}
-
-#if 0
-	if(pHalData->RtIntInPipe != 0x05) {
-		status = _FAIL;
-		DBG_871X("%s =>Warning !! Have not USB Int-IN pipe,  pHalData->RtIntInPipe(%d)!!!\n",__FUNCTION__,pHalData->RtIntInPipe);
-		goto exit;
-	}
-	_read_interrupt = pintfhdl->io_ops._read_interrupt;
-	if(_read_interrupt(pintfhdl, RECV_INT_IN_ADDR) == _FALSE ) {
-		RT_TRACE(_module_hci_hal_init_c_,_drv_err_,("usb_rx_init: usb_read_interrupt error \n"));
-		status = _FAIL;
-	}
-#endif
 
 exit:
 
@@ -2204,18 +2167,6 @@ void SetHwReg8812AU(PADAPTER Adapter, u8 variable, const u8* val)
 #endif
 	break;
 	case HW_VAR_SET_RPWM:
-#if 0
-	{
-		u8	ps_state = *((u8 *)val);
-		//rpwm value only use BIT0(clock bit) ,BIT6(Ack bit), and BIT7(Toggle bit) for 88e.
-		//BIT0 value - 1: 32k, 0:40MHz.
-		//BIT6 value - 1: report cpwm value after success set, 0:do not report.
-		//BIT7 value - Toggle bit change.
-		//modify by Thomas. 2012/4/2.
-		ps_state = ps_state & 0xC1;
-		rtw_write8(Adapter, REG_USB_HRPWM, ps_state);
-	}
-#endif
 	break;
 	case HW_VAR_USB_MODE:
 		if(*val == 1)
@@ -2381,14 +2332,6 @@ static u8 rtl8812au_ps_func(PADAPTER Adapter,HAL_INTF_PS_FUNC efunc_id, const u8
 	u8 bResult = _TRUE;
 	switch(efunc_id) {
 
-#if 0
-	case HAL_USB_SELECT_SUSPEND: {
-		u8 bfwpoll = *((const u8*)val);
-		//rtl8188e_set_FwSelectSuspend_cmd(Adapter,bfwpoll ,500);//note fw to support hw power down ping detect
-	}
-	break;
-#endif
-
 	default:
 		break;
 	}
@@ -2427,18 +2370,10 @@ void rtl8812au_set_hal_ops(_adapter * padapter)
 	pHalFunc->intf_chip_configure = &rtl8812au_interface_configure;
 	pHalFunc->read_adapter_info = &ReadAdapterInfo8812AU;
 
-	//pHalFunc->set_bwmode_handler = &PHY_SetBWMode8192C;
-	//pHalFunc->set_channel_handler = &PHY_SwChnl8192C;
-
-	//pHalFunc->hal_dm_watchdog = &rtl8192c_HalDmWatchDog;
-
-
 	pHalFunc->SetHwRegHandler = &SetHwReg8812AU;
 	pHalFunc->GetHwRegHandler = &GetHwReg8812AU;
 	pHalFunc->GetHalDefVarHandler = &GetHalDefVar8812AUsb;
 	pHalFunc->SetHalDefVarHandler = &SetHalDefVar8812AUsb;
-
-	//pHalFunc->Add_RateATid = &rtl8192c_Add_RateATid;
 
 	pHalFunc->hal_xmit = &rtl8812au_hal_xmit;
 	pHalFunc->mgnt_xmit = &rtl8812au_mgnt_xmit;
@@ -2448,9 +2383,6 @@ void rtl8812au_set_hal_ops(_adapter * padapter)
 	pHalFunc->hostap_mgnt_xmit_entry = &rtl8812au_hostap_mgnt_xmit_entry;
 #endif
 	pHalFunc->interface_ps_func = &rtl8812au_ps_func;
-#if 0
-	pHalFunc->xmit_thread_handler = &rtl8812au_xmit_buf_handler;
-#endif
 	rtl8812_set_hal_ops(pHalFunc);
 	_func_exit_;
 

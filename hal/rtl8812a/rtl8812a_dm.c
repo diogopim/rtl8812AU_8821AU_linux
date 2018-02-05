@@ -171,15 +171,9 @@ static void Init_ODM_ComInfo_8812(PADAPTER	Adapter)
 
 	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_IQKFWOFFLOAD, pHalData->RegIQKFWOffload);
 
-#if 0
-	pdmpriv->InitODMFlag = 0;
-#else
 	pdmpriv->InitODMFlag =	ODM_RF_CALIBRATION		|
 	                        ODM_RF_TX_PWR_TRACK	//|
 	                        ;
-	//if(pHalData->AntDivCfg)
-	//	pdmpriv->InitODMFlag |= ODM_BB_ANT_DIV;
-#endif
 
 	ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_ABILITY,pdmpriv->InitODMFlag);
 
@@ -216,10 +210,6 @@ static void Update_ODM_ComInfo_8812(PADAPTER	Adapter)
 		                       ;
 	}
 #endif//(MP_DRIVER==1)
-
-#if 0
-	pdmpriv->InitODMFlag = 0;
-#endif//CONFIG_DISABLE_ODM
 
 	ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_ABILITY,pdmpriv->InitODMFlag);
 
@@ -262,9 +252,6 @@ rtl8812_HalDmWatchDog(
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	//struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 	//PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
-#if 0
-	PADAPTER pbuddy_adapter = Adapter->pbuddy_adapter;
-#endif //
 
 	_func_enter_;
 
@@ -305,23 +292,11 @@ rtl8812_HalDmWatchDog(
 		u8	bsta_state=_FALSE;
 		u8	bBtDisabled = _TRUE;
 
-#if 0
-		pHalData->odmpriv.SupportAbility = 0;
-#endif
-
 		if(rtw_linked_check(Adapter)) {
 			bLinked = _TRUE;
 			if (check_fwstate(&Adapter->mlmepriv, WIFI_STATION_STATE))
 				bsta_state = _TRUE;
 		}
-
-#if 0
-		if(pbuddy_adapter && rtw_linked_check(pbuddy_adapter)) {
-			bLinked = _TRUE;
-			if(pbuddy_adapter && check_fwstate(&pbuddy_adapter->mlmepriv, WIFI_STATION_STATE))
-				bsta_state = _TRUE;
-		}
-#endif //
 
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_STATION_STATE, bsta_state);

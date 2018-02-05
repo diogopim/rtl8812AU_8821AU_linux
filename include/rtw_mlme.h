@@ -30,10 +30,6 @@
 //	Increase the scanning timeout because of increasing the SURVEY_TO value.
 
 #define 	SCANNING_TIMEOUT 	8000
-#if 0
-#define		CONC_SCANNING_TIMEOUT_SINGLE_BAND 10000
-#define		CONC_SCANNING_TIMEOUT_DUAL_BAND 15000
-#endif
 
 #ifdef PALTFORM_OS_WINCE
 #define	SCANQUEUE_LIFETIME 12000000 // unit:us
@@ -271,10 +267,6 @@ struct wifidirect_info {
 	_timer					pre_tx_scan_timer;
 	_timer					reset_ch_sitesurvey;
 	_timer					reset_ch_sitesurvey2;	//	Just for resetting the scan limit function by using p2p nego
-#if 0
-	//	Used to switch the channel between legacy AP and listen state.
-	_timer					ap_p2p_switch_timer;
-#endif
 	struct tx_provdisc_req_info	tx_prov_disc_info;
 	struct rx_provdisc_req_info rx_prov_disc_info;
 	struct tx_invite_req_info	invitereq_info;
@@ -343,10 +335,6 @@ struct wifidirect_info {
 	//	We will use the channel_cnt and channel_list fields when constructing the group negotitation confirm frame.
 	u8						driver_interface;			//	Indicate DRIVER_WEXT or DRIVER_CFG80211
 
-#if 0
-	u16						ext_listen_interval;	//	The interval to be available with legacy AP (ms)
-	u16						ext_listen_period;	//	The time period to be available for P2P listen state (ms)
-#endif
 #ifdef CONFIG_P2P_PS
 	enum P2P_PS_MODE		p2p_ps_mode; // indicate p2p ps mode
 	enum P2P_PS_STATE		p2p_ps_state; // indicate p2p ps state
@@ -633,12 +621,6 @@ struct mlme_priv {
 	_workitem	Linkdown_workitem;
 #endif
 
-#if 0
-	u8	scanning_via_buddy_intf;
-#endif
-
-//	u8 	NumOfBcnInfoChkFail;
-//	u32	timeBcnInfoChkStart;
 };
 
 #define mlme_set_scan_to_timer(mlme, ms) \
@@ -772,12 +754,6 @@ __inline static void up_scanned_network(struct mlme_priv *pmlmepriv)
 	pmlmepriv->num_of_scanned++;
 	_exit_critical_bh(&pmlmepriv->lock, &irqL);
 }
-
-#if 0
-sint rtw_buddy_adapter_up(_adapter *padapter);
-sint check_buddy_fwstate(_adapter *padapter, sint state);
-u8 rtw_get_buddy_bBusyTraffic(_adapter *padapter);
-#endif //
 
 __inline static void down_scanned_network(struct mlme_priv *pmlmepriv)
 {
