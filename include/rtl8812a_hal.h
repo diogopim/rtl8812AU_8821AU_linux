@@ -245,7 +245,7 @@ typedef struct _RT_FIRMWARE_8812 {
 #define	EFUSE_HIDDEN_812AU_VL				2
 #define	EFUSE_HIDDEN_812AU_VN				3
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 #define EFUSE_REAL_CONTENT_LEN_JAGUAR		1024
 #define HWSET_MAX_SIZE_JAGUAR					1024
 #else
@@ -336,7 +336,7 @@ void SetBcnCtrlReg(PADAPTER padapter, u8 SetBits, u8 ClearBits);
 void rtl8812_start_thread(PADAPTER padapter);
 void rtl8812_stop_thread(PADAPTER padapter);
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 BOOLEAN	InterruptRecognized8812AE(PADAPTER Adapter);
 VOID	UpdateInterruptMask8812AE(PADAPTER Adapter, u32 AddMSR, u32 AddMSR1, u32 RemoveMSR, u32 RemoveMSR1);
 #endif

@@ -63,7 +63,7 @@ struct intf_priv {
 #endif
 
 #ifdef PLATFORM_OS_XP
-#ifdef CONFIG_SDIO_HCI
+#if 0
 	// below is for io_rwmem...
 	PMDL pmdl;
 	PSDBUS_REQUEST_PACKET  sdrp;

@@ -300,7 +300,7 @@ int usb_async_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 
 
 
-#ifdef CONFIG_RTL8192D
+#if 0
 /*	This function only works in 92DU chip.		*/
 void usb_read_reg_rf_byfw(struct intf_hdl *pintfhdl,
                           u16 byteCount,
@@ -340,7 +340,7 @@ void usb_read_reg_rf_byfw(struct intf_hdl *pintfhdl,
 */
 static inline void usb_value_remask(struct intf_hdl *pintfhdl, u16 *value)
 {
-#ifdef CONFIG_RTL8192D
+#if 0
 	_adapter	*padapter = pintfhdl->padapter;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 
@@ -423,7 +423,7 @@ u32 usb_read32(struct intf_hdl *pintfhdl, u32 addr)
 
 	wvalue = (u16)(addr&0x0000ffff);
 	len = 4;
-#ifdef CONFIG_RTL8192D
+#if 0
 	if ((IS_HARDWARE_TYPE_8192DU(pintfhdl->padapter)) && ((addr&0xff000000)>>24 == 0x66)) {
 		usb_read_reg_rf_byfw(pintfhdl, len, addr, &data);
 	} else

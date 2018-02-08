@@ -8695,7 +8695,7 @@ static int issue_action_ba(_adapter *padapter, unsigned char *raddr, unsigned ch
 			} while (pmlmeinfo->dialogToken == 0);
 			pframe = rtw_set_fixed_ie(pframe, 1, &(pmlmeinfo->dialogToken), &(pattrib->pktlen));
 
-#if defined(CONFIG_RTL8188E) && defined(CONFIG_SDIO_HCI)
+#if 0
 			BA_para_set = (0x0802 | ((tid & 0xf) << 2)); /* immediate ack & 16 buffer size */
 #else
 			BA_para_set = (0x1002 | ((tid & 0xf) << 2)); /* immediate ack & 64 buffer size */
@@ -9275,7 +9275,7 @@ unsigned int send_beacon(_adapter *padapter)
 	//struct mlme_priv *pbuddy_mlmepriv = &(pbuddy_adapter->mlmepriv);
 //#endif
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 	//DBG_871X("%s\n", __FUNCTION__);
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_BCN_VALID, NULL);
@@ -9288,7 +9288,7 @@ unsigned int send_beacon(_adapter *padapter)
 	return _SUCCESS;
 #endif
 
-#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_USB_HCI)
 	u32 start = rtw_get_current_time();
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_BCN_VALID, NULL);
@@ -12760,7 +12760,7 @@ u8 chk_bmc_sleepq_hdl(_adapter *padapter, unsigned char *pbuf)
 		return H2C_SUCCESS;
 
 	if((pstapriv->tim_bitmap&BIT(0)) && (psta_bmc->sleepq_len>0)) {
-#ifndef CONFIG_PCI_HCI
+#if 1
 		rtw_msleep_os(10);// 10ms, ATIM(HIQ) Windows
 #endif
 		//_enter_critical_bh(&psta_bmc->sleep_q.lock, &irqL);

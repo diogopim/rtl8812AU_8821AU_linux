@@ -1292,7 +1292,7 @@ NDIS_STATUS oid_rt_rd_attrib_mem_hdl(struct oid_par_priv *poid_par_priv)
 #endif
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 	void (*_attrib_read)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pmem);
 #endif
 
@@ -1303,7 +1303,7 @@ NDIS_STATUS oid_rt_rd_attrib_mem_hdl(struct oid_par_priv *poid_par_priv)
 	if (poid_par_priv->type_of_oid != QUERY_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 	_irqlevel_changed_(&oldirql, LOWER);
 	{
 		u32 *plmem = (u32*)poid_par_priv->information_buf+2;
@@ -1335,7 +1335,7 @@ NDIS_STATUS oid_rt_wr_attrib_mem_hdl (struct oid_par_priv *poid_par_priv)
 #endif
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 	void (*_attrib_write)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pmem);
 #endif
 
@@ -1344,7 +1344,7 @@ NDIS_STATUS oid_rt_wr_attrib_mem_hdl (struct oid_par_priv *poid_par_priv)
 	if (poid_par_priv->type_of_oid != SET_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 	_irqlevel_changed_(&oldirql, LOWER);
 	{
 		u32 *plmem = (u32*)poid_par_priv->information_buf + 2;
@@ -1995,7 +1995,7 @@ NDIS_STATUS oid_rt_pro_dele_sta_info_hdl(struct oid_par_priv *poid_par_priv)
 #if 0
 static u32 mp_query_drv_var(_adapter *padapter, u8 offset, u32 var)
 {
-#ifdef CONFIG_SDIO_HCI
+#if 0
 
 	if (offset == 1) {
 		u16 tmp_blk_num;
@@ -2846,7 +2846,7 @@ NDIS_STATUS oid_rt_set_power_down_hdl(struct oid_par_priv *poid_par_priv)
 	u8		bpwrup;
 	NDIS_STATUS	status = NDIS_STATUS_SUCCESS;
 #ifdef PLATFORM_LINUX
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if 0
 	PADAPTER	padapter = (PADAPTER)(poid_par_priv->adapter_context);
 #endif
 #endif

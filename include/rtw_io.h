@@ -123,7 +123,7 @@ struct _io_ops {
 	void (*_read_port_cancel)(struct intf_hdl *pintfhdl);
 	void (*_write_port_cancel)(struct intf_hdl *pintfhdl);
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 	u8 (*_sd_f0_read8)(struct intf_hdl *pintfhdl, u32 addr);
 #endif
 
@@ -152,7 +152,7 @@ struct io_req {
 	PMDL pmdl;
 	PIRP  pirp;
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 	PSDBUS_REQUEST_PACKET sdrp;
 #endif
 
@@ -298,7 +298,7 @@ struct reg_protocol_wt {
 #endif
 
 };
-#ifdef CONFIG_PCI_HCI
+#if 0
 #define MAX_CONTINUAL_IO_ERR 4
 #endif
 
@@ -306,12 +306,12 @@ struct reg_protocol_wt {
 #define MAX_CONTINUAL_IO_ERR 4
 #endif
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 #define SD_IO_TRY_CNT (8)
 #define MAX_CONTINUAL_IO_ERR SD_IO_TRY_CNT
 #endif
 
-#ifdef CONFIG_GSPI_HCI
+#if 0
 #define SD_IO_TRY_CNT (8)
 #define MAX_CONTINUAL_IO_ERR SD_IO_TRY_CNT
 #endif

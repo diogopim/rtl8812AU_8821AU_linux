@@ -21,7 +21,7 @@
 #define _RTW_XMIT_H_
 
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if 0
 #ifdef CONFIG_TX_AGGREGATION
 #define MAX_XMITBUF_SZ	(20480)	// 20k
 //#define SDIO_TX_AGG_MAX	5
@@ -30,14 +30,14 @@
 #define SDIO_TX_AGG_MAX	1
 #endif
 
-#if defined CONFIG_SDIO_HCI
+#if 0
 #define NR_XMITBUFF	(16)
 #endif
-#if defined(CONFIG_GSPI_HCI)
+#if 0
 #define NR_XMITBUFF	(128)
 #endif
-
-#elif defined (CONFIG_USB_HCI)
+#endif
+#if defined (CONFIG_USB_HCI)
 
 #ifdef CONFIG_USB_TX_AGGREGATION
 #if defined(CONFIG_PLATFORM_ARM_SUNxI) || defined(CONFIG_PLATFORM_ARM_SUN6I) || defined(CONFIG_PLATFORM_ARM_SUN7I) || defined(CONFIG_PLATFORM_ARM_SUN8I)
@@ -56,15 +56,12 @@
 #else
 #define NR_XMITBUFF	(4)
 #endif //CONFIG_SINGLE_XMIT_BUF
-#elif defined (CONFIG_PCI_HCI)
-#define MAX_XMITBUF_SZ	(1664)
-#define NR_XMITBUFF	(128)
 #endif
 
 #ifdef PLATFORM_OS_CE
 #define XMITBUF_ALIGN_SZ 4
 #else
-#ifdef CONFIG_PCI_HCI
+#if 0
 #define XMITBUF_ALIGN_SZ 4
 #else
 #ifdef USB_XMITBUF_ALIGN_SZ
@@ -104,7 +101,7 @@
 
 #define HW_QUEUE_ENTRY	8
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 //#define TXDESC_NUM						64
 #define TXDESC_NUM						128
 #define TXDESC_NUM_BE_QUEUE			128
@@ -151,16 +148,16 @@ do{\
 
 // For Buffer Descriptor ring architecture
 #ifdef BUF_DESC_ARCH
-#if defined (CONFIG_RTL8192E)
+#if 0
 #define TX_BUFFER_SEG_NUM 	1 // 0:2 seg, 1: 4 seg, 2: 8 seg.
 #endif
 #endif
 
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)|| defined(CONFIG_RTL8723B)
+#if 1
 #define TXDESC_SIZE 40
 //8192EE_TODO
-#elif defined (CONFIG_RTL8192E) // this section is defined for buffer descriptor ring architecture
-#ifdef CONFIG_PCI_HCI
+#elif 0
+#if 0
 #define TXDESC_SIZE ((TX_BUFFER_SEG_NUM ==0)?16: ((TX_BUFFER_SEG_NUM ==1)? 32:64) )
 #define TX_WIFI_INFO_SIZE 40
 #else  //8192E USB or SDIO
@@ -176,7 +173,7 @@ do{\
 #endif
 
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if 0
 #define TXDESC_OFFSET TXDESC_SIZE
 #endif
 
@@ -189,8 +186,8 @@ do{\
 #define TXDESC_OFFSET (TXDESC_SIZE + PACKET_OFFSET_SZ)
 #endif
 
-#ifdef CONFIG_PCI_HCI
-#if defined(CONFIG_RTL8192E) // this section is defined for buffer descriptor ring architecture
+#if 0
+#if 0 // this section is defined for buffer descriptor ring architecture
 #define TXDESC_OFFSET TX_WIFI_INFO_SIZE
 #else
 #define TXDESC_OFFSET 0
@@ -205,13 +202,13 @@ enum TXDESC_SC {
 	SC_DUPLICATE=0x03
 };
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 #define TXDESC_64_BYTES
-#elif defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A) || defined(CONFIG_RTL8723B)
+#elif defined(CONFIG_RTL8812A)
 #define TXDESC_40_BYTES
 #endif
 
-#if defined(CONFIG_RTL8192E) && defined(CONFIG_PCI_HCI) //8192ee
+#if 0
 //8192EE_TODO
 struct tx_desc {
 	unsigned int txdw0;
@@ -260,7 +257,7 @@ union txdesc {
 	unsigned int value[TXDESC_SIZE>>2];
 };
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 #define PCI_MAX_TX_QUEUE_COUNT	8
 
 struct rtw_tx_ring {
@@ -513,7 +510,7 @@ struct xmit_buf {
 
 #endif
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if 0
 	u8 *phead;
 	u8 *pdata;
 	u8 *ptail;
@@ -528,7 +525,7 @@ struct xmit_buf {
 #endif
 #endif
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 	struct tx_desc *desc;
 #endif
 
@@ -554,7 +551,7 @@ struct xmit_frame {
 
 	struct xmit_buf *pxmitbuf;
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if 0
 	u8	pg_num;
 	u8	agg_num;
 #endif
@@ -564,7 +561,7 @@ struct xmit_frame {
 	u8	agg_num;
 #endif
 	s8	pkt_offset;
-#ifdef CONFIG_RTL8192D
+#if 0
 	u8	EMPktNum;
 	u16	EMPktLen[5];//The max value by HW
 #endif
@@ -711,7 +708,7 @@ struct	xmit_priv {
 
 #endif
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 	// Tx
 	struct rtw_tx_ring	tx_ring[PCI_MAX_TX_QUEUE_COUNT];
 	int	txringcount[PCI_MAX_TX_QUEUE_COUNT];
@@ -721,7 +718,7 @@ struct	xmit_priv {
 #endif
 #endif
 
-#if defined (CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if 0
 #ifdef CONFIG_SDIO_TX_TASKLET
 #ifdef PLATFORM_LINUX
 	struct tasklet_struct xmit_tasklet;
@@ -749,7 +746,7 @@ struct	xmit_priv {
 	u16	nqos_ssn;
 #ifdef CONFIG_TX_EARLY_MODE
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 #define MAX_AGG_PKT_NUM 20
 #else
 #define MAX_AGG_PKT_NUM 256 //Max tx ampdu coounts
@@ -770,7 +767,7 @@ struct	xmit_priv {
 extern struct xmit_frame *__rtw_alloc_cmdxmitframe(struct xmit_priv *pxmitpriv,
         enum cmdbuf_type buf_type);
 #define rtw_alloc_cmdxmitframe(p) __rtw_alloc_cmdxmitframe(p, CMDBUF_RSVD)
-#if defined(CONFIG_RTL8192E) && defined(CONFIG_PCI_HCI)
+#if 0
 extern struct xmit_frame *__rtw_alloc_cmdxmitframe_8192ee(struct xmit_priv *pxmitpriv,
         enum cmdbuf_type buf_type);
 #define rtw_alloc_bcnxmitframe(p) __rtw_alloc_cmdxmitframe_8192ee(p, CMDBUF_BEACON)

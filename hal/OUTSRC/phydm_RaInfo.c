@@ -1627,7 +1627,7 @@ odm_RefreshRateAdaptiveMaskAPADSL(
 				ODM_PRINT_ADDR(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, ("Target STA addr : "), pstat->hwaddr);
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_RA_MASK, ODM_DBG_LOUD, ("RSSI:%d, RSSI_LEVEL:%d\n", pstat->rssi, pstat->rssi_level));
 
-#if defined(CONFIG_PCI_HCI)
+#if 0
 #ifdef CONFIG_WLAN_HAL
 				if (IS_HAL_CHIP(priv)) {
 #ifdef WDS
@@ -1653,7 +1653,7 @@ odm_RefreshRateAdaptiveMaskAPADSL(
 							add_update_RATid(priv, pstat);
 #endif
 						}
-#elif defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI)
+#elif defined(CONFIG_USB_HCI)
 				update_STA_RATid(priv, pstat);
 #endif
 			}

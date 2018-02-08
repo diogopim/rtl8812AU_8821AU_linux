@@ -222,7 +222,7 @@ void rtw_drv_proc_deinit(void)
 	rtw_proc = NULL;
 }
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 static int proc_get_sd_f0_reg_dump(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
@@ -666,7 +666,7 @@ const struct rtw_proc_hdl adapter_proc_hdls [] = {
 	{"roam_tgt_addr", proc_get_dummy, proc_set_roam_tgt_addr},
 #endif /* CONFIG_LAYER2_ROAMING */
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 	{"sd_f0_reg_dump", proc_get_sd_f0_reg_dump, NULL},
 #endif /* CONFIG_SDIO_HCI */
 
@@ -732,7 +732,7 @@ const struct rtw_proc_hdl adapter_proc_hdls [] = {
 	{"int_logs", proc_get_int_logs, NULL},
 #endif
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 	{"rx_ring", proc_get_rx_ring, NULL},
 	{"tx_ring", proc_get_tx_ring, NULL},
 #endif

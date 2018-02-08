@@ -386,7 +386,7 @@ int rtw_tx_pwr_by_rate = 1;
 int rtw_tx_pwr_lmt_enable = 0;
 int rtw_tx_pwr_by_rate = 1;
 #else //eFuse: Regulatory selection=2
-#ifdef CONFIG_PCI_HCI
+#if 0
 int rtw_tx_pwr_lmt_enable = 2; // 2- Depend on efuse
 int rtw_tx_pwr_by_rate = 2;// 2- Depend on efuse
 #else // USB & SDIO
@@ -959,13 +959,13 @@ u32 rtw_start_drv_threads(_adapter *padapter)
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtw_start_drv_threads\n"));
 #ifdef CONFIG_XMIT_THREAD_MODE
-#if defined(CONFIG_SDIO_HCI) && defined(CONFIG_CONCURRENT_MODE)
+#if 0
 	if(padapter->adapter_type == PRIMARY_ADAPTER) {
 #endif
 		padapter->xmitThread = kthread_run(rtw_xmit_thread, padapter, "RTW_XMIT_THREAD");
 		if(IS_ERR(padapter->xmitThread))
 			_status = _FAIL;
-#if defined(CONFIG_SDIO_HCI) && defined(CONFIG_CONCURRENT_MODE)
+#if 0
 	}
 #endif		// CONFIG_SDIO_HCI+CONFIG_CONCURRENT_MODE
 #endif
@@ -1020,7 +1020,7 @@ void rtw_stop_drv_threads (_adapter *padapter)
 
 #ifdef CONFIG_XMIT_THREAD_MODE
 	// Below is to termindate tx_thread...
-#if defined(CONFIG_SDIO_HCI) && defined(CONFIG_CONCURRENT_MODE)
+#if 0
 	// Only wake-up primary adapter
 	if(padapter->adapter_type == PRIMARY_ADAPTER)
 #endif  //SDIO_HCI + CONCURRENT
@@ -3176,7 +3176,7 @@ int rtw_suspend_wow(_adapter *padapter)
 		//rtw_set_ps_mode(padapter, PS_MODE_ACTIVE, 0, 0, "WOWLAN");
 		//#endif
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if 0
 		// 2. disable interrupt
 		if (padapter->intf_stop) {
 			padapter->intf_stop(padapter);
@@ -3310,7 +3310,7 @@ int rtw_suspend_ap_wow(_adapter *padapter)
 	//rtw_set_ps_mode(padapter, PS_MODE_ACTIVE, 0, 0, "WOWLAN");
 	//#endif
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 	// 2. disable interrupt
 	rtw_hal_disable_interrupt(padapter); // It need wait for leaving 32K.
 
@@ -3611,7 +3611,7 @@ int rtw_resume_process_wow(_adapter *padapter)
 
 		pwrpriv->bFwCurrentInPSMode = _FALSE;
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 		if (padapter->intf_stop) {
 			padapter->intf_stop(padapter);
 		}

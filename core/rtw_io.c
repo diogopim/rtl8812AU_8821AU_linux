@@ -55,7 +55,7 @@ jackson@realtek.com.tw
 #error "Shall be Linux or Windows, but not both!\n"
 #endif
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 #define rtw_le16_to_cpu(val) 		val
 #define rtw_le32_to_cpu(val)		val
 #define rtw_cpu_to_le16(val)		val
@@ -178,7 +178,7 @@ int _rtw_writeN(_adapter *adapter, u32 addr ,u32 length , u8 *pdata)
 	return RTW_STATUS_CODE(ret);
 }
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 u8 _rtw_sd_f0_read8(_adapter *adapter, u32 addr)
 {
 	u8 r_val = 0x00;

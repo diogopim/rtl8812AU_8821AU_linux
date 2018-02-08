@@ -89,7 +89,7 @@ static void dm_CheckPbcGPIO(_adapter *padapter)
 	if(!padapter->registrypriv.hw_wps_pbc)
 		return;
 
-#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI)
+#if defined(CONFIG_USB_HCI)
 	if (IS_HARDWARE_TYPE_8812(padapter)) {
 		tmp1byte = rtw_read8(padapter, GPIO_IO_SEL);
 		tmp1byte |= (HAL_8192C_HW_GPIO_WPS_BIT);
@@ -145,7 +145,7 @@ static void dm_CheckPbcGPIO(_adapter *padapter)
 }
 #endif //#ifdef CONFIG_SUPPORT_HW_WPS_PBC
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 //
 //	Description:
 //		Perform interrupt migration dynamically to reduce CPU utilization.
@@ -409,7 +409,7 @@ rtl8812_HalDmWatchDog(
 		//
 		//dm_CheckProtection(Adapter);
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 		// 20100630 Joseph: Disable Interrupt Migration mechanism temporarily because it degrades Rx throughput.
 		// Tx Migration settings.
 		//dm_InterruptMigration(Adapter);

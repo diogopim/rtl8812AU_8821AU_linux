@@ -175,7 +175,7 @@ void SetBcnCtrlReg(
 	pHalData->RegBcnCtrlVal &= ~ClearBits;
 
 #if 0
-//#ifdef CONFIG_SDIO_HCI
+//#if 0
 	if (pHalData->sdio_himr & (SDIO_HIMR_TXBCNOK_MSK | SDIO_HIMR_TXBCNERR_MSK))
 		pHalData->RegBcnCtrlVal |= EN_TXBCN_RPT;
 #endif
@@ -223,7 +223,7 @@ _BlockWrite_8812(
 	u32			remainSize_p1 = 0, remainSize_p2 = 0;
 	u8			*bufferPtr	= (u8*)buffer;
 	u32			i=0, offset=0;
-#ifdef CONFIG_PCI_HCI
+#if 0
 	u8			remainFW[4] = {0, 0, 0, 0};
 	u8			*p = NULL;
 #endif
@@ -253,7 +253,7 @@ _BlockWrite_8812(
 			goto exit;
 	}
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 	p = (u8*)((u32*)(bufferPtr + blockCount_p1 * blockSize_p1));
 	if (remainSize_p1) {
 		switch (remainSize_p1) {
@@ -366,7 +366,7 @@ _WriteFW_8812(
 	u32	page, offset;
 	u8	*bufferPtr = (u8*)buffer;
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 	// 20100120 Joseph: Add for 88CE normal chip.
 	// Fill in zero to make firmware image to dword alignment.
 //		_FillDummy(bufferPtr, &size);
@@ -925,7 +925,7 @@ int _WriteBTFWtoTxPktBuf8812(
 		_rtw_memcpy( (u8*) (pmgntframe->buf_addr + txdesc_offset), ReservedPagePacket, FwBufLen);
 		DBG_871X("[%d]===>TotalPktLen + TXDESC_OFFSET TotalPacketLen:%d \n", DLBcnCount, (FwBufLen + txdesc_offset));
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 		dump_mgntframe(Adapter, pmgntframe);
 #else
 		dump_mgntframe_and_wait(Adapter, pmgntframe, 100);
@@ -1071,7 +1071,7 @@ int ReservedPage_Compare(PADAPTER Adapter,PRT_MP_FIRMWARE pFirmware,u32 BTPatchS
 }
 
 
-#ifdef CONFIG_RTL8821A
+#if 0
 s32 FirmwareDownloadBT(PADAPTER padapter, PRT_MP_FIRMWARE pFirmware)
 {
 	s32 rtStatus;
@@ -3576,18 +3576,13 @@ void InitPGData8812A(PADAPTER padapter)
 		tmp = _halReadMACAddrFromFile(padapter, pEEPROM->mac_addr);
 		pEEPROM->bloadmac_fail_flag = ((tmp==_FAIL) ? _TRUE : _FALSE);
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_8821AS;
 #elif defined(CONFIG_USB_HCI)
 		if (IS_HARDWARE_TYPE_8812AU(padapter))
 			addr = EEPROM_MAC_ADDR_8812AU;
 		else
 			addr = EEPROM_MAC_ADDR_8821AU;
-#elif defined(CONFIG_PCI_HCI)
-		if (IS_HARDWARE_TYPE_8812E(padapter))
-			addr = EEPROM_MAC_ADDR_8812AE;
-		else
-			addr = EEPROM_MAC_ADDR_8821AE;
 #endif // CONFIG_PCI_HCI
 		_rtw_memcpy(&pEEPROM->efuse_eeprom_data[addr], pEEPROM->mac_addr, ETH_ALEN);
 	}
@@ -3792,7 +3787,7 @@ void InitDefaultValue8821A(PADAPTER padapter)
 		pHalData->LastHMEBoxNum = 0;
 
 	/* hal capability values */
-#ifdef CONFIG_RTL8821A
+#if 0
 	if(IS_HARDWARE_TYPE_8821(padapter)) {
 		pHalData->macid_num = MACID_NUM_8821A;
 		pHalData->cam_entry_num = CAM_ENTRY_NUM_8821A;
@@ -3977,7 +3972,7 @@ SetBeamformingCLK_8812(
 	// Stop Usb TxDMA
 	rtw_write_port_cancel(Adapter);
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 	// Stop PCIe TxDMA
 	rtw_write8(Adapter, REG_PCIE_CTRL_REG+1, 0xFE);
 #endif
@@ -4514,7 +4509,7 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 		if((mode == _HW_STATE_STATION_) || (mode == _HW_STATE_NOLINK_)) {
 			if(!check_buddy_mlmeinfo_state(Adapter, WIFI_FW_AP_STATE)) {
 				StopTxBeacon(Adapter);
-#ifdef CONFIG_PCI_HCI
+#if 0
 				UpdateInterruptMask8812AE( Adapter, 0, 0, RT_BCN_INT_MASKS, 0);
 #else
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN
@@ -4538,7 +4533,7 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 			ResumeTxBeacon(Adapter);
 			rtw_write8(Adapter,REG_BCN_CTRL_1, 0x1a);
 		} else if(mode == _HW_STATE_AP_) {
-#ifdef CONFIG_PCI_HCI
+#if 0
 			UpdateInterruptMask8812AE( Adapter, RT_BCN_INT_MASKS, 0, 0, 0);
 #else
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN
@@ -4629,7 +4624,7 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 #endif // CONFIG_CONCURRENT_MODE
 			{
 				StopTxBeacon(Adapter);
-#ifdef CONFIG_PCI_HCI
+#if 0
 				UpdateInterruptMask8812AE( Adapter, 0, 0, RT_BCN_INT_MASKS, 0);
 #else
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN
@@ -4652,7 +4647,7 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 			ResumeTxBeacon(Adapter);
 			rtw_write8(Adapter,REG_BCN_CTRL, 0x1a);
 		} else if(mode == _HW_STATE_AP_) {
-#ifdef CONFIG_PCI_HCI
+#if 0
 			UpdateInterruptMask8812AE( Adapter, RT_BCN_INT_MASKS, 0, 0, 0);
 #else
 #ifdef CONFIG_INTERRUPT_BASED_TXBCN

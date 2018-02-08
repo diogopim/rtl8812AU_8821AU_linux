@@ -28,11 +28,11 @@
 void rtl8812au_InitSwLeds(PADAPTER padapter);
 void rtl8812au_DeInitSwLeds(PADAPTER padapter);
 #endif
-#ifdef CONFIG_PCI_HCI
+#if 0
 void rtl8812ae_InitSwLeds(PADAPTER padapter);
 void rtl8812ae_DeInitSwLeds(PADAPTER padapter);
 #endif
-#ifdef CONFIG_SDIO_HCI
+#if 0
 void rtl8812s_InitSwLeds(PADAPTER padapter);
 void rtl8812s_DeInitSwLeds(PADAPTER padapter);
 #endif

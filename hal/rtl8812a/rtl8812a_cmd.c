@@ -1012,7 +1012,7 @@ static inline void SetFwRsvdPagePkt_8812(PADAPTER padapter, BOOLEAN bDLFinished)
 		update_mgntframe_attrib(padapter, pattrib);
 		pattrib->qsel = QSLT_BEACON;
 		pattrib->pktlen = pattrib->last_txcmdsz = TotalPacketLen - TxDescLen;
-#ifdef CONFIG_PCI_HCI
+#if 0
 		dump_mgntframe(padapter, pcmdframe);
 #else
 		dump_mgntframe_and_wait(padapter, pcmdframe, 100);
@@ -1537,7 +1537,7 @@ static void rtl8812_set_AP_FwRsvdPagePkt(PADAPTER padapter,
 		pattrib->qsel = QSLT_BEACON;
 		pattrib->pktlen = TotalPacketLen - TxDescOffset;
 		pattrib->last_txcmdsz = TotalPacketLen - TxDescOffset;
-#ifdef CONFIG_PCI_HCI
+#if 0
 		dump_mgntframe(padapter, pcmdframe);
 #else
 		dump_mgntframe_and_wait(padapter, pcmdframe, 100);
@@ -2196,7 +2196,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		update_mgntframe_attrib(padapter, pattrib);
 		pattrib->qsel = QSLT_BEACON;
 		pattrib->pktlen = pattrib->last_txcmdsz = TotalPacketLen - TxDescOffset;
-#ifdef CONFIG_PCI_HCI
+#if 0
 		dump_mgntframe(padapter, pcmdframe);
 #else
 		dump_mgntframe_and_wait(padapter, pcmdframe, 100);
@@ -2930,7 +2930,7 @@ static void SetFwRsvdPagePkt_BTCoex(PADAPTER padapter)
 		update_mgntframe_attrib(padapter, pattrib);
 		pattrib->qsel = QSLT_BEACON;
 		pattrib->pktlen = pattrib->last_txcmdsz = TotalPacketLen - TxDescOffset;
-#ifdef CONFIG_PCI_HCI
+#if 0
 		dump_mgntframe(padapter, pcmdframe);
 #else
 		dump_mgntframe_and_wait(padapter, pcmdframe, 100);

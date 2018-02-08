@@ -285,7 +285,7 @@ typedef struct txdescriptor_8812 {
 #define SET_TX_DESC_TX_BUFFER_SIZE_8812(__pTxDesc, __Value) 		SET_BITS_TO_LE_4BYTE(__pTxDesc+28, 0, 16, __Value)
 #define SET_TX_DESC_TX_DESC_CHECKSUM_8812(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+28, 0, 16, __Value)
 #define SET_TX_DESC_USB_TXAGG_NUM_8812(__pTxDesc, __Value) SET_BITS_TO_LE_4BYTE(__pTxDesc+28, 24, 8, __Value)
-#ifdef CONFIG_SDIO_HCI
+#if 0
 #define SET_TX_DESC_SDIO_TXSEQ_8812(__pTxDesc, __Value)			SET_BITS_TO_LE_4BYTE(__pTxDesc+28, 16, 8, __Value)
 #endif
 
@@ -335,7 +335,7 @@ void rtl8812au_xmit_tasklet(void *priv);
 s32 rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 #endif
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 s32 rtl8812ae_init_xmit_priv(PADAPTER padapter);
 void rtl8812ae_free_xmit_priv(PADAPTER padapter);
 struct xmit_buf *rtl8812ae_dequeue_xmitbuf(struct rtw_tx_ring *ring);
@@ -358,7 +358,7 @@ u8	SCMapping_8812(PADAPTER Adapter, struct pkt_attrib	*pattrib);
 
 #endif //__RTL8812_XMIT_H__
 
-#ifdef CONFIG_RTL8821A
+#if 0
 #include "rtl8821a_xmit.h"
 #endif // CONFIG_RTL8821A
 

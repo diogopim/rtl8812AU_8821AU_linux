@@ -1001,7 +1001,7 @@ s32 c2h_evt_read(_adapter *adapter, u8 *buf)
 	if (buf == NULL)
 		goto exit;
 
-#if defined(CONFIG_RTL8192C) || defined(CONFIG_RTL8192D) || defined(CONFIG_RTL8723A) || defined (CONFIG_RTL8188E)
+#if 0
 
 	trigger = rtw_read8(adapter, REG_C2HEVT_CLEAR);
 
@@ -1061,7 +1061,7 @@ s32 c2h_evt_read_88xx(_adapter *adapter, u8 *buf)
 	if (buf == NULL)
 		goto exit;
 
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A) || defined(CONFIG_RTL8192E) || defined(CONFIG_RTL8723B)
+#if 1
 
 	trigger = rtw_read8(adapter, REG_C2HEVT_CLEAR);
 
@@ -1297,7 +1297,7 @@ void hw_var_port_switch(_adapter *adapter)
 
 	/* write bcn ctl */
 #ifdef CONFIG_BT_COEXIST
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)
+#if 0
 	// always enable port0 beacon function for PSTDMA
 	bcn_ctrl_1 |= EN_BCN_FUNCTION;
 	// always disable port1 beacon function for PSTDMA
@@ -1653,7 +1653,7 @@ static u8 rtw_hal_pause_rx_dma(_adapter* adapter)
 			ret = _SUCCESS;
 			break;
 		}
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if 0
 		else {
 			// If RX_DMA is not idle, receive one pkt from DMA
 			res = sdio_local_read(adapter,
@@ -1679,7 +1679,7 @@ static u8 rtw_hal_pause_rx_dma(_adapter* adapter)
 	return ret;
 }
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if 0
 static u8 rtw_hal_enable_cpwm2(_adapter* adapter)
 {
 	u8 ret = 0;
@@ -4966,7 +4966,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 		update_mgntframe_attrib(adapter, pattrib);
 		pattrib->qsel = 0x10;
 		pattrib->pktlen = pattrib->last_txcmdsz = TotalPacketLen - TxDescOffset;
-#ifdef CONFIG_PCI_HCI
+#if 0
 		dump_mgntframe(adapter, pcmdframe);
 #else
 		dump_mgntframe_and_wait(adapter, pcmdframe, 100);
@@ -5170,7 +5170,7 @@ void SetHwReg(_adapter *adapter, u8 variable, const u8 *val)
 			if (res == _FAIL)
 				DBG_871X_LEVEL(_drv_always_, "[WARNING] pause RX DMA fail\n");
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if 0
 			//Enable CPWM2 only.
 			res = rtw_hal_enable_cpwm2(adapter);
 			if (res == _FAIL)
@@ -6278,7 +6278,7 @@ void rtw_bb_rf_gain_offset(_adapter *padapter)
 	pu4Byte    Array	   = Array_kfreemap;
 	u4Byte v1=0,v2=0,GainValue,target=0;
 	//DBG_871X("+%s value: 0x%02x+\n", __func__, value);
-#if defined(CONFIG_RTL8723A)
+#if 0
 	if (value & BIT0) {
 		DBG_871X("Offset RF Gain.\n");
 		DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal=0x%x\n",padapter->eeprompriv.EEPROMRFGainVal);
@@ -6306,7 +6306,7 @@ void rtw_bb_rf_gain_offset(_adapter *padapter)
 	} else {
 		DBG_871X("Using the default RF gain.\n");
 	}
-#elif defined(CONFIG_RTL8723B)
+#elif 0
 	if (value & BIT4) {
 		DBG_871X("Offset RF Gain.\n");
 		DBG_871X("Offset RF Gain.  padapter->eeprompriv.EEPROMRFGainVal=0x%x\n",padapter->eeprompriv.EEPROMRFGainVal);
@@ -6348,7 +6348,7 @@ void rtw_bb_rf_gain_offset(_adapter *padapter)
 		DBG_871X("Using the default RF gain.\n");
 	}
 
-#elif defined(CONFIG_RTL8188E)
+#elif 0
 	if (value & BIT4) {
 		DBG_871X("8188ES Offset RF Gain.\n");
 		DBG_871X("8188ES Offset RF Gain. EEPROMRFGainVal=0x%x\n",

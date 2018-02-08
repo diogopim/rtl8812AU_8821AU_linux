@@ -196,7 +196,7 @@ typedef struct stat_info		STA_INFO_T,*PSTA_INFO_T;
 typedef struct timer_list		RT_TIMER, *PRT_TIMER;
 typedef  void *				RT_TIMER_CALL_BACK;
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 #define DEV_BUS_TYPE		RT_PCI_INTERFACE
 #endif
 
@@ -247,12 +247,6 @@ typedef s64					s8Byte,*ps8Byte;
 #endif
 #ifdef CONFIG_USB_HCI
 #define DEV_BUS_TYPE  	RT_USB_INTERFACE
-#elif defined(CONFIG_PCI_HCI)
-#define DEV_BUS_TYPE  	RT_PCI_INTERFACE
-#elif defined(CONFIG_SDIO_HCI)
-#define DEV_BUS_TYPE  	RT_SDIO_INTERFACE
-#elif defined(CONFIG_GSPI_HCI)
-#define DEV_BUS_TYPE  	RT_SDIO_INTERFACE
 #endif
 
 

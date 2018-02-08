@@ -26,7 +26,7 @@ ODM_BOARD_TYPE_E boardType(u8 InterfaceSel)
 {
 	ODM_BOARD_TYPE_E        board	= ODM_BOARD_DEFAULT;
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 	INTERFACE_SELECT_PCIE   pcie 	= (INTERFACE_SELECT_PCIE)InterfaceSel;
 	switch (pcie) {
 	case INTF_SEL0_SOLO_MINICARD:

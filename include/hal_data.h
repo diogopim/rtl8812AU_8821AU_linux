@@ -27,10 +27,10 @@
 #include <hal_btcoex.h>
 #endif
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 #include <hal_sdio.h>
 #endif
-#ifdef CONFIG_GSPI_HCI
+#if 0
 #include <hal_gspi.h>
 #endif
 //
@@ -134,7 +134,7 @@ typedef enum _RT_AMPDU_BRUST_MODE {
 //#define HP_THERMAL_NUM		8
 //###### duplicate code,will move to ODM #########
 
-#if defined(CONFIG_RTL8192D) || defined(CONFIG_BT_COEXIST)
+#if defined(CONFIG_BT_COEXIST)
 typedef enum _MACPHY_MODE_8192D {
 	SINGLEMAC_SINGLEPHY,	//SMSP
 	DUALMAC_DUALPHY,		//DMDP
@@ -238,7 +238,7 @@ struct dm_priv {
 	u32	TXPowerTrackingCallbackCnt;	//cosa add for debug
 
 	u32	prv_traffic_idx; // edca turbo
-#ifdef CONFIG_RTL8192D
+#if 0
 	u8	ThermalValue_AVG[AVG_THERMAL_NUM];
 	u8	ThermalValue_AVG_index;
 	u8	ThermalValue_RxGain;
@@ -312,7 +312,7 @@ typedef struct hal_com_data {
 	u16	EEPROMPID;
 	u16	EEPROMSDID;
 #endif
-#ifdef CONFIG_PCI_HCI
+#if 0
 	u16	EEPROMDID;
 	u16	EEPROMSMID;
 #endif
@@ -522,7 +522,7 @@ typedef struct hal_com_data {
 
 	RT_AMPDU_BRUST		AMPDUBurstMode; //92C maybe not use, but for compile successfully
 
-#if defined (CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if 0
 	//
 	// For SDIO Interface HAL related
 	//
@@ -584,7 +584,7 @@ typedef struct hal_com_data {
 #endif //CONFIG_USB_HCI
 
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 	//
 	// EEPROM setting.
 	//
@@ -623,13 +623,13 @@ typedef struct hal_com_data {
 #ifdef CONFIG_BT_COEXIST
 	// For bluetooth co-existance
 	BT_COEXIST		bt_coexist;
-#ifdef CONFIG_RTL8723A
+#if 0
 	u8				bAntennaDetected;
 #endif // CONFIG_RTL8723A
 #endif // CONFIG_BT_COEXIST
 
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)
-#ifndef CONFIG_PCI_HCI	// mutual exclusive with PCI -- so they're SDIO and GSPI
+#if 0
+#if 1	// mutual exclusive with PCI -- so they're SDIO and GSPI
 	// Interrupt relatd register information.
 	u32			SysIntrStatus;
 	u32			SysIntrMask;
@@ -637,7 +637,7 @@ typedef struct hal_com_data {
 #endif //endif CONFIG_RTL8723A
 
 
-#if defined(CONFIG_RTL8192C) ||defined(CONFIG_RTL8192D)
+#if 0
 
 	u8	BluetoothCoexist;
 
@@ -646,7 +646,7 @@ typedef struct hal_com_data {
 	u8	EEPROMChnlAreaTxPwrHT40_2SDiff[2][3];
 	u8	EEPROMPwrLimitHT20[3];
 	u8	EEPROMPwrLimitHT40[3];
-#ifdef CONFIG_RTL8192D
+#if 0
 	MACPHY_MODE_8192D	MacPhyMode92D;
 	BAND_TYPE	CurrentBandType92D;	//0:2.4G, 1:5G
 	BAND_TYPE	BandSet92D;

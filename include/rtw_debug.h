@@ -329,7 +329,7 @@ extern u64 GlobalDebugComponents;
 void dump_drv_version(void *sel);
 void dump_log_level(void *sel);
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 void sd_f0_reg_dump(void *sel, _adapter *adapter);
 #endif /* CONFIG_SDIO_HCI */
 
@@ -462,7 +462,7 @@ int proc_get_tx_logs(struct seq_file *m, void *v);
 int proc_get_int_logs(struct seq_file *m, void *v);
 #endif
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 int proc_get_rx_ring(struct seq_file *m, void *v);
 int proc_get_tx_ring(struct seq_file *m, void *v);
 #endif

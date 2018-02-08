@@ -500,7 +500,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 	{
 		if ( (pwrpriv->rpwm == pslv)
 #ifdef CONFIG_LPS_LCLK
-#ifndef CONFIG_RTL8723A
+#if 1
 		     || ((pwrpriv->rpwm >= PS_STATE_S2)&&(pslv >= PS_STATE_S2))
 #endif
 #endif
@@ -575,7 +575,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 			poll_cnt++;
 			rtw_hal_get_hwreg(padapter, HW_VAR_CPWM, &cpwm_now);
 			if ((cpwm_orig ^ cpwm_now) & 0x80) {
-#ifdef CONFIG_RTL8723A
+#if 0
 				pwrpriv->cpwm = PS_STATE(cpwm_now);
 #else // !CONFIG_RTL8723A
 				pwrpriv->cpwm = PS_STATE_S4;
@@ -989,7 +989,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 				if (val8 & BIT(4))
 					pslv = PS_STATE_S2;
 
-#ifdef CONFIG_RTL8723A
+#if 0
 				val8 = rtw_btcoex_RpwmVal(padapter);
 				switch (val8) {
 				case 0x4:
@@ -1214,7 +1214,7 @@ void LeaveAllPowerSaveModeDirect(PADAPTER Adapter)
 
 			rtw_hal_get_hwreg(Adapter, HW_VAR_CPWM, &cpwm_now);
 			if ((cpwm_orig ^ cpwm_now) & 0x80) {
-#ifdef CONFIG_RTL8723A
+#if 0
 				pwrpriv->cpwm = PS_STATE(cpwm_now);
 #else // !CONFIG_RTL8723A
 				pwrpriv->cpwm = PS_STATE_S4;
@@ -1266,7 +1266,7 @@ void LeaveAllPowerSaveModeDirect(PADAPTER Adapter)
 			} else
 #endif
 			{
-#if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS) || defined(CONFIG_RTL8188E)
+#if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS)
 #ifdef CONFIG_IPS
 				if(_FALSE == ips_leave(pri_padapter)) {
 					DBG_871X("======> ips_leave fail.............\n");
@@ -1342,7 +1342,7 @@ void LeaveAllPowerSaveMode(IN PADAPTER Adapter)
 			} else
 #endif
 			{
-#if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS) || (defined(CONFIG_PLATFORM_SPRD) && defined(CONFIG_RTL8188E))
+#if defined(CONFIG_FWLPS_IN_IPS) || defined(CONFIG_SWLPS_IN_IPS)
 #ifdef CONFIG_IPS
 				if(_FALSE == ips_leave(Adapter)) {
 					DBG_871X("======> ips_leave fail.............\n");
@@ -1577,7 +1577,7 @@ s32 rtw_register_task_alive(PADAPTER padapter, u32 task)
 	pwrctrl = adapter_to_pwrctl(padapter);
 	pslv = PS_STATE_S2;
 
-#if defined(CONFIG_RTL8723A) && defined(CONFIG_BT_COEXIST)
+#if 0
 	if (rtw_btcoex_IsBtControlLps(padapter) == _TRUE) {
 		u8 btcoex_rpwm;
 		btcoex_rpwm = rtw_btcoex_RpwmVal(padapter);
@@ -1653,7 +1653,7 @@ void rtw_unregister_task_alive(PADAPTER padapter, u32 task)
 		if (val8 & BIT(4))
 			pslv = PS_STATE_S2;
 
-#ifdef CONFIG_RTL8723A
+#if 0
 		val8 = rtw_btcoex_RpwmVal(padapter);
 		switch (val8) {
 		case 0x4:
@@ -1714,7 +1714,7 @@ s32 rtw_register_tx_alive(PADAPTER padapter)
 	pwrctrl = adapter_to_pwrctl(padapter);
 	pslv = PS_STATE_S2;
 
-#if defined(CONFIG_RTL8723A) && defined(CONFIG_BT_COEXIST)
+#if 0
 	if (rtw_btcoex_IsBtControlLps(padapter) == _TRUE) {
 		u8 btcoex_rpwm;
 		btcoex_rpwm = rtw_btcoex_RpwmVal(padapter);
@@ -1786,7 +1786,7 @@ s32 rtw_register_cmd_alive(PADAPTER padapter)
 	pwrctrl = adapter_to_pwrctl(padapter);
 	pslv = PS_STATE_S2;
 
-#if defined(CONFIG_RTL8723A) && defined(CONFIG_BT_COEXIST)
+#if 0
 	if (rtw_btcoex_IsBtControlLps(padapter) == _TRUE) {
 		u8 btcoex_rpwm;
 		btcoex_rpwm = rtw_btcoex_RpwmVal(padapter);
@@ -1921,7 +1921,7 @@ void rtw_unregister_tx_alive(PADAPTER padapter)
 		if (val8 & BIT(4))
 			pslv = PS_STATE_S2;
 
-#ifdef CONFIG_RTL8723A
+#if 0
 		val8 = rtw_btcoex_RpwmVal(padapter);
 		switch (val8) {
 		case 0x4:
@@ -1995,7 +1995,7 @@ void rtw_unregister_cmd_alive(PADAPTER padapter)
 		if (val8 & BIT(4))
 			pslv = PS_STATE_S2;
 
-#ifdef CONFIG_RTL8723A
+#if 0
 		val8 = rtw_btcoex_RpwmVal(padapter);
 		switch (val8) {
 		case 0x4:
@@ -2336,7 +2336,7 @@ void rtw_unregister_early_suspend(struct pwrctrl_priv *pwrpriv)
 #endif //CONFIG_HAS_EARLYSUSPEND
 
 #ifdef CONFIG_ANDROID_POWER
-#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_USB_HCI)
 extern int rtw_resume_process(PADAPTER padapter);
 #endif
 static void rtw_early_suspend(android_early_suspend_t *h)
@@ -2355,7 +2355,7 @@ static void rtw_late_resume(android_early_suspend_t *h)
 
 	DBG_871X("%s\n",__FUNCTION__);
 	if(pwrpriv->do_late_resume) {
-#if defined(CONFIG_USB_HCI) || defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if defined(CONFIG_USB_HCI)
 		rtw_set_do_late_resume(pwrpriv, _FALSE);
 		rtw_resume_process(adapter);
 #endif

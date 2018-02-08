@@ -44,7 +44,7 @@
 #define EUROPE						0x1 //temp, should be provided later
 #define JAPAN						0x2 //temp, should be provided later
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 #define eeprom_cis0_sz	17
 #define eeprom_cis1_sz	50
 #endif
@@ -126,7 +126,7 @@ struct eeprom_priv {
 	u8		EEPROMRFGainVal;
 #endif //CONFIG_RF_GAIN_OFFSET
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 	u8		sdio_setting;
 	u32		ocr;
 	u8		cis0[eeprom_cis0_sz];

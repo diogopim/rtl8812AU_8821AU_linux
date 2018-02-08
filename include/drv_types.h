@@ -359,14 +359,9 @@ struct registry_priv {
 
 
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 #include <drv_types_sdio.h>
 #define INTF_DATA SDIO_DATA
-#elif defined(CONFIG_GSPI_HCI)
-#include <drv_types_gspi.h>
-#define INTF_DATA GSPI_DATA
-#elif defined(CONFIG_PCI_HCI)
-#include <drv_types_pci.h>
 #endif
 
 #ifdef CONFIG_CONCURRENT_MODE
@@ -727,7 +722,7 @@ struct dvobj_priv {
 
 	/*-------- below is for PCIE INTERFACE --------*/
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 
 #ifdef PLATFORM_LINUX
 	struct pci_dev *ppcidev;
@@ -778,13 +773,13 @@ static inline struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 #ifdef CONFIG_USB_HCI
 	return &dvobj->pusbintf->dev;
 #endif
-#ifdef CONFIG_SDIO_HCI
+#if 0
 	return &dvobj->intf_data.func->dev;
 #endif
-#ifdef CONFIG_GSPI_HCI
+#if 0
 	return &dvobj->intf_data.func->dev;
 #endif
-#ifdef CONFIG_PCI_HCI
+#if 0
 	return &dvobj->ppcidev->dev;
 #endif
 }
@@ -1155,19 +1150,19 @@ __inline static u8 *myid(struct eeprom_priv *peepriv)
 #include <usb_hal.h>
 #endif
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 #include <sdio_osintf.h>
 #include <sdio_ops.h>
 #include <sdio_hal.h>
 #endif
 
-#ifdef CONFIG_GSPI_HCI
+#if 0
 #include <gspi_osintf.h>
 #include <gspi_ops.h>
 #include <gspi_hal.h>
 #endif
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 #include <pci_osintf.h>
 #include <pci_ops.h>
 #include <pci_hal.h>

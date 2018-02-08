@@ -22,7 +22,7 @@
 #include <hal_data.h>
 #include <rtw_sreset.h>
 
-#ifdef CONFIG_RTL8192D
+#if 0
 #include <Hal8192DPhyReg.h>
 #endif
 

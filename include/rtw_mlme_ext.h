@@ -39,7 +39,7 @@
 #define REASSOC_LIMIT	(4)
 #define READDBA_LIMIT	(2)
 
-#ifdef CONFIG_GSPI_HCI
+#if 0
 #define ROAMING_LIMIT	5
 #else
 #define ROAMING_LIMIT	8

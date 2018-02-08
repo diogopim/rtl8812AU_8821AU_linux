@@ -112,7 +112,7 @@
 #define CONFIG_RUNTIME_PORT_SWITCH
 //#define DBG_RUNTIME_PORT_SWITCH
 #define CONFIG_STA_MODE_SCAN_UNDER_AP_MODE
-//#ifdef CONFIG_RTL8812A
+//#if 1
 //#define CONFIG_TSF_RESET_OFFLOAD 1		// For 2 PORT TSF SYNC.
 //#endif
 //#define CONFIG_MULTI_VIR_IFACES //besides primary&secondary interfaces, extend to support more interfaces
@@ -343,12 +343,12 @@
 #define RTL8723_FPGA_VERIFICATION		0
 
 #define RTL8188E_SUPPORT				0
-#ifdef CONFIG_RTL8812A
+#if 1
 #define RTL8812A_SUPPORT				1
 #else
 #define RTL8812A_SUPPORT				0
 #endif
-#ifdef CONFIG_RTL8821A
+#if 0
 #define RTL8821A_SUPPORT				1
 #else
 #define RTL8821A_SUPPORT				0

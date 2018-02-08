@@ -270,7 +270,7 @@ void rtw_os_xmit_schedule(_adapter *padapter)
 {
 	//_adapter *pri_adapter = padapter;
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#if 0
 	if(!padapter)
 		return;
 

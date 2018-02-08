@@ -47,22 +47,6 @@
 #endif
 #endif //!MAX_RECVBUF_SZ
 
-#elif defined(CONFIG_PCI_HCI)
-//#ifndef CONFIG_MINIMAL_MEMORY_USAGE
-//	#define MAX_RECVBUF_SZ (9100)
-//#else
-#define MAX_RECVBUF_SZ (4000) // about 4K
-//#endif
-
-
-#elif defined(CONFIG_SDIO_HCI)
-
-#ifdef CONFIG_SDIO_RX_COPY
-#define MAX_RECVBUF_SZ (10240)
-#else // !CONFIG_SDIO_RX_COPY
-#define MAX_RECVBUF_SZ	MAX_RX_DMA_BUFFER_SIZE_8821
-#endif // !CONFIG_SDIO_RX_COPY
-
 #endif
 
 
@@ -141,7 +125,7 @@
 #define SET_RX_STATUS_DESC_BUFF_ADDR_8812(__pRxDesc, __Value) 	SET_BITS_TO_LE_4BYTE(__pRxDesc+24, 0, 32, __Value)
 
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 s32 InitRecvPriv8821AS(PADAPTER padapter);
 void FreeRecvPriv8821AS(PADAPTER padapter);
 #endif // CONFIG_SDIO_HCI
@@ -156,7 +140,7 @@ void rtl8812au_recv_tasklet(void *priv);
 
 #endif
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 s32 rtl8812ae_init_recv_priv(PADAPTER padapter);
 void rtl8812ae_free_recv_priv(PADAPTER padapter);
 #endif

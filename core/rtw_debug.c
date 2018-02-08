@@ -75,7 +75,7 @@ void dump_log_level(void *sel)
 	DBG_871X_SEL_NL(sel, "log_level:%d\n", GlobalDebugLevel);
 }
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 void sd_f0_reg_dump(void *sel, _adapter *adapter)
 {
 	int i;
@@ -1985,7 +1985,7 @@ ssize_t proc_set_sreset(struct file *file, const char __user *buffer, size_t cou
 }
 #endif /* DBG_CONFIG_ERROR_DETECT */
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 
 int proc_get_rx_ring(struct seq_file *m, void *v)
 {

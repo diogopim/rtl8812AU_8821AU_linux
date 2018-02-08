@@ -21,7 +21,7 @@
 #define __PCI_OPS_H_
 
 
-#ifdef CONFIG_RTL8188E
+#if 0
 u32	rtl8188ee_init_desc_ring(_adapter * padapter);
 u32	rtl8188ee_free_desc_ring(_adapter * padapter);
 void	rtl8188ee_reset_desc_ring(_adapter * padapter);
@@ -33,7 +33,7 @@ void	rtl8188ee_set_intf_ops(struct _io_ops	*pops);
 #endif
 
 
-#ifdef CONFIG_RTL8192C
+#if 0
 u32	rtl8192ce_init_desc_ring(_adapter * padapter);
 u32	rtl8192ce_free_desc_ring(_adapter * padapter);
 void	rtl8192ce_reset_desc_ring(_adapter * padapter);
@@ -44,7 +44,7 @@ void	rtl8192ce_prepare_bcn_tasklet(void *priv);
 void	rtl8192ce_set_intf_ops(struct _io_ops	*pops);
 #endif
 
-#ifdef CONFIG_RTL8192D
+#if 0
 u32	rtl8192de_init_desc_ring(_adapter * padapter);
 u32	rtl8192de_free_desc_ring(_adapter * padapter);
 void	rtl8192de_reset_desc_ring(_adapter * padapter);
@@ -57,7 +57,7 @@ u32	MpReadPCIDwordDBI8192D(IN PADAPTER Adapter, IN u16 Offset, IN u8 Direct);
 void	MpWritePCIDwordDBI8192D(IN PADAPTER Adapter, IN u16 Offset, IN u32 Value, IN u8 Direct);
 #endif
 
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
+#if 1
 u32	rtl8812ae_init_desc_ring(_adapter * padapter);
 u32	rtl8812ae_free_desc_ring(_adapter * padapter);
 void	rtl8812ae_reset_desc_ring(_adapter * padapter);
@@ -68,7 +68,7 @@ void	rtl8812ae_prepare_bcn_tasklet(void *priv);
 void	rtl8812ae_set_intf_ops(struct _io_ops	*pops);
 #endif
 
-#ifdef CONFIG_RTL8192E
+#if 0
 u32	rtl8192ee_init_desc_ring(_adapter * padapter);
 u32	rtl8192ee_free_desc_ring(_adapter * padapter);
 void	rtl8192ee_reset_desc_ring(_adapter * padapter);
@@ -78,7 +78,7 @@ int	rtl8192ee_interrupt(PADAPTER Adapter);
 void	rtl8192ee_set_intf_ops(struct _io_ops	*pops);
 #endif
 
-#ifdef CONFIG_RTL8723B
+#if 0
 u32	rtl8723be_init_desc_ring(_adapter * padapter);
 u32	rtl8723be_free_desc_ring(_adapter * padapter);
 void	rtl8723be_reset_desc_ring(_adapter * padapter);

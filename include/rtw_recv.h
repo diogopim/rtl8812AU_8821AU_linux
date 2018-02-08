@@ -21,13 +21,13 @@
 #define _RTW_RECV_H_
 
 #ifdef PLATFORM_OS_XP
-#ifdef CONFIG_SDIO_HCI
+#if 0
 #define NR_RECVBUFF 1024//512//128
 #else
 #define NR_RECVBUFF (16)
 #endif
 #elif defined(PLATFORM_OS_CE)
-#ifdef CONFIG_SDIO_HCI
+#if 0
 #define NR_RECVBUFF (128)
 #else
 #define NR_RECVBUFF (4)
@@ -37,10 +37,8 @@
 #ifdef CONFIG_SINGLE_RECV_BUF
 #define NR_RECVBUFF (1)
 #else
-#if defined(CONFIG_GSPI_HCI)
+#if 0
 #define NR_RECVBUFF (32)
-#elif defined(CONFIG_SDIO_HCI)
-#define NR_RECVBUFF (8)
 #else
 #define NR_RECVBUFF (8)
 #endif
@@ -280,8 +278,8 @@ struct rx_pkt_attrib {
 
 #define RECVBUFF_ALIGN_SZ 8
 
-#if defined (CONFIG_RTL8192E)
-#ifdef CONFIG_PCI_HCI
+#if 0
+#if 0
 #define RXDESC_SIZE 16
 #define RX_WIFI_INFO_SIZE	24
 #else
@@ -297,7 +295,7 @@ struct recv_stat {
 
 	unsigned int rxdw1;
 
-#if !(defined(CONFIG_RTL8192E) && defined(CONFIG_PCI_HCI)) //exclude 8192ee
+#if 1
 	unsigned int rxdw2;
 
 	unsigned int rxdw3;
@@ -308,7 +306,7 @@ struct recv_stat {
 
 	unsigned int rxdw5;
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 	unsigned int rxdw6;
 
 	unsigned int rxdw7;
@@ -318,7 +316,7 @@ struct recv_stat {
 
 #define EOR BIT(30)
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 #define PCI_MAX_RX_QUEUE		1// MSDU packet queue, Rx Command Queue
 #define PCI_MAX_RX_COUNT		128
 
@@ -417,11 +415,11 @@ struct recv_priv {
 	_queue	free_recv_buf_queue;
 	u32	free_recv_buf_queue_cnt;
 
-#if defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI) || defined(CONFIG_USB_HCI)
+#if defined(CONFIG_USB_HCI)
 	_queue	recv_buf_pending_queue;
 #endif
 
-#ifdef CONFIG_PCI_HCI
+#if 0
 	// Rx
 	struct rtw_rx_ring	rx_ring[PCI_MAX_RX_QUEUE];
 	int 	rxringcount;

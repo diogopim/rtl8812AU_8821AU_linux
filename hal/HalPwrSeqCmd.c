@@ -87,7 +87,7 @@ u8 HalPwrSeqCmdParsing(
 				RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_WRITE\n"));
 				offset = GET_PWR_CFG_OFFSET(PwrCfgCmd);
 
-#ifdef CONFIG_SDIO_HCI
+#if 0
 				//
 				// <Roger_Notes> We should deal with interface specific address mapping for some interfaces, e.g., SDIO interface
 				// 2011.07.07.
@@ -104,7 +104,7 @@ u8 HalPwrSeqCmdParsing(
 				} else
 #endif
 				{
-#ifdef CONFIG_GSPI_HCI
+#if 0
 					if (GET_PWR_CFG_BASE(PwrCfgCmd) == PWR_BASEADDR_SDIO)
 						offset = SPI_LOCAL_OFFSET | offset;
 #endif
@@ -124,12 +124,12 @@ u8 HalPwrSeqCmdParsing(
 
 				bPollingBit = _FALSE;
 				offset = GET_PWR_CFG_OFFSET(PwrCfgCmd);
-#ifdef CONFIG_GSPI_HCI
+#if 0
 				if (GET_PWR_CFG_BASE(PwrCfgCmd) == PWR_BASEADDR_SDIO)
 					offset = SPI_LOCAL_OFFSET | offset;
 #endif
 				do {
-#ifdef CONFIG_SDIO_HCI
+#if 0
 					if (GET_PWR_CFG_BASE(PwrCfgCmd) == PWR_BASEADDR_SDIO)
 						value = SdioLocalCmd52Read1Byte(padapter, offset);
 					else

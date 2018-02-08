@@ -157,7 +157,7 @@ typedef enum _LED_PIN {
 //================================================================================
 // PCIE LED Definition.
 //================================================================================
-#ifdef CONFIG_PCI_HCI
+#if 0
 typedef	enum _LED_STRATEGY_PCIE {
 	SW_LED_MODE0, // SW control 1 LED via GPIO0. It is default option.
 	SW_LED_MODE1, // SW control for PCI Express
@@ -281,7 +281,8 @@ LedControlUSB(
 //================================================================================
 // SDIO LED Definition.
 //================================================================================
-#elif defined(CONFIG_SDIO_HCI) || defined(CONFIG_GSPI_HCI)
+#endif
+#if 0
 
 #define IS_LED_WPS_BLINKING(_LED_SDIO)	(((PLED_SDIO)_LED_SDIO)->CurrLedState==LED_BLINK_WPS \
 					|| ((PLED_SDIO)_LED_SDIO)->CurrLedState==LED_BLINK_WPS_STOP \

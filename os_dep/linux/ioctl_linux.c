@@ -27,12 +27,12 @@
 #include "../../hal/OUTSRC/phydm_precomp.h"
 //#endif
 
-#if defined(CONFIG_RTL8723A)
+#if 0
 #include "rtl8723a_hal.h"
 #include <rtw_bt_mp.h>
 #endif
 
-#if defined(CONFIG_RTL8723B)
+#if 0
 #include <rtw_bt_mp.h>
 #endif
 
@@ -9177,10 +9177,10 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 		}
 		//		DBG_871X("}\n");
 	} else if (strcmp(tmp[0], "mac") == 0) {
-#ifdef CONFIG_RTL8192C
+#if 0
 		addr = EEPROM_MAC_ADDR_92C;
 #endif // CONFIG_RTL8192C
-#ifdef CONFIG_RTL8192D
+#if 0
 #ifdef CONFIG_USB_HCI
 		if (pHalData->interfaceIndex == 0)
 			addr = EEPROM_MAC_ADDR_MAC0_92DU;
@@ -9193,45 +9193,45 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 			addr = EEPROM_MAC_ADDR_MAC1_92DE;
 #endif
 #endif // CONFIG_RTL8192D
-#ifdef CONFIG_RTL8723A
-#ifdef CONFIG_SDIO_HCI
+#if 0
+#if 0
 		addr = EEPROM_MAC_ADDR_8723AS;
 #endif
-#ifdef CONFIG_GSPI_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_8723AS;
 #endif
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_MAC_ADDR_8723AU;
 #endif
 #endif // CONFIG_RTL8723A
-#ifdef CONFIG_RTL8188E
+#if 0
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_MAC_ADDR_88EU;
 #endif
-#ifdef CONFIG_SDIO_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_88ES;
 #endif
-#ifdef CONFIG_PCI_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_88EE;
 #endif
 #endif // CONFIG_RTL8188E
 
-#ifdef CONFIG_RTL8192E
+#if 0
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_MAC_ADDR_8192EU;
 #endif
-#ifdef CONFIG_SDIO_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_8192ES;
 #endif
-#ifdef CONFIG_PCI_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_8192EE;
 #endif
 #endif
-#ifdef CONFIG_RTL8723B
-#ifdef CONFIG_SDIO_HCI
+#if 0
+#if 0
 		addr = EEPROM_MAC_ADDR_8723BS;
 #endif
-#ifdef CONFIG_GSPI_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_8723BS;
 #endif
 #ifdef CONFIG_USB_HCI
@@ -9265,39 +9265,39 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 		}
 //		DBG_871X("}\n");
 	} else if (strcmp(tmp[0], "vidpid") == 0) {
-#ifdef CONFIG_RTL8192C
+#if 0
 		addr = EEPROM_VID_92C;
 #endif // CONFIG_RTL8192C
-#ifdef CONFIG_RTL8192D
+#if 0
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_VID_92DU;
 #else
 		addr = EEPROM_VID_92DE;
 #endif
 #endif // CONFIG_RTL8192D
-#ifdef CONFIG_RTL8723A
+#if 0
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_VID_8723AU;
 #endif
 #endif // CONFIG_RTL8723A
-#ifdef CONFIG_RTL8188E
+#if 0
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_VID_88EU;
 #endif
-#ifdef CONFIG_PCI_HCI
+#if 0
 		addr = EEPROM_VID_88EE;
 #endif
 #endif // CONFIG_RTL8188E
 
-#ifdef CONFIG_RTL8192E
+#if 0
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_VID_8192EU;
 #endif
-#ifdef CONFIG_PCI_HCI
+#if 0
 		addr = EEPROM_VID_8192EE;
 #endif
 #endif // CONFIG_RTL8192E
-#ifdef CONFIG_RTL8723B
+#if 0
 		addr = EEPROM_VID_8723BU;
 #endif // CONFIG_RTL8192E
 		cnts = 4;
@@ -9678,7 +9678,7 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		for (jj=0, kk=0; jj<cnts; jj++, kk+=2) {
 			setdata[jj] = key_2char2num(tmp[2][kk], tmp[2][kk+1]);
 		}
-#ifndef CONFIG_RTL8188E
+#if 1
 		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
 #else
 		//Change to check TYPE_EFUSE_MAP_LEN ,beacuse 8188E raw 256,logic map over 256.
@@ -9750,10 +9750,10 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		}
 
 		//mac,00e04c871200
-#ifdef CONFIG_RTL8192C
+#if 0
 		addr = EEPROM_MAC_ADDR_92C;
 #endif
-#ifdef CONFIG_RTL8192D
+#if 0
 #ifdef CONFIG_USB_HCI
 		if (pHalData->interfaceIndex == 0)
 			addr = EEPROM_MAC_ADDR_MAC0_92DU;
@@ -9766,46 +9766,46 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 			addr = EEPROM_MAC_ADDR_MAC1_92DE;
 #endif
 #endif
-#ifdef CONFIG_RTL8723A
-#ifdef CONFIG_SDIO_HCI
+#if 0
+#if 0
 		addr = EEPROM_MAC_ADDR_8723AS;
 #endif
-#ifdef CONFIG_GSPI_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_8723AS;
 #endif
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_MAC_ADDR_8723AU;
 #endif
 #endif // CONFIG_RTL8723A
-#ifdef CONFIG_RTL8188E
+#if 0
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_MAC_ADDR_88EU;
 #endif
-#ifdef CONFIG_SDIO_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_88ES;
 #endif
-#ifdef CONFIG_PCI_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_88EE;
 #endif
-#endif //#ifdef CONFIG_RTL8188E
+#endif //#if 0
 
-#ifdef CONFIG_RTL8192E
+#if 0
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_MAC_ADDR_8192EU;
 #endif
-#ifdef CONFIG_SDIO_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_8192ES;
 #endif
-#ifdef CONFIG_PCI_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_8192EE;
 #endif
-#endif //#ifdef CONFIG_RTL8192E
+#endif //#if 0
 
-#ifdef CONFIG_RTL8723B
-#ifdef CONFIG_SDIO_HCI
+#if 0
+#if 0
 		addr = EEPROM_MAC_ADDR_8723BS;
 #endif
-#ifdef CONFIG_GSPI_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_8723BS;
 #endif
 #ifdef CONFIG_USB_HCI
@@ -9813,11 +9813,11 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 #endif
 #endif // CONFIG_RTL8723B
 
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
-#ifdef CONFIG_SDIO_HCI
+#if 1
+#if 0
 		addr = EEPROM_MAC_ADDR_8821AS;
 #endif
-#ifdef CONFIG_PCI_HCI
+#if 0
 		addr = EEPROM_MAC_ADDR_8821AE;
 #endif
 #ifdef CONFIG_USB_HCI
@@ -9849,7 +9849,7 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		for (jj=0, kk=0; jj<cnts; jj++, kk+=2) {
 			setdata[jj] = key_2char2num(tmp[1][kk], tmp[1][kk+1]);
 		}
-#ifndef CONFIG_RTL8188E
+#if 1
 		EFUSE_GetEfuseDefinition(padapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
 #else
 		//Change to check TYPE_EFUSE_MAP_LEN ,beacuse 8188E raw 256,logic map over 256.
@@ -9873,40 +9873,40 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		}
 
 		// pidvid,da0b7881
-#ifdef CONFIG_RTL8192C
+#if 0
 		addr = EEPROM_VID_92C;
 #endif // CONFIG_RTL8192C
-#ifdef CONFIG_RTL8192D
+#if 0
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_VID_92DU;
 #else
 		addr = EEPROM_VID_92DE;
 #endif
 #endif // CONFIG_RTL8192D
-#ifdef CONFIG_RTL8723A
+#if 0
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_VID_8723AU;
 #endif
 #endif // CONFIG_RTL8723A
-#ifdef CONFIG_RTL8188E
+#if 0
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_VID_88EU;
 #endif
-#ifdef CONFIG_PCI_HCI
+#if 0
 		addr = EEPROM_VID_88EE;
 #endif
 #endif // CONFIG_RTL8188E
 
-#ifdef CONFIG_RTL8192E
+#if 0
 #ifdef CONFIG_USB_HCI
 		addr = EEPROM_VID_8192EU;
 #endif
-#ifdef CONFIG_PCI_HCI
+#if 0
 		addr = EEPROM_VID_8192EE;
 #endif
 #endif // CONFIG_RTL8188E
 
-#ifdef CONFIG_RTL8723B
+#if 0
 		addr = EEPROM_VID_8723BU;
 #endif
 
@@ -10574,7 +10574,7 @@ static int rtw_mp_start(struct net_device *dev,
 		MPT_PwrCtlDM(padapter,0);
 	}
 	padapter->mppriv.bmac_filter = _FALSE;
-#ifdef CONFIG_RTL8723B
+#if 0
 #ifdef CONFIG_USB_HCI
 	rtw_write32(padapter, 0x765, 0x0000);
 	rtw_write32(padapter, 0x948, 0x0280);
@@ -11296,25 +11296,25 @@ static int rtw_mp_thermal(struct net_device *dev,
 	u8 val;
 	int bwrite=1;
 
-#ifdef CONFIG_RTL8192C
+#if 0
 	u16 addr=EEPROM_THERMAL_METER_92C;
 #endif
-#ifdef CONFIG_RTL8192D
+#if 0
 	u16 addr=EEPROM_THERMAL_METER_92D;
 #endif
-#ifdef CONFIG_RTL8723A
+#if 0
 	u16 addr=EEPROM_THERMAL_METER_8723A;
 #endif
-#ifdef CONFIG_RTL8188E
+#if 0
 	u16 addr=EEPROM_THERMAL_METER_88E;
 #endif
-#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
+#if 1
 	u16 addr=EEPROM_THERMAL_METER_8812;
 #endif
-#ifdef CONFIG_RTL8192E
+#if 0
 	u16 addr=EEPROM_THERMAL_METER_8192E;
 #endif
-#ifdef CONFIG_RTL8723B
+#if 0
 	u16 addr=EEPROM_THERMAL_METER_8723B;
 #endif
 	u16 cnt=1;
@@ -11659,7 +11659,7 @@ static int rtw_efuse_file_map(struct net_device *dev,
 }
 
 
-#if (defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B))
+#if 0
 /* update Tx AGC offset */
 static int rtw_mp_SetBT(struct net_device *dev,
                         struct iw_request_info *info,
@@ -11799,9 +11799,8 @@ static int rtw_mp_SetBT(struct net_device *dev,
 #endif
 		DBG_871X(" rtl8723a_FirmwareDownload!\n");
 
-#ifdef CONFIG_RTL8723A
+#if 0
 		status = rtl8723a_FirmwareDownload(padapter);
-#elif defined(CONFIG_RTL8723B)
 		status = rtl8723b_FirmwareDownload(padapter, _FALSE);
 #endif
 		DBG_871X("Wait for FirmwareDownloadBT fw boot!\n");
@@ -11984,7 +11983,7 @@ todo:
 			if ((pMptCtx->mptOutBuf[i]==0x00) && (pMptCtx->mptOutBuf[i+1]==0x00))
 				goto exit;
 
-#ifdef CONFIG_RTL8723A
+#if 0
 			sprintf(extra, "%s %d ", extra, (pMptCtx->mptOutBuf[i]& 0x3f));
 #else
 			sprintf(extra, "%s %d ", extra, (pMptCtx->mptOutBuf[i]& 0x1f));
@@ -12003,7 +12002,7 @@ exit:
 	return status;
 }
 
-#endif //#ifdef CONFIG_RTL8723A
+#endif //#if 0
 
 static int rtw_mp_set(struct net_device *dev,
                       struct iw_request_info *info,
@@ -12230,7 +12229,7 @@ static int rtw_mp_get(struct net_device *dev,
 		DBG_871X("mp_get MP_MON \n");
 		rtw_efuse_file_map(dev,info,wdata,extra);
 		break;
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)
+#if 0
 	case MP_SetBT:
 		DBG_871X("set MP_SetBT \n");
 		rtw_mp_SetBT(dev,info,wdata,extra);
@@ -13139,31 +13138,31 @@ static int rtw_widi_set_probe_request(struct net_device *dev,
 
 #ifdef CONFIG_MAC_LOOPBACK_DRIVER
 
-#ifdef CONFIG_RTL8723A
+#if 0
 extern void rtl8723a_cal_txdesc_chksum(struct tx_desc *ptxdesc);
 #define cal_txdesc_chksum rtl8723a_cal_txdesc_chksum
 extern void rtl8723a_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf);
 #define fill_default_txdesc rtl8723a_fill_default_txdesc
 #endif
-#if defined(CONFIG_RTL8188E)
+#if 0
 #include <rtl8188e_hal.h>
 extern void rtl8188e_cal_txdesc_chksum(struct tx_desc *ptxdesc);
 #define cal_txdesc_chksum rtl8188e_cal_txdesc_chksum
-#ifdef CONFIG_SDIO_HCI || defined(CONFIG_GSPI_HCI)
+#if 0
 extern void rtl8188es_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf);
 #define fill_default_txdesc rtl8188es_fill_default_txdesc
 #endif // CONFIG_SDIO_HCI
 #endif // CONFIG_RTL8188E
-#if defined(CONFIG_RTL8723B)
+#if 0
 extern void rtl8723b_cal_txdesc_chksum(struct tx_desc *ptxdesc);
 #define cal_txdesc_chksum rtl8723b_cal_txdesc_chksum
 extern void rtl8723b_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf);
 #define fill_default_txdesc rtl8723b_fill_default_txdesc
 #endif // CONFIG_RTL8723B
-#if defined(CONFIG_RTL8192E)
+#if 0
 extern void rtl8192e_cal_txdesc_chksum(struct tx_desc *ptxdesc);
 #define cal_txdesc_chksum rtl8192e_cal_txdesc_chksum
-#ifdef CONFIG_SDIO_HCI || defined(CONFIG_GSPI_HCI)
+#if 0
 extern void rtl8192es_fill_default_txdesc(struct xmit_frame *pxmitframe, u8 *pbuf);
 #define fill_default_txdesc rtl8192es_fill_default_txdesc
 #endif // CONFIG_SDIO_HCI
@@ -13388,7 +13387,7 @@ static struct xmit_frame* createloopbackpkt(PADAPTER padapter, u32 size)
 	desc->txdw5 = cpu_to_le32(desc->txdw5);
 	desc->txdw6 = cpu_to_le32(desc->txdw6);
 	desc->txdw7 = cpu_to_le32(desc->txdw7);
-#ifdef CONFIG_PCI_HCI
+#if 0
 	desc->txdw8 = cpu_to_le32(desc->txdw8);
 	desc->txdw9 = cpu_to_le32(desc->txdw9);
 	desc->txdw10 = cpu_to_le32(desc->txdw10);
@@ -13755,7 +13754,7 @@ static int rtw_test(
 #endif
 
 #if 0
-//#ifdef CONFIG_RTL8723A
+//#if 0
 	if (strcmp(pch, "poweron") == 0) {
 		s32 ret;
 
@@ -14042,7 +14041,7 @@ static const struct iw_priv_args rtw_private_args[] = {
 	{ MP_MON, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "mp_mon" },
 	{ EFUSE_MASK, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "efuse_mask" },
 	{ EFUSE_FILE, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "efuse_file" },
-#if defined(CONFIG_RTL8723A) || defined(CONFIG_RTL8723B)
+#if 0
 	{ MP_SetBT, IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | IW_PRIV_SIZE_MASK, "mp_setbt" },
 	{ MP_DISABLE_BT_COEXIST, IW_PRIV_TYPE_CHAR | 1024, 0, "mp_disa_btcoex"},
 #endif
