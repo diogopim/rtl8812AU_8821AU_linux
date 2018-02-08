@@ -30,7 +30,7 @@ CONFIG_RTL8192D = n
 CONFIG_RTL8723A = n
 CONFIG_RTL8188E = n
 CONFIG_RTL8812A = y
-CONFIG_RTL8821A = y
+CONFIG_RTL8821A = n
 CONFIG_RTL8192E = n
 CONFIG_RTL8723B = n
 ######################### Interface ###########################
@@ -178,7 +178,6 @@ _HAL_INTFS_FILES :=	hal/hal_intf.o \
 			hal/hal_com_phycfg.o \
 			hal/hal_phy.o \
 			hal/hal_dm.o \
-			hal/hal_btcoex.o \
 			hal/hal_hci/hal_$(HCI_NAME).o \
 			hal/led/hal_$(HCI_NAME)_led.o
 
@@ -1482,7 +1481,6 @@ ARCH ?= arm
 CROSS_COMPILE := arm-linux-gnueabihf-
 KVER ?= 3.8.0
 KSRC := /Custom/Novatek/TCL/linux-3.8_header
-#KSRC := $(KERNELDIR)
 endif
 
 ifeq ($(CONFIG_MULTIDRV), y)
@@ -1543,7 +1541,6 @@ rtk_core :=	core/rtw_cmd.o \
 		core/rtw_br_ext.o \
 		core/rtw_iol.o \
 		core/rtw_sreset.o \
-		core/rtw_btcoex.o \
 		core/rtw_beamforming.o \
 		core/rtw_odm.o \
 		core/efuse/rtw_efuse.o
