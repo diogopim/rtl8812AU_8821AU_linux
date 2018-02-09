@@ -29,7 +29,7 @@
 
 //Older Android kernel doesn't has CONFIG_ANDROID defined,
 //add this to force CONFIG_ANDROID defined
-#ifdef CONFIG_PLATFORM_ANDROID
+#if 0
 #ifndef CONFIG_ANDROID
 #define CONFIG_ANDROID
 #endif

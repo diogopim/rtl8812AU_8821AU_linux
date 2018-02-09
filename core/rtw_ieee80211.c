@@ -19,7 +19,7 @@
  ******************************************************************************/
 #define _IEEE80211_C
 
-#ifdef CONFIG_PLATFORM_INTEL_BYT
+#if 0
 #include <linux/fs.h>
 #endif
 #include <drv_types.h>
@@ -1291,7 +1291,7 @@ u8 convert_ip_addr(u8 hch, u8 mch, u8 lch)
 	return ((key_char2num(hch) * 100) + (key_char2num(mch) * 10 ) + key_char2num(lch));
 }
 
-#ifdef CONFIG_PLATFORM_INTEL_BYT
+#if 0
 #define MAC_ADDRESS_LEN 12
 
 int rtw_get_mac_addr_intel(unsigned char *buf)
@@ -1337,7 +1337,7 @@ void rtw_macaddr_cfg(u8 *mac_addr)
 		}
 		_rtw_memcpy(mac_addr, mac, ETH_ALEN);
 	}
-#ifdef CONFIG_PLATFORM_INTEL_BYT
+#if 0
 	else if (0 == rtw_get_mac_addr_intel(mac)) {
 		_rtw_memcpy(mac_addr, mac, ETH_ALEN);
 	}

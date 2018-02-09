@@ -2284,7 +2284,7 @@ void module_init_exit_wrapper(void *arg)
 
 #endif //PLATFORM_FREEBSD
 
-#ifdef CONFIG_PLATFORM_SPRD
+#if 0
 #ifdef do_div
 #undef do_div
 #endif

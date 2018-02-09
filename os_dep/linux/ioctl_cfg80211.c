@@ -53,7 +53,7 @@
 
 #endif
 
-#ifdef CONFIG_PLATFORM_ARM_SUN8I
+#if 0
 #define BUSY_TRAFFIC_SCAN_DENY_PERIOD	8000
 #else
 #define BUSY_TRAFFIC_SCAN_DENY_PERIOD	12000
@@ -2893,7 +2893,7 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 		goto exit;
 	}
 
-#ifdef CONFIG_PLATFORM_MSTAR_SCAN_BEFORE_CONNECT
+#if 0
 	printk("MStar Android!\n");
 	if(adapter_wdev_data(padapter)->bandroid_scan == _FALSE) {
 #ifdef CONFIG_P2P
@@ -3358,7 +3358,7 @@ void rtw_cfg80211_indicate_sta_assoc(_adapter *padapter, u8 *pmgmt_frame, uint f
 #else //COMPAT_KERNEL_RELEASE
 	{
 		//to avoid WARN_ON(wdev->iftype != NL80211_IFTYPE_STATION)  when calling cfg80211_send_rx_assoc()
-#ifndef CONFIG_PLATFORM_MSTAR
+#if 1
 		pwdev->iftype = NL80211_IFTYPE_STATION;
 #endif //CONFIG_PLATFORM_MSTAR
 		DBG_8192C("iftype=%d before call cfg80211_send_rx_assoc()\n", pwdev->iftype);

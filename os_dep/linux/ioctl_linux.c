@@ -788,7 +788,7 @@ static inline char *  iwe_stream_rssi_process(_adapter *padapter,
 
 	iwe->u.qual.qual = (u8)sq;   // signal quality
 
-#ifdef CONFIG_PLATFORM_ROCKCHIPS
+#if 0
 	iwe->u.qual.noise = -100; // noise level suggest by zhf@rockchips
 #else
 #if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
@@ -1202,7 +1202,7 @@ static char *translate_scan(_adapter *padapter,
 
 		iwe.u.qual.qual = (u8)sq;   // signal quality
 
-#ifdef CONFIG_PLATFORM_ROCKCHIPS
+#if 0
 		iwe.u.qual.noise = -100; // noise level suggest by zhf@rockchips
 #else
 #if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
@@ -1253,7 +1253,7 @@ static int wpa_set_auth_algs(struct net_device *dev, u32 value)
 		DBG_871X("wpa_set_auth_algs, AUTH_ALG_SHARED_KEY  [value:0x%x]\n",value);
 		padapter->securitypriv.ndisencryptstatus = Ndis802_11Encryption1Enabled;
 
-#ifdef CONFIG_PLATFORM_MT53XX
+#if 0
 		padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeAutoSwitch;
 		padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Auto;
 #else
@@ -1264,7 +1264,7 @@ static int wpa_set_auth_algs(struct net_device *dev, u32 value)
 		DBG_871X("wpa_set_auth_algs, AUTH_ALG_OPEN_SYSTEM\n");
 		//padapter->securitypriv.ndisencryptstatus = Ndis802_11EncryptionDisabled;
 		if(padapter->securitypriv.ndisauthtype < Ndis802_11AuthModeWPAPSK) {
-#ifdef CONFIG_PLATFORM_MT53XX
+#if 0
 			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeAutoSwitch;
 			padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Auto;
 #else
@@ -2047,7 +2047,7 @@ static int rtw_wx_get_sens(struct net_device *dev,
                            struct iw_request_info *info,
                            union iwreq_data *wrqu, char *extra)
 {
-#ifdef CONFIG_PLATFORM_ROCKCHIPS
+#if 0
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 
@@ -3287,7 +3287,7 @@ static int rtw_wx_set_enc(struct net_device *dev,
 		DBG_871X("rtw_wx_set_enc():IW_ENCODE_OPEN\n");
 		padapter->securitypriv.ndisencryptstatus = Ndis802_11Encryption1Enabled;//Ndis802_11EncryptionDisabled;
 
-#ifdef CONFIG_PLATFORM_MT53XX
+#if 0
 		padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Auto;
 #else
 		padapter->securitypriv.dot11AuthAlgrthm= dot11AuthAlgrthm_Open;
@@ -3301,7 +3301,7 @@ static int rtw_wx_set_enc(struct net_device *dev,
 		DBG_871X("rtw_wx_set_enc():IW_ENCODE_RESTRICTED\n");
 		padapter->securitypriv.ndisencryptstatus = Ndis802_11Encryption1Enabled;
 
-#ifdef CONFIG_PLATFORM_MT53XX
+#if 0
 		padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_Auto;
 #else
 		padapter->securitypriv.dot11AuthAlgrthm= dot11AuthAlgrthm_Shared;
@@ -3989,7 +3989,7 @@ static int rtw_wx_set_mtk_wps_probe_ie(struct net_device *dev,
                                        struct iw_request_info *a,
                                        union iwreq_data *wrqu, char *b)
 {
-#ifdef CONFIG_PLATFORM_MT53XX
+#if 0
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
@@ -4004,7 +4004,7 @@ static int rtw_wx_get_sensitivity(struct net_device *dev,
                                   struct iw_request_info *info,
                                   union iwreq_data *wrqu, char *buf)
 {
-#ifdef CONFIG_PLATFORM_MT53XX
+#if 0
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
 	//	Modified by Albert 20110914
@@ -4019,7 +4019,7 @@ static int rtw_wx_set_mtk_wps_ie(struct net_device *dev,
                                  struct iw_request_info *info,
                                  union iwreq_data *wrqu, char *extra)
 {
-#ifdef CONFIG_PLATFORM_MT53XX
+#if 0
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
 	return rtw_set_wpa_ie(padapter, wrqu->data.pointer, wrqu->data.length);
@@ -11792,7 +11792,7 @@ static int rtw_mp_SetBT(struct net_device *dev,
 		rtw_write32(padapter, 0xcc, (rtw_read32(padapter, 0xcc)& 0xFFFFFFFB));
 		rtw_msleep_os(1200);
 
-#if defined(CONFIG_PLATFORM_SPRD) && (MP_DRIVER == 1)
+#if 0
 		// Pull up BT reset pin.
 		DBG_871X("%s: pull up BT reset pin when bt start mp test\n", __FUNCTION__);
 		rtw_wifi_gpio_wlan_ctrl(WLAN_BT_PWDN_ON);

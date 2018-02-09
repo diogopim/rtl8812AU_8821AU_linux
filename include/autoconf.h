@@ -292,7 +292,7 @@
 /*
  * Platform  Related Config
  */
-#ifdef CONFIG_PLATFORM_MN10300
+#if 0
 #define CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
 #define CONFIG_USE_USB_BUFFER_ALLOC_RX
 
@@ -309,7 +309,7 @@
 
 
 
-#if defined(CONFIG_PLATFORM_ACTIONS_ATM702X)
+#if 0
 #ifdef CONFIG_USB_TX_AGGREGATION
 #undef CONFIG_USB_TX_AGGREGATION
 #endif

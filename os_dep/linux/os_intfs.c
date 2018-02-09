@@ -54,7 +54,7 @@ int rtw_adhoc_tx_pwr = 1;
 int rtw_soft_ap = 0;
 //int smart_ps = 1;
 #ifdef CONFIG_POWER_SAVING
-#ifdef CONFIG_PLATFORM_INTEL_BYT
+#if 0
 int rtw_power_mgnt = PS_MODE_MAX;
 #else
 int rtw_power_mgnt = PS_MODE_MIN;
@@ -217,11 +217,11 @@ char* ifname = "wlan%d";
 module_param(ifname, charp, 0644);
 MODULE_PARM_DESC(ifname, "The default name to allocate for first interface");
 
-#ifdef CONFIG_PLATFORM_ANDROID
+#if 0
 char* if2name = "p2p%d";
-#else //CONFIG_PLATFORM_ANDROID
+#else
 char* if2name = "wlan%d";
-#endif //CONFIG_PLATFORM_ANDROID
+#endif
 module_param(if2name, charp, 0644);
 MODULE_PARM_DESC(if2name, "The default name to allocate for second interface");
 
@@ -426,9 +426,9 @@ static uint loadparam(PADAPTER padapter, _nic_hdl pnetdev);
 int _netdev_open(struct net_device *pnetdev);
 int netdev_open (struct net_device *pnetdev);
 static int netdev_close (struct net_device *pnetdev);
-#ifdef CONFIG_PLATFORM_INTEL_BYT
+#if 0
 extern int rtw_sdio_set_power(int on);
-#endif //CONFIG_PLATFORM_INTEL_BYT
+#endif
 
 //#ifdef RTK_DMP_PLATFORM
 uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)
@@ -1407,7 +1407,7 @@ void rtw_cancel_all_timer(_adapter *padapter)
 	//cancel dm timer
 	rtw_hal_dm_deinit(padapter);
 
-#ifdef CONFIG_PLATFORM_FS_MX61
+#if 0
 	msleep(50);
 #endif
 }
@@ -1845,7 +1845,7 @@ int _netdev_if2_open(struct net_device *pnetdev)
 
 	DBG_871X("+871x_drv - if2_open, bup=%d\n", padapter->bup);
 
-#ifdef CONFIG_PLATFORM_INTEL_BYT
+#if 0
 	if (padapter->bup == _FALSE) {
 		u8 mac[ETH_ALEN];
 
@@ -1875,7 +1875,7 @@ int _netdev_if2_open(struct net_device *pnetdev)
 		rtw_init_wifidirect_addrs(padapter, padapter->eeprompriv.mac_addr, padapter->eeprompriv.mac_addr);
 		_rtw_memcpy(pnetdev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
 	}
-#endif //CONFIG_PLATFORM_INTEL_BYT
+#endif
 
 	if(primary_padapter->bup == _FALSE || primary_padapter->hw_init_completed == _FALSE) {
 		_netdev_open(primary_padapter->pnetdev);
@@ -2307,9 +2307,9 @@ int _netdev_open(struct net_device *pnetdev)
 
 	padapter->netif_up = _TRUE;
 
-#ifdef CONFIG_PLATFORM_INTEL_BYT
+#if 0
 	rtw_sdio_set_power(1);
-#endif //CONFIG_PLATFORM_INTEL_BYT
+#endif
 
 	if(pwrctrlpriv->ps_flag == _TRUE) {
 		padapter->net_closed = _FALSE;
@@ -2317,11 +2317,11 @@ int _netdev_open(struct net_device *pnetdev)
 	}
 
 	if(padapter->bup == _FALSE) {
-#ifdef CONFIG_PLATFORM_INTEL_BYT
+#if 0
 		rtw_macaddr_cfg(padapter->eeprompriv.mac_addr);
 		rtw_init_wifidirect_addrs(padapter, padapter->eeprompriv.mac_addr, padapter->eeprompriv.mac_addr);
 		_rtw_memcpy(pnetdev->dev_addr, padapter->eeprompriv.mac_addr, ETH_ALEN);
-#endif //CONFIG_PLATFORM_INTEL_BYT
+#endif //
 
 		padapter->bDriverStopped = _FALSE;
 		padapter->bSurpriseRemoved = _FALSE;
@@ -2358,11 +2358,11 @@ int _netdev_open(struct net_device *pnetdev)
 		padapter->bup = _TRUE;
 		pwrctrlpriv->bips_processing = _FALSE;
 
-#ifdef CONFIG_PLATFORM_INTEL_BYT
+#if 0
 #if 0
 		rtw_btcoex_IpsNotify(padapter, IPS_NONE);
 #endif // CONFIG_BT_COEXIST
-#endif //CONFIG_PLATFORM_INTEL_BYT
+#endif //
 	}
 	padapter->net_closed = _FALSE;
 
@@ -2569,7 +2569,7 @@ static int netdev_close(struct net_device *pnetdev)
 {
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
 	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
-#ifndef CONFIG_PLATFORM_INTEL_BYT
+#if 1
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 #endif
 #if 0
@@ -2578,7 +2578,7 @@ static int netdev_close(struct net_device *pnetdev)
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+871x_drv - drv_close\n"));
 
-#ifndef CONFIG_PLATFORM_INTEL_BYT
+#if 1
 	if(pwrctl->bInternalAutoSuspend == _TRUE) {
 		//rtw_pwr_wakeup(padapter);
 		if(pwrctl->rf_pwrstate == rf_off)
@@ -2647,7 +2647,7 @@ static int netdev_close(struct net_device *pnetdev)
 	else
 		DBG_871X("CONFIG_BT_COEXIST: SECONDARY_ADAPTER\n");
 #endif //CONFIG_BT_COEXIST_SOCKET_TRX
-#else //!CONFIG_PLATFORM_INTEL_BYT
+#else //
 
 	if (pwrctl->bInSuspend == _TRUE) {
 		DBG_871X("+871x_drv - drv_close, bInSuspend=%d\n", pwrctl->bInSuspend);
@@ -2663,7 +2663,7 @@ static int netdev_close(struct net_device *pnetdev)
 	rtw_dev_unload(padapter);
 	rtw_sdio_set_power(0);
 
-#endif //!CONFIG_PLATFORM_INTEL_BYT
+#endif //
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("-871x_drv - drv_close\n"));
 	DBG_871X("-871x_drv - drv_close, bup=%d\n", padapter->bup);

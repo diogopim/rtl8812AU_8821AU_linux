@@ -638,7 +638,7 @@ int rtw_android_priv_cmd(struct net_device *net, struct ifreq *ifr, int cmd)
 
 	case ANDROID_WIFI_CMD_SCAN_ACTIVE:
 		//rtw_set_scan_mode((_adapter *)rtw_netdev_priv(net), SCAN_ACTIVE);
-#ifdef CONFIG_PLATFORM_MSTAR
+#if 0
 #ifdef CONFIG_IOCTL_CFG80211
 		adapter_wdev_data((_adapter *)rtw_netdev_priv(net))->bandroid_scan = _TRUE;
 #endif //CONFIG_IOCTL_CFG80211
@@ -1022,9 +1022,9 @@ static int wifi_probe(struct platform_device *pdev)
 	       wifi_irqres->start, wifi_wake_gpio);
 
 	if (wifi_wake_gpio > 0) {
-#ifdef CONFIG_PLATFORM_INTEL_BYT
+#if 0
 		wifi_configure_gpio();
-#else //CONFIG_PLATFORM_INTEL_BYT
+#else
 		gpio_request(wifi_wake_gpio, "oob_irq");
 		gpio_direction_input(wifi_wake_gpio);
 		oob_irq = gpio_to_irq(wifi_wake_gpio);
@@ -1212,7 +1212,7 @@ static void wifi_del_dev(void)
 #endif /* defined(RTW_ENABLE_WIFI_CONTROL_FUNC) */
 
 #if 0
-#ifdef CONFIG_PLATFORM_INTEL_BYT
+#if 0
 int wifi_configure_gpio(void)
 {
 	if (gpio_request(oob_gpio, "oob_irq")) {
@@ -1236,7 +1236,7 @@ int wifi_configure_gpio(void)
 #endif //CONFIG_PLATFORM_INTEL_BYT
 void wifi_free_gpio(unsigned int gpio)
 {
-#ifdef CONFIG_PLATFORM_INTEL_BYT
+#if 0
 	if(gpio)
 		gpio_free(gpio);
 #endif //CONFIG_PLATFORM_INTEL_BYT

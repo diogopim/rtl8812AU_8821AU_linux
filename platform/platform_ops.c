@@ -17,7 +17,7 @@
  *
  *
  ******************************************************************************/
-#ifndef CONFIG_PLATFORM_OPS
+#if 1
 /*
  * Return:
  *	0:	power on successfully

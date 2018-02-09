@@ -103,7 +103,7 @@ static inline void rtw_android_wifictrl_func_del(void) {}
 #endif /* defined(RTW_ENABLE_WIFI_CONTROL_FUNC) */
 
 #if 0
-#ifdef CONFIG_PLATFORM_INTEL_BYT
+#if 0
 int wifi_configure_gpio(void);
 #endif //CONFIG_PLATFORM_INTEL_BYT
 void wifi_free_gpio(unsigned int gpio);

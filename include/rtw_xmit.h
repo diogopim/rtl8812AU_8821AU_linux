@@ -40,9 +40,9 @@
 #if 1
 
 #ifdef CONFIG_USB_TX_AGGREGATION
-#if defined(CONFIG_PLATFORM_ARM_SUNxI) || defined(CONFIG_PLATFORM_ARM_SUN6I) || defined(CONFIG_PLATFORM_ARM_SUN7I) || defined(CONFIG_PLATFORM_ARM_SUN8I)
+#if 0
 #define MAX_XMITBUF_SZ (12288)  //12k 1536*8
-#elif defined (CONFIG_PLATFORM_MSTAR)
+#elif 0
 #define MAX_XMITBUF_SZ	7680	// 7.5k
 #else
 #define MAX_XMITBUF_SZ	(20480)	// 20k
