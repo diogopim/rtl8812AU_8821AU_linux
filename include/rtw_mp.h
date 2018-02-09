@@ -69,7 +69,7 @@ struct mp_xmit_frame {
 
 	_adapter *padapter;
 
-#ifdef CONFIG_USB_HCI
+#if 1
 
 	//insert urb, irp, and irpcnt info below...
 	//max frag_cnt = 8

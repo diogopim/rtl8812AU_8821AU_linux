@@ -2720,7 +2720,7 @@ u8 rtw_rx_ampdu_size(_adapter *adapter)
 		goto exit;
 	}
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	if (rtw_btcoex_IsBTCoexCtrlAMPDUSize(adapter) == _TRUE) {
 		size = rtw_btcoex_GetAMPDUSize(adapter);
 		goto exit;
@@ -2767,7 +2767,7 @@ bool rtw_rx_ampdu_is_accept(_adapter *adapter)
 		goto exit;
 	}
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	if (rtw_btcoex_IsBTCoexRejectAMPDU(adapter) == _TRUE) {
 		accept = _FALSE;
 		goto exit;
@@ -9288,7 +9288,7 @@ unsigned int send_beacon(_adapter *padapter)
 	return _SUCCESS;
 #endif
 
-#if defined(CONFIG_USB_HCI)
+#if 1
 	u32 start = rtw_get_current_time();
 
 	rtw_hal_set_hwreg(padapter, HW_VAR_BCN_VALID, NULL);
@@ -11901,7 +11901,7 @@ u8 setopmode_hdl(_adapter *padapter, u8 *pbuf)
 		}
 	}
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	if (psetop->mode == Ndis802_11APMode) {
 		// Do this after port switch to
 		// prevent from downloading rsvd page to wrong port

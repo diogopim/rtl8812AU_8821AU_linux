@@ -111,7 +111,7 @@ sint _rtw_init_recv_priv(struct recv_priv *precvpriv, _adapter *padapter)
 
 	}
 
-#ifdef CONFIG_USB_HCI
+#if 1
 
 	ATOMIC_SET(&(precvpriv->rx_pending_cnt), 1);
 

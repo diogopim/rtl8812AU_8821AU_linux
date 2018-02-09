@@ -209,7 +209,8 @@ gen_RefreshLedState(
 //================================================================================
 // USB  LED Definition.
 //================================================================================
-#elif defined(CONFIG_USB_HCI)
+#endif
+#if 1
 
 #define IS_LED_WPS_BLINKING(_LED_USB)	(((PLED_USB)_LED_USB)->CurrLedState==LED_BLINK_WPS \
 					|| ((PLED_USB)_LED_USB)->CurrLedState==LED_BLINK_WPS_STOP \

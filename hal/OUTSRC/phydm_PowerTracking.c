@@ -611,13 +611,13 @@ odm_TXPowerTrackingCheckAP(
 	prtl8192cd_priv	priv		= pDM_Odm->priv;
 
 	if ( (priv->pmib->dot11RFEntry.ther) && ((priv->up_time % priv->pshare->rf_ft_var.tpt_period) == 0)) {
-#ifdef CONFIG_RTL_92D_SUPPORT
+#if 0
 		if (GET_CHIP_VER(priv)==VERSION_8192D) {
 			tx_power_tracking_92D(priv);
 		} else
 #endif
 		{
-#ifdef CONFIG_RTL_92C_SUPPORT
+#if 0
 			tx_power_tracking(priv);
 #endif
 		}

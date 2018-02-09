@@ -22,7 +22,7 @@
 
 #include <drv_types.h>
 
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 
 #define NETLINK_USER 31
 #define CONNECT_PORT 30001
@@ -351,7 +351,7 @@ void rtw_btcoex_SetDBG(PADAPTER, u32 *pDbgModule);
 u32 rtw_btcoex_GetDBG(PADAPTER, u8 *pStrBuf, u32 bufSize);
 u8 rtw_btcoex_IncreaseScanDeviceNum(PADAPTER);
 u8 rtw_btcoex_IsBtLinkExist(PADAPTER);
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 void rtw_btcoex_SetBtPatchVersion(PADAPTER padapter,u16 btHciVer, u16 btPatchVer);
 void rtw_btcoex_SetHciVersion(PADAPTER  padapter, u16 hciVersion);
 void rtw_btcoex_StackUpdateProfileInfo(void);

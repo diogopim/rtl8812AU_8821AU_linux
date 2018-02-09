@@ -159,7 +159,7 @@ int rtw_os_recvbuf_resource_alloc(_adapter *padapter, struct recv_buf *precvbuf)
 {
 	int res=_SUCCESS;
 
-#ifdef CONFIG_USB_HCI
+#if 1
 #ifdef CONFIG_USE_USB_BUFFER_ALLOC_RX
 	struct dvobj_priv	*pdvobjpriv = adapter_to_dvobj(padapter);
 	struct usb_device	*pusbd = pdvobjpriv->pusbdev;
@@ -198,7 +198,7 @@ int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
 {
 	int ret = _SUCCESS;
 
-#ifdef CONFIG_USB_HCI
+#if 1
 
 #ifdef CONFIG_USE_USB_BUFFER_ALLOC_RX
 
@@ -665,7 +665,7 @@ void rtw_os_read_port(_adapter *padapter, struct recv_buf *precvbuf)
 {
 	struct recv_priv *precvpriv = &padapter->recvpriv;
 
-#ifdef CONFIG_USB_HCI
+#if 1
 
 	precvbuf->ref_cnt--;
 

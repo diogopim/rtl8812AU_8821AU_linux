@@ -717,7 +717,7 @@ PHY_GetTxPowerIndex_8812A(
 	    Rate == MGN_VHT2SS_MCS8 || Rate == MGN_VHT2SS_MCS9) {
 		txPower += powerDiffByRate;
 	} else {
-#ifdef CONFIG_USB_HCI
+#if 1
 		//
 		// 2013/01/29 MH For preventing VHT rate of 8812AU to be used in USB 2.0 mode
 		// and the current will be more than 500mA and card disappear. We need to limit
@@ -1281,7 +1281,7 @@ phy_SetRFEReg8812(
 			PHY_SetBBReg(Adapter, rB_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x000);
 			break;
 		case 1:
-#ifdef CONFIG_BT_COEXIST
+#if 0
 			if (hal_btcoex_IsBtExist(Adapter) && (Adapter->registrypriv.mp_mode==0)) {
 				PHY_SetBBReg(Adapter, rA_RFE_Pinmux_Jaguar,0xffffff, 0x777777);
 				PHY_SetBBReg(Adapter, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77777777);
@@ -1329,7 +1329,7 @@ phy_SetRFEReg8812(
 			PHY_SetBBReg(Adapter, rB_RFE_Inv_Jaguar,bMask_RFEInv_Jaguar, 0x010);
 			break;
 		case 1:
-#ifdef CONFIG_BT_COEXIST
+#if 0
 			if (hal_btcoex_IsBtExist(Adapter) && (Adapter->registrypriv.mp_mode==0)) {
 				PHY_SetBBReg(Adapter, rA_RFE_Pinmux_Jaguar,0xffffff, 0x337717);
 				PHY_SetBBReg(Adapter, rB_RFE_Pinmux_Jaguar,bMaskDWord, 0x77337717);

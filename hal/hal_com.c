@@ -1296,7 +1296,7 @@ void hw_var_port_switch(_adapter *adapter)
 		rtw_write8(adapter, REG_BSSID1+i, bssid[i]);
 
 	/* write bcn ctl */
-#ifdef CONFIG_BT_COEXIST
+#if 0
 #if 0
 	// always enable port0 beacon function for PSTDMA
 	bcn_ctrl_1 |= EN_BCN_FUNCTION;
@@ -4456,7 +4456,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 	struct hal_ops *pHalFunc = &adapter->HalFunc;
 	u32	BeaconLength = 0, PSPollLength = 0;
 	u32	NullDataLength = 0, QosNullLength = 0;
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	u32 BTQosNullLength = 0;
 #endif
 	//u32	ProbeReqLength = 0, NullFunctionDataLength = 0;
@@ -4562,7 +4562,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 
 	BufIndex += (CurtPktPageNum*PageSize);
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	//BT Qos null data * 1 page
 	RsvdPageLoc.LocBTQosNull = TotalPageNum;
 	DBG_871X("LocBTQosNull: %d\n", RsvdPageLoc.LocBTQosNull);
@@ -5197,7 +5197,7 @@ void SetHwReg(_adapter *adapter, u8 variable, const u8 *val)
 #ifdef CONFIG_GTK_OL_DBG
 			dump_cam_table(adapter);
 #endif
-#ifdef CONFIG_USB_HCI
+#if 1
 			if (adapter->intf_stop)		//free adapter's resource
 				adapter->intf_stop(adapter);
 
@@ -5959,7 +5959,7 @@ void rtw_store_phy_info(_adapter *padapter, union recv_frame *prframe)
 }
 #endif
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 int check_phy_efuse_tx_power_info_valid(PADAPTER padapter)
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);

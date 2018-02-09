@@ -171,7 +171,7 @@
 #define CONFIG_TDLS_CH_SW
 #endif
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 // for ODM and outsrc BT-Coex
 #define BT_30_SUPPORT 1
 

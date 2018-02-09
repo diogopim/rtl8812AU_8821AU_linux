@@ -1100,7 +1100,7 @@ void rtw_survey_event_callback(_adapter	*adapter, u8 *pbuf)
 
 	RT_TRACE(_module_rtl871x_mlme_c_,_drv_info_,("rtw_survey_event_callback, ssid=%s\n",  pnetwork->Ssid.Ssid));
 
-#ifdef CONFIG_RTL8712
+#if 0
 	//endian_convert
 	pnetwork->Length = le32_to_cpu(pnetwork->Length);
 	pnetwork->Ssid.SsidLength = le32_to_cpu(pnetwork->Ssid.SsidLength);
@@ -1887,7 +1887,7 @@ void rtw_joinbss_event_prehandle(_adapter *adapter, u8 *pbuf)
 
 	_func_enter_;
 
-#ifdef CONFIG_RTL8712
+#if 0
 	//endian_convert
 	pnetwork->join_res = le32_to_cpu(pnetwork->join_res);
 	pnetwork->network_type = le32_to_cpu(pnetwork->network_type);
@@ -2267,7 +2267,7 @@ void rtw_stassoc_event_callback(_adapter *adapter, u8 *pbuf)
 
 	mlmeext_sta_add_event_callback(adapter, psta);
 
-#ifdef CONFIG_RTL8711
+#if 0
 	//submit SetStaKey_cmd to tell fw, fw will allocate an CAM entry for this sta
 	rtw_setstakey_cmd(adapter, psta, GROUP_KEY, _TRUE);
 #endif
@@ -2687,14 +2687,14 @@ void rtw_dynamic_check_timer_handlder(_adapter *adapter)
 			return;
 		}
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	if(is_primary_adapter(adapter))
 		DBG_871X("IsBtDisabled=%d, IsBtControlLps=%d\n", rtw_btcoex_IsBtDisabled(adapter), rtw_btcoex_IsBtControlLps(adapter));
 #endif
 
 #ifdef CONFIG_LPS_LCLK_WD_TIMER
 	if ((adapter_to_pwrctl(adapter)->bFwCurrentInPSMode ==_TRUE )
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	    && (rtw_btcoex_IsBtControlLps(adapter) == _FALSE)
 #endif
 	   ) {
@@ -3598,7 +3598,7 @@ void rtw_joinbss_reset(_adapter *padapter)
 
 	phtpriv->ampdu_enable = _FALSE;//reset to disabled
 
-#if defined( CONFIG_USB_HCI)
+#if 1
 	// TH=1 => means that invalidate usb rx aggregation
 	// TH=0 => means that validate usb rx aggregation, use init value.
 	if(phtpriv->ht_option) {

@@ -1442,7 +1442,7 @@ int retriveAdaptorInfoFile(char *path, struct eeprom_priv * eeprom_priv)
 #endif //CONFIG_ADAPTOR_INFO_CACHING_FILE
 #endif //PLATFORM_LINUX
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 
 void Rtw_Hal_ReadMACAddrFromFile(PADAPTER padapter)
 {

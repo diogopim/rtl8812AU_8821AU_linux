@@ -679,7 +679,7 @@ static void disable_dm(PADAPTER padapter)
 #endif
 	Switch_DM_Func(padapter, DYNAMIC_RF_CALIBRATION, _TRUE);
 
-//#ifdef CONFIG_BT_COEXIST
+//#if 0
 //	rtw_btcoex_Switch(padapter, 0); //remove for BT MP Down.
 //#endif
 }
@@ -949,7 +949,7 @@ end_of_mp_stop_test:
 }
 /*---------------------------hal\rtl8192c\MPT_Phy.c---------------------------*/
 #if 0
-//#ifdef CONFIG_USB_HCI
+//#if 1
 static VOID mpt_AdjustRFRegByRateByChan92CU(PADAPTER pAdapter, u8 RateIdx, u8 Channel, u8 BandWidthID)
 {
 	u8		eRFPath;
@@ -2477,7 +2477,7 @@ ULONG mpt_ProQueryCalTxPower(
 	ULONG			TxPower = 1;
 	u1Byte			rate = 0;
 
-#if 0// defined(CONFIG_RTL8192D) ||defined(CONFIG_RTL8192C)
+#if 0
 	if(IS_HARDWARE_TYPE_8188E_before(pAdapter))
 		return mpt_ProQueryCalTxPower_8192C(pAdapter, RfPath);
 #endif
@@ -2514,7 +2514,7 @@ ULONG mpt_ProQueryCalTxPower(
 		                                    pHalData->CurrentChannelBW, pHalData->CurrentChannel);
 	}
 #endif
-#if defined(CONFIG_RTL8814A)
+#if 0
 	if ( IS_HARDWARE_TYPE_8814A(pAdapter) ) {
 		rate = MptToMgntRate(pAdapter->mppriv.rateidx);
 		TxPower = PHY_GetTxPowerIndex_8814A(pAdapter, RfPath, rate,

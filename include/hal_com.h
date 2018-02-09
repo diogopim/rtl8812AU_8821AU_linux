@@ -359,7 +359,7 @@ void rtw_dump_raw_rssi_info(_adapter *padapter);
 #endif
 
 #define		HWSET_MAX_SIZE			512
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 #define		EFUSE_FILE_COLUMN_NUM		16
 u32 Hal_readPGDataFromConfigFile(PADAPTER padapter, struct file *fp);
 void Hal_ReadMACAddrFromFile(PADAPTER padapter, struct file *fp);

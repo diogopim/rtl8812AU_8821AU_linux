@@ -22,7 +22,7 @@
 //#include <drv_types.h>
 #include <rtl8812a_hal.h>
 
-#ifndef CONFIG_USB_HCI
+#if 0
 
 #error "CONFIG_USB_HCI shall be on!\n"
 
@@ -1378,7 +1378,7 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 		HAL_INIT_STAGES_LCK,
 		HAL_INIT_STAGES_MISC21,
 		//HAL_INIT_STAGES_INIT_PABIAS,
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		HAL_INIT_STAGES_BT_COEXIST,
 #endif
 		//HAL_INIT_STAGES_ANTENNA_SEL,
@@ -1406,7 +1406,7 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 		"HAL_INIT_STAGES_PW_TRACK",
 		"HAL_INIT_STAGES_LCK",
 		"HAL_INIT_STAGES_MISC21",
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		"HAL_INIT_STAGES_BT_COEXIST",
 #endif
 		//"HAL_INIT_STAGES_ANTENNA_SEL",
@@ -1841,7 +1841,7 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 //HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_PABIAS);
 //	_InitPABias(Adapter);
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_BT_COEXIST);
 	//_InitBTCoexist(Adapter);
 	// 2010/08/23 MH According to Alfred's suggestion, we need to to prevent HW enter
@@ -1979,7 +1979,7 @@ u32 rtl8812au_hal_deinit(PADAPTER Adapter)
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	DBG_8192C("==> %s \n",__FUNCTION__);
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	if (hal_btcoex_IsBtExist(Adapter)) {
 		DBG_871X("BT module enable SIC\n");
 		// Only under WIN7 we can support selective suspend and enter D3 state when system call halt adapter.
@@ -2435,11 +2435,11 @@ InitAdapterVariablesByPROM_8812AU(
 )
 {
 	EEPROM_EFUSE_PRIV *pEEPROM = GET_EEPROM_EFUSE_PRIV(Adapter);
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 	struct file *fp;
 #endif //CONFIG_EFUSE_CONFIG_FILE
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 	if (check_phy_efuse_tx_power_info_valid(Adapter) == _FALSE) {
 		fp = filp_open(EFUSE_MAP_PATH, O_RDONLY, 0);
 		if (fp == NULL || IS_ERR(fp)) {
@@ -2458,7 +2458,7 @@ InitAdapterVariablesByPROM_8812AU(
 	Hal_ReadPROMVersion8812A(Adapter, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
 	hal_ReadIDs_8812AU(Adapter, pEEPROM->efuse_eeprom_data, pEEPROM->bautoload_fail_flag);
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 	if (check_phy_efuse_macaddr_info_valid(Adapter) == _TRUE) {
 		DBG_871X("using phy efuse mac\n");
 		Hal_GetPhyEfuseMACAddr(Adapter, pEEPROM->mac_addr);

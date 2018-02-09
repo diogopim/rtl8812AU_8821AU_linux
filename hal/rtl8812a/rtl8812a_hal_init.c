@@ -228,7 +228,7 @@ _BlockWrite_8812(
 	u8			*p = NULL;
 #endif
 
-#ifdef CONFIG_USB_HCI
+#if 1
 	blockSize_p1 = MAX_REG_BOLCK_SIZE;
 #endif
 
@@ -243,7 +243,7 @@ _BlockWrite_8812(
 	}
 
 	for (i = 0; i < blockCount_p1; i++) {
-#ifdef CONFIG_USB_HCI
+#if 1
 		ret = rtw_writeN(padapter, (FW_START_ADDRESS + i * blockSize_p1), blockSize_p1, (bufferPtr + i * blockSize_p1));
 #else
 		ret = rtw_write32(padapter, (FW_START_ADDRESS + i * blockSize_p1), le32_to_cpu(*((u32*)(bufferPtr + i * blockSize_p1))));
@@ -285,7 +285,7 @@ _BlockWrite_8812(
 			          (buffSize-offset), blockSize_p2 ,blockCount_p2, remainSize_p2));
 		}
 
-#ifdef CONFIG_USB_HCI
+#if 1
 		for (i = 0; i < blockCount_p2; i++) {
 			ret = rtw_writeN(padapter, (FW_START_ADDRESS + offset + i*blockSize_p2), blockSize_p2, (bufferPtr + offset + i*blockSize_p2));
 
@@ -568,7 +568,7 @@ FirmwareDownload8812(
 			DBG_871X("%s fw:%s, size: %d\n", __FUNCTION__, "WoWLAN", pFirmware->ulFwLength);
 		} else
 #endif /* CONFIG_WOWLAN */
-#ifdef CONFIG_BT_COEXIST
+#if 0
 			if (pHalData->EEPROMBluetoothCoexist == _TRUE) {
 				ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_BT, (u8 *)&(pFirmware->szFwBuffer), &(pFirmware->ulFwLength));
 				DBG_871X("%s fw:%s, size: %d\n", __FUNCTION__, "NIC-BTCOEX", pFirmware->ulFwLength);
@@ -1551,7 +1551,7 @@ Hal_EfuseParseBTCoexistInfo8812A(
 		rtw_warn_on(1);
 	}
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	if(_TRUE == pHalData->EEPROMBluetoothCoexist && IS_HARDWARE_TYPE_8812(Adapter)) {
 #ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
 		if ( !hal_btcoex_AntIsolationConfig_ParaFile (Adapter , RTL8812_WIFI_ANT_ISOLATION))
@@ -1786,7 +1786,7 @@ void Hal_ReadRemoteWakeup_8812A(
 	} else {
 		// decide hw if support remote wakeup function
 		// if hw supported, 8051 (SIE) will generate WeakUP signal( D+/D- toggle) when autoresume
-#ifdef CONFIG_USB_HCI
+#if 1
 		if(IS_HARDWARE_TYPE_8821U(padapter))
 			pwrctl->bSupportRemoteWakeup = (hwinfo[EEPROM_USB_OPTIONAL_FUNCTION0_8811AU] & BIT1)?_TRUE :_FALSE;
 		else
@@ -1854,7 +1854,7 @@ Hal_ReadAntennaDiversity8812A(
 			pHalData->AntDivCfg = registry_par->antdiv_cfg;
 		}
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		if(hal_btcoex_1Ant(pAdapter))
 			pHalData->AntDivCfg = 0;
 #endif
@@ -1886,7 +1886,7 @@ Hal_ReadAntennaDiversity8821A(
 		else
 			pHalData->AntDivCfg = registry_par->antdiv_cfg;
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		if(hal_btcoex_1Ant(pAdapter))
 			pHalData->AntDivCfg = 0;
 #endif
@@ -3320,7 +3320,7 @@ rtl8812_Efuse_PgPacketWrite(IN	PADAPTER	pAdapter,
 	return ret;
 }
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 static s32 _halReadPGDataFromFile(PADAPTER padapter, u8 *pbuf)
 {
 	u32 i;
@@ -3566,7 +3566,7 @@ void InitPGData8812A(PADAPTER padapter)
 
 	pEEPROM = GET_EEPROM_EFUSE_PRIV(padapter);
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 	{
 		s32 tmp;
 		u32 addr;
@@ -3578,7 +3578,8 @@ void InitPGData8812A(PADAPTER padapter)
 
 #if 0
 		addr = EEPROM_MAC_ADDR_8821AS;
-#elif defined(CONFIG_USB_HCI)
+#endif
+#if 1
 		if (IS_HARDWARE_TYPE_8812AU(padapter))
 			addr = EEPROM_MAC_ADDR_8812AU;
 		else
@@ -3754,7 +3755,7 @@ void UpdateHalRAMask8812A(PADAPTER padapter, u32 mac_id, u8 rssi_level)
 
 	mask &= rate_bitmap;
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	if (pHalData->EEPROMBluetoothCoexist == 1) {
 		rate_bitmap = rtw_btcoex_GetRaMask(padapter);
 		mask &= ~rate_bitmap;
@@ -3825,7 +3826,7 @@ _InitBeaconParameters_8812A(
 
 	val8 = DIS_TSF_UDT;
 	val16 = val8 | (val8 << 8); // port0 and port1
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	if (pHalData->EEPROMBluetoothCoexist == 1) {
 		// Enable prot0 beacon function for PSTDMA
 		val16 |= EN_BCN_FUNCTION;
@@ -4780,7 +4781,7 @@ static void hw_var_set_bcn_func(PADAPTER Adapter, u8 variable, const u8* val)
 		val8 = rtw_read8(Adapter, bcn_ctrl_reg);
 		val8 &= ~(EN_BCN_FUNCTION | EN_TXBCN_RPT);
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		if (GET_HAL_DATA(Adapter)->EEPROMBluetoothCoexist == 1) {
 			// Always enable port0 beacon function for PSTDMA
 			if (REG_BCN_CTRL == bcn_ctrl_reg)
@@ -5242,7 +5243,7 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 	case HW_VAR_MLME_SITESURVEY:
 		hw_var_set_mlme_sitesurvey(padapter, variable,  pval);
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		if (_TRUE == pHalData->EEPROMBluetoothCoexist)
 			rtw_btcoex_ScanNotify(padapter, *pval?_TRUE:_FALSE);
 #endif
@@ -5293,7 +5294,7 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 		}
 #endif // !CONFIG_CONCURRENT_MODE
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		if (_TRUE == pHalData->EEPROMBluetoothCoexist) {
 			switch (*pval) {
 			case 0:
@@ -5766,7 +5767,7 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 		pHalData->bNeedIQK = _TRUE;
 		break;
 	case HW_VAR_DL_RSVD_PAGE:
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		if (pHalData->EEPROMBluetoothCoexist == 1) {
 			if (check_fwstate(&padapter->mlmepriv, WIFI_AP_STATE) == _TRUE) {
 				rtl8812a_download_BTCoex_AP_mode_rsvd_page(padapter);
@@ -6258,7 +6259,7 @@ exit:
 	return ret;
 }
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 void rtl8812a_combo_card_WifiOnlyHwInit(PADAPTER pdapter)
 {
 	u8  u1Tmp;

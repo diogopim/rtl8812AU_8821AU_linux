@@ -40,7 +40,7 @@
 #define RECV_ALIVE	BIT(1)
 #define CMD_ALIVE	BIT(2)
 #define EVT_ALIVE	BIT(3)
-#ifdef CONFIG_BT_COEXIST
+#if 0
 #define BTCOEX_ALIVE	BIT(4)
 #endif // CONFIG_BT_COEXIST
 
@@ -306,7 +306,7 @@ struct pwrctrl_priv {
 
 	u8		bInternalAutoSuspend;
 	u8		bInSuspend;
-#ifdef	CONFIG_BT_COEXIST
+#if 0
 	u8		bAutoResume;
 	u8		autopm_cnt;
 #endif

@@ -341,7 +341,7 @@ BOOLEAN	InterruptRecognized8812AE(PADAPTER Adapter);
 VOID	UpdateInterruptMask8812AE(PADAPTER Adapter, u32 AddMSR, u32 AddMSR1, u32 RemoveMSR, u32 RemoveMSR1);
 #endif
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 void rtl8812a_combo_card_WifiOnlyHwInit(PADAPTER Adapter);
 #endif
 

@@ -1322,7 +1322,7 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 		update_beacon(padapter, _TIM_IE_, NULL, _TRUE);
 
 #ifndef CONFIG_INTERRUPT_BASED_TXBCN //other case will  tx beacon when bcn interrupt coming in.
-#if defined(CONFIG_USB_HCI)
+#if 1
 		//issue beacon frame
 		if(send_beacon(padapter)==_FAIL) {
 			DBG_871X("issue_beacon, fail!\n");
@@ -2311,7 +2311,7 @@ void _update_beacon(_adapter *padapter, u8 ie_id, const u8 *oui, u8 tx, const ch
 	_exit_critical_bh(&pmlmepriv->bcn_update_lock, &irqL);
 
 #ifndef CONFIG_INTERRUPT_BASED_TXBCN
-#if defined(CONFIG_USB_HCI)
+#if 1
 	if(tx) {
 		//send_beacon(padapter);//send_beacon must execute on TSR level
 		if (0)
@@ -3088,7 +3088,7 @@ void stop_ap_mode(_adapter *padapter)
 
 	rtw_free_mlme_priv_ie_data(pmlmepriv);
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	rtw_btcoex_MediaStatusNotify(padapter, 0); //disconnect
 #endif
 

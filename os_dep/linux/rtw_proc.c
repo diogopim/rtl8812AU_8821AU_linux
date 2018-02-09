@@ -603,7 +603,7 @@ static int proc_get_cam_cache(struct seq_file *m, void *v)
 	return 0;
 }
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 ssize_t proc_set_btinfo_evt(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
@@ -709,7 +709,7 @@ const struct rtw_proc_hdl adapter_proc_hdls [] = {
 	//{"path_rssi", proc_get_two_path_rssi, NULL},
 //	{"rssi_disp",proc_get_rssi_disp, proc_set_rssi_disp},
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	{"btcoex_dbg", proc_get_btcoex_dbg, proc_set_btcoex_dbg},
 	{"btcoex", proc_get_btcoex_info, NULL},
 	{"btinfo_evt", proc_get_dummy, proc_set_btinfo_evt},

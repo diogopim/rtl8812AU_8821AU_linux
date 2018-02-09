@@ -378,7 +378,7 @@ struct recv_priv {
 	uint  rx_smallpacket_crcerr;
 	uint  rx_middlepacket_crcerr;
 
-#ifdef CONFIG_USB_HCI
+#if 1
 	//u8 *pallocated_urb_buf;
 	_sema allrxreturnevt;
 	uint	ff_hwaddr;
@@ -415,7 +415,7 @@ struct recv_priv {
 	_queue	free_recv_buf_queue;
 	u32	free_recv_buf_queue_cnt;
 
-#if defined(CONFIG_USB_HCI)
+#if 1
 	_queue	recv_buf_pending_queue;
 #endif
 
@@ -495,7 +495,7 @@ struct recv_buf {
 	u8	*ptail;
 	u8	*pend;
 
-#ifdef CONFIG_USB_HCI
+#if 1
 
 #if defined(PLATFORM_OS_XP)||defined(PLATFORM_LINUX)||defined(PLATFORM_FREEBSD)
 	PURB	purb;

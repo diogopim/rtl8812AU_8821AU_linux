@@ -19,7 +19,7 @@
  ******************************************************************************/
 #define __HAL_BTCOEX_C__
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 
 #include <hal_data.h>
 #include <hal_btcoex.h>
@@ -480,7 +480,7 @@ u32 halbtcoutsrc_GetBtPatchVer(PBTC_COEXIST pBtCoexist)
 	//u8 btFwVer = 0x0;
 	//u8 cnt = 0;
 
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	if (!pBtCoexist->btInfo.btRealFwVer && cnt<=5) {
 #if 0
 		if (halbtcoutsrc_IsHwMailboxExist(pBtCoexist)) {
@@ -917,7 +917,7 @@ u8 halbtcoutsrc_Set(void *pBtcContext, u8 setType, void *pInBuf)
 	break;
 
 	case BTC_SET_ACT_CTRL_BT_INFO:
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	{
 		u8 dataLen = *pU1Tmp;
 		u8 tmpBuf[20];
@@ -932,7 +932,7 @@ u8 halbtcoutsrc_Set(void *pBtcContext, u8 setType, void *pInBuf)
 	break;
 
 	case BTC_SET_ACT_CTRL_BT_COEX:
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	{
 		u8 dataLen = *pU1Tmp;
 		u8 tmpBuf[20];
@@ -2256,7 +2256,7 @@ EXhalbtcoutsrc_AntennaDetection(
 
 void EXhalbtcoutsrc_StackUpdateProfileInfo(void)
 {
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	PBTC_COEXIST pBtCoexist = &GLBtCoexist;
 	PADAPTER padapter = (PADAPTER)GLBtCoexist.Adapter;
 	PBT_MGNT pBtMgnt = &padapter->coex_info.BtMgnt;

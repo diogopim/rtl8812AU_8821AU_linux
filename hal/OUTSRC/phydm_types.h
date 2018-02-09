@@ -137,7 +137,7 @@ typedef enum _RT_SPINLOCK_TYPE {
 #define CONFIG_RA_DBG_CMD
 
 //2 [ Configure Antenna Diversity ]
-#if defined(CONFIG_RTL_8881A_ANT_SWITCH) || defined(CONFIG_SLOT_0_ANT_SWITCH) || defined(CONFIG_SLOT_1_ANT_SWITCH)
+#if 0
 #define CONFIG_HW_ANTENNA_DIVERSITY
 #define ODM_EVM_ENHANCE_ANTDIV
 
@@ -245,7 +245,7 @@ typedef s64					s8Byte,*ps8Byte;
 #define	ps8Byte 	s64*
 
 #endif
-#ifdef CONFIG_USB_HCI
+#if 1
 #define DEV_BUS_TYPE  	RT_USB_INTERFACE
 #endif
 

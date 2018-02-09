@@ -41,7 +41,8 @@ ODM_BOARD_TYPE_E boardType(u8 InterfaceSel)
 		break;
 	}
 
-#elif defined(CONFIG_USB_HCI)
+#endif
+#if 1
 	INTERFACE_SELECT_USB    usb 	= (INTERFACE_SELECT_USB)InterfaceSel;
 	switch (usb) {
 	case INTF_SEL1_USB_High_Power:
@@ -132,7 +133,7 @@ void Init_ODM_ComInfo(_adapter *adapter)
 				odm_board_type |= ODM_BOARD_BT;
 
 		} else {
-#ifdef CONFIG_USB_HCI
+#if 1
 			if (pHalData->InterfaceSel == INTF_SEL1_USB_High_Power
 			    || pHalData->BoardType == BOARD_USB_High_PA	/* This is legacy code for hal_data.BoardType */
 			   ) {

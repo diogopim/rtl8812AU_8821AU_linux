@@ -154,7 +154,7 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 
 #include <rtw_android.h>
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 #include <rtw_btcoex.h>
 #endif // CONFIG_BT_COEXIST
 
@@ -256,7 +256,7 @@ struct registry_priv {
 	u8	wifi_spec;// !turbo_mode
 	u8	special_rf_path; // 0: 2T2R ,1: only turn on path A 1T1R
 	u8	channel_plan;
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	u8	btcoex;
 	u8	bt_iso;
 	u8	bt_sco;
@@ -662,7 +662,7 @@ struct dvobj_priv {
 
 	/*-------- below is for USB INTERFACE --------*/
 
-#ifdef CONFIG_USB_HCI
+#if 1
 
 	u8	usb_speed; // 1.1, 2.0 or 3.0
 	u8	nr_endpoint;
@@ -770,7 +770,7 @@ static inline struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 #ifdef RTW_DVOBJ_CHIP_HW_TYPE
 #endif
 
-#ifdef CONFIG_USB_HCI
+#if 1
 	return &dvobj->pusbintf->dev;
 #endif
 #if 0
@@ -893,7 +893,7 @@ struct _ADAPTER {
 	struct wifi_display_info wfd_info;
 #endif //CONFIG_WFD
 
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	struct bt_coex_info coex_info;
 #endif //CONFIG_BT_COEXIST_SOCKET_TRX
 
@@ -1144,7 +1144,7 @@ __inline static u8 *myid(struct eeprom_priv *peepriv)
 }
 
 // HCI Related header file
-#ifdef CONFIG_USB_HCI
+#if 1
 #include <usb_osintf.h>
 #include <usb_ops.h>
 #include <usb_hal.h>

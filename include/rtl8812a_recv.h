@@ -20,7 +20,7 @@
 #ifndef __RTL8812A_RECV_H__
 #define __RTL8812A_RECV_H__
 
-#if defined(CONFIG_USB_HCI)
+#if 1
 
 #ifndef MAX_RECVBUF_SZ
 #ifdef PLATFORM_OS_CE
@@ -130,7 +130,7 @@ s32 InitRecvPriv8821AS(PADAPTER padapter);
 void FreeRecvPriv8821AS(PADAPTER padapter);
 #endif // CONFIG_SDIO_HCI
 
-#ifdef CONFIG_USB_HCI
+#if 1
 #define INTERRUPT_MSG_FORMAT_LEN 60
 void rtl8812au_init_recvbuf(_adapter *padapter, struct recv_buf *precvbuf);
 s32 rtl8812au_init_recv_priv(PADAPTER padapter);

@@ -89,7 +89,7 @@ static void dm_CheckPbcGPIO(_adapter *padapter)
 	if(!padapter->registrypriv.hw_wps_pbc)
 		return;
 
-#if defined(CONFIG_USB_HCI)
+#if 1
 	if (IS_HARDWARE_TYPE_8812(padapter)) {
 		tmp1byte = rtw_read8(padapter, GPIO_IO_SEL);
 		tmp1byte |= (HAL_8192C_HW_GPIO_WPS_BIT);
@@ -348,7 +348,7 @@ rtl8812_InitHalDm(
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 	//u8	i;
 
-#ifdef CONFIG_USB_HCI
+#if 1
 	dm_InitGPIOSetting(Adapter);
 #endif
 
@@ -447,7 +447,7 @@ rtl8812_HalDmWatchDog(
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_LINK, bLinked);
 		ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_STATION_STATE, bsta_state);
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		bBtDisabled = rtw_btcoex_IsBtDisabled(Adapter);
 #endif // CONFIG_BT_COEXIST
 		ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_BT_ENABLED, ((bBtDisabled == _TRUE)?_FALSE:_TRUE));
@@ -476,7 +476,7 @@ void rtl8812_init_dm_priv(IN PADAPTER Adapter)
 	_rtw_memset(pdmpriv, 0, sizeof(struct dm_priv));
 	//_rtw_spinlock_init(&(pHalData->odm_stainfo_lock));
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	/* firmware size issue, btcoex fw doesn't support IQK offload */
 	if (pHalData->EEPROMBluetoothCoexist == _FALSE)
 #endif

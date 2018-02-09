@@ -49,7 +49,7 @@ struct intf_priv {
 
 
 #ifdef PLATFORM_LINUX
-#ifdef CONFIG_USB_HCI
+#if 1
 	// when in USB, IO is through interrupt in/out endpoints
 	struct usb_device 	*udev;
 	PURB	piorw_urb;
@@ -73,7 +73,7 @@ struct intf_priv {
 	PIRP		piorw_irp;
 
 #endif
-#ifdef CONFIG_USB_HCI
+#if 1
 	PURB	piorw_urb;
 	PIRP		piorw_irp;
 	u8 io_irp_cnt;

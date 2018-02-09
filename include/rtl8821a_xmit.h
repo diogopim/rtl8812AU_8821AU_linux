@@ -153,7 +153,7 @@ thread_return XmitThread8821AS(thread_context context);
 #endif // CONFIG_SDIO_HCI
 
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 s32 rtl8821au_init_xmit_priv(PADAPTER padapter);
 void rtl8821au_free_xmit_priv(PADAPTER padapter);
 s32 rtl8821au_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe);

@@ -139,7 +139,7 @@ int rtw_lowrate_two_xmit = 1;//Use 2 path Tx to transmit MCS0~7 and legacy mode
 //int rf_config = RF_1T2R;  // 1T2R
 int rtw_rf_config = RF_MAX_TYPE;  //auto
 int rtw_low_power = 0;
-#ifdef CONFIG_WIFI_TEST
+#if 0
 int rtw_wifi_spec = 1;//for wifi test
 #else
 int rtw_wifi_spec = 0;
@@ -149,7 +149,7 @@ int rtw_special_rf_path = 0; //0: 2T2R ,1: only turn on path A 1T1R
 
 int rtw_channel_plan = RT_CHANNEL_DOMAIN_MAX;
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 int rtw_btcoex_enable = 1;
 module_param(rtw_btcoex_enable, int, 0644);
 MODULE_PARM_DESC(rtw_btcoex_enable, "Enable BT co-existence mechanism");
@@ -167,7 +167,7 @@ int rtw_antdiv_cfg = 2; // 0:OFF , 1:ON, 2:decide by Efuse config
 int rtw_antdiv_type = 0 ; //0:decide by efuse  1: for 88EE, 1Tx and 1RxCG are diversity.(2 Ant with SPDT), 2:  for 88EE, 1Tx and 2Rx are diversity.( 2 Ant, Tx and RxCG are both on aux port, RxCS is on main port ), 3: for 88EE, 1Tx and 1RxCG are fixed.(1Ant, Tx and RxCG are both on aux port)
 
 
-#ifdef CONFIG_USB_AUTOSUSPEND
+#if 0
 int rtw_enusbss = 1;//0:disable,1:enable
 #else
 int rtw_enusbss = 0;//0:disable,1:enable
@@ -175,13 +175,13 @@ int rtw_enusbss = 0;//0:disable,1:enable
 
 int rtw_hwpdn_mode=2;//0:disable,1:enable,2: by EFUSE config
 
-#ifdef CONFIG_HW_PWRP_DETECTION
+#if 0
 int rtw_hwpwrp_detect = 1;
 #else
 int rtw_hwpwrp_detect = 0; //HW power  ping detect 0:disable , 1:enable
 #endif
 
-#ifdef CONFIG_USB_HCI
+#if 1
 int rtw_hw_wps_pbc = 1;
 #else
 int rtw_hw_wps_pbc = 0;
@@ -379,10 +379,11 @@ module_param(rtw_FileMaskEfuse, uint, 0644);
 MODULE_PARM_DESC(rtw_FileMaskEfuse, "default drv Mask Efuse vaule:0");
 
 
-#if defined(CONFIG_CALIBRATE_TX_POWER_BY_REGULATORY) //eFuse: Regulatory selection=1
+#if 0
 int rtw_tx_pwr_lmt_enable = 1;
 int rtw_tx_pwr_by_rate = 1;
-#elif defined(CONFIG_CALIBRATE_TX_POWER_TO_MAX)//eFuse: Regulatory selection=0
+#endif
+#if defined(CONFIG_CALIBRATE_TX_POWER_TO_MAX)//eFuse: Regulatory selection=0
 int rtw_tx_pwr_lmt_enable = 0;
 int rtw_tx_pwr_by_rate = 1;
 #else //eFuse: Regulatory selection=2
@@ -523,7 +524,7 @@ uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)
 	registry_par->channel_plan = (u8)rtw_channel_plan;
 	registry_par->special_rf_path = (u8)rtw_special_rf_path;
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	registry_par->btcoex = (u8)rtw_btcoex_enable;
 	registry_par->bt_iso = (u8)rtw_bt_iso;
 	registry_par->bt_sco = (u8)rtw_bt_sco;
@@ -2297,7 +2298,7 @@ int _netdev_open(struct net_device *pnetdev)
 	uint status;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
 	struct pwrctrl_priv *pwrctrlpriv = adapter_to_pwrctl(padapter);
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 #endif //CONFIG_BT_COEXIST_SOCKET_TRX
 
@@ -2358,7 +2359,7 @@ int _netdev_open(struct net_device *pnetdev)
 		pwrctrlpriv->bips_processing = _FALSE;
 
 #ifdef CONFIG_PLATFORM_INTEL_BYT
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		rtw_btcoex_IpsNotify(padapter, IPS_NONE);
 #endif // CONFIG_BT_COEXIST
 #endif //CONFIG_PLATFORM_INTEL_BYT
@@ -2378,7 +2379,7 @@ int _netdev_open(struct net_device *pnetdev)
 	netdev_br_init(pnetdev);
 #endif	// CONFIG_BR_EXT
 
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	if(is_primary_adapter(padapter) &&  _TRUE == pHalData->EEPROMBluetoothCoexist) {
 		rtw_btcoex_init_socket(padapter);
 		padapter->coex_info.BtMgnt.ExtConfig.HCIExtensionVer = 0x04;
@@ -2571,7 +2572,7 @@ static int netdev_close(struct net_device *pnetdev)
 #ifndef CONFIG_PLATFORM_INTEL_BYT
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
 #endif
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(padapter);
 #endif //CONFIG_BT_COEXIST_SOCKET_TRX
 
@@ -2640,7 +2641,7 @@ static int netdev_close(struct net_device *pnetdev)
 #ifdef CONFIG_WAPI_SUPPORT
 	rtw_wapi_disable_tx(padapter);
 #endif
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	if(is_primary_adapter(padapter) &&  _TRUE == pHalData->EEPROMBluetoothCoexist)
 		rtw_btcoex_close_socket(padapter);
 	else
@@ -3036,7 +3037,7 @@ void rtw_dev_unload(PADAPTER padapter)
 		}
 
 		if (padapter->bSurpriseRemoved == _FALSE) {
-#ifdef CONFIG_BT_COEXIST
+#if 0
 			rtw_btcoex_IpsNotify(padapter, pwrctl->ips_mode_req);
 #endif
 #ifdef CONFIG_WOWLAN
@@ -3480,7 +3481,7 @@ int rtw_suspend_common(_adapter *padapter)
 
 	rtw_stop_cmd_thread(padapter);
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	// wait for the latest FW to remove this condition.
 	if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE) {
 		rtw_btcoex_SuspendNotify(padapter, 0);
@@ -4079,7 +4080,7 @@ int rtw_resume_common(_adapter *padapter)
 		rtw_resume_process_normal(padapter);
 	}
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	rtw_btcoex_SuspendNotify(padapter, 0);
 #endif // CONFIG_BT_COEXIST
 

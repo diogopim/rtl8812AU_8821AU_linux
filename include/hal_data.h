@@ -23,7 +23,7 @@
 #if 1//def  CONFIG_SINGLE_IMG
 
 #include "../hal/OUTSRC/phydm_precomp.h"
-#ifdef CONFIG_BT_COEXIST
+#if 0
 #include <hal_btcoex.h>
 #endif
 
@@ -75,7 +75,7 @@ typedef	enum _INTERFACE_SELECT_USB {
 	INTF_SEL5_USB_Combo_MF	= 5,		// USB WiFi+BT Multi-Function Combo, i.e., Proprietary layout(AS-VAU) which is the same as SDIO card
 } INTERFACE_SELECT_USB, *PINTERFACE_SELECT_USB;
 
-#ifdef CONFIG_USB_HCI
+#if 1
 //should be sync with INTERFACE_SELECT_USB
 typedef	enum _BOARD_TYPE_8192CUSB {
 	BOARD_USB_DONGLE 			= 0,		// USB dongle
@@ -134,7 +134,7 @@ typedef enum _RT_AMPDU_BRUST_MODE {
 //#define HP_THERMAL_NUM		8
 //###### duplicate code,will move to ODM #########
 
-#if defined(CONFIG_BT_COEXIST)
+#if 0
 typedef enum _MACPHY_MODE_8192D {
 	SINGLEMAC_SINGLEPHY,	//SMSP
 	DUALMAC_DUALPHY,		//DMDP
@@ -308,7 +308,7 @@ typedef struct hal_com_data {
 	//
 	u16	EEPROMVID;
 	u16	EEPROMSVID;
-#ifdef CONFIG_USB_HCI
+#if 1
 	u16	EEPROMPID;
 	u16	EEPROMSDID;
 #endif
@@ -555,7 +555,7 @@ typedef struct hal_com_data {
 	u32			sdio_tx_max_len[SDIO_MAX_TX_QUEUE];// H, N, L, used for sdio tx aggregation max length per queue
 #endif //CONFIG_SDIO_HCI
 
-#ifdef CONFIG_USB_HCI
+#if 1
 	u32	UsbBulkOutSize;
 	BOOLEAN		bSupportUSB3;
 
@@ -620,7 +620,7 @@ typedef struct hal_com_data {
 	struct sreset_priv srestpriv;
 #endif //#ifdef DBG_CONFIG_ERROR_DETECT
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	// For bluetooth co-existance
 	BT_COEXIST		bt_coexist;
 #if 0

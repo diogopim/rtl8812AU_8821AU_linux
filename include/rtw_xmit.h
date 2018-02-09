@@ -37,7 +37,7 @@
 #define NR_XMITBUFF	(128)
 #endif
 #endif
-#if defined (CONFIG_USB_HCI)
+#if 1
 
 #ifdef CONFIG_USB_TX_AGGREGATION
 #if defined(CONFIG_PLATFORM_ARM_SUNxI) || defined(CONFIG_PLATFORM_ARM_SUN6I) || defined(CONFIG_PLATFORM_ARM_SUN7I) || defined(CONFIG_PLATFORM_ARM_SUN8I)
@@ -177,7 +177,7 @@ do{\
 #define TXDESC_OFFSET TXDESC_SIZE
 #endif
 
-#ifdef CONFIG_USB_HCI
+#if 1
 #ifdef USB_PACKET_OFFSET_SZ
 #define PACKET_OFFSET_SZ (USB_PACKET_OFFSET_SZ)
 #else
@@ -204,7 +204,8 @@ enum TXDESC_SC {
 
 #if 0
 #define TXDESC_64_BYTES
-#elif defined(CONFIG_RTL8812A)
+#endif
+#if 1
 #define TXDESC_40_BYTES
 #endif
 
@@ -486,7 +487,7 @@ struct xmit_buf {
 
 	struct submit_ctx *sctx;
 
-#ifdef CONFIG_USB_HCI
+#if 1
 
 	//u32 sz[8];
 	u32	ff_hwaddr;
@@ -556,7 +557,7 @@ struct xmit_frame {
 	u8	agg_num;
 #endif
 
-#ifdef CONFIG_USB_HCI
+#if 1
 #ifdef CONFIG_USB_TX_AGGREGATION
 	u8	agg_num;
 #endif
@@ -686,7 +687,7 @@ struct	xmit_priv {
 
 	u8	wmm_para_seq[4];//sequence for wmm ac parameter strength from large to small. it's value is 0->vo, 1->vi, 2->be, 3->bk.
 
-#ifdef CONFIG_USB_HCI
+#if 1
 	_sema	tx_retevt;//all tx return event;
 	u8		txirp_cnt;//
 

@@ -58,7 +58,7 @@ odm_DynamicTxPowerInit(
 	pdmpriv->bDynamicTxPowerEnable = _FALSE;
 
 #if (RTL8192C_SUPPORT==1)
-#ifdef CONFIG_USB_HCI
+#if 1
 
 #ifdef CONFIG_INTEL_PROXIM
 	if((pHalData->BoardType == BOARD_USB_High_PA)||(Adapter->proximity.proxim_support==_TRUE))
@@ -241,7 +241,7 @@ odm_DynamicTxPowerAP(
 		pwr_thd = TX_POWER_NEAR_FIELD_THRESH_8812;
 #endif
 
-#if defined(CONFIG_RTL_92D_SUPPORT) || defined(CONFIG_RTL_92C_SUPPORT)
+#if 0
 	if(CHIP_VER_92X_SERIES(priv)) {
 #ifdef HIGH_POWER_EXT_PA
 		if(pDM_Odm->ExtPA)

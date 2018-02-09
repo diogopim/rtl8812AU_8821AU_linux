@@ -17,7 +17,7 @@
  *
  *
  ******************************************************************************/
-#ifdef CONFIG_BT_COEXIST
+#if 0
 
 #include <drv_types.h>
 #include <hal_btcoex.h>
@@ -74,7 +74,7 @@ void rtw_btcoex_ScanNotify(PADAPTER padapter, u8 type)
 	if (_FALSE == pHalData->EEPROMBluetoothCoexist)
 		return;
 
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	struct bt_coex_info *pcoex_info = &padapter->coex_info;
 	PBT_MGNT	pBtMgnt=&pcoex_info->BtMgnt;
 #endif //CONFIG_BT_COEXIST_SOCKET_TRX
@@ -87,7 +87,7 @@ void rtw_btcoex_ScanNotify(PADAPTER padapter, u8 type)
 	}
 #endif
 
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	if(pBtMgnt->ExtConfig.bEnableWifiScanNotify)
 		rtw_btcoex_SendScanNotify(padapter, type);
 #endif //CONFIG_BT_COEXIST_SOCKET_TRX
@@ -433,7 +433,7 @@ void rtw_btcoex_LPS_Leave(PADAPTER padapter)
 // Below Functions are BT-Coex socket related function
 // ==================================================
 
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 _adapter *pbtcoexadapter = NULL;
 u8 rtw_btcoex_btinfo_cmd(_adapter *adapter, u8 *buf, u16 len)
 {

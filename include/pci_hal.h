@@ -32,7 +32,7 @@ void rtl8192de_set_hal_ops(_adapter * padapter);
 void rtl8188ee_set_hal_ops(_adapter * padapter);
 #endif
 
-#if defined(CONFIG_RTL8812A
+#if 1
 void rtl8812ae_set_hal_ops(_adapter * padapter);
 #endif
 

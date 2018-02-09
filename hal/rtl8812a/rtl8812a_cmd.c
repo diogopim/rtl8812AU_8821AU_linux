@@ -358,7 +358,7 @@ void rtl8812_set_FwPwrMode_cmd(PADAPTER padapter, u8 PSMode)
 	u8	u1H2CSetPwrMode[H2C_PWRMODE_LEN]= {0};
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	u8	Mode = 0, RLBM = 0, PowerState = 0, LPSAwakeIntvl = 2, pwrModeByte5 = 0;
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 #endif
 
@@ -391,7 +391,7 @@ void rtl8812_set_FwPwrMode_cmd(PADAPTER padapter, u8 PSMode)
 	}
 
 	if (Mode > PS_MODE_ACTIVE) {
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		if ((rtw_btcoex_IsBtControlLps(padapter) == _TRUE)  && (_TRUE == pHalData->EEPROMBluetoothCoexist)) {
 			PowerState = rtw_btcoex_RpwmVal(padapter);
 			pwrModeByte5 = rtw_btcoex_LpsVal(padapter);
@@ -402,7 +402,7 @@ void rtl8812_set_FwPwrMode_cmd(PADAPTER padapter, u8 PSMode)
 			pwrModeByte5 = 0x40;
 		}
 
-#ifdef CONFIG_EXT_CLK
+#if 0
 		Mode |= BIT(7);//supporting 26M XTAL CLK_Request feature.
 #endif //CONFIG_EXT_CLK
 	} else {
@@ -431,7 +431,7 @@ void rtl8812_set_FwPwrMode_cmd(PADAPTER padapter, u8 PSMode)
 
 	SET_8812_H2CCMD_PWRMODE_PARM_BYTE5(u1H2CSetPwrMode, pwrModeByte5);
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	if (_TRUE == pHalData->EEPROMBluetoothCoexist)
 		rtw_btcoex_RecordPwrMode(padapter, u1H2CSetPwrMode, sizeof(u1H2CSetPwrMode));
 #endif // CONFIG_BT_COEXIST
@@ -2668,7 +2668,7 @@ _C2HContentParsing8812(
 		C2HTxFeedbackHandler_8812(Adapter, tmpBuf, c2hCmdLen);
 		break;
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	case C2H_8812_BT_INFO:
 		//DBG_871X("[C2H], C2H_8812_BT_INFO!!\n");
 		rtw_btcoex_BtInfoNotify(Adapter, c2hCmdLen, tmpBuf);
@@ -2727,7 +2727,7 @@ C2HPacketHandler_8812(
     IN	u8			Length
 )
 {
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	struct c2h_evt_hdr_88xx *c2h_evt = (struct c2h_evt_hdr_88xx *)Buffer;
 #endif
 	u8	c2hCmdId=0, c2hCmdSeq=0, c2hCmdLen=0;
@@ -2741,7 +2741,7 @@ C2HPacketHandler_8812(
 
 	//DBG_871X("[C2H packet], c2hCmdId=0x%x, c2hCmdSeq=0x%x, c2hCmdLen=%d\n", c2hCmdId, c2hCmdSeq, c2hCmdLen);
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	if (Length>16) {
 		DBG_871X("[C2H packet], c2hCmdId=0x%x, c2hCmdSeq=0x%x, c2hCmdLen=%d\n", c2hCmdId, c2hCmdSeq, c2hCmdLen);
 		rtw_warn_on(1);
@@ -2763,7 +2763,7 @@ C2HPacketHandler_8812(
 	}
 }
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 
 void ConstructBtNullFunctionData(
     PADAPTER padapter,

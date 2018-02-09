@@ -22,11 +22,11 @@
 #include <drv_types.h>
 #include <platform_ops.h>
 
-#ifndef CONFIG_USB_HCI
+#if 0
 #error "CONFIG_USB_HCI shall be on!\n"
 #endif
 
-#if defined (PLATFORM_LINUX) && defined (PLATFORM_WINDOWS)
+#if 0
 #error "Shall be Linux or Windows, but not both!\n"
 #endif
 
@@ -1035,7 +1035,7 @@ int rtw_resume_process(_adapter *padapter)
 		return -1;
 	}
 
-#if defined(CONFIG_BT_COEXIST) && defined(CONFIG_AUTOSUSPEND) //add by amy for 8723as-vau
+#if 0
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,32))
 	DBG_871X("%s...pm_usage_cnt(%d)  pwrpriv->bAutoResume=%x.  ....\n",__func__,atomic_read(&(adapter_to_dvobj(padapter)->pusbintf->pm_usage_cnt)),pwrpriv->bAutoResume);
 	pm_cnt=atomic_read(&(adapter_to_dvobj(padapter)->pusbintf->pm_usage_cnt));
@@ -1051,7 +1051,7 @@ int rtw_resume_process(_adapter *padapter)
 		DBG_871X("pwrpriv->bAutoResume (%x)  pwrpriv->bInternalAutoSuspend(%x)\n",pwrpriv->bAutoResume,pwrpriv->bInternalAutoSuspend );
 
 	}
-#endif //#ifdef CONFIG_BT_COEXIST &CONFIG_AUTOSUSPEND&
+#endif //#if 0 &CONFIG_AUTOSUSPEND&
 
 #if defined (CONFIG_WOWLAN) || defined (CONFIG_AP_WOWLAN)
 	/*
@@ -1076,7 +1076,7 @@ int rtw_resume_process(_adapter *padapter)
 			rtw_interface_ps_func(padapter,HAL_USB_SELECT_SUSPEND,&bOpen);
 		}
 #endif
-#ifdef CONFIG_BT_COEXIST // for 8723as-vau
+#if 0 // for 8723as-vau
 		DBG_871X("pwrpriv->bAutoResume (%x)\n",pwrpriv->bAutoResume );
 		if( _TRUE == pwrpriv->bAutoResume ) {
 			pwrpriv->bInternalAutoSuspend = _FALSE;
@@ -1084,9 +1084,9 @@ int rtw_resume_process(_adapter *padapter)
 			DBG_871X("pwrpriv->bAutoResume (%x)  pwrpriv->bInternalAutoSuspend(%x)\n",pwrpriv->bAutoResume,pwrpriv->bInternalAutoSuspend );
 		}
 
-#else	//#ifdef CONFIG_BT_COEXIST
+#else	//#if 0
 		pwrpriv->bInternalAutoSuspend = _FALSE;
-#endif	//#ifdef CONFIG_BT_COEXIST
+#endif	//#if 0
 		pwrpriv->brfoffbyhw = _FALSE;
 	}
 #endif//CONFIG_AUTOSUSPEND
@@ -1157,7 +1157,7 @@ void autosuspend_enter(_adapter* padapter)
 	pwrpriv->bips_processing = _TRUE;
 
 	if(rf_off == pwrpriv->change_rfpwrstate ) {
-#ifndef	CONFIG_BT_COEXIST
+#if 1
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 		usb_enable_autosuspend(dvobj->pusbdev);
 #else
@@ -1213,7 +1213,7 @@ int autoresume_enter(_adapter* padapter)
 
 	if(rf_off == pwrpriv->rf_pwrstate ) {
 		pwrpriv->ps_flag = _FALSE;
-#ifndef	CONFIG_BT_COEXIST
+#if 1
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,33))
 		if (usb_autopm_get_interface(dvobj->pusbintf) < 0) {
 			DBG_871X( "can't get autopm: %d\n", result);
@@ -1339,7 +1339,7 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	//step usb endpoint mapping
 	rtw_hal_chip_configure(padapter);
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	rtw_btcoex_Initialize(padapter);
 #endif // CONFIG_BT_COEXIST
 
@@ -1396,7 +1396,7 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 		DBG_871X( "can't get autopm: \n");
 	}
 #endif
-#ifdef	CONFIG_BT_COEXIST
+#if 0
 	dvobj_to_pwrctl(dvobj)->autopm_cnt=1;
 #endif
 
@@ -1441,7 +1441,7 @@ exit:
 
 static void rtw_usb_if1_deinit(_adapter *if1)
 {
-#if defined(CONFIG_BT_COEXIST) || defined(CONFIG_WOWLAN)
+#if defined(CONFIG_WOWLAN)
 	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(if1);
 #endif
 	struct net_device *pnetdev = if1->pnetdev;
@@ -1476,7 +1476,7 @@ static void rtw_usb_if1_deinit(_adapter *if1)
 	}
 #endif
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	if(1 == pwrctl->autopm_cnt) {
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,33))
 		usb_autopm_put_interface(adapter_to_dvobj(if1)->pusbintf);
@@ -1642,7 +1642,7 @@ static void rtw_dev_remove(struct usb_interface *pusb_intf)
 	rtw_drv_if2_stop(dvobj->if2);
 #endif //CONFIG_CONCURRENT_MODE
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	rtw_btcoex_HaltNotify(padapter);
 #endif
 

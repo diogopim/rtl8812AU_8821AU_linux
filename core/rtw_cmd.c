@@ -1247,7 +1247,7 @@ u8 rtw_createbss_cmd(_adapter  *padapter)
 
 	pdev_network->Length = pcmd->cmdsz;
 
-#ifdef CONFIG_RTL8712
+#if 0
 	//notes: translate IELength & Length after assign the Length to cmdsz;
 	pdev_network->Length = cpu_to_le32(pcmd->cmdsz);
 	pdev_network->IELength = cpu_to_le32(pdev_network->IELength);
@@ -1511,7 +1511,7 @@ u8 rtw_joinbss_cmd(_adapter  *padapter, struct wlan_network* pnetwork)
 
 	pcmd->cmdsz = get_WLAN_BSSID_EX_sz(psecnetwork);//get cmdsz before endian conversion
 
-#ifdef CONFIG_RTL8712
+#if 0
 	//wlan_network endian conversion
 	psecnetwork->Length = cpu_to_le32(psecnetwork->Length);
 	psecnetwork->Ssid.SsidLength= cpu_to_le32(psecnetwork->Ssid.SsidLength);
@@ -2328,7 +2328,7 @@ static void collect_traffic_statistics(_adapter *padapter)
 u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 {
 	u8	bEnterPS = _FALSE;
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	u16	BusyThresholdHigh = 25;
 	u16	BusyThresholdLow = 10;
 #else
@@ -2573,7 +2573,7 @@ void dynamic_chk_wk_hdl(_adapter *padapter)
 
 	//check_hw_pbc(padapter, pdrvextra_cmd->pbuf, pdrvextra_cmd->type);
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	//
 	// BT-Coexist
 	//
@@ -2607,7 +2607,7 @@ void lps_ctrl_wk_hdl(_adapter *padapter, u8 lps_ctrl_type)
 	switch(lps_ctrl_type) {
 	case LPS_CTRL_SCAN:
 		//DBG_871X("LPS_CTRL_SCAN \n");
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		rtw_btcoex_ScanNotify(padapter, _TRUE);
 #endif // CONFIG_BT_COEXIST
 		if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {
@@ -2625,14 +2625,14 @@ void lps_ctrl_wk_hdl(_adapter *padapter, u8 lps_ctrl_type)
 		// Reset LPS Setting
 		pwrpriv->LpsIdleCount = 0;
 		rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_JOINBSSRPT, (u8 *)(&mstatus));
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		rtw_btcoex_MediaStatusNotify(padapter, mstatus);
 #endif // CONFIG_BT_COEXIST
 		break;
 	case LPS_CTRL_DISCONNECT:
 		//DBG_871X("LPS_CTRL_DISCONNECT \n");
 		mstatus = 0;//disconnect
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		rtw_btcoex_MediaStatusNotify(padapter, mstatus);
 #endif // CONFIG_BT_COEXIST
 		LPS_Leave(padapter, "LPS_CTRL_DISCONNECT");
@@ -2641,7 +2641,7 @@ void lps_ctrl_wk_hdl(_adapter *padapter, u8 lps_ctrl_type)
 	case LPS_CTRL_SPECIAL_PACKET:
 		//DBG_871X("LPS_CTRL_SPECIAL_PACKET \n");
 		pwrpriv->DelayLPSLastTimeStamp = rtw_get_current_time();
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		rtw_btcoex_SpecialPacketNotify(padapter, PACKET_DHCP);
 #endif // CONFIG_BT_COEXIST
 		LPS_Leave(padapter, "LPS_CTRL_SPECIAL_PACKET");
@@ -2764,7 +2764,7 @@ void rtw_lps_change_dtim_hdl(_adapter *padapter, u8 dtim)
 	if(dtim <=0 || dtim > 16)
 		return;
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	if (rtw_btcoex_IsBtControlLps(padapter) == _TRUE)
 		return;
 #endif
@@ -3157,7 +3157,7 @@ exit:
 }
 #endif
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 struct btinfo {
 	u8 cid;
 	u8 len;
@@ -3227,7 +3227,7 @@ static void rtw_btinfo_hdl(_adapter *adapter, u8 *buf, u16 buf_len)
 {
 #define BTINFO_WIFI_FETCH 0x23
 #define BTINFO_BT_AUTO_RPT 0x27
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	struct btinfo_8761ATV *info = (struct btinfo_8761ATV *)buf;
 #else //!CONFIG_BT_COEXIST_SOCKET_TRX
 	struct btinfo *info = (struct btinfo *)buf;
@@ -3246,7 +3246,7 @@ static void rtw_btinfo_hdl(_adapter *adapter, u8 *buf, u16 buf_len)
 
 //#define DBG_PROC_SET_BTINFO_EVT
 #ifdef DBG_PROC_SET_BTINFO_EVT
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	//DBG_871X("%s: btinfo[0]=%x,btinfo[1]=%x,btinfo[2]=%x,btinfo[3]=%x
 	//			btinfo[4]=%x,btinfo[5]=%x,btinfo[6]=%x,btinfo[7]=%x",__func__,buf[0],buf[1],buf[2],buf[3],buf[4],buf[5],buf[6],buf[7]);
 #else//!CONFIG_BT_COEXIST_SOCKET_TRX
@@ -3259,7 +3259,7 @@ static void rtw_btinfo_hdl(_adapter *adapter, u8 *buf, u16 buf_len)
 		buf[1] = 0;
 	else if (cmd_idx == BTINFO_BT_AUTO_RPT)
 		buf[1] = 2;
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 	else if(0x01 == cmd_idx || 0x02 == cmd_idx)
 		buf[1] = buf[0];
 #endif //CONFIG_BT_COEXIST_SOCKET_TRX
@@ -3577,7 +3577,7 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 	case DM_RA_MSK_WK_CID:
 		rtw_dm_ra_mask_hdl(padapter, (struct sta_info *)pdrvextra_cmd->pbuf);
 		break;
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	case BTINFO_WK_CID:
 		rtw_btinfo_hdl(padapter ,pdrvextra_cmd->pbuf, pdrvextra_cmd->size);
 		break;

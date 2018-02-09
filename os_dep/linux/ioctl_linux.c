@@ -4214,7 +4214,7 @@ static void rtw_dbg_mode_hdl(_adapter *padapter, u32 id, u8 *pdata, u32 len)
 		DBG_871X("==> trigger gpio 0\n");
 		rtw_hal_set_hwreg(padapter, HW_VAR_TRIGGER_GPIO_0, 0);
 		break;
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	case GEN_MP_IOCTL_SUBCODE(SET_DM_BT):
 		DBG_871X("==> set dm_bt_coexist:%x\n",*(u8 *)pdata);
 		rtw_hal_set_hwreg(padapter, HW_VAR_BT_SET_COEXIST, pdata);
@@ -7006,7 +7006,7 @@ static int rtw_dbg_port(struct net_device *dev,
 			         pxmitpriv->free_xmitbuf_cnt, pxmitpriv->free_xmitframe_cnt,
 			         pxmitpriv->free_xmit_extbuf_cnt, pxmitpriv->free_xframe_ext_cnt,
 			         precvpriv->free_recvframe_cnt);
-#ifdef CONFIG_USB_HCI
+#if 1
 			DBG_871X("rx_urb_pending_cn=%d\n", ATOMIC_READ(&(precvpriv->rx_pending_cnt)));
 #endif
 		}
@@ -9181,7 +9181,7 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 		addr = EEPROM_MAC_ADDR_92C;
 #endif // CONFIG_RTL8192C
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		if (pHalData->interfaceIndex == 0)
 			addr = EEPROM_MAC_ADDR_MAC0_92DU;
 		else
@@ -9200,12 +9200,12 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 #if 0
 		addr = EEPROM_MAC_ADDR_8723AS;
 #endif
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_MAC_ADDR_8723AU;
 #endif
 #endif // CONFIG_RTL8723A
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_MAC_ADDR_88EU;
 #endif
 #if 0
@@ -9217,7 +9217,7 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 #endif // CONFIG_RTL8188E
 
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_MAC_ADDR_8192EU;
 #endif
 #if 0
@@ -9234,7 +9234,7 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 #if 0
 		addr = EEPROM_MAC_ADDR_8723BS;
 #endif
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_MAC_ADDR_8723BU;
 #endif
 #endif // CONFIG_RTL8723B
@@ -9269,19 +9269,19 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 		addr = EEPROM_VID_92C;
 #endif // CONFIG_RTL8192C
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_VID_92DU;
 #else
 		addr = EEPROM_VID_92DE;
 #endif
 #endif // CONFIG_RTL8192D
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_VID_8723AU;
 #endif
 #endif // CONFIG_RTL8723A
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_VID_88EU;
 #endif
 #if 0
@@ -9290,7 +9290,7 @@ static int rtw_mp_efuse_get(struct net_device *dev,
 #endif // CONFIG_RTL8188E
 
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_VID_8192EU;
 #endif
 #if 0
@@ -9754,7 +9754,7 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		addr = EEPROM_MAC_ADDR_92C;
 #endif
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		if (pHalData->interfaceIndex == 0)
 			addr = EEPROM_MAC_ADDR_MAC0_92DU;
 		else
@@ -9773,12 +9773,12 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 #if 0
 		addr = EEPROM_MAC_ADDR_8723AS;
 #endif
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_MAC_ADDR_8723AU;
 #endif
 #endif // CONFIG_RTL8723A
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_MAC_ADDR_88EU;
 #endif
 #if 0
@@ -9790,7 +9790,7 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 #endif //#if 0
 
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_MAC_ADDR_8192EU;
 #endif
 #if 0
@@ -9808,7 +9808,7 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 #if 0
 		addr = EEPROM_MAC_ADDR_8723BS;
 #endif
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_MAC_ADDR_8723BU;
 #endif
 #endif // CONFIG_RTL8723B
@@ -9820,7 +9820,7 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 #if 0
 		addr = EEPROM_MAC_ADDR_8821AE;
 #endif
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_MAC_ADDR_8821AU;
 #endif
 
@@ -9877,19 +9877,19 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 		addr = EEPROM_VID_92C;
 #endif // CONFIG_RTL8192C
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_VID_92DU;
 #else
 		addr = EEPROM_VID_92DE;
 #endif
 #endif // CONFIG_RTL8192D
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_VID_8723AU;
 #endif
 #endif // CONFIG_RTL8723A
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_VID_88EU;
 #endif
 #if 0
@@ -9898,7 +9898,7 @@ static int rtw_mp_efuse_set(struct net_device *dev,
 #endif // CONFIG_RTL8188E
 
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 		addr = EEPROM_VID_8192EU;
 #endif
 #if 0
@@ -10543,7 +10543,7 @@ static int rtw_mp_start(struct net_device *dev,
 	//u8 val8;
 	PADAPTER padapter = rtw_netdev_priv(dev);
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
 #endif
 	struct hal_ops *pHalFunc = &padapter->HalFunc;
@@ -10553,7 +10553,7 @@ static int rtw_mp_start(struct net_device *dev,
 
 	if(padapter->registrypriv.mp_mode ==0) {
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		pdmpriv->DMFlag &= ~DYNAMIC_FUNC_BT;
 #endif
 		pHalFunc->hal_deinit(padapter);
@@ -10575,7 +10575,7 @@ static int rtw_mp_start(struct net_device *dev,
 	}
 	padapter->mppriv.bmac_filter = _FALSE;
 #if 0
-#ifdef CONFIG_USB_HCI
+#if 1
 	rtw_write32(padapter, 0x765, 0x0000);
 	rtw_write32(padapter, 0x948, 0x0280);
 #else
@@ -11056,7 +11056,7 @@ static int rtw_mp_disable_bt_coexist(struct net_device *dev,
                                      struct iw_request_info *info,
                                      union iwreq_data *wrqu, char *extra)
 {
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	PADAPTER padapter = (PADAPTER)rtw_netdev_priv(dev);
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct dm_priv	*pdmpriv = &pHalData->dmpriv;
@@ -11075,7 +11075,7 @@ static int rtw_mp_disable_bt_coexist(struct net_device *dev,
 		RT_TRACE(_module_mp_, _drv_info_,
 		         ("Set OID_RT_SET_DISABLE_BT_COEXIST: disable BT_COEXIST\n"));
 		DBG_871X("Set OID_RT_SET_DISABLE_BT_COEXIST: disable BT_COEXIST\n");
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		rtw_btcoex_HaltNotify(padapter);
 		rtw_btcoex_SetManualControl(padapter, _TRUE);
 		pdmpriv->DMFlag &= ~DYNAMIC_FUNC_BT;
@@ -11086,7 +11086,7 @@ static int rtw_mp_disable_bt_coexist(struct net_device *dev,
 	} else {
 		RT_TRACE(_module_mp_, _drv_info_,
 		         ("Set OID_RT_SET_DISABLE_BT_COEXIST: enable BT_COEXIST\n"));
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		pdmpriv->DMFlag |= DYNAMIC_FUNC_BT;
 		rtw_btcoex_SetManualControl(padapter, _FALSE);
 #endif
@@ -11805,7 +11805,7 @@ static int rtw_mp_SetBT(struct net_device *dev,
 #endif
 		DBG_871X("Wait for FirmwareDownloadBT fw boot!\n");
 		rtw_msleep_os(1000);
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		rtw_btcoex_HaltNotify(padapter);
 		DBG_871X("SetBT btcoex HaltNotify !\n");
 		//hal_btcoex1ant_SetAntPath(padapter);
@@ -11825,7 +11825,7 @@ static int rtw_mp_SetBT(struct net_device *dev,
 			else
 				sprintf(extra, "download FW Fail.\n");
 		} else {
-#ifdef CONFIG_BT_COEXIST
+#if 0
 			rtw_btcoex_SwitchBtTRxMask(padapter);
 #endif
 			rtw_msleep_os(200);
@@ -11837,7 +11837,7 @@ static int rtw_mp_SetBT(struct net_device *dev,
 
 	if ( strncmp(extra, "down", 4) == 0) {
 		DBG_871X("SetBT down for to hal_init !\n");
-#ifdef CONFIG_BT_COEXIST
+#if 0
 		rtw_btcoex_SetManualControl(padapter, _FALSE);
 		rtw_btcoex_Initialize(padapter);
 #endif
@@ -13692,7 +13692,7 @@ static int rtw_test(
 	u8 *pbuf, *pch;
 	char *ptmp;
 	u8 *delim = ",";
-#if defined(CONFIG_BT_COEXIST) || defined(CONFIG_MAC_LOOPBACK_DRIVER)
+#if defined(CONFIG_MAC_LOOPBACK_DRIVER)
 	PADAPTER padapter = rtw_netdev_priv(dev);
 #endif
 
@@ -13780,7 +13780,7 @@ static int rtw_test(
 	}
 #endif
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 	if (strcmp(pch, "bton") == 0) {
 		rtw_btcoex_SetManualControl(padapter, _FALSE);
 	} else if (strcmp(pch, "btoff") == 0) {

@@ -684,7 +684,7 @@ int proc_get_trx_info(struct seq_file *m, void *v)
 		DBG_871X_SEL_NL(m, "%d, hwq.accnt=%d\n", i, phwxmit->accnt);
 	}
 
-#ifdef CONFIG_USB_HCI
+#if 1
 	DBG_871X_SEL_NL(m, "rx_urb_pending_cn=%d\n", ATOMIC_READ(&(precvpriv->rx_pending_cnt)));
 #endif
 
@@ -1851,7 +1851,7 @@ ssize_t proc_set_best_channel(struct file *file, const char __user *buffer, size
 }
 #endif /* CONFIG_FIND_BEST_CHANNEL */
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 int proc_get_btcoex_dbg(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;

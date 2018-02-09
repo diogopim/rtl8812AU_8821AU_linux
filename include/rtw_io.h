@@ -139,7 +139,7 @@ struct io_req {
 	_sema	sema;
 
 #ifdef PLATFORM_OS_CE
-#ifdef CONFIG_USB_HCI
+#if 1
 	// URB handler for rtw_write_mem
 	USB_TRANSFER usb_transfer_write_mem;
 #endif
@@ -302,7 +302,7 @@ struct reg_protocol_wt {
 #define MAX_CONTINUAL_IO_ERR 4
 #endif
 
-#ifdef CONFIG_USB_HCI
+#if 1
 #define MAX_CONTINUAL_IO_ERR 4
 #endif
 

@@ -136,7 +136,7 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 	}
 
 	if (flag) {
-#ifdef CONFIG_USB_HCI
+#if 1
 		int i;
 		for(i=0; i<8; i++) {
 			pxmitbuf->pxmit_urb[i] = usb_alloc_urb(0, GFP_KERNEL);
@@ -154,7 +154,7 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32 free_sz, u8 flag)
 {
 	if (flag) {
-#ifdef CONFIG_USB_HCI
+#if 1
 		int i;
 
 		for(i=0; i<8; i++) {

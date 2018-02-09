@@ -97,11 +97,11 @@
 #include <linux/earlysuspend.h>
 #endif //CONFIG_HAS_EARLYSUSPEND
 
-#ifdef CONFIG_EFUSE_CONFIG_FILE
+#if 0
 #include <linux/fs.h>
 #endif //CONFIG_EFUSE_CONFIG_FILE
 
-#ifdef CONFIG_USB_HCI
+#if 1
 #include <linux/usb.h>
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,21))
 #include <linux/usb_ch9.h>
@@ -110,7 +110,7 @@
 #endif
 #endif
 
-#ifdef CONFIG_BT_COEXIST_SOCKET_TRX
+#if 0
 #include <net/sock.h>
 #include <net/tcp.h>
 #include <linux/udp.h>
@@ -118,7 +118,7 @@
 #include <linux/netlink.h>
 #endif //CONFIG_BT_COEXIST_SOCKET_TRX
 
-#ifdef CONFIG_USB_HCI
+#if 1
 typedef struct urb *  PURB;
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,22))
 #ifdef CONFIG_USB_SUSPEND

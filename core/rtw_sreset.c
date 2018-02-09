@@ -189,7 +189,7 @@ void sreset_restore_network_station(_adapter *padapter)
 
 	{
 		u8 threshold;
-#ifdef CONFIG_USB_HCI
+#if 1
 		// TH=1 => means that invalidate usb rx aggregation
 		// TH=0 => means that validate usb rx aggregation, use init value.
 		if(mlmepriv->htpriv.ht_option) {
@@ -263,7 +263,7 @@ void sreset_stop_adapter(_adapter *padapter)
 	rtw_cancel_all_timer(padapter);
 
 	/* TODO: OS and HCI independent */
-#if defined(PLATFORM_LINUX) && defined(CONFIG_USB_HCI)
+#if defined(PLATFORM_LINUX)
 	tasklet_kill(&pxmitpriv->xmit_tasklet);
 #endif
 
@@ -292,7 +292,7 @@ void sreset_start_adapter(_adapter *padapter)
 	}
 
 	/* TODO: OS and HCI independent */
-#if defined(PLATFORM_LINUX) && defined(CONFIG_USB_HCI)
+#if defined(PLATFORM_LINUX)
 	tasklet_hi_schedule(&pxmitpriv->xmit_tasklet);
 #endif
 

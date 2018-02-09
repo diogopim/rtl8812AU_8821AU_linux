@@ -24,7 +24,7 @@
 //================================================================================
 // Interface to manipulate LED objects.
 //================================================================================
-#ifdef CONFIG_USB_HCI
+#if 1
 void rtl8812au_InitSwLeds(PADAPTER padapter);
 void rtl8812au_DeInitSwLeds(PADAPTER padapter);
 #endif

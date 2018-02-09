@@ -324,7 +324,7 @@ void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, u8 *ptxdesc);
 void rtl8812a_fill_txdesc_vcs(PADAPTER padapter, struct pkt_attrib *pattrib, u8 *ptxdesc);
 void rtl8812a_fill_txdesc_phy(PADAPTER padapter, struct pkt_attrib *pattrib, u8 *ptxdesc);
 
-#ifdef CONFIG_USB_HCI
+#if 1
 s32 rtl8812au_init_xmit_priv(PADAPTER padapter);
 void rtl8812au_free_xmit_priv(PADAPTER padapter);
 s32 rtl8812au_hal_xmit(PADAPTER padapter, struct xmit_frame *pxmitframe);

@@ -23,7 +23,7 @@
 
 #define C2H_MEM_SZ (16*1024)
 
-#ifndef CONFIG_RTL8711FW
+#if 1
 
 #define FREE_CMDOBJ_SZ	128
 
@@ -1042,7 +1042,7 @@ extern u8 rtw_ps_cmd(_adapter*padapter);
 u8 rtw_chk_hi_queue_cmd(_adapter*padapter);
 #endif
 
-#ifdef CONFIG_BT_COEXIST
+#if 0
 u8 rtw_btinfo_cmd(PADAPTER padapter, u8 *pbuf, u16 length);
 #endif
 

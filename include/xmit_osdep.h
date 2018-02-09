@@ -33,7 +33,7 @@ struct pkt_file {
 #ifdef PLATFORM_WINDOWS
 
 #ifdef PLATFORM_OS_XP
-#ifdef CONFIG_USB_HCI
+#if 1
 #include <usb.h>
 #include <usbdlib.h>
 #include <usbioctl.h>
