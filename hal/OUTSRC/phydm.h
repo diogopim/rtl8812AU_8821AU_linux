@@ -810,7 +810,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	RA_T						DM_RA_Table;
 	FALSE_ALARM_STATISTICS		FalseAlmCnt;
 	FALSE_ALARM_STATISTICS		FlaseAlmCntBuddyAdapter;
-	//#ifdef CONFIG_ANTENNA_DIVERSITY
+	//#if 0
 	SWAT_T						DM_SWAT_Table;
 	BOOLEAN						RSSI_test;
 	CFO_TRACKING    				DM_CfoTrack;

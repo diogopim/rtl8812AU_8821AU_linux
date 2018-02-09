@@ -21,7 +21,7 @@
 
 #include <drv_types.h>
 
-#ifdef CONFIG_TDLS
+#if 0
 #define ONE_SEC 	1000 /* 1000 ms */
 
 extern unsigned char MCS_rate_2R[16];
@@ -45,7 +45,7 @@ void rtw_reset_tdls_info(_adapter* padapter)
 	ptdlsinfo->sta_cnt = 0;
 	ptdlsinfo->sta_maximum = _FALSE;
 
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 	ptdlsinfo->chsw_info.ch_sw_state = TDLS_STATE_NONE;
 	ATOMIC_SET(&ptdlsinfo->chsw_info.chsw_on, _FALSE);
 	ptdlsinfo->chsw_info.off_ch_num = 0;
@@ -72,7 +72,7 @@ int rtw_init_tdls_info(_adapter* padapter)
 	rtw_reset_tdls_info(padapter);
 
 	ptdlsinfo->tdls_enable = _TRUE;
-#ifdef CONFIG_TDLS_DRIVER_SETUP
+#if 0
 	ptdlsinfo->driver_setup = _TRUE;
 #else
 	ptdlsinfo->driver_setup = _FALSE;
@@ -543,7 +543,7 @@ u8 *rtw_tdls_set_linkid(u8 *pframe, struct pkt_attrib *pattrib, u8 init)
 	return rtw_set_ie(pframe, _LINK_ID_IE_, 18, link_id_addr, &(pattrib->pktlen));
 }
 
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 u8 *rtw_tdls_set_target_ch(_adapter *padapter, u8 *pframe, struct pkt_attrib *pattrib)
 {
 	u8 target_ch = 1;
@@ -1209,7 +1209,7 @@ exit:
 int On_TDLS_Dis_Rsp(_adapter *padapter, union recv_frame *precv_frame)
 {
 	struct tdls_info *ptdlsinfo = &(padapter->tdlsinfo);
-#ifdef CONFIG_TDLS_AUTOSETUP
+#if 0
 	//struct sta_info *ptdls_sta = NULL, *psta = rtw_get_stainfo(&(padapter->stapriv), get_bssid(&(padapter->mlmepriv)));
 	struct sta_info *ptdls_sta = NULL;
 	//struct recv_priv *precvpriv = &(padapter->recvpriv);
@@ -1225,7 +1225,7 @@ int On_TDLS_Dis_Rsp(_adapter *padapter, union recv_frame *precv_frame)
 	/* WFDTDLS: for sigma test, not to setup direct link automatically */
 	ptdlsinfo->dev_discovered = _TRUE;
 
-#ifdef CONFIG_TDLS_AUTOSETUP
+#if 0
 
 	psa = get_sa(ptr);
 	ptdls_sta = rtw_get_stainfo(&(padapter->stapriv), psa);
@@ -1272,7 +1272,7 @@ int On_TDLS_Dis_Rsp(_adapter *padapter, union recv_frame *precv_frame)
 	}
 
 exit:
-#endif /* CONFIG_TDLS_AUTOSETUP */
+#endif /*  */
 
 	return ret;
 }
@@ -1955,7 +1955,7 @@ int On_TDLS_Peer_Traffic_Rsp(_adapter *padapter, union recv_frame *precv_frame)
 	return _SUCCESS;
 }
 
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 sint On_TDLS_Ch_Switch_Req(_adapter *padapter, union recv_frame *precv_frame)
 {
 	struct tdls_ch_switch *pchsw_info = &padapter->tdlsinfo.chsw_info;
@@ -2519,7 +2519,7 @@ void rtw_build_tdls_peer_traffic_rsp_ies(_adapter * padapter, struct xmit_frame 
 		pframe = rtw_tdls_set_linkid(pframe, pattrib, _TRUE);
 }
 
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 void rtw_build_tdls_ch_switch_req_ies(_adapter * padapter, struct xmit_frame * pxmitframe, u8 *pframe, struct tdls_txmgmt *ptxmgmt)
 {
 
@@ -2644,7 +2644,7 @@ void _tdls_tpk_timer_hdl(void *FunctionContext)
 	_set_timer(&ptdls_sta->TPK_timer, ONE_SEC);
 }
 
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 void _tdls_ch_switch_timer_hdl(void *FunctionContext)
 {
 	struct sta_info *ptdls_sta = (struct sta_info *)FunctionContext;
@@ -2741,7 +2741,7 @@ void rtw_init_tdls_timer(_adapter *padapter, struct sta_info *psta)
 {
 	psta->padapter=padapter;
 	_init_timer(&psta->TPK_timer, padapter->pnetdev, _tdls_tpk_timer_hdl, psta);
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 	_init_timer(&psta->ch_sw_timer, padapter->pnetdev, _tdls_ch_switch_timer_hdl, psta);
 	_init_timer(&psta->delay_timer, padapter->pnetdev, _tdls_delay_timer_hdl, psta);
 #endif
@@ -2752,7 +2752,7 @@ void rtw_init_tdls_timer(_adapter *padapter, struct sta_info *psta)
 void rtw_free_tdls_timer(struct sta_info *psta)
 {
 	_cancel_timer_ex(&psta->TPK_timer);
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 	_cancel_timer_ex(&psta->ch_sw_timer);
 	_cancel_timer_ex(&psta->delay_timer);
 #endif
@@ -2833,4 +2833,4 @@ const char * rtw_tdls_action_txt(enum TDLS_ACTION_FIELD action)
 	}
 }
 
-#endif /* CONFIG_TDLS */
+#endif /**/

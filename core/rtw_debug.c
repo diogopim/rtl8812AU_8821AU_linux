@@ -60,7 +60,7 @@ u64 GlobalDebugComponents = \
 
 #include <rtw_version.h>
 
-#ifdef CONFIG_TDLS
+#if 0
 #define TDLS_DBG_INFO_SPACE_BTWN_ITEM_AND_VALUE	41
 #endif
 
@@ -1736,14 +1736,14 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 
 				sta_rx_reorder_ctl_dump(m, psta);
 
-#ifdef CONFIG_TDLS
+#if 0
 				DBG_871X_SEL_NL(m, "tdls_sta_state=0x%08x\n", psta->tdls_sta_state);
 				DBG_871X_SEL_NL(m, "PeerKey_Lifetime=%d\n", psta->TDLS_PeerKey_Lifetime);
 				DBG_871X_SEL_NL(m, "rx_data_pkts=%llu\n", psta->sta_stats.rx_data_pkts);
 				DBG_871X_SEL_NL(m, "rx_bytes=%llu\n", psta->sta_stats.rx_bytes);
 				DBG_871X_SEL_NL(m, "tx_data_pkts=%llu\n", psta->sta_stats.tx_pkts);
 				DBG_871X_SEL_NL(m, "tx_bytes=%llu\n", psta->sta_stats.tx_bytes);
-#endif //CONFIG_TDLS
+#endif //
 				DBG_871X_SEL_NL(m, "==============================\n");
 			}
 
@@ -2176,7 +2176,7 @@ int proc_get_ps_info(struct seq_file *m, void *v)
 }
 #endif //CONFIG_POWER_SAVING
 
-#ifdef CONFIG_TDLS
+#if 0
 static int proc_tdls_display_tdls_function_info(struct seq_file *m)
 {
 	struct net_device *dev = m->private;
@@ -2194,7 +2194,7 @@ static int proc_tdls_display_tdls_function_info(struct seq_file *m)
 	DBG_871X_SEL_NL(m, "%-*s = %d/%d\n", SpaceBtwnItemAndValue, "TDLS STA Num (Linked/Allowed)", ptdlsinfo->sta_cnt, MAX_ALLOWED_TDLS_STA_NUM);
 	DBG_871X_SEL_NL(m, "%-*s = %s\n", SpaceBtwnItemAndValue, "TDLS Allowed STA Num Reached", (ptdlsinfo->sta_maximum == _TRUE) ? "_TRUE" : "_FALSE");
 
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 	DBG_871X_SEL_NL(m, "%-*s =", SpaceBtwnItemAndValue, "TDLS CH SW State");
 	if (ptdlsinfo->chsw_info.ch_sw_state == TDLS_STATE_NONE) {
 		DBG_871X_SEL_NL(m, "%-*s%s\n", SpaceBtwnItemAndValueTmp, " ", "TDLS_STATE_NONE");

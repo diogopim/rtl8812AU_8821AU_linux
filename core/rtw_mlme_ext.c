@@ -714,7 +714,7 @@ void mgt_dispatcher(_adapter *padapter, union recv_frame *precv_frame)
 
 	index = GetFrameSubType(pframe) >> 4;
 
-#ifdef CONFIG_TDLS
+#if 0
 	if((index << 4)==WIFI_ACTION) {
 		/* category==public (4), action==TDLS_DISCOVERY_RESPONSE */
 		if (*(pframe+24) == RTW_WLAN_CATEGORY_PUBLIC && *(pframe+25) == TDLS_DISCOVERY_RESPONSE) {
@@ -722,7 +722,7 @@ void mgt_dispatcher(_adapter *padapter, union recv_frame *precv_frame)
 			On_TDLS_Dis_Rsp(padapter, precv_frame);
 		}
 	}
-#endif //CONFIG_TDLS
+#endif //
 
 	if (index >= (sizeof(mlme_sta_tbl) /sizeof(struct mlme_handler))) {
 		RT_TRACE(_module_rtl871x_mlme_c_,_drv_err_,("Currently we do not support reserved sub-fr-type=%d\n", index));
@@ -1187,10 +1187,10 @@ unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame)
 	int ret = _SUCCESS;
 	u8 *p = NULL;
 	u32 ielen = 0;
-#ifdef CONFIG_TDLS
+#if 0
 	struct sta_info *ptdls_sta;
 	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-#endif /* CONFIG_TDLS */
+#endif /**/
 
 #ifdef CONFIG_ATTEMPT_TO_FIX_AP_BEACON_ERROR
 	p = rtw_get_ie(pframe + sizeof(struct rtw_ieee80211_hdr_3addr) + _BEACON_IE_OFFSET_, _EXT_SUPPORTEDRATES_IE_, &ielen, precv_frame->u.hdr.len -sizeof(struct rtw_ieee80211_hdr_3addr) - _BEACON_IE_OFFSET_);
@@ -1306,8 +1306,8 @@ unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame)
 
 				adaptive_early_32k(pmlmeext, pframe, len);
 
-#ifdef CONFIG_TDLS
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
+#if 0
 				if (padapter->tdlsinfo.ch_switch_prohibited == _FALSE) {
 					/* Send TDLS Channel Switch Request when receiving Beacon */
 					if ((padapter->tdlsinfo.chsw_info.ch_sw_state & TDLS_CH_SW_INITIATOR_STATE) && (pmlmeext->cur_channel == rtw_get_oper_ch(padapter))) {
@@ -1321,7 +1321,7 @@ unsigned int OnBeacon(_adapter *padapter, union recv_frame *precv_frame)
 					}
 				}
 #endif
-#endif /* CONFIG_TDLS */
+#endif /**/
 
 #ifdef CONFIG_DFS
 				process_csa_ie(padapter, pframe, len);	//channel switch announcement
@@ -2389,14 +2389,14 @@ unsigned int OnAssocRsp(_adapter *padapter, union recv_frame *precv_frame)
 		case _ERPINFO_IE_:
 			ERP_IE_handler(padapter, pIE);
 			break;
-#ifdef CONFIG_TDLS
+#if 0
 		case _EXT_CAP_IE_:
 			if (check_ap_tdls_prohibited(pIE->data, pIE->Length) == _TRUE)
 				padapter->tdlsinfo.ap_prohibited = _TRUE;
 			if (check_ap_tdls_ch_switching_prohibited(pIE->data, pIE->Length) == _TRUE)
 				padapter->tdlsinfo.ch_switch_prohibited = _TRUE;
 			break;
-#endif /* CONFIG_TDLS */
+#endif /**/
 		default:
 			break;
 		}
@@ -2999,13 +2999,13 @@ unsigned int OnAction_back(_adapter *padapter, union recv_frame *precv_frame)
 
 	category = frame_body[0];
 	if (category == RTW_WLAN_CATEGORY_BACK) { // representing Block Ack
-#ifdef CONFIG_TDLS
+#if 0
 		if((psta->tdls_sta_state & TDLS_LINKED_STATE) &&
 		   (psta->htpriv.ht_option==_TRUE) &&
 		   (psta->htpriv.ampdu_enable==_TRUE)) {
 			DBG_871X("Recv [%s] from direc link\n", __FUNCTION__);
 		} else
-#endif //CONFIG_TDLS
+#endif //
 			if (!pmlmeinfo->HT_enable) {
 				return _SUCCESS;
 			}
@@ -9613,7 +9613,7 @@ void site_survey(_adapter *padapter)
 			pmlmeinfo->scan_cnt = 0;
 #endif
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 			// 20100721:Interrupt scan operation here.
 			// For SW antenna diversity before link, it needs to switch to another antenna and scan again.
 			// It compares the scan result and select beter one to do connection.
@@ -9783,7 +9783,7 @@ u8 collect_bss_info(_adapter *padapter, union recv_frame *precv_frame, WLAN_BSSI
 	bssid->Rssi = precv_frame->u.hdr.attrib.phy_info.RecvSignalPower; // in dBM.raw data
 	bssid->PhyInfo.SignalQuality = precv_frame->u.hdr.attrib.phy_info.SignalQuality;//in percentage
 	bssid->PhyInfo.SignalStrength = precv_frame->u.hdr.attrib.phy_info.SignalStrength;//in percentage
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 	//rtw_hal_get_hwreg(padapter, HW_VAR_CURRENT_ANTENNA, (u8 *)(&bssid->PhyInfo.Optimum_antenna));
 	rtw_hal_get_def_var(padapter, HAL_DEF_CURRENT_ANTENNA,  &bssid->PhyInfo.Optimum_antenna);
 #endif
@@ -11009,14 +11009,14 @@ static void rtw_mlmeext_disconnect(_adapter *padapter)
 	pmlmepriv->LinkDetectInfo.TrafficTransitionCount = 0;
 	pmlmepriv->LinkDetectInfo.LowPowerTransitionCount = 0;
 
-#ifdef CONFIG_TDLS
+#if 0
 	padapter->tdlsinfo.ap_prohibited = _FALSE;
 
 	/* For TDLS channel switch, currently we only allow it to work in wifi logo test mode */
 	if (padapter->registrypriv.wifi_spec == 1) {
 		padapter->tdlsinfo.ch_switch_prohibited = _FALSE;
 	}
-#endif /* CONFIG_TDLS */
+#endif /**/
 
 }
 
@@ -11293,7 +11293,7 @@ u8 chk_ap_is_alive(_adapter *padapter, struct sta_info *psta)
 	return ret;
 }
 
-#ifdef CONFIG_TDLS
+#if 0
 void linked_status_chk_tdls(_adapter *padapter)
 {
 	struct candidate_pool {
@@ -11385,7 +11385,7 @@ void linked_status_chk_tdls(_adapter *padapter)
 	}
 
 }
-#endif //CONFIG_TDLS
+#endif //
 
 //from_timer == 1 means driver is in LPS
 void linked_status_chk(_adapter *padapter, u8 from_timer)
@@ -11427,16 +11427,16 @@ void linked_status_chk(_adapter *padapter, u8 from_timer)
 				link_count_limit = 29; // 60 sec
 		}
 
-#ifdef CONFIG_TDLS
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
+#if 0
 		if (ATOMIC_READ(&padapter->tdlsinfo.chsw_info.chsw_on) == _TRUE)
 			return;
 #endif /* CONFIG_TDLS_CH_SW */
 
-#ifdef CONFIG_TDLS_AUTOCHECKALIVE
+#if 0
 		linked_status_chk_tdls(padapter);
 #endif /* CONFIG_TDLS_AUTOCHECKALIVE */
-#endif /* CONFIG_TDLS */
+#endif /**/
 
 		if ((psta = rtw_get_stainfo(pstapriv, pmlmeinfo->network.MacAddress)) != NULL) {
 			bool is_p2p_enable = _FALSE;
@@ -11981,7 +11981,7 @@ u8 join_cmd_hdl(_adapter *padapter, u8 *pbuf)
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
 	WLAN_BSSID_EX		*pnetwork = (WLAN_BSSID_EX*)(&(pmlmeinfo->network));
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 	struct joinbss_parm	*pparm = (struct joinbss_parm *)pbuf;
 #endif //CONFIG_ANTENNA_DIVERSITY
 	u32 i;
@@ -12010,7 +12010,7 @@ u8 join_cmd_hdl(_adapter *padapter, u8 *pbuf)
 		rtw_hal_set_hwreg(padapter, HW_VAR_MLME_DISCONNECT, 0);
 	}
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 	rtw_antenna_select_cmd(padapter, pparm->network.PhyInfo.Optimum_antenna, _FALSE);
 #endif
 
@@ -12406,11 +12406,11 @@ u8 sitesurvey_cmd_hdl(_adapter *padapter, u8 *pbuf)
 		}
 #ifdef CONFIG_CONCURRENT_MODE
 		else if(is_client_associated_to_ap(padapter->pbuddy_adapter) == _TRUE) {
-#ifdef CONFIG_TDLS
+#if 0
 			if(padapter->pbuddy_adapter->wdinfo.wfd_tdls_enable == 1) {
 				issue_tunneled_probe_req(padapter->pbuddy_adapter);
 			}
-#endif //CONFIG_TDLS
+#endif //
 
 			pmlmeext->sitesurvey_res.state = SCAN_TXNULL;
 
@@ -12588,7 +12588,7 @@ u8 add_ba_hdl(_adapter *padapter, unsigned char *pbuf)
 		//_set_timer(&pmlmeext->ADDBA_timer, ADDBA_TO);
 		_set_timer(&psta->addba_retry_timer, ADDBA_TO);
 	}
-#ifdef CONFIG_TDLS
+#if 0
 	else if((psta->tdls_sta_state & TDLS_LINKED_STATE)&&
 	        (psta->htpriv.ht_option==_TRUE) &&
 	        (psta->htpriv.ampdu_enable==_TRUE) ) {
@@ -13934,10 +13934,10 @@ u8 set_csa_hdl(_adapter *padapter, unsigned char *pbuf)
 
 u8 tdls_hdl(_adapter *padapter, unsigned char *pbuf)
 {
-#ifdef CONFIG_TDLS
+#if 0
 	//_irqL irqL;
 	struct tdls_info *ptdlsinfo = &padapter->tdlsinfo;
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 	struct tdls_ch_switch *pchsw_info = &ptdlsinfo->chsw_info;
 #endif
 	struct TDLSoption_param *TDLSoption;
@@ -14020,7 +14020,7 @@ u8 tdls_hdl(_adapter *padapter, unsigned char *pbuf)
 		issue_tdls_peer_traffic_indication(padapter, ptdls_sta);
 		_set_timer(&ptdls_sta->pti_timer, TDLS_PTI_TIME);
 		break;
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 	case TDLS_CH_SW_RESP:
 		_rtw_memset(&txmgmt, 0x00, sizeof(struct tdls_txmgmt));
 		txmgmt.status_code = 0;
@@ -14084,7 +14084,7 @@ u8 tdls_hdl(_adapter *padapter, unsigned char *pbuf)
 		DBG_871X("wirte REG_RCR, set bit6 on\n");
 		break;
 	case TDLS_TEAR_STA:
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 		if (_rtw_memcmp(TDLSoption->addr, pchsw_info->addr, ETH_ALEN) == _TRUE) {
 			pchsw_info->ch_sw_state &= ~(TDLS_CH_SW_INITIATOR_STATE |
 			                             TDLS_CH_SWITCH_ON_STATE |
@@ -14103,7 +14103,7 @@ u8 tdls_hdl(_adapter *padapter, unsigned char *pbuf)
 	return H2C_SUCCESS;
 #else
 	return H2C_REJECTED;
-#endif /* CONFIG_TDLS */
+#endif /**/
 
 }
 

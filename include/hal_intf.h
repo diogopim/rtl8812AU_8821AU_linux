@@ -270,7 +270,7 @@ struct hal_ops {
 	void	(*run_thread)(_adapter *padapter);
 	void	(*cancel_thread)(_adapter *padapter);
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 	u8	(*AntDivBeforeLinkHandler)(_adapter *padapter);
 	void	(*AntDivCompareHandler)(_adapter *padapter, const WLAN_BSSID_EX *dst, const WLAN_BSSID_EX *src);
 #endif
@@ -606,7 +606,7 @@ void	rtw_hal_dm_watchdog_in_lps(_adapter *padapter);
 void	rtw_hal_set_tx_power_level(_adapter *padapter, u8 channel);
 void	rtw_hal_get_tx_power_level(_adapter *padapter, s32 *powerlevel);
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 u8	rtw_hal_antdiv_before_linked(_adapter *padapter);
 void	rtw_hal_antdiv_rssi_compared(_adapter *padapter, WLAN_BSSID_EX *dst, WLAN_BSSID_EX *src);
 #endif

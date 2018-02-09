@@ -25,7 +25,7 @@
 #define NUM_STA 32
 #define NUM_ACL 16
 
-#ifdef CONFIG_TDLS
+#if 0
 #define MAX_ALLOWED_TDLS_STA_NUM	4
 #endif
 
@@ -83,12 +83,12 @@ struct	stainfo_stats {
 	u64  tx_drops;
 };
 
-#ifdef CONFIG_TDLS
+#if 0
 struct TDLS_PeerKey {
 	u8 kck[16]; /* TPK-KCK */
 	u8 tk[16]; /* TPK-TK; only CCMP will be used */
 } ;
-#endif //CONFIG_TDLS
+#endif //
 
 struct sta_info {
 
@@ -148,7 +148,7 @@ struct sta_info {
 
 	struct stainfo_stats sta_stats;
 
-#ifdef CONFIG_TDLS
+#if 0
 	u32	tdls_sta_state;
 	u8	SNonce[32];
 	u8	ANonce[32];
@@ -156,7 +156,7 @@ struct sta_info {
 	u16	TPK_count;
 	_timer	TPK_timer;
 	struct TDLS_PeerKey	tpk;
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 	u16	ch_switch_time;
 	u16	ch_switch_timeout;
 	//u8	option;
@@ -167,7 +167,7 @@ struct sta_info {
 	u8 alive_count;
 	_timer	pti_timer;
 	u8	TDLS_RSNIE[20];	/* Save peer's RSNIE, used for sending TDLS_SETUP_RSP */
-#endif /* CONFIG_TDLS */
+#endif /**/
 
 	//for A-MPDU TX, ADDBA timeout check
 	_timer addba_retry_timer;

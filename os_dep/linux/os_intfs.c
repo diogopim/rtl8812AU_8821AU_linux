@@ -383,7 +383,7 @@ MODULE_PARM_DESC(rtw_FileMaskEfuse, "default drv Mask Efuse vaule:0");
 int rtw_tx_pwr_lmt_enable = 1;
 int rtw_tx_pwr_by_rate = 1;
 #endif
-#if defined(CONFIG_CALIBRATE_TX_POWER_TO_MAX)//eFuse: Regulatory selection=0
+#if 0
 int rtw_tx_pwr_lmt_enable = 0;
 int rtw_tx_pwr_by_rate = 1;
 #else //eFuse: Regulatory selection=2
@@ -1268,13 +1268,13 @@ u8 rtw_init_drv_sw(_adapter *padapter)
 		goto exit;
 	}
 
-#ifdef CONFIG_TDLS
+#if 0
 	if(rtw_init_tdls_info(padapter) == _FAIL) {
 		DBG_871X("Can't rtw_init_tdls_info\n");
 		ret8=_FAIL;
 		goto exit;
 	}
-#endif //CONFIG_TDLS
+#endif //
 
 	if(_rtw_init_xmit_priv(&padapter->xmitpriv, padapter) == _FAIL) {
 		DBG_871X("Can't _rtw_init_xmit_priv\n");
@@ -1345,7 +1345,7 @@ u8 rtw_init_drv_sw(_adapter *padapter)
 	rtw_wapi_init(padapter);
 #endif
 
-#ifdef CONFIG_BR_EXT
+#if 1
 	_rtw_spinlock_init(&padapter->br_ext_lock);
 #endif	// CONFIG_BR_EXT
 
@@ -1442,7 +1442,7 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 	// add for CONFIG_IEEE80211W, none 11w also can use
 	_rtw_spinlock_free(&padapter->security_key_mutex);
 
-#ifdef CONFIG_BR_EXT
+#if 1
 	_rtw_spinlock_free(&padapter->br_ext_lock);
 #endif	// CONFIG_BR_EXT
 
@@ -1452,9 +1452,9 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 
 	free_mlme_ext_priv(&padapter->mlmeextpriv);
 
-#ifdef CONFIG_TDLS
+#if 0
 	//rtw_free_tdls_info(&padapter->tdlsinfo);
-#endif //CONFIG_TDLS
+#endif //
 
 	rtw_free_cmd_priv(&padapter->cmdpriv);
 
@@ -2183,7 +2183,7 @@ void rtw_drv_if2_stop(_adapter *if2)
 }
 #endif //end of CONFIG_CONCURRENT_MODE
 
-#ifdef CONFIG_BR_EXT
+#if 1
 void netdev_br_init(struct net_device *netdev)
 {
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(netdev);
@@ -2375,7 +2375,7 @@ int _netdev_open(struct net_device *pnetdev)
 	//netif_carrier_on(pnetdev);//call this func when rtw_joinbss_event_callback return success
 	rtw_netif_wake_queue(pnetdev);
 
-#ifdef CONFIG_BR_EXT
+#if 1
 	netdev_br_init(pnetdev);
 #endif	// CONFIG_BR_EXT
 
@@ -2620,7 +2620,7 @@ static int netdev_close(struct net_device *pnetdev)
 		rtw_led_control(padapter, LED_CTL_POWER_OFF);
 	}
 
-#ifdef CONFIG_BR_EXT
+#if 1
 	//if (OPMODE & (WIFI_STATION_STATE | WIFI_ADHOC_STATE))
 	{
 		//void nat25_db_cleanup(_adapter *priv);

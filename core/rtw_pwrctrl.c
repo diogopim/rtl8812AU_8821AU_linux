@@ -658,10 +658,10 @@ u8 PS_RDY_CHECK(_adapter * padapter)
 	    || !rtw_p2p_chk_state(&(padapter->wdinfo), P2P_STATE_NONE)
 #endif
 	    || rtw_is_scan_deny(padapter)
-#ifdef CONFIG_TDLS
+#if 0
 	    // TDLS link is established.
 	    || ( padapter->tdlsinfo.link_established == _TRUE )
-#endif // CONFIG_TDLS
+#endif //
 	   )
 		return _FALSE;
 
@@ -806,13 +806,13 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 #ifdef CONFIG_P2P
 	struct wifidirect_info	*pwdinfo = &( padapter->wdinfo );
 #endif //CONFIG_P2P
-#ifdef CONFIG_TDLS
+#if 0
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	_irqL irqL;
 	int i;
 	_list	*plist, *phead;
 	struct sta_info *ptdls_sta;
-#endif //CONFIG_TDLS
+#endif //
 
 	_func_enter_;
 
@@ -865,7 +865,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 				pwrpriv->lps_leave_cnts++;
 			else
 				pwrpriv->lps_leave_cnts = 0;
-#ifdef CONFIG_TDLS
+#if 0
 			_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
 
 			for(i=0; i< NUM_STA; i++) {
@@ -882,7 +882,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 			}
 
 			_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-#endif //CONFIG_TDLS
+#endif //
 
 			pwrpriv->pwr_mode = ps_mode;
 			rtw_set_rpwm(padapter, PS_STATE_S4);
@@ -939,7 +939,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 				pwrpriv->lps_enter_cnts++;
 			else
 				pwrpriv->lps_enter_cnts = 0;
-#ifdef CONFIG_TDLS
+#if 0
 			_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
 
 			for(i=0; i< NUM_STA; i++) {
@@ -956,7 +956,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 			}
 
 			_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
-#endif //CONFIG_TDLS
+#endif //
 
 #if 0
 			rtw_btcoex_LpsNotify(padapter, ps_mode);

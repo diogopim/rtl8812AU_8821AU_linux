@@ -53,7 +53,7 @@
 #endif
 #endif
 
-#ifdef CONFIG_BR_EXT
+#if 1
 
 //#define BR_EXT_DEBUG
 

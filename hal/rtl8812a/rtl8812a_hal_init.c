@@ -4950,12 +4950,12 @@ static void hw_var_set_mlme_sitesurvey(PADAPTER Adapter, u8 variable, const u8* 
 	  ) {
 		rcr_clear_bit = RCR_CBSSID_BCN;
 	}
-#ifdef CONFIG_TDLS
+#if 0
 	// TDLS will clear RCR_CBSSID_DATA bit for connection.
 	else if (Adapter->tdlsinfo.link_established == _TRUE) {
 		rcr_clear_bit = RCR_CBSSID_BCN;
 	}
-#endif // CONFIG_TDLS
+#endif //
 
 	value_rcr = rtw_read32(Adapter, REG_RCR);
 
@@ -5508,7 +5508,7 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 		break;
 #endif // CONFIG_P2P_PS
 
-#ifdef CONFIG_TDLS
+#if 0
 	case HW_VAR_TDLS_WRCR:
 		val32 = rtw_read32(padapter, REG_RCR);
 		val32 &= ~RCR_CBSSID_DATA;
@@ -5520,7 +5520,7 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 		val32 |= RCR_CBSSID_DATA;
 		rtw_write32(padapter, REG_RCR, val32);
 		break;
-#endif // CONFIG_TDLS
+#endif //
 
 #ifdef CONFIG_SW_ANTENNA_DIVERSITY
 	case HW_VAR_ANTENNA_DIVERSITY_LINK:
@@ -6012,7 +6012,7 @@ void GetHwReg8812A(PADAPTER padapter, u8 variable, u8 *pval)
 
 		break;
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 	case HW_VAR_CURRENT_ANTENNA:
 		*pval = pHalData->CurAntenna;
 		break;
@@ -6081,13 +6081,13 @@ u8 GetHalDefVar8812A(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval)
 	switch (variable) {
 
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 	case HAL_DEF_IS_SUPPORT_ANT_DIV:
 		*((u8*)pval) = (pHalData->AntDivCfg==0) ? _FALSE : _TRUE;
 		break;
 #endif
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 	case HAL_DEF_CURRENT_ANTENNA:
 		*((u8*)pval) = pHalData->CurAntenna;
 		break;
@@ -6339,7 +6339,7 @@ void rtl8812_set_hal_ops(struct hal_ops *pHalFunc)
 	pHalFunc->run_thread= &rtl8812_start_thread;
 	pHalFunc->cancel_thread= &rtl8812_stop_thread;
 
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 	pHalFunc->AntDivBeforeLinkHandler = &AntDivBeforeLink8812;
 	pHalFunc->AntDivCompareHandler = &AntDivCompare8812;
 #endif

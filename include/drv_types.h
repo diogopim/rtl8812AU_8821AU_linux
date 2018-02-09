@@ -123,9 +123,9 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_p2p.h>
 #endif // CONFIG_P2P
 
-#ifdef CONFIG_TDLS
+#if 0
 #include <rtw_tdls.h>
-#endif // CONFIG_TDLS
+#endif //
 
 #ifdef CONFIG_WAPI_SUPPORT
 #include <rtw_wapi.h>
@@ -139,7 +139,7 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_mp.h>
 #endif // CONFIG_MP_INCLUDED
 
-#ifdef CONFIG_BR_EXT
+#if 1
 #include <rtw_br_ext.h>
 #endif // CONFIG_BR_EXT
 
@@ -879,9 +879,9 @@ struct _ADAPTER {
 	struct wifidirect_info	wdinfo;
 #endif //CONFIG_P2P
 
-#ifdef CONFIG_TDLS
+#if 0
 	struct tdls_info	tdlsinfo;
-#endif //CONFIG_TDLS
+#endif //
 
 #ifdef CONFIG_WAPI_SUPPORT
 	u8	WapiSupport;
@@ -1028,7 +1028,7 @@ struct _ADAPTER {
 	u8 DualMacConcurrent; // 1: DMSP 0:DMDP
 #endif
 
-#ifdef CONFIG_BR_EXT
+#if 1
 	_lock					br_ext_lock;
 	//unsigned int			macclone_completed;
 	struct nat25_network_db_entry	*nethash[NAT25_HASH_SIZE];

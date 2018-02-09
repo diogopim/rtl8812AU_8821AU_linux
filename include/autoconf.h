@@ -101,7 +101,7 @@
 //#define CONFIG_ANTENNA_DIVERSITY
 
 //after link
-#ifdef CONFIG_ANTENNA_DIVERSITY
+#if 0
 #define CONFIG_HW_ANTENNA_DIVERSITY
 #endif
 
@@ -161,7 +161,7 @@
 #endif
 
 //	Added by Kurt 20110511
-#ifdef CONFIG_TDLS
+#if 0
 #define CONFIG_TDLS_DRIVER_SETUP
 //	#ifndef CONFIG_WFD
 //		#define CONFIG_WFD

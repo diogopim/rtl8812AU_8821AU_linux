@@ -882,9 +882,9 @@ void process_wmmps_data(_adapter *padapter, union recv_frame *precv_frame)
 
 	if(!psta) return;
 
-#ifdef CONFIG_TDLS
+#if 0
 	if( !(psta->tdls_sta_state & TDLS_LINKED_STATE ) ) {
-#endif //CONFIG_TDLS
+#endif //
 
 		if(!psta->qos_option)
 			return;
@@ -892,9 +892,9 @@ void process_wmmps_data(_adapter *padapter, union recv_frame *precv_frame)
 		if(!(psta->qos_info&0xf))
 			return;
 
-#ifdef CONFIG_TDLS
+#if 0
 	}
-#endif //CONFIG_TDLS
+#endif //
 
 	if(psta->state&WIFI_SLEEP_STATE) {
 		u8 wmmps_ac=0;
@@ -936,7 +936,7 @@ void process_wmmps_data(_adapter *padapter, union recv_frame *precv_frame)
 
 }
 
-#ifdef CONFIG_TDLS
+#if 0
 sint OnTDLS(_adapter *adapter, union recv_frame *precv_frame)
 {
 	struct rx_pkt_attrib	*pattrib = & precv_frame->u.hdr.attrib;
@@ -987,7 +987,7 @@ sint OnTDLS(_adapter *adapter, union recv_frame *precv_frame)
 	case TDLS_PEER_TRAFFIC_RESPONSE:
 		ret=On_TDLS_Peer_Traffic_Rsp(adapter, precv_frame);
 		break;
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 	case TDLS_CHANNEL_SWITCH_REQUEST:
 		ret=On_TDLS_Ch_Switch_Req(adapter, precv_frame);
 		break;
@@ -1025,7 +1025,7 @@ sint OnTDLS(_adapter *adapter, union recv_frame *precv_frame)
 	return ret;
 
 }
-#endif /* CONFIG_TDLS */
+#endif /**/
 
 void count_rx_stats(_adapter *padapter, union recv_frame *prframe, struct sta_info*sta);
 void count_rx_stats(_adapter *padapter, union recv_frame *prframe, struct sta_info*sta)
@@ -1056,7 +1056,7 @@ void count_rx_stats(_adapter *padapter, union recv_frame *prframe, struct sta_in
 		pstats->rx_data_pkts++;
 		pstats->rx_bytes += sz;
 
-#ifdef CONFIG_TDLS
+#if 0
 		if(psta->tdls_sta_state & TDLS_LINKED_STATE) {
 			struct sta_info *pap_sta = NULL;
 			pap_sta = rtw_get_stainfo(&padapter->stapriv, get_bssid(&padapter->mlmepriv));
@@ -1066,7 +1066,7 @@ void count_rx_stats(_adapter *padapter, union recv_frame *prframe, struct sta_in
 				pstats->rx_bytes += sz;
 			}
 		}
-#endif //CONFIG_TDLS
+#endif //
 	}
 
 #ifdef CONFIG_CHECK_LEAVE_LPS
@@ -1096,9 +1096,9 @@ sint sta2sta_data_frame(
 	u8 * sta_addr = NULL;
 	sint bmcast = IS_MCAST(pattrib->dst);
 
-#ifdef CONFIG_TDLS
+#if 0
 	struct tdls_info *ptdlsinfo = &adapter->tdlsinfo;
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 	struct tdls_ch_switch *pchsw_info = &ptdlsinfo->chsw_info;
 #endif
 	struct sta_info *ptdls_sta=NULL;
@@ -1136,7 +1136,7 @@ sint sta2sta_data_frame(
 		sta_addr = pattrib->src;
 
 	} else if(check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _TRUE) {
-#ifdef CONFIG_TDLS
+#if 0
 
 		/* direct link data transfer */
 		if (ptdlsinfo->link_established == _TRUE) {
@@ -1163,7 +1163,7 @@ sint sta2sta_data_frame(
 					goto exit;
 				}
 
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 				pchsw_info->ch_sw_state |= TDLS_PEER_AT_OFF_STATE;
 
 				if(ATOMIC_READ(&pchsw_info->chsw_on) == _TRUE) {
@@ -1213,7 +1213,7 @@ sint sta2sta_data_frame(
 			sta_addr = pattrib->src;
 
 		} else
-#endif /* CONFIG_TDLS */
+#endif /**/
 		{
 			// For Station mode, sa and bssid should always be BSSID, and DA is my mac-address
 			if(!_rtw_memcmp(pattrib->bssid, pattrib->src, ETH_ALEN) ) {
@@ -1261,11 +1261,11 @@ sint sta2sta_data_frame(
 	else
 		*psta = rtw_get_stainfo(pstapriv, sta_addr); // get ap_info
 
-#ifdef CONFIG_TDLS
+#if 0
 	if(ptdls_sta != NULL) {
 		*psta = ptdls_sta;
 	}
-#endif //CONFIG_TDLS
+#endif //
 
 	if (*psta == NULL) {
 		RT_TRACE(_module_rtl871x_recv_c_,_drv_err_,("can't get psta under sta2sta_data_frame ; drop pkt\n"));
@@ -1915,11 +1915,11 @@ sint validate_recv_data_frame(_adapter *adapter, union recv_frame *precv_frame)
 		RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("validate_recv_data_frame:pattrib->privacy=%x\n", pattrib->privacy));
 		RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("\n ^^^^^^^^^^^IS_MCAST(pattrib->ra(0x%02x))=%d^^^^^^^^^^^^^^^6\n", pattrib->ra[0],IS_MCAST(pattrib->ra)));
 
-#ifdef CONFIG_TDLS
+#if 0
 		if((psta->tdls_sta_state & TDLS_LINKED_STATE) && (psta->dot118021XPrivacy==_AES_)) {
 			pattrib->encrypt=psta->dot118021XPrivacy;
 		} else
-#endif //CONFIG_TDLS
+#endif //
 			GET_ENCRY_ALGO(psecuritypriv, psta, pattrib->encrypt, IS_MCAST(pattrib->ra));
 
 		RT_TRACE(_module_rtl871x_recv_c_,_drv_info_,("\n pattrib->encrypt=%d\n",pattrib->encrypt));
@@ -2078,9 +2078,9 @@ sint validate_recv_frame(_adapter *adapter, union recv_frame *precv_frame)
 	struct mlme_ext_priv *pmlmeext = &adapter->mlmeextpriv;
 #endif
 
-#ifdef CONFIG_TDLS
+#if 0
 	struct tdls_info *ptdlsinfo = &adapter->tdlsinfo;
-#endif //CONFIG_TDLS
+#endif //
 #ifdef CONFIG_WAPI_SUPPORT
 	PRT_WAPI_T	pWapiInfo = &adapter->wapiInfo;
 	struct recv_frame_hdr *phdr = &precv_frame->u.hdr;
@@ -2099,11 +2099,11 @@ sint validate_recv_frame(_adapter *adapter, union recv_frame *precv_frame)
 	}
 #endif
 
-#ifdef CONFIG_TDLS
+#if 0
 	if(ptdlsinfo->ch_sensing==1 && ptdlsinfo->cur_channel !=0) {
 		ptdlsinfo->collect_pkt_num[ptdlsinfo->cur_channel-1]++;
 	}
-#endif //CONFIG_TDLS
+#endif //
 
 #ifdef RTK_DMP_PLATFORM
 	if ( 0 ) {
@@ -3338,9 +3338,9 @@ int process_recv_indicatepkts(_adapter *padapter, union recv_frame *prframe)
 	//struct recv_priv *precvpriv = &padapter->recvpriv;
 	//struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-#ifdef CONFIG_TDLS
+#if 0
 	struct sta_info *psta = prframe->u.hdr.psta;
-#endif //CONFIG_TDLS
+#endif //
 
 #ifdef CONFIG_80211N_HT
 
@@ -3348,14 +3348,14 @@ int process_recv_indicatepkts(_adapter *padapter, union recv_frame *prframe)
 
 	DBG_COUNTER(padapter->rx_logs.core_rx_post_indicate);
 
-#ifdef CONFIG_TDLS
+#if 0
 	if( (phtpriv->ht_option==_TRUE) ||
 	    ((psta->tdls_sta_state & TDLS_LINKED_STATE) &&
 	     (psta->htpriv.ht_option==_TRUE) &&
 	     (psta->htpriv.ampdu_enable==_TRUE))) //B/G/N Mode
 #else
 	if(phtpriv->ht_option==_TRUE)  //B/G/N Mode
-#endif //CONFIG_TDLS
+#endif //
 	{
 		//prframe->u.hdr.preorder_ctrl = &precvpriv->recvreorder_ctrl[pattrib->priority];
 
@@ -4045,10 +4045,10 @@ int recv_func_posthandle(_adapter *padapter, union recv_frame *prframe)
 	union recv_frame *orig_prframe = prframe;
 	struct recv_priv *precvpriv = &padapter->recvpriv;
 	_queue *pfree_recv_queue = &padapter->recvpriv.free_recv_queue;
-#ifdef CONFIG_TDLS
+#if 0
 	struct rx_pkt_attrib *pattrib = &prframe->u.hdr.attrib;
 	u8 *psnap_type, *pcategory;
-#endif //CONFIG_TDLS
+#endif //
 
 	DBG_COUNTER(padapter->rx_logs.core_rx_post);
 
@@ -4081,7 +4081,7 @@ int recv_func_posthandle(_adapter *padapter, union recv_frame *prframe)
 	}
 #endif
 
-#ifdef CONFIG_TDLS
+#if 0
 	//check TDLS frame
 	psnap_type = get_recvframe_data(orig_prframe) + pattrib->hdrlen + pattrib->iv_len+SNAP_SIZE;
 	pcategory = psnap_type + ETH_TYPE_LEN + PAYLOAD_TYPE_LEN;
@@ -4092,7 +4092,7 @@ int recv_func_posthandle(_adapter *padapter, union recv_frame *prframe)
 		if(ret == _FAIL)
 			goto _exit_recv_func;
 	}
-#endif //CONFIG_TDLS
+#endif //
 
 	prframe = recvframe_chk_defrag(padapter, prframe);
 	if(prframe==NULL) {
@@ -4183,7 +4183,7 @@ int recv_func_posthandle(_adapter *padapter, union recv_frame *prframe)
 	}
 #endif // CONFIG_80211N_HT
 
-#ifdef CONFIG_TDLS
+#if 0
 _exit_recv_func:
 #endif
 	return ret;

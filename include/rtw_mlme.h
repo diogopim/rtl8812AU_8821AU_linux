@@ -396,7 +396,7 @@ struct tdls_temp_mgmt {
 	u8	peer_addr[ETH_ALEN];
 };
 
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 struct tdls_ch_switch {
 	u32	ch_sw_state;
 	ATOMIC_T	chsw_on;
@@ -416,7 +416,7 @@ struct tdls_info {
 	u8					sta_cnt;
 	u8					sta_maximum;	/* 1:tdls sta is equal (NUM_STA-1), reach max direct link number; 0: else; */
 	struct tdls_ss_record	ss_record;
-#ifdef CONFIG_TDLS_CH_SW
+#if 0
 	struct tdls_ch_switch	chsw_info;
 #endif
 
