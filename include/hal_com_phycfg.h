@@ -261,7 +261,7 @@ Hal_ChannelPlanToRegulation(
     IN	u16				ChannelPlan
 );
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 #define MAX_PARA_FILE_BUF_LEN	25600
 
 #define LOAD_MAC_PARA_FILE				BIT0

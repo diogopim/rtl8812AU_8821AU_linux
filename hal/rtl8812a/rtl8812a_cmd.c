@@ -738,7 +738,7 @@ static void ConstructGTKResponse(
 	SetSeqNum(pwlanhdr, 0);
 	SetDuration(pwlanhdr, 0);
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	*pLength = sMacHdrLng;
 #else
 	*pLength = 24;
@@ -771,7 +771,7 @@ static void ConstructGTKResponse(
 	case _AES_:
 		EncryptionHeadOverhead = 8;
 		break;
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	case _SMS4_:
 		EncryptionHeadOverhead = 18;
 		break;
@@ -1172,7 +1172,7 @@ void rtl8812_set_FwJoinBssReport_cmd(PADAPTER padapter, u8 mstatus)
 			rtw_write8(padapter,  REG_CR+1, pHalData->RegCR_1);
 		}
 	}
-#ifdef CONFIG_WOWLAN
+#if 0
 	if (adapter_to_pwrctl(padapter)->wowlan_mode) {
 		u16	media_status;
 
@@ -1344,8 +1344,8 @@ static inline void rtl8812_set_FwRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC r
 	FillH2CCmd_8812(padapter, H2C_RSVD_PAGE, H2C_RSVDPAGE_LOC_LEN, u1H2CRsvdPageParm);
 }
 
-#ifdef CONFIG_WOWLAN
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
+#if 0
 static void rtl8812_set_FwScanOffloadInfo_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc, u8 enable)
 {
 	u8 u1H2CScanOffloadInfoParm[H2C_SCAN_OFFLOAD_CTRL_LEN]= {0};
@@ -1389,7 +1389,7 @@ static void rtl8812_set_FwScanOffloadInfo_cmd(PADAPTER padapter, PRSVDPAGE_LOC r
 #endif //CONFIG_PNO_SUPPORT
 
 
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 static void rtl8812_set_ap_wow_rsvdpage_cmd(PADAPTER padapter,
         PRSVDPAGE_LOC rsvdpageloc)
 {
@@ -1559,7 +1559,7 @@ static void rtl8812_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvd
 	//struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	//u8	res = 0, count = 0;
-#ifdef CONFIG_WOWLAN
+#if 0
 	u8 u1H2CAoacRsvdPageParm[H2C_AOAC_RSVDPAGE_LOC_LEN]= {0};
 
 	DBG_871X("8192EAOACRsvdPageLoc: RWC=%d ArpRsp=%d NbrAdv=%d GtkRsp=%d GtkInfo=%d ProbeReq=%d NetworkList=%d\n",
@@ -1568,7 +1568,7 @@ static void rtl8812_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvd
 	         rsvdpageloc->LocGTKInfo, rsvdpageloc->LocProbeReq,
 	         rsvdpageloc->LocNetList);
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	DBG_871X("NLO_INFO=%d\n", rsvdpageloc->LocPNOInfo);
 #endif
 	if (check_fwstate(pmlmepriv, _FW_LINKED)) {
@@ -1581,7 +1581,7 @@ static void rtl8812_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvd
 		SET_H2CCMD_AOAC_RSVDPAGE_LOC_GTK_EXT_MEM(u1H2CAoacRsvdPageParm, rsvdpageloc->LocGTKEXTMEM);
 #endif // CONFIG_GTK_OL
 	} else {
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		if(!pwrpriv->pno_in_resume) {
 			SET_H2CCMD_AOAC_RSVDPAGE_LOC_NLO_INFO(u1H2CAoacRsvdPageParm, rsvdpageloc->LocPNOInfo);
 		}
@@ -1591,7 +1591,7 @@ static void rtl8812_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvd
 	RT_PRINT_DATA(_module_hal_init_c_, _drv_always_, "u1H2CAoacRsvdPageParm:", u1H2CAoacRsvdPageParm, H2C_AOAC_RSVDPAGE_LOC_LEN);
 	FillH2CCmd_8812(padapter, H2C_AOAC_RSVD_PAGE, H2C_AOAC_RSVDPAGE_LOC_LEN, u1H2CAoacRsvdPageParm);
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	if (!check_fwstate(pmlmepriv, WIFI_AP_STATE) &&
 	    !check_fwstate(pmlmepriv, _FW_LINKED) &&
 	    pwrpriv->pno_in_resume == _FALSE) {
@@ -1660,7 +1660,7 @@ static inline void ConstructARPResponse(
 
 	//SET_80211_HDR_DURATION(pARPRspPkt, 0);
 	//SET_80211_HDR_FRAGMENT_SEQUENCE(pARPRspPkt, 0);
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	*pLength = sMacHdrLng;
 #else
 	*pLength = 24;
@@ -1693,7 +1693,7 @@ static inline void ConstructARPResponse(
 	case _AES_:
 		EncryptionHeadOverhead = 8;
 		break;
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	case _SMS4_:
 		EncryptionHeadOverhead = 18;
 		break;
@@ -1799,7 +1799,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 	u16	BufIndex, PageSize = 256;
 	u32	TotalPacketLen, MaxRsvdPageBufSize=0;
 	RSVDPAGE_LOC	RsvdPageLoc;
-#ifdef CONFIG_WOWLAN
+#if 0
 	//u32	ARPLegnth = 0, GTKLegnth = 0, PNOLength = 0, ScanInfoLength = 0;
 	//u32	SSIDLegnth = 0;
 	//struct security_priv *psecuritypriv = &padapter->securitypriv; //added by xx
@@ -1953,7 +1953,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 
 	BufIndex += (CurtPktPageNum*PageSize);
 
-#ifdef CONFIG_WOWLAN_OLD
+#if 0_OLD
 	if (check_fwstate(pmlmepriv, _FW_LINKED)) {
 		//if (pwrctl->wowlan_mode == _TRUE) {
 		//BufIndex += (CurtPktPageNum*PageSize);
@@ -2085,7 +2085,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 	} else
 #endif //CONFIG_WOWLAN
 	{
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		if (pwrctl->pno_in_resume == _FALSE) {
 			//Probe Request
 			RsvdPageLoc.LocProbePacket = TotalPageNum;
@@ -2097,7 +2097,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 			rtl8812a_fill_fake_txdesc(padapter,
 			                          &ReservedPagePacket[BufIndex-TxDescLen],
 			                          ProbeReqLength, _FALSE, _FALSE, _FALSE);
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 			{
 				int gj;
 				printk("probe req pkt=> \n");
@@ -2119,7 +2119,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 			//PNO INFO Page
 			RsvdPageLoc.LocPNOInfo = TotalPageNum;
 			ConstructPnoInfo(padapter, &ReservedPagePacket[BufIndex -TxDescLen], &PNOLength);
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 			{
 				int gj;
 				printk("PNO pkt=> \n");
@@ -2140,7 +2140,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 			//SSID List Page
 			RsvdPageLoc.LocSSIDInfo = TotalPageNum;
 			ConstructSSIDList(padapter, &ReservedPagePacket[BufIndex-TxDescLen], &SSIDLegnth);
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 			{
 				int gj;
 				printk("SSID list pkt=> \n");
@@ -2160,7 +2160,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 			//Scan Info Page
 			RsvdPageLoc.LocScanInfo = TotalPageNum;
 			ConstructScanInfo(padapter, &ReservedPagePacket[BufIndex-TxDescLen], &ScanInfoLength);
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 			{
 				int gj;
 				printk("Scan info pkt=> \n");
@@ -2208,7 +2208,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		rtl8812_set_FwRsvdPage_cmd(padapter, &RsvdPageLoc);
 		rtl8812_set_FwAoacRsvdPage_cmd(padapter, &RsvdPageLoc);
 	} else {
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		if(pwrctl->pno_in_resume)
 			rtl8812_set_FwScanOffloadInfo_cmd(padapter,
 			                                  &RsvdPageLoc, 0);
@@ -2233,7 +2233,7 @@ static void rtl8812_set_FwRemoteWakeCtrl_Cmd(PADAPTER padapter, u8 benable)
 
 	DBG_871X("%s(): Enable=%d\n", __func__, benable);
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	SET_H2CCMD_REMOTE_WAKECTRL_ENABLE(u1H2CRemoteWakeCtrlParm, benable);
 	SET_H2CCMD_REMOTE_WAKE_CTRL_NLO_OFFLOAD_EN(u1H2CRemoteWakeCtrlParm, benable);
 #endif
@@ -2263,7 +2263,7 @@ static void rtl8812_set_FwRemoteWakeCtrl_Cmd(PADAPTER padapter, u8 benable)
 	RT_PRINT_DATA(_module_hal_init_c_, _drv_always_, "u1H2CRemoteWakeCtrlParm:", u1H2CRemoteWakeCtrlParm, H2C_REMOTE_WAKE_CTRL_LEN);
 	FillH2CCmd_8812(padapter, H2C_REMOTE_WAKE_CTRL,
 	                H2C_REMOTE_WAKE_CTRL_LEN, u1H2CRemoteWakeCtrlParm);
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	if (ppwrpriv->wowlan_pno_enable && ppwrpriv->pno_in_resume == _FALSE) {
 		res = rtw_read8(padapter, REG_PNO_STATUS);
 		DBG_871X("cmd: 0x81 REG_PNO_STATUS: 0x%02x\n", res);
@@ -2337,12 +2337,12 @@ static void rtl8812_set_FwWoWlanCtrl_Cmd(PADAPTER padapter, u8 bFuncEn)
 	u8 gpio_high_active = 0; //0: low active, 1: high active
 	u8 magic_pkt = 1;
 
-#ifdef CONFIG_GPIO_WAKEUP
+#if 0
 	gpionum = WAKEUP_GPIO_IDX;
 	sdio_wakeup_enable = 0;
 #endif
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	if (!ppwrpriv->wowlan_pno_enable) {
 		magic_pkt = 1;
 	}
@@ -2444,7 +2444,7 @@ void rtl8812_download_rsvd_page(PADAPTER padapter, u8 mstatus)
 		DLBcnCount = 0;
 		poll = 0;
 		do {
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 			if (pwrpriv->wowlan_ap_mode)
 				rtl8192e_set_AP_FwRsvdPagePkt(padapter, 0);
 			else
@@ -2940,7 +2940,7 @@ static void SetFwRsvdPagePkt_BTCoex(PADAPTER padapter)
 	DBG_871X("%s: Set RSVD page location to Fw ,TotalPacketLen(%d), TotalPageNum(%d)\n", __FUNCTION__,TotalPacketLen,TotalPageNum);
 	if(check_fwstate(pmlmepriv, _FW_LINKED)) {
 		rtl8812_set_FwRsvdPage_cmd(padapter, &RsvdPageLoc);
-#ifdef CONFIG_WOWLAN
+#if 0
 		rtl8812_set_FwAoacRsvdPage_cmd(padapter, &RsvdPageLoc);
 #endif
 	}

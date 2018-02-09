@@ -256,7 +256,7 @@ s32 PHY_MACConfig8812(PADAPTER Adapter)
 	//
 	// Config MAC
 	//
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 	rtStatus = phy_ConfigMACWithParaFile(Adapter, pszMACRegFile);
 	if (rtStatus == _FAIL)
 #endif
@@ -377,7 +377,7 @@ phy_BB8812_Config_ParaFile(
 	PHY_InitTxPowerLimit( Adapter );
 	if ( Adapter->registrypriv.RegEnableTxPowerLimit == 1 ||
 	     ( Adapter->registrypriv.RegEnableTxPowerLimit == 2 && pHalData->EEPROMRegulatory == 1 ) ) {
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 		if (PHY_ConfigRFWithPowerLimitTableParaFile( Adapter, pszRFTxPwrLmtFile )== _FAIL)
 #endif
 		{
@@ -394,7 +394,7 @@ phy_BB8812_Config_ParaFile(
 	}
 
 	// Read PHY_REG.TXT BB INIT!!
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 	if (phy_ConfigBBWithParaFile(Adapter, pszBBRegFile, CONFIG_BB_PHY_REG) == _FAIL)
 #endif
 	{
@@ -412,7 +412,7 @@ phy_BB8812_Config_ParaFile(
 	// Read PHY_REG_MP.TXT BB INIT!!
 #if (MP_DRIVER == 1)
 	if (Adapter->registrypriv.mp_mode == 1) {
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 		if (phy_ConfigBBWithMpParaFile(Adapter, pszBBRegMpFile) == _FAIL)
 #endif
 		{
@@ -433,7 +433,7 @@ phy_BB8812_Config_ParaFile(
 	PHY_InitTxPowerByRate( Adapter );
 	if ( Adapter->registrypriv.RegEnableTxPowerByRate == 1 ||
 	     ( Adapter->registrypriv.RegEnableTxPowerByRate == 2 && pHalData->EEPROMRegulatory != 2 ) ) {
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 		if (phy_ConfigBBWithPgParaFile(Adapter, pszBBRegPgFile) == _FAIL)
 #endif
 		{
@@ -457,7 +457,7 @@ phy_BB8812_Config_ParaFile(
 	}
 
 	// BB AGC table Initialization
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 	if (phy_ConfigBBWithParaFile(Adapter, pszAGCTableFile, CONFIG_BB_AGC_TAB) == _FAIL)
 #endif
 	{

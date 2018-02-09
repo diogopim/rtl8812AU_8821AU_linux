@@ -105,7 +105,7 @@ phy_RF6052_Config_ParaFile_8812(
 		/*----Initialize RF fom connfiguration file----*/
 		switch(eRFPath) {
 		case RF_PATH_A:
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 			if (PHY_ConfigRFWithParaFile(Adapter, pszRadioAFile, eRFPath) == _FAIL)
 #endif
 			{
@@ -116,7 +116,7 @@ phy_RF6052_Config_ParaFile_8812(
 			}
 			break;
 		case RF_PATH_B:
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 			if (PHY_ConfigRFWithParaFile(Adapter, pszRadioBFile, eRFPath) == _FAIL)
 #endif
 			{
@@ -141,7 +141,7 @@ phy_RF6052_Config_ParaFile_8812(
 	//3 Configuration of Tx Power Tracking
 	//3 -----------------------------------------------------------------
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 	if (PHY_ConfigRFWithTxPwrTrackParaFile(Adapter, pszTxPwrTrack) == _FAIL)
 #endif
 	{

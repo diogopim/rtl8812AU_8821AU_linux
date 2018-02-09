@@ -73,7 +73,7 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_vht.h>
 #endif
 
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 #include <rtw_intel_widi.h>
 #endif
 
@@ -127,7 +127,7 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_tdls.h>
 #endif //
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 #include <rtw_wapi.h>
 #endif // CONFIG_WAPI_SUPPORT
 
@@ -317,7 +317,7 @@ struct registry_priv {
 	u8	RFE_Type;
 	u8  check_fw_ps;
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 	u8	load_phy_file;
 	u8	RegDecryptCustomFile;
 #endif
@@ -883,7 +883,7 @@ struct _ADAPTER {
 	struct tdls_info	tdlsinfo;
 #endif //
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	u8	WapiSupport;
 	RT_WAPI_T	wapiInfo;
 #endif
@@ -1124,16 +1124,16 @@ __inline static void RTW_ENABLE_FUNC(_adapter*padapter, int func_bit)
 
 int rtw_handle_dualmac(_adapter *adapter, bool init);
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 int rtw_parse_ssid_list_tlv(char** list_str, pno_ssid_t* ssid, int max, int *bytes_left);
 int rtw_dev_pno_set(struct net_device *net, pno_ssid_t* ssid, int num,
                     int pno_time, int pno_repeat, int pno_freq_expo_max);
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 void rtw_dev_pno_debug(struct net_device *net);
 #endif //CONFIG_PNO_SET_DEBUG
 #endif //CONFIG_PNO_SUPPORT
 
-#ifdef CONFIG_WOWLAN
+#if 0
 int rtw_suspend_wow(_adapter *padapter);
 int rtw_resume_process_wow(_adapter *padapter);
 #endif

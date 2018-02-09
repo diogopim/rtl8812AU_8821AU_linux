@@ -21,7 +21,7 @@
 
 #include <drv_types.h>
 
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
+#if 0
 #include <linux/inetdevice.h>
 #endif
 
@@ -2665,10 +2665,10 @@ void update_tx_basic_rate(_adapter *padapter, u8 wirelessmode)
 	if(!rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
 		return;
 #endif //CONFIG_P2P
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 	if (padapter->mlmepriv.widi_state != INTEL_WIDI_STATE_NONE)
 		return;
-#endif //CONFIG_INTEL_WIDI
+#endif //
 
 	_rtw_memset(supported_rates, 0, NDIS_802_11_LENGTH_RATES_EX);
 
@@ -3637,7 +3637,7 @@ func_exit:
 
 
 
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
+#if 0
 void rtw_get_current_ip_address(PADAPTER padapter, u8 *pcurrentip)
 {
 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
@@ -3662,7 +3662,7 @@ void rtw_get_current_ip_address(PADAPTER padapter, u8 *pcurrentip)
 	}
 }
 #endif
-#ifdef CONFIG_WOWLAN
+#if 0
 void rtw_get_sec_iv(PADAPTER padapter, u8*pcur_dot11txpn, u8 *StaAddr)
 {
 	struct sta_info		*psta;
@@ -3711,7 +3711,7 @@ void rtw_set_sec_pn(PADAPTER padapter)
 }
 #endif //CONFIG_WOWLAN
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 #define	CSCAN_TLV_TYPE_SSID_IE	'S'
 #define CIPHER_IE "key_mgmt="
 #define CIPHER_NONE "NONE"
@@ -4005,7 +4005,7 @@ failing:
 	return -1;
 }
 
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 void rtw_dev_pno_debug(struct net_device *net)
 {
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(net);

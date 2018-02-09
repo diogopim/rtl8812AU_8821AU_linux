@@ -26,7 +26,7 @@
 
 //#define CONFIG_GTK_OL_DBG
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 char	rtw_file_path[PATH_LENGTH_MAX];
 #endif
 
@@ -47,7 +47,7 @@ void rtw_hal_data_deinit(_adapter *padapter)
 {
 	if(is_primary_adapter(padapter)) {
 		if (padapter->HalData) {
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 			phy_free_filebuf(padapter);
 #endif
 			rtw_vmfree(padapter->HalData, padapter->hal_data_sz);
@@ -1405,7 +1405,7 @@ void rtw_hal_set_FwRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc)
 	}
 }
 
-#ifdef CONFIG_GPIO_WAKEUP
+#if 0
 /*
  * Switch GPIO_13, GPIO_14 to wlan control, or pull GPIO_13,14 MUST fail.
  * It happended at 8723B/8192E/8821A. New IC will check multi function GPIO,
@@ -1476,7 +1476,7 @@ void rtw_hal_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc
 {
 	//struct	pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	//u8	res = 0, count = 0, ret = 0;
-#ifdef CONFIG_WOWLAN
+#if 0
 	u8 ret = 0;
 	struct	hal_ops *pHalFunc = &padapter->HalFunc;
 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -1507,7 +1507,7 @@ void rtw_hal_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc
 			ret = _FAIL;
 		}
 	}
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	else {
 
 		if(!pwrpriv->pno_in_resume) {
@@ -1531,7 +1531,7 @@ void rtw_hal_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc
 #endif // CONFIG_WOWLAN
 }
 
-#ifdef CONFIG_WOWLAN
+#if 0
 // rtw_hal_check_wow_ctrl
 // chk_type: _TRUE means to check enable, if 0x690 & bit1, WOW enable successful
 //           _FALSE means to check disable, if 0x690 & bit1, WOW disable fail
@@ -1577,7 +1577,7 @@ static u8 rtw_hal_check_wow_ctrl(_adapter* adapter, u8 chk_type)
 	return res;
 }
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 static u8 rtw_hal_check_pno_enabled(_adapter* adapter)
 {
 	struct pwrctrl_priv *ppwrpriv = adapter_to_pwrctl(adapter);
@@ -1966,7 +1966,7 @@ static u8 rtw_hal_set_wowlan_ctrl_cmd(_adapter *adapter, u8 enable)
 	u8 magic_pkt = 0;
 	u8 ret = _FAIL;
 
-#ifdef CONFIG_GPIO_WAKEUP
+#if 0
 	gpionum = WAKEUP_GPIO_IDX;
 	sdio_wakeup_enable = 0;
 #endif //CONFIG_GPIO_WAKEUP
@@ -2064,7 +2064,7 @@ static u8 rtw_hal_set_remote_wake_ctrl_cmd(_adapter *adapter, u8 enable)
 		SET_H2CCMD_REMOTE_WAKE_CTRL_FW_PARSING_UNTIL_WAKEUP(
 		    u1H2CRemoteWakeCtrlParm, 1);
 	}
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	else {
 		SET_H2CCMD_REMOTE_WAKECTRL_ENABLE(
 		    u1H2CRemoteWakeCtrlParm, enable);
@@ -2073,7 +2073,7 @@ static u8 rtw_hal_set_remote_wake_ctrl_cmd(_adapter *adapter, u8 enable)
 	}
 #endif
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 	if (_TRUE == ppwrpriv->wowlan_p2p_mode) {
 		DBG_871X("P2P OFFLOAD ENABLE\n");
 		SET_H2CCMD_REMOTE_WAKE_CTRL_P2P_OFFLAD_EN(u1H2CRemoteWakeCtrlParm,1);
@@ -2122,7 +2122,7 @@ static u8 rtw_hal_set_global_info_cmd(_adapter* adapter, u8 group_alg, u8 pairwi
 	return ret;
 }
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 static u8 rtw_hal_set_scan_offload_info_cmd(_adapter* adapter,
         PRSVDPAGE_LOC rsvdpageloc, u8 enable)
 {
@@ -2192,7 +2192,7 @@ void rtw_hal_set_fw_wow_related_cmd(_adapter* padapter, u8 enable)
 			rtw_hal_set_keep_alive_cmd(padapter, enable, pkt_type);
 		}
 		rtw_hal_set_remote_wake_ctrl_cmd(padapter, enable);
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		rtw_hal_check_pno_enabled(padapter);
 #endif //CONFIG_PNO_SUPPORT
 	} else {
@@ -2212,7 +2212,7 @@ void rtw_hal_set_fw_wow_related_cmd(_adapter* padapter, u8 enable)
 }
 #endif //CONFIG_WOWLAN
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 static int update_hidden_ssid(u8 *ies, u32 ies_len, u8 hidden_ssid_mode)
 {
 	u8 *ssid_ie;
@@ -2573,9 +2573,9 @@ static void rtw_hal_construct_P2PProbeRsp(_adapter *padapter, u8 *pframe, u32 *p
 #ifdef CONFIG_WFD
 	u32					wfdielen = 0;
 #endif //CONFIG_WFD
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 	u8 zero_array_check[L2SDTA_SERVICE_VE_LEN] = { 0x00 };
-#endif //CONFIG_INTEL_WIDI
+#endif //
 
 	//for debug
 	u8 *dbgbuf = pframe;
@@ -2670,7 +2670,7 @@ static void rtw_hal_construct_P2PProbeRsp(_adapter *padapter, u8 *pframe, u32 *p
 		//	Value:
 		wpsie[wpsielen++] = WPS_VERSION_1;	//	Version 1.0
 
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 		//	Commented by Kurt
 		//	Appended WiDi info. only if we did issued_probereq_widi(), and then we saved ven. ext. in pmlmepriv->sa_ext.
 		if(  _rtw_memcmp(pmlmepriv->sa_ext, zero_array_check, L2SDTA_SERVICE_VE_LEN) == _FALSE
@@ -2701,7 +2701,7 @@ static void rtw_hal_construct_P2PProbeRsp(_adapter *padapter, u8 *pframe, u32 *p
 				wpsielen += L2SDTA_SERVICE_VE_LEN;
 			}
 		}
-#endif //CONFIG_INTEL_WIDI
+#endif //
 
 		//	WiFi Simple Config State
 		//	Type:
@@ -3971,7 +3971,7 @@ static void rtw_hal_construct_NullFunctionData(
 	*pLength = pktlen;
 }
 
-#ifdef CONFIG_WOWLAN
+#if 0
 //
 // Description:
 //	Construct the ARP response packet to support ARP offload.
@@ -4024,7 +4024,7 @@ static void rtw_hal_construct_ARPRsp(
 
 	//SET_80211_HDR_DURATION(pARPRspPkt, 0);
 	//SET_80211_HDR_FRAGMENT_SEQUENCE(pARPRspPkt, 0);
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	*pLength = sMacHdrLng;
 #else
 	*pLength = 24;
@@ -4040,7 +4040,7 @@ static void rtw_hal_construct_ARPRsp(
 	case _AES_:
 		EncryptionHeadOverhead = 8;
 		break;
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	case _SMS4_:
 		EncryptionHeadOverhead = 18;
 		break;
@@ -4134,7 +4134,7 @@ static void rtw_hal_construct_ARPRsp(
 	}
 }
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 static void rtw_hal_construct_ProbeReq(_adapter *padapter, u8 *pframe,
                                        u32 *pLength, pno_ssid_t *ssid)
 {
@@ -4355,7 +4355,7 @@ static void rtw_hal_construct_GTKRsp(
 	SetSeqNum(pwlanhdr, 0);
 	SetDuration(pwlanhdr, 0);
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	*pLength = sMacHdrLng;
 #else
 	*pLength = 24;
@@ -4375,7 +4375,7 @@ static void rtw_hal_construct_GTKRsp(
 	case _AES_:
 		EncryptionHeadOverhead = 8;
 		break;
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	case _SMS4_:
 		EncryptionHeadOverhead = 18;
 		break;
@@ -4466,7 +4466,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 	u16	BufIndex = 0;
 	u32	TotalPacketLen = 0, MaxRsvdPageBufSize = 0, PageSize = 0;
 	RSVDPAGE_LOC	RsvdPageLoc;
-#ifdef CONFIG_WOWLAN
+#if 0
 	//u32	ARPLegnth = 0, GTKLegnth = 0, PNOLength = 0, ScanInfoLength = 0;
 	u32	ARPLegnth = 0;
 	//u32	SSIDLegnth = 0;
@@ -4480,7 +4480,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 	u8 kek[RTW_KEK_LEN];
 	u8 kck[RTW_KCK_LEN];
 #endif //CONFIG_GTK_OL
-#ifdef	CONFIG_PNO_SUPPORT
+#if 0
 	int index;
 	u8 ssid_num;
 #endif //CONFIG_PNO_SUPPORT
@@ -4489,7 +4489,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 	struct sreset_priv *psrtpriv;
 #endif // DBG_CONFIG_ERROR_DETECT
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 	u32 P2PNegoRspLength = 0, P2PInviteRspLength = 0, P2PPDRspLength = 0, P2PProbeRspLength = 0, P2PBCNLength = 0;
 #endif
 
@@ -4621,7 +4621,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 
 	BufIndex += (CurtPktPageNum*PageSize);
 
-#ifdef CONFIG_WOWLAN
+#if 0
 	if (pwrctl->wowlan_mode == _TRUE &&
 	    check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {
 		//ARP RSP * 1 page
@@ -4761,7 +4761,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 		TotalPacketLen = BufIndex + _AES_IV_LEN_;
 #endif //CONFIG_GTK_OL
 	} else if (pwrctl->wowlan_pno_enable == _TRUE) {
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		if (pwrctl->pno_in_resume == _FALSE &&
 		    pwrctl->pno_inited == _TRUE) {
 
@@ -4854,7 +4854,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 	TotalPacketLen = BufIndex + QosNullLength;
 #endif //CONFIG_WOWLAN
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 	if(_TRUE == pwrctl->wowlan_p2p_mode) {
 
 		// P2P Beacon
@@ -4981,7 +4981,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 		if (pwrctl->wowlan_mode == _TRUE)
 			rtw_hal_set_FwAoacRsvdPage_cmd(adapter, &RsvdPageLoc);
 	} else if (pwrctl->wowlan_pno_enable) {
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		rtw_hal_set_FwAoacRsvdPage_cmd(adapter, &RsvdPageLoc);
 		if(pwrctl->pno_in_resume)
 			rtw_hal_set_scan_offload_info_cmd(adapter,
@@ -4991,7 +4991,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 			                                  &RsvdPageLoc, 1);
 #endif //CONFIG_PNO_SUPPORT
 	}
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 	if(_TRUE == pwrctl->wowlan_p2p_mode)
 		rtw_hal_set_FwP2PRsvdPage_cmd(adapter, &RsvdPageLoc);
 
@@ -5114,7 +5114,7 @@ void SetHwReg(_adapter *adapter, u8 variable, const u8 *val)
 			rtw_write8(adapter, rCCK0_DSPParameter2, 0x00);
 		}
 		break;
-#ifdef CONFIG_WOWLAN
+#if 0
 	case HW_VAR_WOWLAN: {
 		struct wowlan_ioctl_param *poidparam;
 		struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(adapter);
@@ -5176,7 +5176,7 @@ void SetHwReg(_adapter *adapter, u8 variable, const u8 *val)
 			if (res == _FAIL)
 				DBG_871X_LEVEL(_drv_always_, "[WARNING] enable cpwm2 fail\n");
 #endif
-#ifdef CONFIG_GPIO_WAKEUP
+#if 0
 			rtw_hal_switch_gpio_wl_ctrl(adapter,
 			                            WAKEUP_GPIO_IDX, _TRUE);
 #endif
@@ -5265,7 +5265,7 @@ void SetHwReg(_adapter *adapter, u8 variable, const u8 *val)
 				pHalFunc->hal_set_wowlan_fw(adapter, _FALSE);
 			else
 				DBG_871X("hal_set_wowlan_fw is null\n");
-#ifdef CONFIG_GPIO_WAKEUP
+#if 0
 			DBG_871X_LEVEL(_drv_always_, "Set Wake GPIO to high for default.\n");
 			rtw_hal_set_output_gpio(adapter, WAKEUP_GPIO_IDX, 1);
 			rtw_hal_switch_gpio_wl_ctrl(adapter,

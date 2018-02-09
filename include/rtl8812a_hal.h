@@ -169,7 +169,7 @@ typedef struct _RT_FIRMWARE_8812 {
 
 //For WoWLan , more reserved page
 //ARP Rsp:1, RWC:1, GTK Info:1,GTK RSP:1,GTK EXT MEM:1, PNO: 6
-#ifdef CONFIG_WOWLAN
+#if 0
 #define WOWLAN_PAGE_NUM_8812	0x05
 #else
 #define WOWLAN_PAGE_NUM_8812	0x00
@@ -216,7 +216,7 @@ typedef struct _RT_FIRMWARE_8812 {
 
 //For WoWLan , more reserved page
 //ARP Rsp:1, RWC:1, GTK Info:1,GTK RSP:1,GTK EXT MEM:1, PNO: 6
-#ifdef CONFIG_WOWLAN
+#if 0
 #define WOWLAN_PAGE_NUM_8821	0x06
 #else
 #define WOWLAN_PAGE_NUM_8821	0x00
@@ -313,7 +313,7 @@ void	Hal_ReadRemoteWakeup_8812A(PADAPTER padapter, u8* hwinfo, BOOLEAN AutoLoadF
 
 BOOLEAN HalDetectPwrDownMode8812(PADAPTER Adapter);
 
-#ifdef CONFIG_WOWLAN
+#if 0
 void Hal_DetectWoWMode(PADAPTER pAdapter);
 #endif //CONFIG_WOWLAN
 

@@ -123,7 +123,7 @@
 #define REG_TXPKTBUF_WMAC_LBK_BF_HD_8812	0x045D
 #define REG_NDPA_OPT_CTRL_8812		0x045F
 #define REG_DATA_SC_8812				0x0483
-#ifdef CONFIG_WOWLAN
+#if 0
 #define REG_TXPKTBUF_IV_LOW             0x0484
 #define REG_TXPKTBUF_IV_HIGH            0x0488
 #endif

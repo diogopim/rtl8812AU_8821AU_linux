@@ -212,12 +212,12 @@
 #define CONFIG_TX_MCAST2UNI	1	// Support IP multicast->unicast
 //#define CONFIG_CHECK_AC_LIFETIME 1	// Check packet lifetime of 4 ACs.
 
-#ifdef CONFIG_WOWLAN
+#if 0
 //#define CONFIG_GTK_OL
 #define CONFIG_ARP_KEEP_ALIVE
 #endif // CONFIG_WOWLAN
 
-#ifdef CONFIG_GPIO_WAKEUP
+#if 0
 #ifndef WAKEUP_GPIO_IDX
 #define WAKEUP_GPIO_IDX	1	// WIFI Chip Side
 #endif // !WAKEUP_GPIO_IDX

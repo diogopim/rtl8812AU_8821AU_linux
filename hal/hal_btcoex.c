@@ -3009,7 +3009,7 @@ void hal_btcoex_SetAntIsolationType(PADAPTER padapter, u8 anttype)
 
 }
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 int
 hal_btcoex_ParseAntIsolationConfigFile(
     PADAPTER		Adapter,

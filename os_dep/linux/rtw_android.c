@@ -18,7 +18,7 @@
  *
  ******************************************************************************/
 
-#ifdef CONFIG_GPIO_WAKEUP
+#if 0
 #include <linux/gpio.h>
 #endif
 
@@ -33,7 +33,7 @@
 #endif
 #endif /* defined(RTW_ENABLE_WIFI_CONTROL_FUNC) */
 
-#ifdef CONFIG_GPIO_WAKEUP
+#if 0
 #include <linux/interrupt.h>
 #include <linux/irq.h>
 #endif
@@ -67,7 +67,7 @@ const char *android_wifi_cmd_str[ANDROID_WIFI_CMD_MAX] = {
 
 	"MIRACAST",
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	"PNOSSIDCLR",
 	"PNOSETUP",
 	"PNOFORCE",
@@ -93,7 +93,7 @@ const char *android_wifi_cmd_str[ANDROID_WIFI_CMD_MAX] = {
 	"P2P_DISABLE"
 };
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 #define PNO_TLV_PREFIX			'S'
 #define PNO_TLV_VERSION			'1'
 #define PNO_TLV_SUBVERSION 		'2'
@@ -110,7 +110,7 @@ typedef struct cmd_tlv {
 	char reserved;
 } cmd_tlv_t;
 
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 char pno_in_example[] = {
 	'P', 'N', 'O', 'S', 'E', 'T', 'U', 'P', ' ',
 	'S', '1', '2', '0',
@@ -164,7 +164,7 @@ static int g_wifi_on = _TRUE;
 unsigned int oob_irq = 0;
 unsigned int oob_gpio = 0;
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 /*
  * rtw_android_pno_setup
  * Description:
@@ -189,7 +189,7 @@ static int rtw_android_pno_setup(struct net_device *net, char *command, int tota
 	int pno_freq_expo_max = 0;
 	int cmdlen = strlen(android_wifi_cmd_str[ANDROID_WIFI_CMD_PNOSETUP_SET]) + 1;
 
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 	int i;
 	char *p;
 	p = pno_in_example;
@@ -258,7 +258,7 @@ static int rtw_android_pno_setup(struct net_device *net, char *command, int tota
 
 	res = rtw_dev_pno_set(net, pno_ssids_local, nssid, pno_time, pno_repeat, pno_freq_expo_max);
 
-#ifdef CONFIG_PNO_SET_DEBUG
+#if 0
 	rtw_dev_pno_debug(net);
 #endif
 
@@ -551,7 +551,7 @@ int rtw_android_priv_cmd(struct net_device *net, struct ifreq *ifr, int cmd)
 	char *command = NULL;
 	int cmd_num;
 	int bytes_written = 0;
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	uint cmdlen = 0;
 	uint pno_enable = 0;
 #endif
@@ -717,7 +717,7 @@ int rtw_android_priv_cmd(struct net_device *net, struct ifreq *ifr, int cmd)
 		bytes_written = rtw_android_set_country(net, command, priv_cmd.total_len);
 		break;
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	case ANDROID_WIFI_CMD_PNOSSIDCLR_SET:
 		//bytes_written = dhd_dev_pno_reset(net);
 		break;
@@ -1017,7 +1017,7 @@ static int wifi_probe(struct platform_device *pdev)
 	else
 		wifi_wake_gpio = wifi_irqres->start;
 
-#ifdef CONFIG_GPIO_WAKEUP
+#if 0
 	printk("%s: gpio:%d wifi_wake_gpio:%d\n", __func__,
 	       wifi_irqres->start, wifi_wake_gpio);
 
@@ -1211,7 +1211,7 @@ static void wifi_del_dev(void)
 }
 #endif /* defined(RTW_ENABLE_WIFI_CONTROL_FUNC) */
 
-#ifdef CONFIG_GPIO_WAKEUP
+#if 0
 #ifdef CONFIG_PLATFORM_INTEL_BYT
 int wifi_configure_gpio(void)
 {

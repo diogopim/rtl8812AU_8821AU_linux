@@ -573,7 +573,7 @@ struct recv_frame_hdr {
 	//for A-MPDU Rx reordering buffer control
 	struct recv_reorder_ctrl *preorder_ctrl;
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	u8 UserPriority;
 	u8 WapiTempPN[16];
 	u8 WapiSrcAddr[6];

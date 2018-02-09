@@ -2362,7 +2362,7 @@ unsigned int OnAssocRsp(_adapter *padapter, union recv_frame *precv_frame)
 #endif
 			break;
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 		case _WAPI_IE_:
 			pWapiIE = pIE;
 			break;
@@ -2404,7 +2404,7 @@ unsigned int OnAssocRsp(_adapter *padapter, union recv_frame *precv_frame)
 		i += (pIE->Length + 2);
 	}
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	rtw_wapi_on_assoc_ok(padapter, pIE);
 #endif
 
@@ -4951,9 +4951,9 @@ void issue_probersp_p2p(_adapter *padapter, unsigned char *da)
 #ifdef CONFIG_WFD
 	u32					wfdielen = 0;
 #endif //CONFIG_WFD
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 	u8 zero_array_check[L2SDTA_SERVICE_VE_LEN] = { 0x00 };
-#endif //CONFIG_INTEL_WIDI
+#endif //
 
 	//DBG_871X("%s\n", __FUNCTION__);
 
@@ -5055,7 +5055,7 @@ void issue_probersp_p2p(_adapter *padapter, unsigned char *da)
 		//	Value:
 		wpsie[wpsielen++] = WPS_VERSION_1;	//	Version 1.0
 
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 		//	Commented by Kurt
 		//	Appended WiDi info. only if we did issued_probereq_widi(), and then we saved ven. ext. in pmlmepriv->sa_ext.
 		if(  _rtw_memcmp(pmlmepriv->sa_ext, zero_array_check, L2SDTA_SERVICE_VE_LEN) == _FALSE
@@ -5086,7 +5086,7 @@ void issue_probersp_p2p(_adapter *padapter, unsigned char *da)
 				wpsielen += L2SDTA_SERVICE_VE_LEN;
 			}
 		}
-#endif //CONFIG_INTEL_WIDI
+#endif //
 
 		//	WiFi Simple Config State
 		//	Type:
@@ -5753,13 +5753,13 @@ unsigned int on_action_public_p2p(union recv_frame *precv_frame)
 
 			result = process_p2p_group_negotation_req( pwdinfo, frame_body, len );
 			issue_p2p_GO_response( padapter, GetAddr2Ptr(pframe), frame_body, len, result );
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 			if (padapter->mlmepriv.widi_state == INTEL_WIDI_STATE_LISTEN) {
 				padapter->mlmepriv.widi_state = INTEL_WIDI_STATE_WFD_CONNECTION;
 				_cancel_timer_ex(&(padapter->mlmepriv.listen_timer));
 				intel_widi_wk_cmd(padapter, INTEL_WIDI_LISTEN_STOP_WK, NULL, 0);
 			}
-#endif //CONFIG_INTEL_WIDI
+#endif //
 
 			//	Commented by Albert 20110718
 			//	No matter negotiating or negotiation failure, the driver should set up the restore P2P state timer.
@@ -5911,10 +5911,10 @@ unsigned int on_action_public_p2p(union recv_frame *precv_frame)
 									}
 								} else {
 									rtw_p2p_set_state(pwdinfo, P2P_STATE_RECV_INVITE_REQ_DISMATCH );
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 									_rtw_memcpy( pwdinfo->p2p_peer_device_addr, group_id.go_device_addr , ETH_ALEN );
 									rtw_p2p_set_role( pwdinfo, P2P_ROLE_CLIENT );
-#endif //CONFIG_INTEL_WIDI
+#endif //
 
 									status_code = P2P_STATUS_FAIL_UNKNOWN_P2PGROUP;
 								}
@@ -5961,13 +5961,13 @@ unsigned int on_action_public_p2p(union recv_frame *precv_frame)
 				issue_p2p_invitation_response( padapter, GetAddr2Ptr(pframe), pwdinfo->inviteresp_info.token, status_code );
 				_set_timer( &pwdinfo->restore_p2p_state_timer, 3000 );
 			}
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 			if (padapter->mlmepriv.widi_state == INTEL_WIDI_STATE_LISTEN) {
 				padapter->mlmepriv.widi_state = INTEL_WIDI_STATE_WFD_CONNECTION;
 				_cancel_timer_ex(&(padapter->mlmepriv.listen_timer));
 				intel_widi_wk_cmd(padapter, INTEL_WIDI_LISTEN_STOP_WK, NULL, 0);
 			}
-#endif //CONFIG_INTEL_WIDI
+#endif //
 			break;
 		}
 		case P2P_INVIT_RESP: {
@@ -6032,13 +6032,13 @@ unsigned int on_action_public_p2p(union recv_frame *precv_frame)
 
 			rtw_p2p_set_state(pwdinfo, P2P_STATE_RX_PROVISION_DIS_REQ);
 			_set_timer( &pwdinfo->restore_p2p_state_timer, P2P_PROVISION_TIMEOUT );
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 			if (padapter->mlmepriv.widi_state == INTEL_WIDI_STATE_LISTEN) {
 				padapter->mlmepriv.widi_state = INTEL_WIDI_STATE_WFD_CONNECTION;
 				_cancel_timer_ex(&(padapter->mlmepriv.listen_timer));
 				intel_widi_wk_cmd(padapter, INTEL_WIDI_LISTEN_STOP_WK, NULL, 0);
 			}
-#endif //CONFIG_INTEL_WIDI
+#endif //
 			break;
 
 		case P2P_PROVISION_DISC_RESP:
@@ -7886,7 +7886,7 @@ void issue_assocreq(_adapter *padapter)
 	}
 
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	rtw_build_assoc_req_wapi_ie(padapter, pframe, pattrib);
 #endif
 
@@ -9928,12 +9928,12 @@ u8 collect_bss_info(_adapter *padapter, union recv_frame *precv_frame, WLAN_BSSI
 
 	}
 
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 	//process_intel_widi_query_or_tigger(padapter, bssid);
 	if(process_intel_widi_query_or_tigger(padapter, bssid)) {
 		return _FAIL;
 	}
-#endif // CONFIG_INTEL_WIDI
+#endif //
 
 #if defined(DBG_RX_SIGNAL_DISPLAY_SSID_MONITORED) & 1
 	if(strcmp(bssid->Ssid.Ssid, DBG_RX_SIGNAL_DISPLAY_SSID_MONITORED) == 0) {
@@ -10039,7 +10039,7 @@ void start_clnt_join(_adapter* padapter)
 
 		val8 = (pmlmeinfo->auth_algo == dot11AuthAlgrthm_8021X)? 0xcc: 0xcf;
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 		if (padapter->wapiInfo.bWapiEnable && pmlmeinfo->auth_algo == dot11AuthAlgrthm_WAPI) {
 			//Disable TxUseDefaultKey, RxUseDefaultKey, RxBroadcastUseDefaultKey.
 			val8 = 0x4c;
@@ -10750,7 +10750,7 @@ bool rtw_port_switch_chk(_adapter *adapter)
 #ifdef CONFIG_CONCURRENT_MODE
 #ifdef CONFIG_RUNTIME_PORT_SWITCH
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
-#if defined(CONFIG_WOWLAN) || defined(DBG_RUNTIME_PORT_SWITCH)
+#if   defined(DBG_RUNTIME_PORT_SWITCH)
 	struct pwrctrl_priv *pwrctl = dvobj_to_pwrctl(dvobj);
 #endif
 	_adapter *if_port0 = NULL;
@@ -10788,7 +10788,7 @@ bool rtw_port_switch_chk(_adapter *adapter)
 	         ADPT_ARG(if_port1), if_port1_mlmeinfo->state, rtw_p2p_state(&if_port1->wdinfo), rtw_p2p_chk_state(&if_port1->wdinfo, P2P_STATE_NONE));
 #endif /* DBG_RUNTIME_PORT_SWITCH */
 
-#ifdef CONFIG_WOWLAN
+#if 0
 	/* WOWLAN interface(primary, for now) should be port0 */
 	if (pwrctl->wowlan_mode == _TRUE) {
 		if(!is_primary_adapter(if_port0)) {
@@ -12014,7 +12014,7 @@ u8 join_cmd_hdl(_adapter *padapter, u8 *pbuf)
 	rtw_antenna_select_cmd(padapter, pparm->network.PhyInfo.Optimum_antenna, _FALSE);
 #endif
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	rtw_wapi_clear_all_cam_entry(padapter);
 #endif
 

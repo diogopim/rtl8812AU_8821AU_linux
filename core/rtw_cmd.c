@@ -2346,7 +2346,7 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 	const u8 baddr[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 #endif //
 
-#ifdef CONFIG_TRAFFIC_PROTECT
+#if 1
 	RT_LINK_DETECT_T * link_detect = &pmlmepriv->LinkDetectInfo;
 #endif
 
@@ -2382,7 +2382,7 @@ u8 traffic_status_watchdog(_adapter *padapter, u8 from_timer)
 				bHigherBusyTxTraffic = _TRUE;
 		}
 
-#ifdef CONFIG_TRAFFIC_PROTECT
+#if 1
 #define TX_ACTIVE_TH 10
 #define RX_ACTIVE_TH 20
 #define TRAFFIC_PROTECT_PERIOD_MS 4500
@@ -3550,11 +3550,11 @@ u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf)
 		rtw_chk_hi_queue_hdl(padapter);
 		break;
 #endif //CONFIG_AP_MODE
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 	case INTEl_WIDI_WK_CID:
 		intel_widi_wk_hdl(padapter, pdrvextra_cmd->type, pdrvextra_cmd->pbuf);
 		break;
-#endif //CONFIG_INTEL_WIDI
+#endif //
 	//add for CONFIG_IEEE80211W, none 11w can use it
 	case RESET_SECURITYPRIV:
 		reset_securitypriv_hdl(padapter);

@@ -747,7 +747,7 @@ u8 rtw_set_802_11_authentication_mode(_adapter* padapter, NDIS_802_11_AUTHENTICA
 	if(psecuritypriv->ndisauthtype>3)
 		psecuritypriv->dot11AuthAlgrthm=dot11AuthAlgrthm_8021X;
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	if(psecuritypriv->ndisauthtype == 6)
 		psecuritypriv->dot11AuthAlgrthm=dot11AuthAlgrthm_WAPI;
 #endif

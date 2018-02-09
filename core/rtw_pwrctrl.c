@@ -628,7 +628,7 @@ u8 PS_RDY_CHECK(_adapter * padapter)
 #endif /* CONFIG_IOCTL_CFG80211 */
 #endif /* CONFIG_P2P */
 
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
+#if 0
 	if(_TRUE == pwrpriv->bInSuspend && pwrpriv->wowlan_mode)
 		return _TRUE;
 	else if(_TRUE == pwrpriv->bInSuspend && pwrpriv->wowlan_ap_mode)
@@ -707,7 +707,7 @@ void rtw_set_fw_in_ips_mode(PADAPTER padapter, u8 enable)
 		//Enter IPS
 		DBG_871X("%s: issue H2C to FW when entering IPS\n", __func__);
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		parm[0] = 0x03;
 		parm[1] = pwrpriv->pnlo_info->fast_scan_iterations;
 		parm[2] = pwrpriv->pnlo_info->slow_scan_period;
@@ -887,7 +887,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 			pwrpriv->pwr_mode = ps_mode;
 			rtw_set_rpwm(padapter, PS_STATE_S4);
 
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN) || defined(CONFIG_P2P_WOWLAN)
+#if 0
 			if (pwrpriv->wowlan_mode == _TRUE ||
 			    pwrpriv->wowlan_ap_mode == _TRUE ||
 			    pwrpriv->wowlan_p2p_mode == _TRUE) {
@@ -926,7 +926,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 		    || ((rtw_btcoex_IsBtControlLps(padapter) == _TRUE)
 		        && (rtw_btcoex_IsLpsOn(padapter) == _TRUE))
 #endif
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 		    ||( _TRUE == pwrpriv->wowlan_p2p_mode)
 #endif //CONFIG_P2P_WOWLAN
 		   ) {
@@ -2178,10 +2178,10 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 	rtw_register_early_suspend(pwrctrlpriv);
 #endif //CONFIG_HAS_EARLYSUSPEND || CONFIG_ANDROID_POWER
 
-#ifdef CONFIG_WOWLAN
+#if 0
 	pwrctrlpriv->wowlan_from_cmd = _FALSE;
 #endif
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	pwrctrlpriv->pno_inited = _FALSE;
 	pwrctrlpriv->pnlo_info = NULL;
 	pwrctrlpriv->pscan_info = NULL;
@@ -2215,7 +2215,7 @@ void rtw_free_pwrctrl_priv(PADAPTER adapter)
 	}
 #endif
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	if (pwrctrlpriv->pnlo_info != NULL)
 		printk("****** pnlo_info memory leak********\n");
 

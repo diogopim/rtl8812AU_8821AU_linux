@@ -736,7 +736,7 @@ const struct rtw_proc_hdl adapter_proc_hdls [] = {
 	{"rx_ring", proc_get_rx_ring, NULL},
 	{"tx_ring", proc_get_tx_ring, NULL},
 #endif
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 	{"p2p_wowlan_info", proc_get_p2p_wowlan_info, NULL},
 #endif
 	{"chan_plan",proc_get_chan_plan,proc_set_chan_plan},

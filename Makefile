@@ -30,17 +30,8 @@ CONFIG_MP_INCLUDED = y
 #CONFIG_POWER_SAVING = y
 CONFIG_INTEL_WIDI = n
 CONFIG_WAPI_SUPPORT = n
-#CONFIG_TRAFFIC_PROTECT = y
-#CONFIG_LOAD_PHY_PARA_FROM_FILE = y
 #CONFIG_RTW_ADAPTIVITY_EN = disable
 #CONFIG_RTW_ADAPTIVITY_MODE = normal
-######################## Wake On Lan ##########################
-#CONFIG_WOWLAN = n
-#CONFIG_GPIO_WAKEUP = n
-#CONFIG_WAKEUP_GPIO_IDX = default
-#CONFIG_PNO_SUPPORT = n
-#CONFIG_PNO_SET_DEBUG = n
-#CONFIG_AP_WOWLAN = n
 ######### Notify SDIO Host Keep Power During Syspend ##########
 #CONFIG_RTW_SDIO_PM_KEEP_POWER = y // does not matter
 ###################### Platform Related #######################

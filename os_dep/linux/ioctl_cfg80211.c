@@ -33,7 +33,7 @@
 
 #define RTW_CH_MAX_2G_CHANNEL               14      /* Max channel in 2G band */
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 
 #ifndef WLAN_CIPHER_SUITE_SMS4
 #define WLAN_CIPHER_SUITE_SMS4          0x00147201
@@ -64,7 +64,7 @@ static const u32 rtw_cipher_suites[] = {
 	WLAN_CIPHER_SUITE_WEP104,
 	WLAN_CIPHER_SUITE_TKIP,
 	WLAN_CIPHER_SUITE_CCMP,
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	WLAN_CIPHER_SUITE_SMS4,
 #endif // CONFIG_WAPI_SUPPORT
 #ifdef CONFIG_IEEE80211W
@@ -401,7 +401,7 @@ struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_net
 		goto exit;
 	}
 
-#ifndef CONFIG_WAPI_SUPPORT
+#if 1
 	{
 		u16 wapi_len = 0;
 
@@ -1171,7 +1171,7 @@ static int rtw_cfg80211_set_encryption(struct net_device *dev, struct ieee_param
 			goto exit;
 		}
 	} else {
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 		if (strcmp(param->u.crypt.alg, "SMS4"))
 #endif
 		{
@@ -1315,7 +1315,7 @@ static int rtw_cfg80211_set_encryption(struct net_device *dev, struct ieee_param
 		}
 	}
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	if (strcmp(param->u.crypt.alg, "SMS4") == 0) {
 		PRT_WAPI_T			pWapiInfo = &padapter->wapiInfo;
 		PRT_WAPI_STA_INFO	pWapiSta;
@@ -1442,7 +1442,7 @@ static int cfg80211_rtw_add_key(struct wiphy *wiphy, struct net_device *ndev,
 		alg_name = "BIP";
 		break;
 #endif //CONFIG_IEEE80211W
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	case WLAN_CIPHER_SUITE_SMS4:
 		alg_name= "SMS4";
 		if(pairwise == NL80211_KEYTYPE_PAIRWISE) {
@@ -2404,7 +2404,7 @@ static int rtw_cfg80211_set_wpa_version(struct security_priv *psecuritypriv, u32
 		}
 	*/
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	if (wpa_version & NL80211_WAPI_VERSION_1) {
 		psecuritypriv->ndisauthtype = Ndis802_11AuthModeWAPI;
 	}
@@ -2433,7 +2433,7 @@ static int rtw_cfg80211_set_auth_type(struct security_priv *psecuritypriv,
 		if(psecuritypriv->ndisauthtype>Ndis802_11AuthModeWPA)
 			psecuritypriv->dot11AuthAlgrthm = dot11AuthAlgrthm_8021X;
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 		if(psecuritypriv->ndisauthtype == Ndis802_11AuthModeWAPI)
 			psecuritypriv->dot11AuthAlgrthm = dot11AuthAlgrthm_WAPI;
 #endif
@@ -2476,7 +2476,7 @@ static int rtw_cfg80211_set_cipher(struct security_priv *psecuritypriv, u32 ciph
 	case IW_AUTH_CIPHER_NONE:
 		*profile_cipher = _NO_PRIVACY_;
 		ndisencryptstatus = Ndis802_11EncryptionDisabled;
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 		if(psecuritypriv->dot11PrivacyAlgrthm ==_SMS4_ ) {
 			*profile_cipher = _SMS4_;
 		}
@@ -2498,7 +2498,7 @@ static int rtw_cfg80211_set_cipher(struct security_priv *psecuritypriv, u32 ciph
 		*profile_cipher = _AES_;
 		ndisencryptstatus = Ndis802_11Encryption3Enabled;
 		break;
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	case WLAN_CIPHER_SUITE_SMS4:
 		*profile_cipher = _SMS4_;
 		ndisencryptstatus = Ndis802_11_EncrypteionWAPI;
@@ -2529,7 +2529,7 @@ static int rtw_cfg80211_set_key_mgt(struct security_priv *psecuritypriv, u32 key
 	else if (key_mgt == WLAN_AKM_SUITE_PSK) {
 		psecuritypriv->dot11AuthAlgrthm = dot11AuthAlgrthm_8021X;
 	}
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	else if(key_mgt ==WLAN_AKM_SUITE_WAPI_PSK) {
 		psecuritypriv->dot11AuthAlgrthm = dot11AuthAlgrthm_WAPI;
 	} else if(key_mgt ==WLAN_AKM_SUITE_WAPI_CERT) {
@@ -2967,7 +2967,7 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 	psecuritypriv->dot11AuthAlgrthm = dot11AuthAlgrthm_Open; //open system
 	psecuritypriv->ndisauthtype = Ndis802_11AuthModeOpen;
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	padapter->wapiInfo.bWapiEnable = false;
 #endif
 
@@ -2975,7 +2975,7 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 	if (ret < 0)
 		goto exit;
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	if(sme->crypto.wpa_versions & NL80211_WAPI_VERSION_1) {
 		padapter->wapiInfo.bWapiEnable = true;
 		padapter->wapiInfo.extra_prefix_len = WAPI_EXT_LEN;
@@ -2985,7 +2985,7 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 
 	ret = rtw_cfg80211_set_auth_type(psecuritypriv, sme->auth_type);
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	if(psecuritypriv->dot11AuthAlgrthm == dot11AuthAlgrthm_WAPI)
 		padapter->mlmeextpriv.mlmext_info.auth_algo = psecuritypriv->dot11AuthAlgrthm;
 #endif
@@ -3073,7 +3073,7 @@ static int cfg80211_rtw_connect(struct wiphy *wiphy, struct net_device *ndev,
 			goto exit;
 	}
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	if(sme->crypto.akm_suites[0] ==WLAN_AKM_SUITE_WAPI_PSK) {
 		padapter->wapiInfo.bWapiPSK = true;
 	} else if(sme->crypto.akm_suites[0] ==WLAN_AKM_SUITE_WAPI_CERT) {
@@ -5366,7 +5366,7 @@ static int cfg80211_rtw_tdls_oper(struct wiphy *wiphy,
 }
 #endif /**/
 
-#if defined(CONFIG_PNO_SUPPORT) && (LINUX_VERSION_CODE >= KERNEL_VERSION(3,0,0))
+#if 0
 static int cfg80211_rtw_sched_scan_start(struct wiphy *wiphy,
         struct net_device *dev,
         struct cfg80211_sched_scan_request *request)
@@ -5928,7 +5928,7 @@ static void rtw_cfg80211_preinit_wiphy(_adapter *padapter, struct wiphy *wiphy)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(4, 12, 0)
 	wiphy->flags |= WIPHY_FLAG_SUPPORTS_SCHED_SCAN;
 #endif
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	wiphy->max_sched_scan_ssids = MAX_PNO_LIST_COUNT;
 #endif
 #endif
@@ -6026,7 +6026,7 @@ static struct cfg80211_ops rtw_cfg80211_ops = {
 	.tdls_oper = cfg80211_rtw_tdls_oper,
 #endif /**/
 
-#if defined(CONFIG_PNO_SUPPORT) && (LINUX_VERSION_CODE >= KERNEL_VERSION(3,0,0))
+#if 0
 	.sched_scan_start = cfg80211_rtw_sched_scan_start,
 	.sched_scan_stop = cfg80211_rtw_sched_scan_stop,
 #endif /* CONFIG_PNO_SUPPORT */

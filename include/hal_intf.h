@@ -111,15 +111,15 @@ typedef enum _HW_VARIABLES {
 	HW_VAR_APFM_ON_MAC, //Auto FSM to Turn On, include clock, isolation, power control for MAC only
 	// The valid upper nav range for the HW updating, if the true value is larger than the upper range, the HW won't update it.
 	// Unit in microsecond. 0 means disable this function.
-#ifdef CONFIG_WOWLAN
+#if 0
 	HW_VAR_WOWLAN,
 	HW_VAR_WAKEUP_REASON,
 	HW_VAR_RPWM_TOG,
 #endif
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 	HW_VAR_AP_WOWLAN,
 #endif
-#ifdef CONFIG_GPIO_WAKEUP
+#if 0
 	HW_SET_GPIO_WL_CTRL,
 #endif
 	HW_VAR_SYS_CLKR,
@@ -326,7 +326,7 @@ struct hal_ops {
 	s32 (*fill_h2c_cmd)(PADAPTER, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer);
 	void (*fill_fake_txdesc)(PADAPTER, u8 *pDesc, u32 BufferLen,
 	                         u8 IsPsPoll, u8 IsBTQosNull, u8 bDataFrame);
-#ifdef CONFIG_WOWLAN
+#if 0
 	void (*hal_set_wowlan_fw)(_adapter *adapter, u8 sleep);
 #endif //CONFIG_WOWLAN
 	u8 (*hal_get_tx_buff_rsvd_page_num)(_adapter *adapter, bool wowlan);

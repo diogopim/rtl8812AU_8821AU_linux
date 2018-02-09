@@ -173,7 +173,7 @@ struct P2P_PS_CTWPeriod_t {
 	u8 CTWPeriod;	//TU
 };
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 
 struct P2P_WoWlan_Offload_t {
 	u8 Disconnect_Wkup_Drv:1;

@@ -650,7 +650,7 @@ union recv_frame * decryptor(_adapter *padapter,union recv_frame *precv_frame)
 			DBG_COUNTER(padapter->rx_logs.core_rx_post_decrypt_aes);
 			res = rtw_aes_decrypt(padapter, (u8 * )precv_frame);
 			break;
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 		case _SMS4_:
 			DBG_COUNTER(padapter->rx_logs.core_rx_post_decrypt_wapi);
 			rtw_sms4_decrypt(padapter, (u8 * )precv_frame);
@@ -2081,7 +2081,7 @@ sint validate_recv_frame(_adapter *adapter, union recv_frame *precv_frame)
 #if 0
 	struct tdls_info *ptdlsinfo = &adapter->tdlsinfo;
 #endif //
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	PRT_WAPI_T	pWapiInfo = &adapter->wapiInfo;
 	struct recv_frame_hdr *phdr = &precv_frame->u.hdr;
 	u8 wai_pkt = 0;
@@ -2140,7 +2140,7 @@ sint validate_recv_frame(_adapter *adapter, union recv_frame *precv_frame)
 	pattrib->mdata = GetMData(ptr);
 	pattrib->privacy = GetPrivacy(ptr);
 	pattrib->order = GetOrder(ptr);
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	sc = (pattrib->seq_num<<4) | pattrib->frag_num;
 #endif
 
@@ -2185,7 +2185,7 @@ sint validate_recv_frame(_adapter *adapter, union recv_frame *precv_frame)
 		break;
 	case WIFI_DATA_TYPE: //data
 		DBG_COUNTER(adapter->rx_logs.core_rx_pre_data);
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 		if(pattrib->qos)
 			external_len = 2;
 		else
@@ -4117,7 +4117,7 @@ int recv_func_posthandle(_adapter *padapter, union recv_frame *prframe)
 
 	count_rx_stats(padapter, prframe, NULL);
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	rtw_wapi_update_info(padapter, prframe);
 #endif
 

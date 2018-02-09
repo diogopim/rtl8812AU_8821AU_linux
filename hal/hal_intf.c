@@ -299,7 +299,7 @@ u8 rtw_hal_check_ips_status(_adapter *padapter)
 	return val;
 }
 
-#if defined(CONFIG_WOWLAN) || defined(CONFIG_AP_WOWLAN)
+#if 0
 void rtw_hal_clear_interrupt(_adapter *padapter)
 {
 	if (padapter->HalFunc.clear_interrupt)

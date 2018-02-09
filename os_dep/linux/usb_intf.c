@@ -1053,7 +1053,7 @@ int rtw_resume_process(_adapter *padapter)
 	}
 #endif //#if 0 &CONFIG_AUTOSUSPEND&
 
-#if defined (CONFIG_WOWLAN) || defined (CONFIG_AP_WOWLAN)
+#if 0
 	/*
 	 * Due to usb wow suspend flow will cancel read/write port via intf_stop and
 	 * bReadPortCancel and bWritePortCancel are set _TRUE in intf_stop.
@@ -1441,7 +1441,7 @@ exit:
 
 static void rtw_usb_if1_deinit(_adapter *if1)
 {
-#if defined(CONFIG_WOWLAN)
+#if 0
 	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(if1);
 #endif
 	struct net_device *pnetdev = if1->pnetdev;
@@ -1460,7 +1460,7 @@ static void rtw_usb_if1_deinit(_adapter *if1)
 
 	rtw_cancel_all_timer(if1);
 
-#ifdef CONFIG_WOWLAN
+#if 0
 	pwrctl->wowlan_mode=_FALSE;
 #endif //CONFIG_WOWLAN
 

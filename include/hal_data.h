@@ -676,7 +676,7 @@ typedef struct hal_com_data {
 
 #endif //defined(CONFIG_RTL8192C) ||defined(CONFIG_RTL8192D)
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 	char	para_file_buf[MAX_PARA_FILE_BUF_LEN];
 	char *mac_reg;
 	u32	mac_reg_len;

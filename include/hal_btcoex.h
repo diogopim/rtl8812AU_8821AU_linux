@@ -83,7 +83,7 @@ void hal_btcoex_SetHciVersion(PADAPTER, u16 hciVersion);
 void hal_btcoex_SendScanNotify(PADAPTER, u8 type);
 void hal_btcoex_StackUpdateProfileInfo(void);
 void hal_btcoex_SetAntIsolationType(PADAPTER padapter, u8 anttype);
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 int hal_btcoex_AntIsolationConfig_ParaFile(IN PADAPTER	Adapter,IN char* pFileName);
 int hal_btcoex_ParseAntIsolationConfigFile(PADAPTER Adapter, char*	buffer);
 #endif // CONFIG_LOAD_PHY_PARA_FROM_FILE

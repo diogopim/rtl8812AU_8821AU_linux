@@ -405,7 +405,7 @@ int rtw_hal_register_gpio_interrupt(_adapter* adapter, int gpio_num, void(*callb
 int rtw_hal_disable_gpio_interrupt(_adapter* adapter, int gpio_num);
 #endif
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 extern char *rtw_phy_file_path;
 extern char rtw_file_path[PATH_LENGTH_MAX];
 #define GetLineFromBuffer(buffer)   strsep(&buffer, "\n")

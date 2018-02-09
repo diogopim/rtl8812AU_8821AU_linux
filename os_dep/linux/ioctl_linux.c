@@ -698,7 +698,7 @@ static inline char * iwe_stream_wapi_process(_adapter *padapter,
         struct iw_request_info* info, struct wlan_network *pnetwork,
         char *start, char *stop,struct iw_event *iwe)
 {
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	char *p;
 
 	if (pnetwork->network.Reserved[0] != 2) { // Probe Request
@@ -736,7 +736,7 @@ static inline char * iwe_stream_wapi_process(_adapter *padapter,
 			start = iwe_stream_add_point(info, start, stop, iwe, wapi_ie);
 		}
 	}
-#endif//#ifdef CONFIG_WAPI_SUPPORT
+#endif//#if 0
 	return start;
 }
 
@@ -1116,7 +1116,7 @@ static char *translate_scan(_adapter *padapter,
 		}
 	}
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	if (pnetwork->network.Reserved[0] != 2) { // Probe Request
 		sint out_len_wapi=0;
 		/* here use static for stack size */
@@ -1319,7 +1319,7 @@ static int wpa_set_encryption(struct net_device *dev, struct ieee_param *param, 
 			goto exit;
 		}
 	} else {
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 		if (strcmp(param->u.crypt.alg, "SMS4"))
 #endif
 		{
@@ -1492,7 +1492,7 @@ static int wpa_set_encryption(struct net_device *dev, struct ieee_param *param, 
 		}
 	}
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	if (strcmp(param->u.crypt.alg, "SMS4") == 0) {
 		PRT_WAPI_T			pWapiInfo = &padapter->wapiInfo;
 		PRT_WAPI_STA_INFO	pWapiSta;
@@ -3502,7 +3502,7 @@ static int rtw_wx_set_auth(struct net_device *dev,
 	switch (param->flags & IW_AUTH_INDEX) {
 
 	case IW_AUTH_WPA_VERSION:
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 #ifndef CONFIG_IOCTL_CFG80211
 		padapter->wapiInfo.bWapiEnable = false;
 		if(value == IW_AUTH_WAPI_VERSION_1) {
@@ -3524,7 +3524,7 @@ static int rtw_wx_set_auth(struct net_device *dev,
 
 		break;
 	case IW_AUTH_KEY_MGMT:
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 #ifndef CONFIG_IOCTL_CFG80211
 		DBG_871X("rtw_wx_set_auth: IW_AUTH_KEY_MGMT case \n");
 		if(value == IW_AUTH_KEY_MGMT_WAPI_PSK)
@@ -3617,7 +3617,7 @@ static int rtw_wx_set_auth(struct net_device *dev,
 		//ieee->privacy_invoked = param->value;
 		break;
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 #ifndef CONFIG_IOCTL_CFG80211
 	case IW_AUTH_WAPI_ENABLED:
 		break;
@@ -3675,7 +3675,7 @@ static int rtw_wx_set_enc_ext(struct net_device *dev,
 		alg_name = "BIP";
 		break;
 #endif //CONFIG_IEEE80211W
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 #ifndef CONFIG_IOCTL_CFG80211
 	case IW_ENCODE_ALG_SM4:
 		alg_name= "SMS4";
@@ -3710,7 +3710,7 @@ static int rtw_wx_set_enc_ext(struct net_device *dev,
 	param->u.crypt.idx = (pencoding->flags&0x00FF) -1 ;
 
 	if (pext->ext_flags & IW_ENCODE_EXT_RX_SEQ_VALID) {
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 #ifndef CONFIG_IOCTL_CFG80211
 		if(pext->alg == IW_ENCODE_ALG_SM4)
 			_rtw_memcpy(param->u.crypt.seq, pext->rx_seq, 16);
@@ -4514,9 +4514,9 @@ static int rtw_wps_start(struct net_device *dev,
 		rtw_led_control(padapter, LED_CTL_STOP_WPS_FAIL);
 	}
 
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 	process_intel_widi_wps_status(padapter, u32wps_start);
-#endif //CONFIG_INTEL_WIDI
+#endif //
 
 exit:
 
@@ -5432,12 +5432,12 @@ static int rtw_p2p_connect(struct net_device *dev,
 		return ret;
 	}
 
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY) == _TRUE) {
 		DBG_871X( "[%s] WiFi is under survey!\n", __FUNCTION__ );
 		return ret;
 	}
-#endif //CONFIG_INTEL_WIDI
+#endif //
 
 	if ( pwdinfo->ui_got_wps_info == P2P_NO_WPSINFO ) {
 		return -1;
@@ -5514,7 +5514,7 @@ static int rtw_p2p_connect(struct net_device *dev,
 
 	} else {
 		DBG_871X( "[%s] Not Found in Scanning Queue~\n", __FUNCTION__ );
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 		_cancel_timer_ex( &pwdinfo->restore_p2p_state_timer );
 		rtw_p2p_set_state(pwdinfo, P2P_STATE_FIND_PHASE_SEARCH);
 		rtw_p2p_findphase_ex_set(pwdinfo, P2P_FINDPHASE_EX_NONE);
@@ -5526,7 +5526,7 @@ static int rtw_p2p_connect(struct net_device *dev,
 		_enter_critical_bh(&pmlmepriv->lock, &irqL);
 		rtw_sitesurvey_cmd(padapter, NULL, 0, NULL, 0);
 		_exit_critical_bh(&pmlmepriv->lock, &irqL);
-#endif //CONFIG_INTEL_WIDI
+#endif //
 		ret = -1;
 	}
 //exit:
@@ -6132,12 +6132,12 @@ static int rtw_p2p_prov_disc(struct net_device *dev,
 		DBG_871X( "[%s] WiFi Direct is disable!\n", __FUNCTION__ );
 		return ret;
 	} else {
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 		if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY) == _TRUE) {
 			DBG_871X( "[%s] WiFi is under survey!\n", __FUNCTION__ );
 			return ret;
 		}
-#endif //CONFIG_INTEL_WIDI
+#endif //
 
 		//	Reset the content of struct tx_provdisc_req_info excluded the wps_config_method_request.
 		_rtw_memset( pwdinfo->tx_prov_disc_info.peerDevAddr, 0x00, ETH_ALEN );
@@ -6209,7 +6209,7 @@ static int rtw_p2p_prov_disc(struct net_device *dev,
 
 		}
 
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 		// Some Intel WiDi source may not provide P2P IE,
 		// so we could only compare mac addr by 802.11 Source Address
 		if( pmlmepriv->widi_state == INTEL_WIDI_STATE_WFD_CONNECTION
@@ -6219,7 +6219,7 @@ static int rtw_p2p_prov_disc(struct net_device *dev,
 				break;
 			}
 		}
-#endif //CONFIG_INTEL_WIDI
+#endif //
 
 		plist = get_next(plist);
 
@@ -6309,7 +6309,7 @@ static int rtw_p2p_prov_disc(struct net_device *dev,
 
 	} else {
 		DBG_871X( "[%s] NOT Found in the Scanning Queue!\n", __FUNCTION__ );
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 		_cancel_timer_ex( &pwdinfo->restore_p2p_state_timer );
 		rtw_p2p_set_state(pwdinfo, P2P_STATE_FIND_PHASE_SEARCH);
 		rtw_p2p_findphase_ex_set(pwdinfo, P2P_FINDPHASE_EX_NONE);
@@ -6317,7 +6317,7 @@ static int rtw_p2p_prov_disc(struct net_device *dev,
 		_enter_critical_bh(&pmlmepriv->lock, &irqL);
 		rtw_sitesurvey_cmd(padapter, NULL, 0, NULL, 0);
 		_exit_critical_bh(&pmlmepriv->lock, &irqL);
-#endif //CONFIG_INTEL_WIDI
+#endif //
 	}
 exit:
 
@@ -8802,7 +8802,7 @@ FREE_EXT:
 	return ret;
 
 }
-#ifdef CONFIG_WOWLAN
+#if 0
 static int rtw_wowlan_ctrl(struct net_device *dev,
                            struct iw_request_info *info,
                            union iwreq_data *wrqu, char *extra)
@@ -8830,7 +8830,7 @@ static int rtw_wowlan_ctrl(struct net_device *dev,
 
 	if (!check_fwstate(pmlmepriv, _FW_LINKED) &&
 	    check_fwstate(pmlmepriv, WIFI_STATION_STATE)) {
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		pwrctrlpriv->wowlan_pno_enable = _TRUE;
 #else
 		DBG_871X("[%s] WARNING: Please Connect With AP First!!\n", __func__);
@@ -8852,7 +8852,7 @@ static int rtw_wowlan_ctrl(struct net_device *dev,
 
 		pwrctrlpriv->wowlan_from_cmd = _FALSE;
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		pwrctrlpriv->wowlan_pno_enable = _FALSE;
 #endif //CONFIG_PNO_SUPPORT
 
@@ -8871,7 +8871,7 @@ _rtw_wowlan_ctrl_exit_free:
 }
 #endif //CONFIG_WOWLAN
 
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 static int rtw_ap_wowlan_ctrl(struct net_device *dev,
                               struct iw_request_info *info,
                               union iwreq_data *wrqu, char *extra)
@@ -12066,13 +12066,13 @@ static int rtw_mp_set(struct net_device *dev,
 		DBG_871X("set case MP_DISABLE_BT_COEXIST \n");
 		rtw_mp_disable_bt_coexist(dev, info, wdata, extra);
 		break;
-#ifdef CONFIG_WOWLAN
+#if 0
 	case MP_WOW_ENABLE:
 		DBG_871X("set case MP_WOW_ENABLE: %s \n", extra);
 		rtw_wowlan_ctrl(dev, info, wdata, extra);
 		break;
 #endif
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 	case MP_AP_WOW_ENABLE:
 		DBG_871X("set case MP_AP_WOW_ENABLE: %s \n", extra);
 		rtw_ap_wowlan_ctrl(dev, info, wdata, extra);
@@ -13100,7 +13100,7 @@ static int rtw_tdls_get(struct net_device *dev,
 
 
 
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 static int rtw_widi_set(struct net_device *dev,
                         struct iw_request_info *info,
                         union iwreq_data *wrqu, char *extra)
@@ -13134,7 +13134,7 @@ static int rtw_widi_set_probe_request(struct net_device *dev,
 	}
 	return ret;
 }
-#endif // CONFIG_INTEL_WIDI
+#endif //
 
 #ifdef CONFIG_MAC_LOOPBACK_DRIVER
 
@@ -13993,7 +13993,7 @@ static const struct iw_priv_args rtw_private_args[] = {
 		IW_PRIV_TYPE_CHAR | 40, IW_PRIV_TYPE_CHAR | 0x7FF, "test"
 	},
 
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 	{
 		SIOCIWFIRSTPRIV + 0x1E,
 		IW_PRIV_TYPE_CHAR | 1024, 0, "widi_set"
@@ -14002,7 +14002,7 @@ static const struct iw_priv_args rtw_private_args[] = {
 		SIOCIWFIRSTPRIV + 0x1F,
 		IW_PRIV_TYPE_CHAR | 128, 0, "widi_prob_req"
 	},
-#endif // CONFIG_INTEL_WIDI
+#endif //
 
 #ifdef CONFIG_MP_INCLUDED
 	{ SIOCIWFIRSTPRIV + 0x0E, IW_PRIV_TYPE_CHAR | 1024, 0 , ""},  //set
@@ -14047,10 +14047,10 @@ static const struct iw_priv_args rtw_private_args[] = {
 #endif
 	{ CTA_TEST, IW_PRIV_TYPE_CHAR | 1024, 0, "cta_test"},
 #endif
-#ifdef CONFIG_WOWLAN
+#if 0
 	{ MP_WOW_ENABLE , IW_PRIV_TYPE_CHAR | 1024, 0, "wow_mode" }, //set
 #endif
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 	{ MP_AP_WOW_ENABLE , IW_PRIV_TYPE_CHAR | 1024, 0, "ap_wow_mode" }, //set
 #endif
 };
@@ -14107,10 +14107,10 @@ static iw_handler rtw_private_handler[] = {
 #endif
 	NULL,							// 0x1C is reserved for hostapd
 	rtw_test,						// 0x1D
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 	rtw_widi_set,					//0x1E
 	rtw_widi_set_probe_request,		//0x1F
-#endif // CONFIG_INTEL_WIDI
+#endif //
 };
 
 

@@ -402,7 +402,7 @@ MODULE_PARM_DESC(rtw_tx_pwr_lmt_enable,"0:Disable, 1:Enable, 2: Depend on efuse"
 module_param(rtw_tx_pwr_by_rate, int, 0644);
 MODULE_PARM_DESC(rtw_tx_pwr_by_rate,"0:Disable, 1:Enable, 2: Depend on efuse");
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 char *rtw_phy_file_path = REALTEK_CONFIG_PATH;
 module_param(rtw_phy_file_path, charp, 0644);
 MODULE_PARM_DESC(rtw_phy_file_path, "The path of phy parameter");
@@ -554,9 +554,9 @@ uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)
 
 #ifdef CONFIG_LAYER2_ROAMING
 	registry_par->max_roaming_times = (u8)rtw_max_roaming_times;
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 	registry_par->max_roaming_times = (u8)rtw_max_roaming_times + 2;
-#endif // CONFIG_INTEL_WIDI
+#endif //
 #endif
 
 #ifdef CONFIG_IOL
@@ -600,7 +600,7 @@ uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)
 	registry_par->AmplifierType_2G = (u8)rtw_amplifier_type_2g;
 	registry_par->AmplifierType_5G = (u8)rtw_amplifier_type_5g;
 
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 	registry_par->load_phy_file = (u8)rtw_load_phy_file;
 	registry_par->RegDecryptCustomFile = (u8)rtw_decrypt_phy_file;
 #endif
@@ -1332,15 +1332,15 @@ u8 rtw_init_drv_sw(_adapter *padapter)
 	rtw_hal_sreset_init(padapter);
 #endif
 
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 	if(rtw_init_intel_widi(padapter) == _FAIL) {
 		DBG_871X("Can't rtw_init_intel_widi\n");
 		ret8=_FAIL;
 		goto exit;
 	}
-#endif //CONFIG_INTEL_WIDI
+#endif //
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	padapter->WapiSupport = true; //set true temp, will revise according to Efuse or Registry value later.
 	rtw_wapi_init(padapter);
 #endif
@@ -1359,7 +1359,7 @@ exit:
 
 }
 
-#ifdef CONFIG_WOWLAN
+#if 0
 void rtw_cancel_dynamic_chk_timer(_adapter *padapter)
 {
 	_cancel_timer_ex(&padapter->mlmepriv.dynamic_chk_timer);
@@ -1418,7 +1418,7 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("==>rtw_free_drv_sw"));
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	rtw_wapi_free(padapter);
 #endif
 
@@ -1446,9 +1446,9 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 	_rtw_spinlock_free(&padapter->br_ext_lock);
 #endif	// CONFIG_BR_EXT
 
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 	rtw_free_intel_widi(padapter);
-#endif //CONFIG_INTEL_WIDI
+#endif //
 
 	free_mlme_ext_priv(&padapter->mlmeextpriv);
 
@@ -2638,7 +2638,7 @@ static int netdev_close(struct net_device *pnetdev)
 	//padapter->rtw_wdev->iftype = NL80211_IFTYPE_MONITOR; //set this at the end
 #endif //CONFIG_IOCTL_CFG80211
 
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 	rtw_wapi_disable_tx(padapter);
 #endif
 #if 0
@@ -3040,7 +3040,7 @@ void rtw_dev_unload(PADAPTER padapter)
 #if 0
 			rtw_btcoex_IpsNotify(padapter, pwrctl->ips_mode_req);
 #endif
-#ifdef CONFIG_WOWLAN
+#if 0
 			if (pwrctl->bSupportRemoteWakeup == _TRUE &&
 			    pwrctl->wowlan_mode ==_TRUE) {
 				DBG_871X_LEVEL(_drv_always_, "%s bSupportRemoteWakeup==_TRUE  do not run rtw_hal_deinit()\n",__FUNCTION__);
@@ -3123,7 +3123,7 @@ int rtw_suspend_free_assoc_resource(_adapter *padapter)
 	return _SUCCESS;
 }
 
-#ifdef CONFIG_WOWLAN
+#if 0
 int rtw_suspend_wow(_adapter *padapter)
 {
 	u8 ch, bw, offset;
@@ -3144,7 +3144,7 @@ int rtw_suspend_wow(_adapter *padapter)
 
 	DBG_871X("wowlan_mode: %d\n", pwrpriv->wowlan_mode);
 	DBG_871X("wowlan_pno_enable: %d\n", pwrpriv->wowlan_pno_enable);
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 	DBG_871X("wowlan_p2p_enable: %d\n", pwrpriv->wowlan_p2p_enable);
 #endif
 
@@ -3259,9 +3259,9 @@ int rtw_suspend_wow(_adapter *padapter)
 	DBG_871X("<== "FUNC_ADPT_FMT" exit....\n", FUNC_ADPT_ARG(padapter));
 	return ret;
 }
-#endif //#ifdef CONFIG_WOWLAN
+#endif //#if 0
 
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 int rtw_suspend_ap_wow(_adapter *padapter)
 {
 	u8 ch, bw, offset;
@@ -3377,7 +3377,7 @@ int rtw_suspend_ap_wow(_adapter *padapter)
 	DBG_871X("<== "FUNC_ADPT_FMT" exit....\n", FUNC_ADPT_ARG(padapter));
 	return ret;
 }
-#endif //#ifdef CONFIG_AP_WOWLAN
+#endif //#if 0
 
 
 int rtw_suspend_normal(_adapter *padapter)
@@ -3504,14 +3504,14 @@ int rtw_suspend_common(_adapter *padapter)
 	    && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	   ) {
-#ifdef CONFIG_WOWLAN
+#if 0
 		if (check_fwstate(pmlmepriv, _FW_LINKED)) {
 			pwrpriv->wowlan_mode = _TRUE;
 		} else if (pwrpriv->wowlan_pno_enable == _TRUE) {
 			pwrpriv->wowlan_mode |= pwrpriv->wowlan_pno_enable;
 		}
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 		if(!rtw_p2p_chk_state(&padapter->wdinfo, P2P_STATE_NONE) || P2P_ROLE_DISABLE != padapter->wdinfo.role) {
 			pwrpriv->wowlan_p2p_mode = _TRUE;
 		}
@@ -3532,7 +3532,7 @@ int rtw_suspend_common(_adapter *padapter)
 	           && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	          ) {
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 		rtw_suspend_ap_wow(padapter);
 #else
 		rtw_suspend_normal(padapter);
@@ -3540,7 +3540,7 @@ int rtw_suspend_common(_adapter *padapter)
 #ifdef CONFIG_CONCURRENT_MODE
 	} else if (check_fwstate(pmlmepriv,WIFI_STATION_STATE) == _TRUE
 	           && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _TRUE) {
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 		rtw_suspend_ap_wow(padapter);
 #else
 		rtw_suspend_normal(padapter);
@@ -3561,7 +3561,7 @@ exit:
 	return ret;
 }
 
-#ifdef CONFIG_WOWLAN
+#if 0
 int rtw_resume_process_wow(_adapter *padapter)
 {
 	//struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -3597,7 +3597,7 @@ int rtw_resume_process_wow(_adapter *padapter)
 		goto exit;
 	}
 
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 	pwrpriv->pno_in_resume = _TRUE;
 #ifdef CONFIG_FWLPS_IN_IPS
 	if(pwrpriv->wowlan_pno_enable)
@@ -3765,9 +3765,9 @@ exit:
 	_func_exit_;
 	return ret;
 }
-#endif //#ifdef CONFIG_WOWLAN
+#endif //#if 0
 
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 int rtw_resume_process_ap_wow(_adapter *padapter)
 {
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
@@ -4048,7 +4048,7 @@ int rtw_resume_common(_adapter *padapter)
 	    && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	   ) {
-#ifdef CONFIG_WOWLAN
+#if 0
 		if (pwrpriv->wowlan_mode == _TRUE)
 			rtw_resume_process_wow(padapter);
 		else
@@ -4062,7 +4062,7 @@ int rtw_resume_common(_adapter *padapter)
 	           && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	          ) {
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 		rtw_resume_process_ap_wow(padapter);
 #else
 		rtw_resume_process_normal(padapter);
@@ -4070,7 +4070,7 @@ int rtw_resume_common(_adapter *padapter)
 #ifdef CONFIG_CONCURRENT_MODE
 	} else if (check_fwstate(pmlmepriv,WIFI_STATION_STATE) == _TRUE
 	           && check_buddy_fwstate(padapter, WIFI_AP_STATE) == _TRUE) {
-#ifdef CONFIG_AP_WOWLAN
+#if 0
 		rtw_resume_process_ap_wow(padapter);
 #else
 		rtw_resume_process_normal(padapter);
@@ -4086,7 +4086,7 @@ int rtw_resume_common(_adapter *padapter)
 
 	if (pwrpriv) {
 		pwrpriv->bInSuspend = _FALSE;
-#ifdef CONFIG_PNO_SUPPORT
+#if 0
 		pwrpriv->pno_in_resume = _FALSE;
 #endif
 	}

@@ -144,7 +144,7 @@ BOOLEAN HalDetectPwrDownMode8812(PADAPTER Adapter)
 	return pHalData->pwrdown;
 }	// HalDetectPwrDownMode
 
-#ifdef CONFIG_WOWLAN
+#if 0
 void Hal_DetectWoWMode(PADAPTER pAdapter)
 {
 	adapter_to_pwrctl(pAdapter)->bSupportRemoteWakeup = _TRUE;
@@ -562,7 +562,7 @@ FirmwareDownload8812(
 #endif //CONFIG_FILE_FWIMG
 		break;
 	case FW_SOURCE_HEADER_FILE:
-#ifdef CONFIG_WOWLAN
+#if 0
 		if (bUsedWoWLANFw) {
 			ODM_ConfigFWWithHeaderFile(&pHalData->odmpriv, CONFIG_FW_WoWLAN, (u8 *)&(pFirmware->szFwBuffer), &(pFirmware->ulFwLength));
 			DBG_871X("%s fw:%s, size: %d\n", __FUNCTION__, "WoWLAN", pFirmware->ulFwLength);
@@ -649,7 +649,7 @@ exit:
 	if (pFirmware)
 		rtw_mfree((u8*)pFirmware, sizeof(RT_FIRMWARE_8812));
 
-#ifdef CONFIG_WOWLAN
+#if 0
 	if (adapter_to_pwrctl(Adapter)->wowlan_mode)
 		InitializeFirmwareVars8812(Adapter);
 	else
@@ -1149,7 +1149,7 @@ s32 FirmwareDownloadBT(PADAPTER padapter, PRT_MP_FIRMWARE pFirmware)
 }
 #endif
 
-#ifdef CONFIG_WOWLAN
+#if 0
 //===========================================
 //
 // Description: Prepare some information to Fw for WoWLAN.
@@ -1553,7 +1553,7 @@ Hal_EfuseParseBTCoexistInfo8812A(
 
 #if 0
 	if(_TRUE == pHalData->EEPROMBluetoothCoexist && IS_HARDWARE_TYPE_8812(Adapter)) {
-#ifdef CONFIG_LOAD_PHY_PARA_FROM_FILE
+#if 1
 		if ( !hal_btcoex_AntIsolationConfig_ParaFile (Adapter , RTL8812_WIFI_ANT_ISOLATION))
 #endif
 		{
@@ -5870,7 +5870,7 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 		rtw_write32(padapter, reg_macid_sleep, val32);
 	}
 	break;
-#ifdef CONFIG_GPIO_WAKEUP
+#if 0
 	case HW_SET_GPIO_WL_CTRL: {
 		u8 enable = *pval;
 		u8 value = rtw_read8(padapter, 0x4e);
@@ -6380,7 +6380,7 @@ void rtl8812_set_hal_ops(struct hal_ops *pHalFunc)
 
 	pHalFunc->fill_h2c_cmd = &FillH2CCmd_8812;
 	pHalFunc->fill_fake_txdesc = &rtl8812a_fill_fake_txdesc;
-#ifdef CONFIG_WOWLAN
+#if 0
 	pHalFunc->hal_set_wowlan_fw = &SetFwRelatedForWoWLAN8812;
 #endif
 	pHalFunc->hal_get_tx_buff_rsvd_page_num = &GetTxBufferRsvdPageNum8812;

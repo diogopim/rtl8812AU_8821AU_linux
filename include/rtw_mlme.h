@@ -262,7 +262,7 @@ struct cfg80211_wifidirect_info {
 };
 #endif //CONFIG_IOCTL_CFG80211
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 
 enum P2P_WOWLAN_RECV_FRAME_TYPE {
 	P2P_WOWLAN_RECV_NEGO_REQ = 0,
@@ -308,7 +308,7 @@ struct wifidirect_info {
 	struct wifi_display_info		*wfd_info;
 #endif
 
-#ifdef CONFIG_P2P_WOWLAN
+#if 0
 	struct p2p_wowlan_info		p2p_wow_info;
 #endif //CONFIG_P2P_WOWLAN
 
@@ -657,7 +657,7 @@ struct mlme_priv {
 	_workitem	Linkdown_workitem;
 #endif
 
-#ifdef CONFIG_INTEL_WIDI
+#if 0
 	int	widi_state;
 	int	listen_state;
 	_timer	listen_timer;
@@ -682,7 +682,7 @@ struct mlme_priv {
 	u16	p2p_sdt_scid[MAX_NUM_P2P_SDT];
 	u8	p2p_reject_disable;	//When starting NL80211 wpa_supplicant/hostapd, it will call netdev_close
 	//such that it will cause p2p disabled. Use this flag to reject.
-#endif // CONFIG_INTEL_WIDI
+#endif //
 
 #ifdef CONFIG_CONCURRENT_MODE
 	u8	scanning_via_buddy_intf;

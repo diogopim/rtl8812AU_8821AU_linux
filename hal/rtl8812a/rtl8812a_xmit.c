@@ -363,7 +363,7 @@ void rtl8812a_fill_txdesc_sectype(struct pkt_attrib *pattrib, u8 *ptxdesc)
 		case _TKIP_WTMIC_:
 			SET_TX_DESC_SEC_TYPE_8812(ptxdesc, 0x1);
 			break;
-#ifdef CONFIG_WAPI_SUPPORT
+#if 0
 		case _SMS4_:
 			SET_TX_DESC_SEC_TYPE_8812(ptxdesc, 0x2);
 			break;
