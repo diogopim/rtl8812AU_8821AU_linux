@@ -36,8 +36,6 @@ CONFIG_WAPI_SUPPORT = n
 #CONFIG_RTW_SDIO_PM_KEEP_POWER = y // does not matter
 ########################## DEBUG ##############################
 #CONFIG_DEBUG = n
-#CONFIG_DEBUG_CFG80211 = n
-#CONFIG_DEBUG_RTL871X = n
 ###############################################################
 
 #CONFIG_DRVEXT_MODULE = n

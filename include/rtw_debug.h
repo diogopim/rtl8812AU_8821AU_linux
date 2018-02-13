@@ -248,7 +248,7 @@ extern u64 GlobalDebugComponents;
 
 #endif /* defined(_dbgdump) */
 
-#ifdef CONFIG_DEBUG
+#if 0
 #if	defined(_dbgdump)
 #undef DBG_871X
 #define DBG_871X(...)     do {\
@@ -267,7 +267,7 @@ extern u64 GlobalDebugComponents;
 #endif /* defined(_dbgdump) */
 #endif /* CONFIG_DEBUG */
 
-#ifdef CONFIG_DEBUG_RTL871X
+#if 0
 
 #if	defined(_dbgdump) && defined(_MODULE_DEFINE_)
 
@@ -320,7 +320,7 @@ extern u64 GlobalDebugComponents;
 #endif /* defined(_dbgdump) */
 #endif /* CONFIG_DEBUG_RTL871X */
 
-#ifdef CONFIG_DBG_COUNTER
+#if 0
 #define DBG_COUNTER(counter) counter++
 #else
 #define DBG_COUNTER(counter) do {} while (0)
@@ -456,7 +456,7 @@ ssize_t proc_set_odm_dbg_level(struct file *file, const char __user *buffer, siz
 int proc_get_odm_adaptivity(struct seq_file *m, void *v);
 ssize_t proc_set_odm_adaptivity(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
-#ifdef CONFIG_DBG_COUNTER
+#if 0
 int proc_get_rx_logs(struct seq_file *m, void *v);
 int proc_get_tx_logs(struct seq_file *m, void *v);
 int proc_get_int_logs(struct seq_file *m, void *v);

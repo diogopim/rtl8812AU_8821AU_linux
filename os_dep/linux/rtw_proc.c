@@ -726,7 +726,7 @@ const struct rtw_proc_hdl adapter_proc_hdls [] = {
 	{"gpio_set_direction",proc_get_dummy,proc_set_config_gpio},
 #endif
 
-#ifdef CONFIG_DBG_COUNTER
+#if 0
 	{"rx_logs", proc_get_rx_logs, NULL},
 	{"tx_logs", proc_get_tx_logs, NULL},
 	{"int_logs", proc_get_int_logs, NULL},

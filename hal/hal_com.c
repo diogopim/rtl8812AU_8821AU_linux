@@ -6098,7 +6098,7 @@ u32 Hal_readPGDataFromConfigFile(
 	set_fs(fs);
 	pEEPROM->bloadfile_fail_flag = _FALSE;
 
-#ifdef CONFIG_DEBUG
+#if 0
 	DBG_871X("Efuse configure file:\n");
 	for (i=0; i<HWSET_MAX_SIZE; i++) {
 		if (i % 16 == 0)

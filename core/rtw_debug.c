@@ -23,7 +23,7 @@
 
 u32 GlobalDebugLevel = _drv_err_;
 
-#ifdef CONFIG_DEBUG_RTL871X
+#if 0
 
 u64 GlobalDebugComponents = \
                             _module_rtl871x_xmit_c_ |
@@ -911,7 +911,7 @@ int proc_get_suspend_resume_info(struct seq_file *m, void *v)
 	return 0;
 }
 
-#ifdef CONFIG_DBG_COUNTER
+#if 0
 
 int proc_get_rx_logs(struct seq_file *m, void *v)
 {

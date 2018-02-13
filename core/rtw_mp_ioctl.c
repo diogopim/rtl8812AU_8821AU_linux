@@ -1431,7 +1431,7 @@ NDIS_STATUS oid_rt_pro_cfg_debug_message_hdl(struct oid_par_priv *poid_par_priv)
 
 //	RT_TRACE(0xffffffffff,_drv_alert_,("===> oid_rt_pro_cfg_debug_message_hdl.\n"));
 
-#if 0//#ifdef CONFIG_DEBUG_RTL871X
+#if 0//#if 0
 
 	pdbg_msg = (PCFG_DBG_MSG_STRUCT)(poid_par_priv->information_buf);
 

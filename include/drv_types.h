@@ -385,7 +385,7 @@ enum _IFACE_ID {
 	IFACE_ID_MAX,
 };
 
-#ifdef CONFIG_DBG_COUNTER
+#if 0
 
 struct rx_logs {
 	u32 intf_rx;
@@ -1072,7 +1072,7 @@ struct _ADAPTER {
 	u32 drv_rx_cnt_drop;
 #endif
 
-#ifdef CONFIG_DBG_COUNTER
+#if 0
 	struct rx_logs rx_logs;
 	struct tx_logs tx_logs;
 	struct int_logs int_logs;

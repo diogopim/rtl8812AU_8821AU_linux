@@ -8636,7 +8636,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
                            char *extra)
 {
 
-#ifdef CONFIG_DEBUG_RTW_WX_SET_PRIV
+#if 0
 	char *ext_dbg;
 #endif
 
@@ -8668,7 +8668,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 	//	 ("rtw_wx_set_priv: %s req=%s\n",
 	//	  dev->name, ext));
 
-#ifdef CONFIG_DEBUG_RTW_WX_SET_PRIV
+#if 0
 	if (!(ext_dbg = rtw_vmalloc(len))) {
 		rtw_vmfree(ext, len);
 		return -ENOMEM;
@@ -8770,7 +8770,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 	}
 	break;
 	default :
-#ifdef  CONFIG_DEBUG_RTW_WX_SET_PRIV
+#if 0
 		DBG_871X("%s: %s unknowned req=%s\n", __FUNCTION__,
 		         dev->name, ext_dbg);
 #endif
@@ -8782,7 +8782,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 	if (copy_to_user(dwrq->pointer, ext, min(dwrq->length, (u16)(strlen(ext)+1)) ) )
 		ret = -EFAULT;
 
-#ifdef CONFIG_DEBUG_RTW_WX_SET_PRIV
+#if 0
 	DBG_871X("%s: %s req=%s rep=%s dwrq->length=%d, strlen(ext)+1=%d\n", __FUNCTION__,
 	         dev->name, ext_dbg ,ext, dwrq->length, (u16)(strlen(ext)+1));
 #endif
@@ -8792,7 +8792,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 FREE_EXT:
 
 	rtw_vmfree(ext, len);
-#ifdef CONFIG_DEBUG_RTW_WX_SET_PRIV
+#if 0
 	rtw_vmfree(ext_dbg, len);
 #endif
 
