@@ -745,7 +745,7 @@ const struct rtw_proc_hdl adapter_proc_hdls [] = {
 #ifdef DBG_RX_COUNTER_DUMP
 	{"dump_rx_cnt_mode",proc_get_rx_cnt_dump,proc_set_rx_cnt_dump},
 #endif
-#ifdef CONFIG_POWER_SAVING
+#if 1
 	{"ps_info",proc_get_ps_info, NULL},
 #endif
 #if 0

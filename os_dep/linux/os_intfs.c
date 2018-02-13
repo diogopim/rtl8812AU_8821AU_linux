@@ -53,7 +53,7 @@ int rtw_scan_mode = 1;//active, passive
 int rtw_adhoc_tx_pwr = 1;
 int rtw_soft_ap = 0;
 //int smart_ps = 1;
-#ifdef CONFIG_POWER_SAVING
+#if 1
 #if 0
 int rtw_power_mgnt = PS_MODE_MAX;
 #else
@@ -1474,7 +1474,7 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 
 	//rtw_mfree((void *)padapter, sizeof (padapter));
 
-#ifdef CONFIG_DRVEXT_MODULE
+#if 0
 	free_drvext(&padapter->drvextpriv);
 #endif
 
@@ -2341,7 +2341,7 @@ int _netdev_open(struct net_device *pnetdev)
 			goto netdev_open_error;
 		}
 
-#ifdef CONFIG_DRVEXT_MODULE
+#if 0
 		init_drvext(padapter);
 #endif
 

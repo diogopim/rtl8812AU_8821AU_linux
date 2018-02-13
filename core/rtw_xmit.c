@@ -2116,7 +2116,7 @@ exit:
 	return res;
 }
 
-#ifdef CONFIG_IEEE80211W
+#if 0
 //broadcast or multicast management pkt use BIP, unicast management pkt use CCMP encryption
 s32 rtw_mgmt_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame *pxmitframe)
 {
@@ -2343,7 +2343,7 @@ xmitframe_coalesce_fail:
 
 	return _FAIL;
 }
-#endif //CONFIG_IEEE80211W
+#endif //
 
 /* Logical Link Control(LLC) SubNetwork Attachment Point(SNAP) header
  * IEEE LLC/SNAP header contains 8 octets

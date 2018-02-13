@@ -301,7 +301,7 @@
 #define CONFIG_HW_ANTENNA_DIVERSITY
 #endif
 
-#if	defined (CONFIG_POWER_SAVING)
+#if	1
 #undef CONFIG_POWER_SAVING
 #endif
 

@@ -27,18 +27,11 @@ CONFIG_RTL8812A = y
 #CONFIG_USB_HCI = y
 ########################## Features ###########################
 CONFIG_MP_INCLUDED = y
-#CONFIG_POWER_SAVING = y
 CONFIG_INTEL_WIDI = n
 CONFIG_WAPI_SUPPORT = n
 #CONFIG_RTW_ADAPTIVITY_EN = disable
 #CONFIG_RTW_ADAPTIVITY_MODE = normal
 ######### Notify SDIO Host Keep Power During Syspend ##########
-#CONFIG_RTW_SDIO_PM_KEEP_POWER = y // does not matter
-########################## DEBUG ##############################
-#CONFIG_DEBUG = n
-###############################################################
-
-#CONFIG_DRVEXT_MODULE = n
 
 export TopDIR ?= $(shell pwd)
 
@@ -130,7 +123,6 @@ _OUTSRC_FILES += hal/OUTSRC/$(RTL871X)/HalHWImg8812A_FW.o\
 ########### END OF PATH  #################################
 
 EXTRA_CFLAGS += -DCONFIG_MP_INCLUDED
-EXTRA_CFLAGS += -DCONFIG_POWER_SAVING
 EXTRA_CFLAGS += -DCONFIG_TRAFFIC_PROTECT
 
 EXTRA_CFLAGS += -DCONFIG_LOAD_PHY_PARA_FROM_FILE

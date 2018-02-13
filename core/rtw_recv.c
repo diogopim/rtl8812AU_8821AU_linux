@@ -1937,7 +1937,7 @@ exit:
 	return ret;
 }
 
-#ifdef CONFIG_IEEE80211W
+#if 0
 static sint validate_80211w_mgmt(_adapter *adapter, union recv_frame *precv_frame)
 {
 	struct mlme_priv *pmlmepriv = &adapter->mlmepriv;
@@ -2046,7 +2046,7 @@ validate_80211w_fail:
 	return _FAIL;
 
 }
-#endif //CONFIG_IEEE80211W
+#endif //
 
 static inline void dump_rx_packet(u8 *ptr)
 {
@@ -2159,13 +2159,13 @@ sint validate_recv_frame(_adapter *adapter, union recv_frame *precv_frame)
 	switch (type) {
 	case WIFI_MGT_TYPE: //mgnt
 		DBG_COUNTER(adapter->rx_logs.core_rx_pre_mgmt);
-#ifdef CONFIG_IEEE80211W
+#if 0
 		if(validate_80211w_mgmt(adapter, precv_frame) == _FAIL) {
 			retval = _FAIL;
 			DBG_COUNTER(padapter->rx_logs.core_rx_pre_mgmt_err_80211w);
 			break;
 		}
-#endif //CONFIG_IEEE80211W
+#endif //
 
 		retval = validate_recv_mgnt_frame(adapter, precv_frame);
 		if (retval == _FAIL) {

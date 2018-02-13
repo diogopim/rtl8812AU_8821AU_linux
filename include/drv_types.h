@@ -131,7 +131,7 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include <rtw_wapi.h>
 #endif // CONFIG_WAPI_SUPPORT
 
-#ifdef CONFIG_DRVEXT_MODULE
+#if 0
 #include <drvext_api.h>
 #endif // CONFIG_DRVEXT_MODULE
 
@@ -861,7 +861,7 @@ struct _ADAPTER {
 	struct	mp_priv	mppriv;
 #endif
 
-#ifdef CONFIG_DRVEXT_MODULE
+#if 0
 	struct	drvext_priv	drvextpriv;
 #endif
 

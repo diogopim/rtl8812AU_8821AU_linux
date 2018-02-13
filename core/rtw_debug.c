@@ -2120,7 +2120,7 @@ ssize_t proc_set_new_bcn_max(struct file *file, const char __user *buffer, size_
 	return count;
 }
 
-#ifdef CONFIG_POWER_SAVING
+#if 1
 int proc_get_ps_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
@@ -2174,7 +2174,7 @@ int proc_get_ps_info(struct seq_file *m, void *v)
 	DBG_871X_SEL_NL(m, "=============================\n");
 	return 0;
 }
-#endif //CONFIG_POWER_SAVING
+#endif
 
 #if 0
 static int proc_tdls_display_tdls_function_info(struct seq_file *m)
@@ -2331,11 +2331,11 @@ static int proc_tdls_display_network_info(struct seq_file *m)
 		case _SMS4_:
 			DBG_871X_SEL_NL(m, "%s\n", "SMS4");
 			break;
-#ifdef CONFIG_IEEE80211W
+#if 0
 		case _BIP_:
 			DBG_871X_SEL_NL(m, "%s\n", "BIP");
 			break;
-#endif //CONFIG_IEEE80211W
+#endif //
 		}
 
 		DBG_871X_SEL_NL(m, "%-*s = %d\n", SpaceBtwnItemAndValue, "Channel", pmlmeext->cur_channel);
@@ -2525,11 +2525,11 @@ static int proc_tdls_display_tdls_sta_info(struct seq_file *m)
 				case _SMS4_:
 					DBG_871X_SEL_NL(m, "%s\n", "SMS4");
 					break;
-#ifdef CONFIG_IEEE80211W
+#if 0
 				case _BIP_:
 					DBG_871X_SEL_NL(m, "%s\n", "BIP");
 					break;
-#endif //CONFIG_IEEE80211W
+#endif //
 				}
 
 				DBG_871X_SEL_NL(m, "%-*s = %d sec/%d sec\n", SpaceBtwnItemAndValue, "TPK Lifetime (Current/Expire)", psta->TPK_count, psta->TDLS_PeerKey_Lifetime);

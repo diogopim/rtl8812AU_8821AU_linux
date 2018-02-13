@@ -35,7 +35,7 @@ static const char *_security_type_str[] = {
 
 const char *security_type_str(u8 value)
 {
-#ifdef CONFIG_IEEE80211W
+#if 0
 	if (value <= _BIP_)
 #else
 	if (value <= _WEP_WPA_MIXED_)
@@ -1244,11 +1244,11 @@ static void construct_mic_iv(
 	if (qc_exists && a4_exists) mic_iv[1] = mpdu[30] & 0x0f;    /* QoS_TC           */
 	if (qc_exists && !a4_exists) mic_iv[1] = mpdu[24] & 0x0f;   /* mute bits 7-4    */
 	if (!qc_exists) mic_iv[1] = 0x00;
-#ifdef CONFIG_IEEE80211W
+#if 0
 	//802.11w management frame should set management bit(4)
 	if(frtype == WIFI_MGT_TYPE)
 		mic_iv[1] |= BIT(4);
-#endif //CONFIG_IEEE80211W
+#endif //
 	for (i = 2; i < 8; i++)
 		mic_iv[i] = mpdu[i + 8];                    /* mic_iv[2:7] = A2[0:5] = mpdu[10:15] */
 #ifdef CONSISTENT_PN_ORDER
@@ -1280,12 +1280,12 @@ static void construct_mic_header1(
 	_func_enter_;
 	mic_header1[0] = (u8)((header_length - 2) / 256);
 	mic_header1[1] = (u8)((header_length - 2) % 256);
-#ifdef CONFIG_IEEE80211W
+#if 0
 	//802.11w management frame don't AND subtype bits 4,5,6 of frame control field
 	if(frtype == WIFI_MGT_TYPE)
 		mic_header1[2] = mpdu[0];
 	else
-#endif //CONFIG_IEEE80211W
+#endif //
 		mic_header1[2] = mpdu[0] & 0xcf;    /* Mute CF poll & CF ack bits */
 
 	mic_header1[3] = mpdu[1] & 0xc7;    /* Mute retry, more data and pwr mgt bits */
@@ -1381,11 +1381,11 @@ static void construct_ctr_preload(
 		ctr_preload[1] = mpdu[30] & 0x0f;   /* QoC_Control */
 	if (qc_exists && !a4_exists)
 		ctr_preload[1] = mpdu[24] & 0x0f;
-#ifdef CONFIG_IEEE80211W
+#if 0
 	//802.11w management frame should set management bit(4)
 	if(frtype == WIFI_MGT_TYPE)
 		ctr_preload[1] |= BIT(4);
-#endif //CONFIG_IEEE80211W
+#endif //
 	for (i = 2; i < 8; i++)
 		ctr_preload[i] = mpdu[i + 8];                       /* ctr_preload[2:7] = A2[0:5] = mpdu[10:15] */
 #ifdef CONSISTENT_PN_ORDER
@@ -2103,7 +2103,7 @@ exit:
 	return res;
 }
 
-#ifdef CONFIG_IEEE80211W
+#if 0
 u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe)
 {
 	struct rx_pkt_attrib *pattrib = &((union recv_frame *)precvframe)->u.hdr.attrib;
@@ -2196,7 +2196,7 @@ BIP_exit:
 	rtw_mfree(BIP_AAD, ori_len);
 	return res;
 }
-#endif //CONFIG_IEEE80211W
+#endif //
 
 #ifndef PLATFORM_FREEBSD
 /* compress 512-bits */

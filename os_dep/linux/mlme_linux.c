@@ -206,10 +206,10 @@ void rtw_reset_securitypriv( _adapter *adapter )
 		backupPMKIDIndex = adapter->securitypriv.PMKIDIndex;
 		backupTKIPCountermeasure = adapter->securitypriv.btkip_countermeasure;
 		backupTKIPcountermeasure_time = adapter->securitypriv.btkip_countermeasure_time;
-#ifdef CONFIG_IEEE80211W
+#if 0
 		//reset RX BIP packet number
 		pmlmeext->mgnt_80211w_IPN_rx = 0;
-#endif //CONFIG_IEEE80211W
+#endif //
 		_rtw_memset((unsigned char *)&adapter->securitypriv, 0, sizeof (struct security_priv));
 		//_init_timer(&(adapter->securitypriv.tkip_timer),adapter->pnetdev, rtw_use_tkipkey_handler, adapter);
 
@@ -338,13 +338,13 @@ void _addba_timer_hdl(void *FunctionContext)
 	addba_timer_hdl(psta);
 }
 
-#ifdef CONFIG_IEEE80211W
+#if 0
 void _sa_query_timer_hdl (void *FunctionContext)
 {
 	_adapter *padapter = (_adapter *)FunctionContext;
 	sa_query_timer_hdl(padapter);
 }
-#endif //CONFIG_IEEE80211W
+#endif //
 
 void init_addba_retry_timer(_adapter *padapter, struct sta_info *psta)
 {
@@ -372,9 +372,9 @@ void init_mlme_ext_timer(_adapter *padapter)
 
 	_init_timer(&pmlmeext->survey_timer, padapter->pnetdev, _survey_timer_hdl, padapter);
 	_init_timer(&pmlmeext->link_timer, padapter->pnetdev, _link_timer_hdl, padapter);
-#ifdef CONFIG_IEEE80211W
+#if 0
 	_init_timer(&pmlmeext->sa_query_timer, padapter->pnetdev, _sa_query_timer_hdl, padapter);
-#endif //CONFIG_IEEE80211W
+#endif //
 	//_init_timer(&pmlmeext->ADDBA_timer, padapter->pnetdev, _addba_timer_hdl, padapter);
 
 	//_init_timer(&pmlmeext->reauth_timer, padapter->pnetdev, _reauth_timer_hdl, padapter);

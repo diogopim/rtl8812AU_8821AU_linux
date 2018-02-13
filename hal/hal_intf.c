@@ -374,7 +374,7 @@ s32	rtw_hal_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe)
 	//pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;
 	//_rtw_memcpy(pmgntframe->attrib.ra, pwlanhdr->addr1, ETH_ALEN);
 
-#ifdef CONFIG_IEEE80211W
+#if 0
 	if(padapter->securitypriv.binstallBIPkey == _TRUE) {
 		if(IS_MCAST(pmgntframe->attrib.ra)) {
 			pmgntframe->attrib.encrypt = _BIP_;
@@ -385,7 +385,7 @@ s32	rtw_hal_mgnt_xmit(_adapter *padapter, struct xmit_frame *pmgntframe)
 		}
 		rtw_mgmt_xmitframe_coalesce(padapter, pmgntframe->pkt, pmgntframe);
 	}
-#endif //CONFIG_IEEE80211W
+#endif //
 
 	if(padapter->HalFunc.mgnt_xmit)
 		ret = padapter->HalFunc.mgnt_xmit(padapter, pmgntframe);
