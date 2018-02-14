@@ -564,7 +564,7 @@ thread_return rtw_cmd_thread(thread_context context)
 		}
 		_exit_critical(&pcmdpriv->cmd_queue.lock, &irqL);
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 		if (rtw_register_cmd_alive(padapter) != _SUCCESS) {
 			RT_TRACE(_module_hal_xmit_c_, _drv_notice_,
 			         ("%s: wait to leave LPS_LCLK\n", __FUNCTION__));
@@ -580,7 +580,7 @@ _next:
 		}
 
 		if(!(pcmd = rtw_dequeue_cmd(pcmdpriv))) {
-#ifdef CONFIG_LPS_LCLK
+#if 0
 			rtw_unregister_cmd_alive(padapter);
 #endif
 			continue;
@@ -681,7 +681,7 @@ post_process:
 	do {
 		pcmd = rtw_dequeue_cmd(pcmdpriv);
 		if(pcmd==NULL) {
-#ifdef CONFIG_LPS_LCLK
+#if 0
 			rtw_unregister_cmd_alive(padapter);
 #endif
 			break;
@@ -2769,7 +2769,7 @@ void rtw_lps_change_dtim_hdl(_adapter *padapter, u8 dtim)
 		return;
 #endif
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	_enter_pwrlock(&pwrpriv->lock);
 #endif
 
@@ -2788,7 +2788,7 @@ void rtw_lps_change_dtim_hdl(_adapter *padapter, u8 dtim)
 		rtw_hal_set_hwreg(padapter, HW_VAR_H2C_FW_PWRMODE, (u8 *)(&ps_mode));
 	}
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	_exit_pwrlock(&pwrpriv->lock);
 #endif
 

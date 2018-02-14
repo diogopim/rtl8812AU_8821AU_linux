@@ -384,7 +384,7 @@ struct recv_priv {
 	uint	ff_hwaddr;
 	ATOMIC_T	rx_pending_cnt;
 
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
+#if 0
 #ifdef PLATFORM_LINUX
 	PURB	int_in_urb;
 #endif

@@ -388,7 +388,7 @@ struct pwrctrl_priv {
 extern void rtw_init_pwrctrl_priv(_adapter *adapter);
 extern void rtw_free_pwrctrl_priv(_adapter * adapter);
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 s32 rtw_register_task_alive(PADAPTER, u32 task);
 void rtw_unregister_task_alive(PADAPTER, u32 task);
 extern s32 rtw_register_tx_alive(PADAPTER padapter);

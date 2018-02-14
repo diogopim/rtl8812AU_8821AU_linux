@@ -499,7 +499,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 #endif // CONFIG_LPS_RPWM_TIMER
 	{
 		if ( (pwrpriv->rpwm == pslv)
-#ifdef CONFIG_LPS_LCLK
+#if 0
 #if 1
 		     || ((pwrpriv->rpwm >= PS_STATE_S2)&&(pslv >= PS_STATE_S2))
 #endif
@@ -534,7 +534,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 	}
 
 	rpwm = pslv | pwrpriv->tog;
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	// only when from PS_STATE S0/S1 to S2 and higher needs ACK
 	if ((pwrpriv->cpwm < PS_STATE_S2) && (pslv >= PS_STATE_S2))
 		rpwm |= PS_ACK;
@@ -559,7 +559,7 @@ void rtw_set_rpwm(PADAPTER padapter, u8 pslv)
 
 	pwrpriv->tog += 0x80;
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	// No LPS 32K, No Ack
 	if (rpwm & PS_ACK) {
 #ifdef CONFIG_DETECT_CPWM_BY_POLLING
@@ -836,7 +836,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 #endif // !CONFIG_BT_COEXIST
 	}
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	_enter_pwrlock(&pwrpriv->lock);
 #endif
 
@@ -975,7 +975,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 #endif //CONFIG_P2P_PS
 
 			pslv = PS_STATE_S2;
-#ifdef CONFIG_LPS_LCLK
+#if 0
 			if (pwrpriv->alives == 0)
 				pslv = PS_STATE_S0;
 #endif // CONFIG_LPS_LCLK
@@ -1008,7 +1008,7 @@ void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode
 		}
 	}
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	_exit_pwrlock(&pwrpriv->lock);
 #endif
 
@@ -1195,7 +1195,7 @@ void LeaveAllPowerSaveModeDirect(PADAPTER Adapter)
 			return;
 		}
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 		_enter_pwrlock(&pwrpriv->lock);
 
 #ifndef CONFIG_DETECT_CPWM_BY_POLLING
@@ -1315,7 +1315,7 @@ void LeaveAllPowerSaveMode(IN PADAPTER Adapter)
 
 	if (n_assoc_iface) {
 		//connect
-#ifdef CONFIG_LPS_LCLK
+#if 0
 		enqueue = 1;
 #endif
 
@@ -1327,7 +1327,7 @@ void LeaveAllPowerSaveMode(IN PADAPTER Adapter)
 		rtw_lps_ctrl_wk_cmd(Adapter, LPS_CTRL_LEAVE, enqueue);
 #endif
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 		LPS_Leave_check(Adapter);
 #endif
 	} else {
@@ -1356,7 +1356,7 @@ void LeaveAllPowerSaveMode(IN PADAPTER Adapter)
 	_func_exit_;
 }
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 void LPS_Leave_check(
     PADAPTER padapter)
 {
@@ -2150,7 +2150,7 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 
 	pwrctrlpriv->tog = 0x80;
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	rtw_hal_set_hwreg(padapter, HW_VAR_SET_RPWM, (u8 *)(&pwrctrlpriv->rpwm));
 
 	_init_workitem(&pwrctrlpriv->cpwm_event, cpwm_event_callback, NULL);

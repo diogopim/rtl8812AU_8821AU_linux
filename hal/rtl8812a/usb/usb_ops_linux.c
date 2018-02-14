@@ -22,7 +22,7 @@
 //#include <drv_types.h>
 #include <rtl8812a_hal.h>
 
-#ifdef CONFIG_SUPPORT_USB_INT
+#if 0
 void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 {
 	HAL_DATA_TYPE	*pHalData=GET_HAL_DATA(padapter);
@@ -52,7 +52,7 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 #endif
 
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	if(  pHalData->IntArray[0]  & IMR_CPWM_88E ) {
 		_rtw_memcpy(&pwr_rpt.state, &(pbuf[USB_INTR_CONTENT_CPWM1_OFFSET]), 1);
 		//_rtw_memcpy(&pwr_rpt.state2, &(pbuf[USB_INTR_CONTENT_CPWM2_OFFSET]), 1);
@@ -127,7 +127,7 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 }
 #endif
 
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
+#if 0
 static void usb_read_interrupt_complete(struct urb *purb, struct pt_regs *regs)
 {
 	int	err;
@@ -532,7 +532,7 @@ void rtl8812au_set_intf_ops(struct _io_ops	*pops)
 	pops->_read_port_cancel = &usb_read_port_cancel;
 	pops->_write_port_cancel = &usb_write_port_cancel;
 
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
+#if 0
 	pops->_read_interrupt = &usb_read_interrupt;
 #endif
 

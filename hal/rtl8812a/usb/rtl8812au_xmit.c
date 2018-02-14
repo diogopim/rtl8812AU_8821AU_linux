@@ -328,7 +328,7 @@ s32 rtl8812au_xmit_buf_handler(PADAPTER padapter)
 	if(check_pending_xmitbuf(pxmitpriv) == _FALSE)
 		return _SUCCESS;
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	ret = rtw_register_tx_alive(padapter);
 	if (ret != _SUCCESS) {
 		RT_TRACE(_module_hal_xmit_c_, _drv_notice_,
@@ -345,7 +345,7 @@ s32 rtl8812au_xmit_buf_handler(PADAPTER padapter)
 
 	} while (1);
 
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	rtw_unregister_tx_alive(padapter);
 #endif
 

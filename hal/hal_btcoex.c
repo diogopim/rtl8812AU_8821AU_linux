@@ -256,7 +256,7 @@ void halbtcoutsrc_NormalLps(PBTC_COEXIST pBtCoexist)
  */
 void halbtcoutsrc_LeaveLowPower(PBTC_COEXIST pBtCoexist)
 {
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	PADAPTER padapter;
 	PHAL_DATA_TYPE pHalData;
 	struct pwrctrl_priv *pwrctrl;
@@ -302,7 +302,7 @@ void halbtcoutsrc_LeaveLowPower(PBTC_COEXIST pBtCoexist)
  */
 void halbtcoutsrc_NormalLowPower(PBTC_COEXIST pBtCoexist)
 {
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	PADAPTER padapter;
 
 	if (GLBtcBtCoexAliveRegistered == _FALSE)

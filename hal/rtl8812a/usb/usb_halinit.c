@@ -2032,7 +2032,7 @@ unsigned int rtl8812au_inirp_init(PADAPTER Adapter)
 	struct intf_hdl * pintfhdl=&Adapter->iopriv.intf;
 	struct recv_priv *precvpriv = &(Adapter->recvpriv);
 	u32 (*_read_port)(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *pmem);
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
+#if 0
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(Adapter);
 	u32 (*_read_interrupt)(struct intf_hdl *pintfhdl, u32 addr);
 #endif
@@ -2060,7 +2060,7 @@ unsigned int rtl8812au_inirp_init(PADAPTER Adapter)
 		precvpriv->free_recv_buf_queue_cnt--;
 	}
 
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
+#if 0
 	if(pHalData->RtIntInPipe != 0x05) {
 		status = _FAIL;
 		DBG_871X("%s =>Warning !! Have not USB Int-IN pipe,  pHalData->RtIntInPipe(%d)!!!\n",__FUNCTION__,pHalData->RtIntInPipe);
@@ -2628,7 +2628,7 @@ void SetHwReg8812AU(PADAPTER Adapter, u8 variable, const u8* val)
 #endif
 	break;
 	case HW_VAR_SET_RPWM:
-#ifdef CONFIG_LPS_LCLK
+#if 0
 	{
 		u8	ps_state = *((u8 *)val);
 		//rpwm value only use BIT0(clock bit) ,BIT6(Ack bit), and BIT7(Toggle bit) for 88e.

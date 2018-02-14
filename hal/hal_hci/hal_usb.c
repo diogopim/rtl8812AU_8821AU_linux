@@ -46,7 +46,7 @@ int	usb_init_recv_priv(_adapter *padapter, u16 ini_in_buf_sz)
 #endif /* CONFIG_RX_INDICATE_QUEUE */
 #endif /* PLATFORM_FREEBSD */
 
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
+#if 0
 #ifdef PLATFORM_LINUX
 	precvpriv->int_in_urb = usb_alloc_urb(0, GFP_KERNEL);
 	if(precvpriv->int_in_urb == NULL) {
@@ -169,7 +169,7 @@ void usb_free_recv_priv (_adapter *padapter, u16 ini_in_buf_sz)
 	if(precvpriv->pallocated_recv_buf)
 		rtw_mfree(precvpriv->pallocated_recv_buf, NR_RECVBUFF *sizeof(struct recv_buf) + 4);
 
-#ifdef CONFIG_USB_INTERRUPT_IN_PIPE
+#if 0
 #ifdef PLATFORM_LINUX
 	if(precvpriv->int_in_urb) {
 		usb_free_urb(precvpriv->int_in_urb);
