@@ -1237,7 +1237,7 @@ void hw_var_port_switch(_adapter *adapter)
 	for (i=0; i<6; i++)
 		bssid_1[i] = rtw_read8(adapter, REG_BSSID1+i);
 
-#ifdef DBG_RUNTIME_PORT_SWITCH
+#if 0
 	DBG_871X(FUNC_ADPT_FMT" before switch\n"
 	         "msr:0x%02x\n"
 	         "bcn_ctrl:0x%02x\n"
@@ -1319,7 +1319,7 @@ void hw_var_port_switch(_adapter *adapter)
 		               ADPT_ARG(adapter), ADPT_ARG(adapter->pbuddy_adapter));
 	}
 
-#ifdef DBG_RUNTIME_PORT_SWITCH
+#if 0
 	msr = rtw_read8(adapter, MSR);
 	bcn_ctrl = rtw_read8(adapter, REG_BCN_CTRL);
 	bcn_ctrl_1 = rtw_read8(adapter, REG_BCN_CTRL_1);
@@ -5501,7 +5501,7 @@ void GetHalODMVar(
 	//HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(Adapter);
 	//PDM_ODM_T podmpriv = &pHalData->odmpriv;
 	switch(eVariable) {
-#if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
+#if 0
 	case HAL_ODM_NOISE_MONITOR: {
 		u8 chan = *(u8*)pValue1;
 		*(s16 *)pValue2 = pHalData->noise[chan];
@@ -5552,7 +5552,7 @@ void SetHalODMVar(
 		ODM_CmnInfoInit(podmpriv, ODM_CMNINFO_DOMAIN_CODE_2G, pHalData->Regulation2_4G);
 		ODM_CmnInfoInit(podmpriv, ODM_CMNINFO_DOMAIN_CODE_5G, pHalData->Regulation5G);
 		break;
-#if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
+#if 0
 	case HAL_ODM_NOISE_MONITOR: {
 		struct noise_info *pinfo = (struct noise_info *)pValue1;
 
@@ -6908,7 +6908,7 @@ void rtw_dump_rx_counters(_adapter* padapter)
 #endif
 void rtw_get_noise(_adapter* padapter)
 {
-#if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
+#if 0
 	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
 	struct noise_info info;
 	if(rtw_linked_check(padapter)) {

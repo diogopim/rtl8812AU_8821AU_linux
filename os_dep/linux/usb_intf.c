@@ -868,7 +868,7 @@ static void process_spec_devid(const struct usb_device_id *pdid)
 	}
 }
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 int rtw_hw_suspend(_adapter *padapter )
 {
 	struct pwrctrl_priv *pwrpriv;
@@ -1003,7 +1003,7 @@ static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 #ifdef CONFIG_AUTOSUSPEND
 		if(pwrpriv->bInternalAutoSuspend ) {
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 			// The FW command register update must after MAC and FW init ready.
 			if((padapter->bFWReady) && (pwrpriv->bHWPwrPindetect ) && (padapter->registrypriv.usbss_enable )) {
 				u8 bOpen = _TRUE;
@@ -1068,7 +1068,7 @@ int rtw_resume_process(_adapter *padapter)
 
 #ifdef CONFIG_AUTOSUSPEND
 	if(pwrpriv->bInternalAutoSuspend ) {
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 		// The FW command register update must after MAC and FW init ready.
 		if((padapter->bFWReady) && (pwrpriv->bHWPwrPindetect) && (padapter->registrypriv.usbss_enable )) {
 			//rtl8192c_set_FwSelectSuspend_cmd(padapter,_FALSE ,500);//note fw to support hw power down ping detect
@@ -1122,7 +1122,7 @@ static int rtw_resume(struct usb_interface *pusb_intf)
 			ret = rtw_resume_process(padapter);
 			rtw_resume_unlock_suspend();
 		} else {
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
+#if 0
 			rtw_resume_in_workqueue(pwrpriv);
 #else
 			if (rtw_is_earlysuspend_registered(pwrpriv)) {
@@ -1297,7 +1297,7 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	//set adapter_type/iface type for primary padapter
 	padapter->isprimary = _TRUE;
 	padapter->adapter_type = PRIMARY_ADAPTER;
-#ifndef CONFIG_HWPORT_SWAP
+#if 1
 	padapter->iface_type = IFACE_PORT0;
 #else
 	padapter->iface_type = IFACE_PORT1;
@@ -1506,9 +1506,9 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 	_adapter *if1 = NULL, *if2 = NULL;
 	int status = _FAIL;
 	struct dvobj_priv *dvobj;
-#ifdef CONFIG_MULTI_VIR_IFACES
+#if 0
 	int i;
-#endif //CONFIG_MULTI_VIR_IFACES
+#endif //
 
 	RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("+rtw_drv_init\n"));
 	//DBG_871X("+rtw_drv_init\n");
@@ -1531,14 +1531,14 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 	if((if2 = rtw_drv_if2_init(if1, usb_set_intf_ops)) == NULL) {
 		goto free_if1;
 	}
-#ifdef CONFIG_MULTI_VIR_IFACES
+#if 0
 	for(i=0; i<if1->registrypriv.ext_iface_num; i++) {
 		if(rtw_drv_add_vir_if(if1, usb_set_intf_ops) == NULL) {
 			DBG_871X("rtw_drv_add_iface failed! (%d)\n", i);
 			goto free_if2;
 		}
 	}
-#endif //CONFIG_MULTI_VIR_IFACES
+#endif //
 #endif
 
 #ifdef CONFIG_INTEL_PROXIM
@@ -1626,7 +1626,7 @@ static void rtw_dev_remove(struct usb_interface *pusb_intf)
 	}*/
 
 
-#if defined(CONFIG_HAS_EARLYSUSPEND) || defined(CONFIG_ANDROID_POWER)
+#if defined(CONFIG_HAS_EARLYSUSPEND)
 	rtw_unregister_early_suspend(pwrctl);
 #endif
 
@@ -1636,9 +1636,9 @@ static void rtw_dev_remove(struct usb_interface *pusb_intf)
 	LeaveAllPowerSaveMode(padapter);
 
 #ifdef CONFIG_CONCURRENT_MODE
-#ifdef CONFIG_MULTI_VIR_IFACES
+#if 0
 	rtw_drv_stop_vir_ifaces(dvobj);
-#endif //CONFIG_MULTI_VIR_IFACES
+#endif //
 	rtw_drv_if2_stop(dvobj->if2);
 #endif //CONFIG_CONCURRENT_MODE
 
@@ -1649,9 +1649,9 @@ static void rtw_dev_remove(struct usb_interface *pusb_intf)
 	rtw_usb_if1_deinit(padapter);
 
 #ifdef CONFIG_CONCURRENT_MODE
-#ifdef CONFIG_MULTI_VIR_IFACES
+#if 0
 	rtw_drv_free_vir_ifaces(dvobj);
-#endif //CONFIG_MULTI_VIR_IFACES
+#endif //
 	rtw_drv_if2_free(dvobj->if2);
 #endif //CONFIG_CONCURRENT_MODE
 

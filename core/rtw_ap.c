@@ -1321,14 +1321,12 @@ void start_bss_network(_adapter *padapter, u8 *pbuf)
 	if(_TRUE == pmlmeext->bstart_bss) {
 		update_beacon(padapter, _TIM_IE_, NULL, _TRUE);
 
-#ifndef CONFIG_INTERRUPT_BASED_TXBCN //other case will  tx beacon when bcn interrupt coming in.
 #if 1
 		//issue beacon frame
 		if(send_beacon(padapter)==_FAIL) {
 			DBG_871X("issue_beacon, fail!\n");
 		}
 #endif
-#endif //!CONFIG_INTERRUPT_BASED_TXBCN
 
 	}
 
@@ -2201,7 +2199,7 @@ static void update_bcn_wps_ie(_adapter *padapter)
 		rtw_mfree(pbackup_remainder_ie, remainder_ielen);
 
 	// deal with the case without set_tx_beacon_cmd() in update_beacon()
-#if defined( CONFIG_INTERRUPT_BASED_TXBCN )
+#if 0
 	if( (pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE) {
 		u8 sr = 0;
 		rtw_get_wps_attr_content(pwps_ie_src,  wps_ielen, WPS_ATTR_SELECTED_REGISTRAR, (u8*)(&sr), NULL);
@@ -2310,7 +2308,6 @@ void _update_beacon(_adapter *padapter, u8 ie_id, const u8 *oui, u8 tx, const ch
 
 	_exit_critical_bh(&pmlmepriv->bcn_update_lock, &irqL);
 
-#ifndef CONFIG_INTERRUPT_BASED_TXBCN
 #if 1
 	if(tx) {
 		//send_beacon(padapter);//send_beacon must execute on TSR level
@@ -2323,7 +2320,6 @@ void _update_beacon(_adapter *padapter, u8 ie_id, const u8 *oui, u8 tx, const ch
 		//PCI will issue beacon when BCN interrupt occurs.
 	}
 #endif
-#endif //!CONFIG_INTERRUPT_BASED_TXBCN
 
 }
 

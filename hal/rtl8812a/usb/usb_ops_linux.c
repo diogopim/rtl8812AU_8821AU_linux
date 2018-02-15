@@ -63,12 +63,12 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 	}
 #endif//CONFIG_LPS_LCLK
 
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN
+#if 0
 
-#ifdef  CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
+#if 0
 	if (pHalData->IntArray[0] & IMR_BCNDMAINT0_88E)
 #endif
-#ifdef  CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
+#if 0
 		if (pHalData->IntArray[0] & (IMR_TBDER_88E|IMR_TBDOK_88E))
 #endif
 		{
@@ -101,7 +101,7 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 #endif
 
 		}
-#endif //CONFIG_INTERRUPT_BASED_TXBCN
+#endif //
 
 
 

@@ -750,12 +750,12 @@ static inline char *  iwe_stream_rssi_process(_adapter *padapter,
 	/* Add quality statistics */
 	iwe->cmd = IWEVQUAL;
 	iwe->u.qual.updated = IW_QUAL_QUAL_UPDATED | IW_QUAL_LEVEL_UPDATED
-#if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
+#if 0
 	                      | IW_QUAL_NOISE_UPDATED
 #else
 	                      | IW_QUAL_NOISE_INVALID
 #endif
-#ifdef CONFIG_SIGNAL_DISPLAY_DBM
+#if 0
 	                      | IW_QUAL_DBM
 #endif
 	                      ;
@@ -770,7 +770,7 @@ static inline char *  iwe_stream_rssi_process(_adapter *padapter,
 	}
 
 
-#ifdef CONFIG_SIGNAL_DISPLAY_DBM
+#if 0
 	iwe->u.qual.level = (u8) translate_percentage_to_dbm(ss);//dbm
 #else
 #if 0
@@ -791,7 +791,7 @@ static inline char *  iwe_stream_rssi_process(_adapter *padapter,
 #if 0
 	iwe->u.qual.noise = -100; // noise level suggest by zhf@rockchips
 #else
-#if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
+#if 0
 	{
 		s16 tmp_noise=0;
 		rtw_hal_get_odm_var(padapter, HAL_ODM_NOISE_MONITOR,&(pnetwork->network.Configuration.DSConfig), &(tmp_noise));
@@ -1164,12 +1164,12 @@ static char *translate_scan(_adapter *padapter,
 		/* Add quality statistics */
 		iwe.cmd = IWEVQUAL;
 		iwe.u.qual.updated = IW_QUAL_QUAL_UPDATED | IW_QUAL_LEVEL_UPDATED
-#if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
+#if 0
 		                     | IW_QUAL_NOISE_UPDATED
 #else
 		                     | IW_QUAL_NOISE_INVALID
 #endif
-#ifdef CONFIG_SIGNAL_DISPLAY_DBM
+#if 0
 		                     | IW_QUAL_DBM
 #endif
 		                     ;
@@ -1184,7 +1184,7 @@ static char *translate_scan(_adapter *padapter,
 		}
 
 
-#ifdef CONFIG_SIGNAL_DISPLAY_DBM
+#if 0
 		iwe.u.qual.level = (u8) translate_percentage_to_dbm(ss);//dbm
 #else
 #if 0
@@ -1205,7 +1205,7 @@ static char *translate_scan(_adapter *padapter,
 #if 0
 		iwe.u.qual.noise = -100; // noise level suggest by zhf@rockchips
 #else
-#if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
+#if 0
 		{
 			s16 tmp_noise=0;
 			rtw_hal_get_odm_var(padapter, HAL_ODM_NOISE_MONITOR,&(pnetwork->network.Configuration.DSConfig), &(tmp_noise));
@@ -2706,7 +2706,7 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 
 #if 1 // Wireless Extension use EAGAIN to try
 	wait_status = _FW_UNDER_SURVEY
-#ifndef CONFIG_ANDROID
+#if 1
 	              | _FW_UNDER_LINKING
 #endif
 	              ;
@@ -2716,7 +2716,7 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 	}
 #else
 	wait_status = _FW_UNDER_SURVEY
-#ifndef CONFIG_ANDROID
+#if 1
 	              |_FW_UNDER_LINKING
 #endif
 	              ;
@@ -3580,7 +3580,7 @@ static int rtw_wx_set_auth(struct net_device *dev,
 
 	case IW_AUTH_80211_AUTH_ALG:
 
-#if defined(CONFIG_ANDROID) || 1
+#if 1
 		/*
 		 *  It's the starting point of a link layer connection using wpa_supplicant
 		*/
@@ -8643,7 +8643,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 	int ret = 0;
 	int len = 0;
 	char *ext;
-#ifdef CONFIG_ANDROID
+#if 0
 	int i;
 #endif
 
@@ -8720,7 +8720,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 		goto FREE_EXT;
 	}
 
-#ifdef CONFIG_ANDROID
+#if 0
 	//DBG_871X("rtw_wx_set_priv: %s req=%s\n", dev->name, ext);
 
 	i = rtw_android_cmdstr_to_num(ext);
@@ -8786,7 +8786,7 @@ static int rtw_wx_set_priv(struct net_device *dev,
 	DBG_871X("%s: %s req=%s rep=%s dwrq->length=%d, strlen(ext)+1=%d\n", __FUNCTION__,
 	         dev->name, ext_dbg ,ext, dwrq->length, (u16)(strlen(ext)+1));
 #endif
-#endif //end of CONFIG_ANDROID
+#endif
 
 
 FREE_EXT:
@@ -14129,7 +14129,7 @@ static struct iw_statistics *rtw_get_wireless_stats(struct net_device *dev)
 		piwstats->qual.noise = 0;
 		//DBG_871X("No link  level:%d, qual:%d, noise:%d\n", tmp_level, tmp_qual, tmp_noise);
 	} else {
-#ifdef CONFIG_SIGNAL_DISPLAY_DBM
+#if 0
 		tmp_level = translate_percentage_to_dbm(padapter->recvpriv.signal_strength);
 #else
 #if 0
@@ -14166,7 +14166,7 @@ static struct iw_statistics *rtw_get_wireless_stats(struct net_device *dev)
 #endif
 #endif
 
-#ifdef CONFIG_SIGNAL_DISPLAY_DBM
+#if 0
 	piwstats->qual.updated = piwstats->qual.updated | IW_QUAL_DBM;
 #endif
 

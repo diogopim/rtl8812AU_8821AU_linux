@@ -2003,7 +2003,7 @@ u32 rtl8812au_hal_deinit(PADAPTER Adapter)
 	rtw_write32(Adapter, REG_HIMR0_8812, IMR_DISABLED_8812);
 	rtw_write32(Adapter, REG_HIMR1_8812, IMR_DISABLED_8812);
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 	DBG_8192C("bkeepfwalive(%x)\n", pwrctl->bkeepfwalive);
 	if(pwrctl->bkeepfwalive) {
 		_ps_close_RF(Adapter);
@@ -3047,7 +3047,7 @@ static u8 rtl8812au_ps_func(PADAPTER Adapter,HAL_INTF_PS_FUNC efunc_id, const u8
 	u8 bResult = _TRUE;
 	switch(efunc_id) {
 
-#if defined(CONFIG_AUTOSUSPEND) && defined(SUPPORT_HW_RFOFF_DETECTED)
+#if 0
 	case HAL_USB_SELECT_SUSPEND: {
 		u8 bfwpoll = *((const u8*)val);
 		//rtl8188e_set_FwSelectSuspend_cmd(Adapter,bfwpoll ,500);//note fw to support hw power down ping detect
@@ -3114,7 +3114,7 @@ void rtl8812au_set_hal_ops(_adapter * padapter)
 	pHalFunc->hostap_mgnt_xmit_entry = &rtl8812au_hostap_mgnt_xmit_entry;
 #endif
 	pHalFunc->interface_ps_func = &rtl8812au_ps_func;
-#ifdef CONFIG_XMIT_THREAD_MODE
+#if 0
 	pHalFunc->xmit_thread_handler = &rtl8812au_xmit_buf_handler;
 #endif
 	rtl8812_set_hal_ops(pHalFunc);

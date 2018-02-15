@@ -1577,7 +1577,8 @@ static struct wake_lock rtw_suspend_rx_lock;
 static struct wake_lock rtw_suspend_traffic_lock;
 static struct wake_lock rtw_suspend_resume_lock;
 static struct wake_lock rtw_resume_scan_lock;
-#elif defined(CONFIG_ANDROID_POWER)
+#endif
+#if 0
 static android_suspend_lock_t rtw_suspend_lock = {
 	.name = RTW_SUSPEND_LOCK_NAME
 };
@@ -1607,7 +1608,8 @@ inline void rtw_suspend_lock_init()
 	wake_lock_init(&rtw_suspend_traffic_lock, WAKE_LOCK_SUSPEND, RTW_SUSPEND_TRAFFIC_LOCK_NAME);
 	wake_lock_init(&rtw_suspend_resume_lock, WAKE_LOCK_SUSPEND, RTW_SUSPEND_RESUME_LOCK_NAME);
 	wake_lock_init(&rtw_resume_scan_lock, WAKE_LOCK_SUSPEND, RTW_RESUME_SCAN_LOCK_NAME);
-#elif defined(CONFIG_ANDROID_POWER)
+#endif
+#if 0
 	android_init_suspend_lock(&rtw_suspend_lock);
 	android_init_suspend_lock(&rtw_suspend_ext_lock);
 	android_init_suspend_lock(&rtw_suspend_rx_lock);
@@ -1626,7 +1628,8 @@ inline void rtw_suspend_lock_uninit()
 	wake_lock_destroy(&rtw_suspend_traffic_lock);
 	wake_lock_destroy(&rtw_suspend_resume_lock);
 	wake_lock_destroy(&rtw_resume_scan_lock);
-#elif defined(CONFIG_ANDROID_POWER)
+#endif
+#if 0
 	android_uninit_suspend_lock(&rtw_suspend_lock);
 	android_uninit_suspend_lock(&rtw_suspend_ext_lock);
 	android_uninit_suspend_lock(&rtw_suspend_rx_lock);
@@ -1640,11 +1643,12 @@ inline void rtw_lock_suspend(void)
 {
 #ifdef CONFIG_WAKELOCK
 	wake_lock(&rtw_suspend_lock);
-#elif defined(CONFIG_ANDROID_POWER)
+#endif
+#if 0
 	android_lock_suspend(&rtw_suspend_lock);
 #endif
 
-#if  defined(CONFIG_WAKELOCK) || defined(CONFIG_ANDROID_POWER)
+#if  defined(CONFIG_WAKELOCK)
 	//DBG_871X("####%s: suspend_lock_count:%d####\n", __FUNCTION__, rtw_suspend_lock.stat.count);
 #endif
 }
@@ -1653,11 +1657,12 @@ inline void rtw_unlock_suspend(void)
 {
 #ifdef CONFIG_WAKELOCK
 	wake_unlock(&rtw_suspend_lock);
-#elif defined(CONFIG_ANDROID_POWER)
+#endif
+#if 0
 	android_unlock_suspend(&rtw_suspend_lock);
 #endif
 
-#if  defined(CONFIG_WAKELOCK) || defined(CONFIG_ANDROID_POWER)
+#if  defined(CONFIG_WAKELOCK)
 	//DBG_871X("####%s: suspend_lock_count:%d####\n", __FUNCTION__, rtw_suspend_lock.stat.count);
 #endif
 }
@@ -1666,11 +1671,12 @@ inline void rtw_resume_lock_suspend(void)
 {
 #ifdef CONFIG_WAKELOCK
 	wake_lock(&rtw_suspend_resume_lock);
-#elif defined(CONFIG_ANDROID_POWER)
+#endif
+#if 0
 	android_lock_suspend(&rtw_suspend_resume_lock);
 #endif
 
-#if  defined(CONFIG_WAKELOCK) || defined(CONFIG_ANDROID_POWER)
+#if  defined(CONFIG_WAKELOCK)
 	//DBG_871X("####%s: suspend_lock_count:%d####\n", __FUNCTION__, rtw_suspend_lock.stat.count);
 #endif
 }
@@ -1679,11 +1685,12 @@ inline void rtw_resume_unlock_suspend(void)
 {
 #ifdef CONFIG_WAKELOCK
 	wake_unlock(&rtw_suspend_resume_lock);
-#elif defined(CONFIG_ANDROID_POWER)
+#endif
+#if 0
 	android_unlock_suspend(&rtw_suspend_resume_lock);
 #endif
 
-#if  defined(CONFIG_WAKELOCK) || defined(CONFIG_ANDROID_POWER)
+#if  defined(CONFIG_WAKELOCK)
 	//DBG_871X("####%s: suspend_lock_count:%d####\n", __FUNCTION__, rtw_suspend_lock.stat.count);
 #endif
 }
@@ -1692,7 +1699,8 @@ inline void rtw_lock_suspend_timeout(u32 timeout_ms)
 {
 #ifdef CONFIG_WAKELOCK
 	wake_lock_timeout(&rtw_suspend_lock, rtw_ms_to_systime(timeout_ms));
-#elif defined(CONFIG_ANDROID_POWER)
+#endif
+#if 0
 	android_lock_suspend_auto_expire(&rtw_suspend_lock, rtw_ms_to_systime(timeout_ms));
 #endif
 }
@@ -1701,7 +1709,8 @@ inline void rtw_lock_ext_suspend_timeout(u32 timeout_ms)
 {
 #ifdef CONFIG_WAKELOCK
 	wake_lock_timeout(&rtw_suspend_ext_lock, rtw_ms_to_systime(timeout_ms));
-#elif defined(CONFIG_ANDROID_POWER)
+#endif
+#if 0
 	android_lock_suspend_auto_expire(&rtw_suspend_ext_lock, rtw_ms_to_systime(timeout_ms));
 #endif
 	//DBG_871X("EXT lock timeout:%d\n", timeout_ms);
@@ -1711,7 +1720,8 @@ inline void rtw_lock_rx_suspend_timeout(u32 timeout_ms)
 {
 #ifdef CONFIG_WAKELOCK
 	wake_lock_timeout(&rtw_suspend_rx_lock, rtw_ms_to_systime(timeout_ms));
-#elif defined(CONFIG_ANDROID_POWER)
+#endif
+#if 0
 	android_lock_suspend_auto_expire(&rtw_suspend_rx_lock, rtw_ms_to_systime(timeout_ms));
 #endif
 	//DBG_871X("RX lock timeout:%d\n", timeout_ms);
@@ -1722,7 +1732,8 @@ inline void rtw_lock_traffic_suspend_timeout(u32 timeout_ms)
 {
 #ifdef CONFIG_WAKELOCK
 	wake_lock_timeout(&rtw_suspend_traffic_lock, rtw_ms_to_systime(timeout_ms));
-#elif defined(CONFIG_ANDROID_POWER)
+#endif
+#if 0
 	android_lock_suspend_auto_expire(&rtw_suspend_traffic_lock, rtw_ms_to_systime(timeout_ms));
 #endif
 	//DBG_871X("traffic lock timeout:%d\n", timeout_ms);
@@ -1732,7 +1743,8 @@ inline void rtw_lock_resume_scan_timeout(u32 timeout_ms)
 {
 #ifdef CONFIG_WAKELOCK
 	wake_lock_timeout(&rtw_resume_scan_lock, rtw_ms_to_systime(timeout_ms));
-#elif defined(CONFIG_ANDROID_POWER)
+#endif
+#if 0
 	android_lock_suspend_auto_expire(&rtw_resume_scan_lock, rtw_ms_to_systime(timeout_ms));
 #endif
 	//DBG_871X("resume scan lock:%d\n", timeout_ms);

@@ -290,7 +290,7 @@ static s32 update_txdesc(struct xmit_frame *pxmitframe, u8 *pmem, s32 sz ,u8 bag
 }
 
 
-#ifdef CONFIG_XMIT_THREAD_MODE
+#if 0
 /*
  * Description
  *	Transmit xmitbuf to hardware tx fifo
@@ -407,7 +407,7 @@ static s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 
 		ff_hwaddr = rtw_get_ff_hwaddr(pxmitframe);
 
-#ifdef CONFIG_XMIT_THREAD_MODE
+#if 0
 		pxmitbuf->len = w_sz;
 		pxmitbuf->ff_hwaddr = ff_hwaddr;
 		enqueue_pending_xmitbuf(pxmitpriv, pxmitbuf);

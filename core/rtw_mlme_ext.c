@@ -9535,7 +9535,7 @@ void site_survey(_adapter *padapter)
 #endif
 
 		set_survey_timer(pmlmeext, channel_scan_time_ms);
-#if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
+#if 0
 		{
 			struct noise_info info;
 			info.bPauseDIG = _FALSE;
@@ -10750,7 +10750,7 @@ bool rtw_port_switch_chk(_adapter *adapter)
 #ifdef CONFIG_CONCURRENT_MODE
 #ifdef CONFIG_RUNTIME_PORT_SWITCH
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
-#if   defined(DBG_RUNTIME_PORT_SWITCH)
+#if 0
 	struct pwrctrl_priv *pwrctl = dvobj_to_pwrctl(dvobj);
 #endif
 	_adapter *if_port0 = NULL;
@@ -10779,7 +10779,7 @@ bool rtw_port_switch_chk(_adapter *adapter)
 		goto exit;
 	}
 
-#ifdef DBG_RUNTIME_PORT_SWITCH
+#if 0
 	DBG_871X(FUNC_ADPT_FMT" wowlan_mode:%u\n"
 	         ADPT_FMT", port0, mlmeinfo->state:0x%08x, p2p_state:%d, %d\n"
 	         ADPT_FMT", port1, mlmeinfo->state:0x%08x, p2p_state:%d, %d\n",
@@ -10828,7 +10828,7 @@ bool rtw_port_switch_chk(_adapter *adapter)
 	}
 
 exit:
-#ifdef DBG_RUNTIME_PORT_SWITCH
+#if 0
 	DBG_871X(FUNC_ADPT_FMT" ret:%d\n", FUNC_ADPT_ARG(adapter), switch_needed);
 #endif /* DBG_RUNTIME_PORT_SWITCH */
 #endif /* CONFIG_RUNTIME_PORT_SWITCH */
@@ -13887,7 +13887,7 @@ u8 led_blink_hdl(_adapter *padapter, unsigned char *pbuf)
 
 	ledBlink_param = (struct LedBlink_param *)pbuf;
 
-#ifdef CONFIG_LED_HANDLED_BY_CMD_THREAD
+#if 0
 	BlinkHandler((PLED_DATA)ledBlink_param->pLed);
 #endif
 

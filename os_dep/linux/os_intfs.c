@@ -59,7 +59,7 @@ int rtw_power_mgnt = PS_MODE_MAX;
 #else
 int rtw_power_mgnt = PS_MODE_MIN;
 #endif
-#ifdef CONFIG_IPS_LEVEL_2
+#if 0
 int rtw_ips_mode = IPS_LEVEL_2;
 #else
 int rtw_ips_mode = IPS_NORMAL;
@@ -227,10 +227,10 @@ MODULE_PARM_DESC(if2name, "The default name to allocate for second interface");
 
 char* rtw_initmac = 0;  // temp mac address if users want to use instead of the mac address in Efuse
 
-#ifdef CONFIG_MULTI_VIR_IFACES
+#if 0
 int rtw_ext_iface_num  = 1;//primary/secondary iface is excluded
 module_param(rtw_ext_iface_num, int, 0644);
-#endif //CONFIG_MULTI_VIR_IFACES
+#endif //
 
 module_param(rtw_initmac, charp, 0644);
 module_param(rtw_channel_plan, int, 0644);
@@ -277,11 +277,11 @@ module_param(rtw_hw_wps_pbc, int, 0644);
 #ifdef CONFIG_TX_EARLY_MODE
 module_param(rtw_early_mode, int, 0644);
 #endif
-#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
+#if 0
 char *rtw_adaptor_info_caching_file_path= "/data/misc/wifi/rtw_cache";
 module_param(rtw_adaptor_info_caching_file_path, charp, 0644);
 MODULE_PARM_DESC(rtw_adaptor_info_caching_file_path, "The path of adapter info cache file");
-#endif //CONFIG_ADAPTOR_INFO_CACHING_FILE
+#endif //
 
 #ifdef CONFIG_LAYER2_ROAMING
 uint rtw_max_roaming_times=2;
@@ -295,7 +295,7 @@ module_param(rtw_fw_iol, int, 0644);
 MODULE_PARM_DESC(rtw_fw_iol, "FW IOL. 0:Disable, 1:enable, 2:by usb speed");
 #endif //CONFIG_IOL
 
-#ifdef CONFIG_FILE_FWIMG
+#if 0
 char *rtw_fw_file_path = "/system/etc/firmware/rtlwifi/FW_NIC.BIN";
 module_param(rtw_fw_file_path, charp, 0644);
 MODULE_PARM_DESC(rtw_fw_file_path, "The path of fw image");
@@ -309,7 +309,7 @@ char *rtw_fw_mp_bt_file_path = "";
 module_param(rtw_fw_mp_bt_file_path, charp, 0644);
 MODULE_PARM_DESC(rtw_fw_mp_bt_file_path, "The path of fw for MP-BT image");
 #endif // CONFIG_MP_INCLUDED
-#endif // CONFIG_FILE_FWIMG
+#endif //
 
 #ifdef CONFIG_TX_MCAST2UNI
 module_param(rtw_mc2u_disable, int, 0644);
@@ -540,14 +540,14 @@ uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)
 #ifdef CONFIG_AUTOSUSPEND
 	registry_par->usbss_enable = (u8)rtw_enusbss;//0:disable,1:enable
 #endif
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 	registry_par->hwpdn_mode = (u8)rtw_hwpdn_mode;//0:disable,1:enable,2:by EFUSE config
 	registry_par->hwpwrp_detect = (u8)rtw_hwpwrp_detect;//0:disable,1:enable
 #endif
 
 	registry_par->hw_wps_pbc = (u8)rtw_hw_wps_pbc;
 
-#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
+#if 0
 	snprintf(registry_par->adaptor_info_caching_file_path, PATH_LENGTH_MAX, "%s", rtw_adaptor_info_caching_file_path);
 	registry_par->adaptor_info_caching_file_path[PATH_LENGTH_MAX-1]=0;
 #endif
@@ -581,9 +581,9 @@ uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)
 	registry_par->force_igi = (u8)rtw_force_igi;
 #endif
 
-#ifdef CONFIG_MULTI_VIR_IFACES
+#if 0
 	registry_par->ext_iface_num = (u8)rtw_ext_iface_num;
-#endif //CONFIG_MULTI_VIR_IFACES
+#endif //
 
 #ifdef CONFIG_SW_LED
        registry_par->led_enable = (u8)rtw_led_enable;
@@ -959,7 +959,7 @@ u32 rtw_start_drv_threads(_adapter *padapter)
 	u32 _status = _SUCCESS;
 
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtw_start_drv_threads\n"));
-#ifdef CONFIG_XMIT_THREAD_MODE
+#if 0
 #if 0
 	if(padapter->adapter_type == PRIMARY_ADAPTER) {
 #endif
@@ -1019,7 +1019,7 @@ void rtw_stop_drv_threads (_adapter *padapter)
 	}
 #endif
 
-#ifdef CONFIG_XMIT_THREAD_MODE
+#if 0
 	// Below is to termindate tx_thread...
 #if 0
 	// Only wake-up primary adapter
@@ -1500,7 +1500,7 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 }
 
 #ifdef CONFIG_CONCURRENT_MODE
-#ifdef CONFIG_MULTI_VIR_IFACES
+#if 0
 int _netdev_vir_if_open(struct net_device *pnetdev)
 {
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
@@ -1658,7 +1658,7 @@ _adapter *rtw_drv_add_vir_if(_adapter *primary_padapter,
 	padapter->adapter_type = MAX_ADAPTER;
 	padapter->pbuddy_adapter = primary_padapter;
 #if 0
-#ifndef CONFIG_HWPORT_SWAP	//Port0 -> Pri , Port1 -> Sec
+#if 1
 	padapter->iface_type = IFACE_PORT1;
 #else
 	padapter->iface_type = IFACE_PORT0;
@@ -1836,7 +1836,7 @@ void rtw_drv_del_vir_ifaces(_adapter *primary_padapter)
 		rtw_drv_del_vir_if(dvobj->padapters[i]);
 	}
 }
-#endif //CONFIG_MULTI_VIR_IFACES
+#endif //
 
 int _netdev_if2_open(struct net_device *pnetdev)
 {
@@ -2041,7 +2041,7 @@ _adapter *rtw_drv_if2_init(_adapter *primary_padapter,
 	padapter->adapter_type = SECONDARY_ADAPTER;
 	padapter->pbuddy_adapter = primary_padapter;
 	padapter->iface_id = IFACE_ID1;
-#ifndef CONFIG_HWPORT_SWAP			//Port0 -> Pri , Port1 -> Sec
+#if 1
 	padapter->iface_type = IFACE_PORT1;
 #else
 	padapter->iface_type = IFACE_PORT0;
@@ -2605,7 +2605,7 @@ static int netdev_close(struct net_device *pnetdev)
 			rtw_netif_stop_queue(pnetdev);
 		}
 
-#ifndef CONFIG_ANDROID
+#if 1
 		//s2.
 		LeaveAllPowerSaveMode(padapter);
 		rtw_disassoc_cmd(padapter, 500, _FALSE);
@@ -3883,9 +3883,9 @@ int rtw_resume_process_ap_wow(_adapter *padapter)
 		rtw_signal_process(padapter->pid[1], SIGUSR2);
 	}
 
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
+#if 0
 	//rtw_unlock_suspend();
-#endif //CONFIG_RESUME_IN_WORKQUEUE
+#endif //
 
 	if (pwrpriv->wowlan_wake_reason == AP_WakeUp)
 		rtw_lock_ext_suspend_timeout(8000);
@@ -4018,9 +4018,6 @@ int rtw_resume_process_normal(_adapter *padapter)
 	}
 #endif
 
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
-	//rtw_unlock_suspend();
-#endif //CONFIG_RESUME_IN_WORKQUEUE
 	DBG_871X("<== "FUNC_ADPT_FMT" exit....\n", FUNC_ADPT_ARG(padapter));
 
 exit:

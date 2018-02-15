@@ -870,7 +870,7 @@ ODM_CmnInfoUpdate(
 	case	ODM_CMNINFO_RA_THRESHOLD_LOW:
 		pDM_Odm->RateAdaptive.LowRSSIThresh = (u1Byte)Value;
 		break;
-#if defined(BT_30_SUPPORT) && (BT_30_SUPPORT == 1)
+#if 0
 	// The following is for BT HS mode and BT coexist mechanism.
 	case ODM_CMNINFO_BT_ENABLED:
 		pDM_Odm->bBtEnabled = (BOOLEAN)Value;

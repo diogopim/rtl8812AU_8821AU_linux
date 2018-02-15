@@ -1262,13 +1262,13 @@ void EFUSE_ShadowMapUpdate(
 	if (pEEPROM->bautoload_fail_flag == _TRUE) {
 		_rtw_memset(pEEPROM->efuse_eeprom_data, 0xFF, mapLen);
 	} else {
-#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
+#if 0
 		if(_SUCCESS != retriveAdaptorInfoFile(pAdapter->registrypriv.adaptor_info_caching_file_path, pEEPROM)) {
 #endif
 
 			Efuse_ReadAllMap(pAdapter, efuseType, pEEPROM->efuse_eeprom_data, bPseudoTest);
 
-#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
+#if 0
 			storeAdaptorInfoFile(pAdapter->registrypriv.adaptor_info_caching_file_path, pEEPROM);
 		}
 #endif
@@ -1385,7 +1385,7 @@ Efuse_InitSomeVar(
 }
 
 #ifdef PLATFORM_LINUX
-#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
+#if 0
 //#include <rtw_eeprom.h>
 
 int isAdaptorInfoFileValid(void)
@@ -1439,7 +1439,7 @@ int retriveAdaptorInfoFile(char *path, struct eeprom_priv * eeprom_priv)
 	}
 	return ret;
 }
-#endif //CONFIG_ADAPTOR_INFO_CACHING_FILE
+#endif //
 #endif //PLATFORM_LINUX
 
 #if 0

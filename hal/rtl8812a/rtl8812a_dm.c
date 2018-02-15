@@ -283,7 +283,7 @@ static void Init_ODM_ComInfo_8812(PADAPTER	Adapter)
 
 	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_IQKFWOFFLOAD, pHalData->RegIQKFWOffload);
 
-#ifdef CONFIG_DISABLE_ODM
+#if 0
 	pdmpriv->InitODMFlag = 0;
 #else
 	pdmpriv->InitODMFlag =	ODM_RF_CALIBRATION		|
@@ -329,9 +329,9 @@ static void Update_ODM_ComInfo_8812(PADAPTER	Adapter)
 	}
 #endif//(MP_DRIVER==1)
 
-#ifdef CONFIG_DISABLE_ODM
+#if 0
 	pdmpriv->InitODMFlag = 0;
-#endif//CONFIG_DISABLE_ODM
+#endif//
 
 	ODM_CmnInfoUpdate(pDM_Odm,ODM_CMNINFO_ABILITY,pdmpriv->InitODMFlag);
 
@@ -426,7 +426,7 @@ rtl8812_HalDmWatchDog(
 		u8	bsta_state=_FALSE;
 		u8	bBtDisabled = _TRUE;
 
-#ifdef CONFIG_DISABLE_ODM
+#if 0
 		pHalData->odmpriv.SupportAbility = 0;
 #endif
 

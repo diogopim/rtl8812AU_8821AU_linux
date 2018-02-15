@@ -1978,7 +1978,7 @@ void BlinkTimerCallback(void *data)
 		return;
 	}
 
-#ifdef CONFIG_LED_HANDLED_BY_CMD_THREAD
+#if 0
 	rtw_led_blink_cmd(padapter, (PVOID)pLed);
 #else
 	if(ATOMIC_READ(&pLed->bCancelWorkItem) == _FALSE)

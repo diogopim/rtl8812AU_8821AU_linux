@@ -172,7 +172,7 @@ extern void autosuspend_enter(_adapter* padapter);
 extern int autoresume_enter(_adapter* padapter);
 #endif
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 int rtw_hw_suspend(_adapter *padapter );
 int rtw_hw_resume(_adapter *padapter);
 #endif
@@ -283,7 +283,7 @@ void rtw_ps_processor(_adapter*padapter)
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 	rt_rf_power_state rfpwrstate;
 #endif //SUPPORT_HW_RFOFF_DETECTED
 	u32 ps_deny = 0;
@@ -305,7 +305,7 @@ void rtw_ps_processor(_adapter*padapter)
 
 	pwrpriv->ps_processing = _TRUE;
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 	if(pwrpriv->bips_processing == _TRUE)
 		goto exit;
 
@@ -2087,9 +2087,9 @@ void rtw_unregister_evt_alive(PADAPTER padapter)
 }
 #endif	/* CONFIG_LPS_LCLK */
 
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
+#if 0
 static void resume_workitem_callback(struct work_struct *work);
-#endif //CONFIG_RESUME_IN_WORKQUEUE
+#endif //
 
 void rtw_init_pwrctrl_priv(PADAPTER padapter)
 {
@@ -2125,7 +2125,7 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 	pwrctrlpriv->bkeepfwalive = _FALSE;
 
 #ifdef CONFIG_AUTOSUSPEND
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 	pwrctrlpriv->pwr_state_check_interval = (pwrctrlpriv->bHWPwrPindetect) ?1000:2000;
 #endif
 #endif
@@ -2168,12 +2168,12 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
 	pwrctrlpriv->wowlan_ap_mode = _FALSE;
 	pwrctrlpriv->wowlan_p2p_mode = _FALSE;
 
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
+#if 0
 	_init_workitem(&pwrctrlpriv->resume_work, resume_workitem_callback, NULL);
 	pwrctrlpriv->rtw_workqueue = create_singlethread_workqueue("rtw_workqueue");
-#endif //CONFIG_RESUME_IN_WORKQUEUE
+#endif //
 
-#if defined(CONFIG_HAS_EARLYSUSPEND) || defined(CONFIG_ANDROID_POWER)
+#if defined(CONFIG_HAS_EARLYSUSPEND)
 	pwrctrlpriv->early_suspend.suspend = NULL;
 	rtw_register_early_suspend(pwrctrlpriv);
 #endif //CONFIG_HAS_EARLYSUSPEND || CONFIG_ANDROID_POWER
@@ -2208,7 +2208,7 @@ void rtw_free_pwrctrl_priv(PADAPTER adapter)
 	//_rtw_memset((unsigned char *)pwrctrlpriv, 0, sizeof(struct pwrctrl_priv));
 
 
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
+#if 0
 	if (pwrctrlpriv->rtw_workqueue) {
 		flush_workqueue(pwrctrlpriv->rtw_workqueue);
 		destroy_workqueue(pwrctrlpriv->rtw_workqueue);
@@ -2226,7 +2226,7 @@ void rtw_free_pwrctrl_priv(PADAPTER adapter)
 		printk("****** pno_ssid_list memory leak********\n");
 #endif
 
-#if defined(CONFIG_HAS_EARLYSUSPEND) || defined(CONFIG_ANDROID_POWER)
+#if defined(CONFIG_HAS_EARLYSUSPEND)
 	rtw_unregister_early_suspend(pwrctrlpriv);
 #endif //CONFIG_HAS_EARLYSUSPEND || CONFIG_ANDROID_POWER
 
@@ -2236,7 +2236,7 @@ void rtw_free_pwrctrl_priv(PADAPTER adapter)
 	_func_exit_;
 }
 
-#ifdef CONFIG_RESUME_IN_WORKQUEUE
+#if 0
 extern int rtw_resume_process(_adapter *padapter);
 
 static void resume_workitem_callback(struct work_struct *work)
@@ -2265,9 +2265,9 @@ void rtw_resume_in_workqueue(struct pwrctrl_priv *pwrpriv)
 	_set_workitem(&pwrpriv->resume_work);
 #endif
 }
-#endif //CONFIG_RESUME_IN_WORKQUEUE
+#endif //
 
-#if defined(CONFIG_HAS_EARLYSUSPEND) || defined(CONFIG_ANDROID_POWER)
+#if defined(CONFIG_HAS_EARLYSUSPEND)
 inline bool rtw_is_earlysuspend_registered(struct pwrctrl_priv *pwrpriv)
 {
 	return (pwrpriv->early_suspend.suspend) ? _TRUE : _FALSE;
@@ -2335,7 +2335,7 @@ void rtw_unregister_early_suspend(struct pwrctrl_priv *pwrpriv)
 }
 #endif //CONFIG_HAS_EARLYSUSPEND
 
-#ifdef CONFIG_ANDROID_POWER
+#if 0
 #if 1
 extern int rtw_resume_process(PADAPTER padapter);
 #endif

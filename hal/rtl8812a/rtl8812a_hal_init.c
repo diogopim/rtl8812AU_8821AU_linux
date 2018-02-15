@@ -507,14 +507,14 @@ exit:
 	return ret;
 }
 
-#ifdef CONFIG_FILE_FWIMG
+#if 0
 extern char *rtw_fw_file_path;
 u8	FwBuffer8812[FW_SIZE_8812];
 #ifdef CONFIG_MP_INCLUDED
 extern char *rtw_fw_mp_bt_file_path;
 #endif // CONFIG_MP_INCLUDED
 u8 FwBuffer[FW_SIZE_8812];
-#endif //CONFIG_FILE_FWIMG
+#endif //
 
 s32
 FirmwareDownload8812(
@@ -542,12 +542,12 @@ FirmwareDownload8812(
 		goto exit;
 	}
 
-#ifdef CONFIG_FILE_FWIMG
+#if 0
 	if(rtw_is_file_readable(rtw_fw_file_path) == _TRUE) {
 		DBG_871X("%s accquire FW from file:%s\n", __FUNCTION__, rtw_fw_file_path);
 		pFirmware->eFWSource = FW_SOURCE_IMG_FILE;
 	} else
-#endif //CONFIG_FILE_FWIMG
+#endif //
 	{
 		DBG_871X("%s fw source from Header\n", __FUNCTION__);
 		pFirmware->eFWSource = FW_SOURCE_HEADER_FILE;
@@ -555,11 +555,11 @@ FirmwareDownload8812(
 
 	switch(pFirmware->eFWSource) {
 	case FW_SOURCE_IMG_FILE:
-#ifdef CONFIG_FILE_FWIMG
+#if 0
 		rtStatus = rtw_retrive_from_file(rtw_fw_file_path, FwBuffer8812, FW_SIZE_8812);
 		pFirmware->ulFwLength = rtStatus>=0?rtStatus:0;
 		pFirmware->szFwBuffer = FwBuffer8812;
-#endif //CONFIG_FILE_FWIMG
+#endif //
 		break;
 	case FW_SOURCE_HEADER_FILE:
 #if 0
@@ -1093,7 +1093,7 @@ s32 FirmwareDownloadBT(PADAPTER padapter, PRT_MP_FIRMWARE pFirmware)
 		return _FAIL;
 	}
 
-#ifdef CONFIG_FILE_FWIMG
+#if 0
 	if (rtw_is_file_readable(rtw_fw_mp_bt_file_path) == _TRUE) {
 		DBG_8192C("%s: accquire MP BT FW from file:%s\n", __FUNCTION__, rtw_fw_mp_bt_file_path);
 
@@ -1101,7 +1101,7 @@ s32 FirmwareDownloadBT(PADAPTER padapter, PRT_MP_FIRMWARE pFirmware)
 		BTFirmwareLen = rtStatus>=0?rtStatus:0;
 		pBTFirmwareBuf = FwBuffer;
 	} else
-#endif // CONFIG_FILE_FWIMG
+#endif //
 	{
 #ifdef CONFIG_EMBEDDED_FWIMG
 		DBG_8192C("%s: Download MP BT FW from header\n", __FUNCTION__);
@@ -4513,18 +4513,18 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 #if 0
 				UpdateInterruptMask8812AE( Adapter, 0, 0, RT_BCN_INT_MASKS, 0);
 #else
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN
+#if 0
 
-#ifdef  CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
+#if 0
 				rtw_write8(Adapter, REG_DRVERLYINT, 0x05);//restore early int time to 5ms
 				UpdateInterruptMask8812AU(Adapter,_TRUE, 0, IMR_BCNDMAINT0_8812);
-#endif // CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
+#endif //
 
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
+#if 0
 				UpdateInterruptMask8812AU(Adapter,_TRUE ,0, (IMR_TXBCN0ERR_8812|IMR_TXBCN0OK_8812));
-#endif// CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
+#endif//
 
-#endif //CONFIG_INTERRUPT_BASED_TXBCN
+#endif //
 #endif
 			}
 
@@ -4537,16 +4537,16 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 #if 0
 			UpdateInterruptMask8812AE( Adapter, RT_BCN_INT_MASKS, 0, 0, 0);
 #else
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN
-#ifdef  CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
+#if 0
+#if 0
 			UpdateInterruptMask8812AU(Adapter,_TRUE ,IMR_BCNDMAINT0_8812, 0);
-#endif//CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
+#endif//
 
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
+#if 0
 			UpdateInterruptMask8812AU(Adapter,_TRUE ,(IMR_TXBCN0ERR_8812|IMR_TXBCN0OK_8812), 0);
-#endif//CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
+#endif//
 
-#endif //CONFIG_INTERRUPT_BASED_TXBCN
+#endif //
 #endif
 
 			ResumeTxBeacon(Adapter);
@@ -4597,14 +4597,14 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 			//dis BCN0 ATIM  WND if if1 is station
 			rtw_write8(Adapter, REG_BCN_CTRL, rtw_read8(Adapter, REG_BCN_CTRL)|DIS_ATIM);
 
-#ifdef CONFIG_TSF_RESET_OFFLOAD
+#if 0
 			// Reset TSF for STA+AP concurrent mode
 			if ( check_buddy_fwstate(Adapter, (WIFI_STATION_STATE|WIFI_ASOC_STATE)) ) {
 				if (reset_tsf(Adapter, IFACE_PORT1) == _FALSE)
 					DBG_871X("ERROR! %s()-%d: Reset port1 TSF fail\n",
 					         __FUNCTION__, __LINE__);
 			}
-#endif	// CONFIG_TSF_RESET_OFFLOAD
+#endif	//
 		}
 	} else //else for port0
 #endif // CONFIG_CONCURRENT_MODE
@@ -4628,17 +4628,17 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 #if 0
 				UpdateInterruptMask8812AE( Adapter, 0, 0, RT_BCN_INT_MASKS, 0);
 #else
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN
-#ifdef  CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
+#if 0
+#if 0
 				rtw_write8(Adapter, REG_DRVERLYINT, 0x05);//restore early int time to 5ms
 				UpdateInterruptMask8812AU(Adapter,_TRUE, 0, IMR_BCNDMAINT0_8812);
-#endif//CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
+#endif//
 
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
+#if 0
 				UpdateInterruptMask8812AU(Adapter,_TRUE ,0, (IMR_TXBCN0ERR_8812|IMR_TXBCN0OK_8812));
-#endif //CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
+#endif //
 
-#endif //CONFIG_INTERRUPT_BASED_TXBCN
+#endif //
 #endif
 			}
 
@@ -4651,16 +4651,16 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 #if 0
 			UpdateInterruptMask8812AE( Adapter, RT_BCN_INT_MASKS, 0, 0, 0);
 #else
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN
-#ifdef  CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
+#if 0
+#if 0
 			UpdateInterruptMask8812AU(Adapter,_TRUE ,IMR_BCNDMAINT0_8812, 0);
-#endif//CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
+#endif//
 
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
+#if 0
 			UpdateInterruptMask8812AU(Adapter,_TRUE ,(IMR_TXBCN0ERR_8812|IMR_TXBCN0OK_8812), 0);
-#endif//CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
+#endif//
 
-#endif //CONFIG_INTERRUPT_BASED_TXBCN
+#endif //
 #endif
 
 			ResumeTxBeacon(Adapter);
@@ -4707,14 +4707,14 @@ static void hw_var_set_opmode(PADAPTER Adapter, u8 variable, const u8* val)
 
 			//dis BCN1 ATIM  WND if if2 is station
 			rtw_write8(Adapter, REG_BCN_CTRL_1, rtw_read8(Adapter, REG_BCN_CTRL_1)|DIS_ATIM);
-#ifdef CONFIG_TSF_RESET_OFFLOAD
+#if 0
 			// Reset TSF for STA+AP concurrent mode
 			if ( check_buddy_fwstate(Adapter, (WIFI_STATION_STATE|WIFI_ASOC_STATE)) ) {
 				if (reset_tsf(Adapter, IFACE_PORT0) == _FALSE)
 					DBG_871X("ERROR! %s()-%d: Reset port0 TSF fail\n",
 					         __FUNCTION__, __LINE__);
 			}
-#endif	// CONFIG_TSF_RESET_OFFLOAD
+#endif	//
 		}
 	}
 
@@ -4835,13 +4835,13 @@ static inline void hw_var_set_correct_tsf(PADAPTER Adapter, u8 variable, const u
 
 			//enable related TSF function
 			rtw_write8(Adapter, REG_BCN_CTRL, rtw_read8(Adapter, REG_BCN_CTRL)|BIT(3));
-#ifdef CONFIG_TSF_RESET_OFFLOAD
+#if 0
 			// Update buddy port's TSF(TBTT) if it is SoftAP for beacon TX issue!
 			if (reset_tsf(Adapter, IFACE_PORT0) == _FALSE)
 				DBG_871X("ERROR! %s()-%d: Reset port0 TSF fail\n",
 				         __FUNCTION__, __LINE__);
 
-#endif	// CONFIG_TSF_RESET_OFFLOAD
+#endif	//
 		}
 
 
@@ -4867,12 +4867,12 @@ static inline void hw_var_set_correct_tsf(PADAPTER Adapter, u8 variable, const u
 
 			//enable related TSF function
 			rtw_write8(Adapter, REG_BCN_CTRL_1, rtw_read8(Adapter, REG_BCN_CTRL_1)|BIT(3));
-#ifdef CONFIG_TSF_RESET_OFFLOAD
+#if 0
 			// Update buddy port's TSF if it is SoftAP for beacon TX issue!
 			if (reset_tsf(Adapter, IFACE_PORT1) == _FALSE)
 				DBG_871X("ERROR! %s()-%d: Reset port1 TSF fail\n",
 				         __FUNCTION__, __LINE__);
-#endif	// CONFIG_TSF_RESET_OFFLOAD
+#endif	//
 		}
 
 	}
@@ -5330,7 +5330,7 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 
 	case HW_VAR_BEACON_INTERVAL:
 		rtw_write16(padapter, REG_BCN_INTERVAL, *(u16*)pval);
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
+#if 0
 		{
 			struct mlme_ext_priv *pmlmeext;
 			struct mlme_ext_info *pmlmeinfo;
@@ -5345,7 +5345,7 @@ void SetHwReg8812A(PADAPTER padapter, u8 variable, const u8 *pval)
 				rtw_write8(padapter, REG_DRVERLYINT, bcn_interval>>1);// 50ms for sdio
 			}
 		}
-#endif // CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
+#endif //
 		break;
 
 	case HW_VAR_SLOT_TIME:

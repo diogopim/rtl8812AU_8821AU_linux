@@ -377,7 +377,7 @@ int rtw_cmd_filter(struct cmd_priv *pcmdpriv, struct cmd_obj *cmd_obj)
 {
 	u8 bAllow = _FALSE; //set to _TRUE to allow enqueuing cmd when hw_init_completed is _FALSE
 
-#ifdef SUPPORT_HW_RFOFF_DETECTED
+#if 0
 	//To decide allow or not
 	if( (adapter_to_pwrctl(pcmdpriv->padapter)->bHWPwrPindetect)
 	    &&(!pcmdpriv->padapter->registrypriv.usbss_enable)

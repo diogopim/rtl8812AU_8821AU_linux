@@ -20,7 +20,7 @@
 #ifndef _RTW_EVENT_H_
 #define _RTW_EVENT_H_
 
-#ifdef CONFIG_H2CLBK
+#if 0
 #include <h2clbk.h>
 #endif
 
@@ -85,7 +85,7 @@ struct wmm_event {
 	unsigned char wmm;
 };
 
-#ifdef CONFIG_H2CLBK
+#if 0
 struct c2hlbk_event {
 	unsigned char mac[6];
 	unsigned short	s0;
@@ -96,7 +96,7 @@ struct c2hlbk_event {
 	unsigned char	b1;
 	unsigned int	w1;
 };
-#endif//CONFIG_H2CLBK
+#endif//
 
 #define GEN_EVT_CODE(event)	event ## _EVT_
 

@@ -19,7 +19,6 @@
  ******************************************************************************/
 //***** temporarily flag *******
 #define CONFIG_SINGLE_IMG
-//#define CONFIG_DISABLE_ODM
 
 //***** temporarily flag *******
 /*
@@ -50,10 +49,8 @@
 /*
  * Internal  General Config
  */
-//#define CONFIG_H2CLBK
 
 #define CONFIG_EMBEDDED_FWIMG	1
-//#define CONFIG_FILE_FWIMG
 
 #define CONFIG_XMIT_ACK
 #ifdef CONFIG_XMIT_ACK
@@ -69,35 +66,16 @@
 
 #define CONFIG_RECV_REORDERING_CTRL	1
 
-//#define CONFIG_TCP_CSUM_OFFLOAD_RX	1
-
-//#define CONFIG_DRVEXT_MODULE	1
-
 #define CONFIG_DFS	1
-
-#if 0
-//#define CONFIG_USB_INTERRUPT_IN_PIPE	1
-#endif
 
 //#ifndef CONFIG_MP_INCLUDED
 #define CONFIG_IPS	1
 #ifdef CONFIG_IPS
-//#define CONFIG_IPS_LEVEL_2	1 //enable this to set default IPS mode to IPS_LEVEL_2
 #define CONFIG_IPS_CHECK_IN_WD // Do IPS Check in WatchDog.
 #endif
-//#define SUPPORT_HW_RFOFF_DETECTED	1
 
 #define CONFIG_LPS	1
 //#if defined(CONFIG_LPS) && defined(CONFIG_SUPPORT_USB_INT)
-#if 0
-#endif
-
-#if 0
-#define CONFIG_XMIT_THREAD_MODE
-#endif
-
-//befor link
-//#define CONFIG_ANTENNA_DIVERSITY
 
 //after link
 #if 0
@@ -107,30 +85,12 @@
 
 //#define CONFIG_CONCURRENT_MODE 1
 #ifdef CONFIG_CONCURRENT_MODE
-//#define CONFIG_HWPORT_SWAP				//Port0->Sec , Port1 -> Pri
 #define CONFIG_RUNTIME_PORT_SWITCH
-//#define DBG_RUNTIME_PORT_SWITCH
 #define CONFIG_STA_MODE_SCAN_UNDER_AP_MODE
-//#if 1
-//#define CONFIG_TSF_RESET_OFFLOAD 1		// For 2 PORT TSF SYNC.
-//#endif
-//#define CONFIG_MULTI_VIR_IFACES //besides primary&secondary interfaces, extend to support more interfaces
 #endif
-
-//#else 	//#ifndef CONFIG_MP_INCLUDED
-
-//#endif 	//#ifndef CONFIG_MP_INCLUDED
 
 #define CONFIG_AP_MODE	1
 #ifdef CONFIG_AP_MODE
-//#define CONFIG_INTERRUPT_BASED_TXBCN // Tx Beacon when driver BCN_OK ,BCN_ERR interrupt occurs
-#if defined(CONFIG_CONCURRENT_MODE) && defined(CONFIG_INTERRUPT_BASED_TXBCN)
-#undef CONFIG_INTERRUPT_BASED_TXBCN
-#endif
-#ifdef CONFIG_INTERRUPT_BASED_TXBCN
-//#define CONFIG_INTERRUPT_BASED_TXBCN_EARLY_INT
-#define CONFIG_INTERRUPT_BASED_TXBCN_BCN_OK_ERR
-#endif
 
 #define CONFIG_NATIVEAP_MLME
 #ifndef CONFIG_NATIVEAP_MLME
@@ -159,50 +119,20 @@
 #define CONFIG_P2P_INVITE_IOT
 #endif
 
-//	Added by Kurt 20110511
-#if 0
-#define CONFIG_TDLS_DRIVER_SETUP
-//	#ifndef CONFIG_WFD
-//		#define CONFIG_WFD
-//	#endif
-//	#define CONFIG_TDLS_AUTOSETUP
-#define CONFIG_TDLS_AUTOCHECKALIVE
-#define CONFIG_TDLS_CH_SW
-#endif
-
-#if 0
-// for ODM and outsrc BT-Coex
-#define BT_30_SUPPORT 1
-
-#ifndef CONFIG_LPS
-#define CONFIG_LPS	// download reserved page to FW
-#endif
-#else // !CONFIG_BT_COEXIST
-#define BT_30_SUPPORT 0
-#endif // !CONFIG_BT_COEXIST
-
 #define CONFIG_SKB_COPY	1//for amsdu
 
 #define CONFIG_LED
-#ifdef CONFIG_LED
 #define CONFIG_SW_LED
-#ifdef CONFIG_SW_LED
-//#define CONFIG_LED_HANDLED_BY_CMD_THREAD
-#endif
-#endif // CONFIG_LED
 
 #define USB_INTERFERENCE_ISSUE // this should be checked in all usb interface
 #define CONFIG_GLOBAL_UI_PID
 
 #define CONFIG_LAYER2_ROAMING
 #define CONFIG_LAYER2_ROAMING_RESUME
-//#define CONFIG_ADAPTOR_INFO_CACHING_FILE // now just applied on 8192cu only, should make it general...
-//#define CONFIG_RESUME_IN_WORKQUEUE
-//#define CONFIG_SET_SCAN_DENY_TIMER
 #define CONFIG_LONG_DELAY_ISSUE
 #define CONFIG_NEW_SIGNAL_STAT_PROCESS
 //#define CONFIG_SIGNAL_DISPLAY_DBM //display RX signal with dbm
-#ifdef CONFIG_SIGNAL_DISPLAY_DBM
+#if 0
 //#define CONFIG_BACKGROUND_NOISE_MONITOR
 #endif
 #define RTW_NOTCH_FILTER 0 /* 0:Disable, 1:Enable, */

@@ -274,7 +274,7 @@ struct registry_priv {
 
 	u8	hw_wps_pbc;//0:disable,1:enable
 
-#ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
+#if 0
 	char	adaptor_info_caching_file_path[PATH_LENGTH_MAX];
 #endif
 
@@ -322,7 +322,7 @@ struct registry_priv {
 	u8	RegDecryptCustomFile;
 #endif
 
-#ifdef CONFIG_MULTI_VIR_IFACES
+#if 0
 	u8 ext_iface_num;//primary/secondary iface is excluded
 #endif
 	u8 qos_opt_enable;
