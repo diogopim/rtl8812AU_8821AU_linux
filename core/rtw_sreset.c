@@ -100,7 +100,7 @@ void sreset_set_trigger_point(_adapter *padapter, s32 tgp)
 
 bool sreset_inprogress(_adapter *padapter)
 {
-#if defined(DBG_CONFIG_ERROR_RESET)
+#if 0
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	return pHalData->srestpriv.silent_reset_inprogress;
 #else
@@ -304,7 +304,7 @@ void sreset_start_adapter(_adapter *padapter)
 
 void sreset_reset(_adapter *padapter)
 {
-#ifdef DBG_CONFIG_ERROR_RESET
+#if 0
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);

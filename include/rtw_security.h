@@ -153,7 +153,7 @@ struct security_priv {
 
 
 	u8	binstallGrpkey;
-#ifdef CONFIG_GTK_OL
+#if 0
 	u8	binstallKCK_KEK;
 #endif //CONFIG_GTK_OL
 #if 0

@@ -232,7 +232,7 @@ void usb_free_recv_priv (_adapter *padapter, u16 ini_in_buf_sz)
 #endif /* PLATFORM_FREEBSD */
 }
 
-#ifdef CONFIG_USB_SUPPORT_ASYNC_VDN_REQ
+#if 0
 int usb_write_async(struct usb_device *udev, u32 addr, void *pdata, u16 len)
 {
 	u8 request;
@@ -296,7 +296,7 @@ int usb_async_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 
 	return ret;
 }
-#endif /* CONFIG_USB_SUPPORT_ASYNC_VDN_REQ */
+#endif
 
 
 

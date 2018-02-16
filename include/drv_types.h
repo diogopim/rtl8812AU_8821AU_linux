@@ -34,7 +34,7 @@
 #include <wlan_bssdef.h>
 #include <wifi.h>
 #include <ieee80211.h>
-#ifdef CONFIG_ARP_KEEP_ALIVE
+#if 0
 #include <net/neighbour.h>
 #include <net/arp.h>
 #endif
@@ -204,7 +204,7 @@ struct registry_priv {
 	u8  mp_dm;
 	u8	software_encrypt;
 	u8	software_decrypt;
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 	u8   early_mode;
 #endif
 	u8	acm_method;

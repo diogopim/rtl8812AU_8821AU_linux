@@ -24,7 +24,6 @@
 
 #include "hal_data.h"
 
-//#define CONFIG_GTK_OL_DBG
 
 #if 1
 char	rtw_file_path[PATH_LENGTH_MAX];
@@ -1494,9 +1493,9 @@ void rtw_hal_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvdpageloc
 		//SET_H2CCMD_AOAC_RSVDPAGE_LOC_NEIGHBOR_ADV(u1H2CAoacRsvdPageParm, rsvdpageloc->LocNbrAdv);
 		SET_H2CCMD_AOAC_RSVDPAGE_LOC_GTK_RSP(u1H2CAoacRsvdPageParm, rsvdpageloc->LocGTKRsp);
 		SET_H2CCMD_AOAC_RSVDPAGE_LOC_GTK_INFO(u1H2CAoacRsvdPageParm, rsvdpageloc->LocGTKInfo);
-#ifdef CONFIG_GTK_OL
+#if 0
 		SET_H2CCMD_AOAC_RSVDPAGE_LOC_GTK_EXT_MEM(u1H2CAoacRsvdPageParm, rsvdpageloc->LocGTKEXTMEM);
-#endif // CONFIG_GTK_OL
+#endif
 		if (pHalFunc->fill_h2c_cmd != NULL) {
 			ret = pHalFunc->fill_h2c_cmd(padapter,
 			                             H2C_AOAC_RSVD_PAGE,
@@ -1711,7 +1710,7 @@ static u8 rtw_hal_enable_cpwm2(_adapter* adapter)
 }
 #endif //CONFIG_SDIO_HCI, CONFIG_GSPI_HCI
 
-#ifdef CONFIG_GTK_OL
+#if 0
 static void rtw_hal_fw_sync_cam_id(_adapter* adapter)
 {
 	struct security_priv *psecuritypriv = &adapter->securitypriv;
@@ -1809,7 +1808,7 @@ static void rtw_hal_update_gtk_offload_info(_adapter* adapter)
 		} while(defualt_cam_id < 4);
 
 		rtw_write8(adapter, REG_SECCFG, 0x0c);
-#ifdef CONFIG_GTK_OL_DBG
+#if 0
 		//if (gtk_keyindex != 5)
 		dump_cam_table(adapter);
 #endif
@@ -1987,7 +1986,7 @@ static u8 rtw_hal_set_wowlan_ctrl_cmd(_adapter *adapter, u8 enable)
 	SET_H2CCMD_WOWLAN_UNICAST_PKT_ENABLE(u1H2CWoWlanCtrlParm, hw_unicast);
 	SET_H2CCMD_WOWLAN_ALL_PKT_DROP(u1H2CWoWlanCtrlParm, 0);
 	SET_H2CCMD_WOWLAN_GPIO_ACTIVE(u1H2CWoWlanCtrlParm, gpio_high_active);
-#ifndef CONFIG_GTK_OL
+#if 1
 	SET_H2CCMD_WOWLAN_REKEY_WAKE_UP(u1H2CWoWlanCtrlParm, enable);
 #endif
 	SET_H2CCMD_WOWLAN_DISCONNECT_WAKE_UP(u1H2CWoWlanCtrlParm, discont_wake);
@@ -2029,7 +2028,7 @@ static u8 rtw_hal_set_remote_wake_ctrl_cmd(_adapter *adapter, u8 enable)
 		    u1H2CRemoteWakeCtrlParm, enable);
 		SET_H2CCMD_REMOTE_WAKE_CTRL_ARP_OFFLOAD_EN(
 		    u1H2CRemoteWakeCtrlParm, 1);
-#ifdef CONFIG_GTK_OL
+#if 0
 		if (psecuritypriv->binstallKCK_KEK == _TRUE &&
 		    psecuritypriv->dot11PrivacyAlgrthm == _AES_) {
 			SET_H2CCMD_REMOTE_WAKE_CTRL_GTK_OFFLOAD_EN(
@@ -2039,7 +2038,7 @@ static u8 rtw_hal_set_remote_wake_ctrl_cmd(_adapter *adapter, u8 enable)
 			SET_H2CCMD_REMOTE_WAKE_CTRL_GTK_OFFLOAD_EN(
 			    u1H2CRemoteWakeCtrlParm, 0);
 		}
-#endif //CONFIG_GTK_OL
+#endif
 
 		SET_H2CCMD_REMOTE_WAKE_CTRL_FW_UNICAST_EN(
 		    u1H2CRemoteWakeCtrlParm, 1);
@@ -2180,7 +2179,7 @@ void rtw_hal_set_fw_wow_related_cmd(_adapter* padapter, u8 enable)
 
 		if (!(ppwrpriv->wowlan_pno_enable)) {
 			rtw_hal_set_disconnect_decision_cmd(padapter, enable);
-#ifdef CONFIG_ARP_KEEP_ALIVE
+#if 0
 			if ((psecpriv->dot11PrivacyAlgrthm == _WEP40_) ||
 			    (psecpriv->dot11PrivacyAlgrthm == _WEP104_))
 				pkt_type = 0;
@@ -2188,7 +2187,7 @@ void rtw_hal_set_fw_wow_related_cmd(_adapter* padapter, u8 enable)
 				pkt_type = 1;
 #else
 			pkt_type = 0;
-#endif //CONFIG_ARP_KEEP_ALIVE
+#endif
 			rtw_hal_set_keep_alive_cmd(padapter, enable, pkt_type);
 		}
 		rtw_hal_set_remote_wake_ctrl_cmd(padapter, enable);
@@ -4074,7 +4073,7 @@ static void rtw_hal_construct_ARPRsp(
 	SET_ARP_PKT_OPERATION(pARPRspPkt, 0x0200);	// ARP response
 	SET_ARP_PKT_SENDER_MAC_ADDR(pARPRspPkt, myid(&(padapter->eeprompriv)));
 	SET_ARP_PKT_SENDER_IP_ADDR(pARPRspPkt, pIPAddress);
-#ifdef CONFIG_ARP_KEEP_ALIVE
+#if 0
 	if (rtw_gw_addr_query(padapter)==0) {
 		SET_ARP_PKT_TARGET_MAC_ADDR(pARPRspPkt, pmlmepriv->gw_mac_addr);
 		SET_ARP_PKT_TARGET_IP_ADDR(pARPRspPkt, pmlmepriv->gw_ip);
@@ -4310,7 +4309,7 @@ static void rtw_hal_construct_scan_info(_adapter *padapter,
 }
 #endif //CONFIG_PNO_SUPPORT
 
-#ifdef CONFIG_GTK_OL
+#if 0
 static void rtw_hal_construct_GTKRsp(
     PADAPTER	padapter,
     u8		*pframe,
@@ -4412,7 +4411,7 @@ static void rtw_hal_construct_GTKRsp(
 	pGTKRspPkt += 88;
 
 }
-#endif //CONFIG_GTK_OL
+#endif
 #endif //CONFIG_WOWLAN
 
 void rtw_hal_fill_fake_txdesc(_adapter* padapter, u8* pDesc, u32 BufferLen,
@@ -4473,13 +4472,13 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 	//struct security_priv *psecuritypriv = &adapter->securitypriv; //added by xx
 	u8 currentip[4];
 	u8 cur_dot11txpn[8];
-#ifdef CONFIG_GTK_OL
+#if 0
 	struct sta_priv *pstapriv = &adapter->stapriv;
 	struct security_priv *psecpriv = NULL;
 	struct sta_info * psta;
 	u8 kek[RTW_KEK_LEN];
 	u8 kck[RTW_KCK_LEN];
-#endif //CONFIG_GTK_OL
+#endif
 #if 0
 	int index;
 	u8 ssid_num;
@@ -4657,7 +4656,7 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 		CurtPktPageNum = (u8)PageNum(_AES_IV_LEN_, PageSize);
 
 		TotalPageNum += CurtPktPageNum;
-#ifdef CONFIG_GTK_OL
+#if 0
 		BufIndex += (CurtPktPageNum*PageSize);
 
 		//if the ap staion info. exists, get the kek, kck from staion info.
@@ -4757,9 +4756,9 @@ void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished)
 		TotalPageNum += CurtPktPageNum;
 		//extension memory for FW
 		TotalPacketLen = BufIndex-TxDescLen + (PageSize*CurtPktPageNum);
-#else //CONFIG_GTK_OL
+#else
 		TotalPacketLen = BufIndex + _AES_IV_LEN_;
-#endif //CONFIG_GTK_OL
+#endif
 	} else if (pwrctl->wowlan_pno_enable == _TRUE) {
 #if 0
 		if (pwrctl->pno_in_resume == _FALSE &&
@@ -5131,7 +5130,7 @@ void SetHwReg(_adapter *adapter, u8 variable, const u8 *val)
 		case WOWLAN_ENABLE:
 			DBG_871X_LEVEL(_drv_always_, "WOWLAN_ENABLE\n");
 
-#ifdef CONFIG_GTK_OL
+#if 0
 			if (psecuritypriv->dot11PrivacyAlgrthm == _AES_)
 				rtw_hal_fw_sync_cam_id(adapter);
 #endif
@@ -5194,7 +5193,7 @@ void SetHwReg(_adapter *adapter, u8 variable, const u8 *val)
 			DBG_871X_LEVEL(_drv_always_,
 			               "wowlan_wake_reason: 0x%02x\n",
 			               pwrctl->wowlan_wake_reason);
-#ifdef CONFIG_GTK_OL_DBG
+#if 0
 			dump_cam_table(adapter);
 #endif
 #if 1
@@ -5256,10 +5255,10 @@ void SetHwReg(_adapter *adapter, u8 variable, const u8 *val)
 
 			rtw_hal_update_tx_iv(adapter);
 
-#ifdef CONFIG_GTK_OL
+#if 0
 			if (psecuritypriv->dot11PrivacyAlgrthm == _AES_)
 				rtw_hal_update_gtk_offload_info(adapter);
-#endif //CONFIG_GTK_OL
+#endif
 
 			if (pHalFunc->hal_set_wowlan_fw != NULL)
 				pHalFunc->hal_set_wowlan_fw(adapter, _FALSE);
@@ -5512,7 +5511,7 @@ void GetHalODMVar(
 
 	}
 	break;
-#endif//#ifdef CONFIG_BACKGROUND_NOISE_MONITOR
+#endif//#ifdef
 	default:
 		break;
 	}
@@ -5571,7 +5570,7 @@ void SetHalODMVar(
 #endif
 	}
 	break;
-#endif//#ifdef CONFIG_BACKGROUND_NOISE_MONITOR
+#endif//#ifdef
 
 	default:
 		break;

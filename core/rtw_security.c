@@ -258,7 +258,7 @@ void rtw_wep_encrypt(_adapter *padapter, u8 *pxmitframe)
 	hw_hdr_offset = TXDESC_SIZE +
 	                (((struct xmit_frame*)pxmitframe)->pkt_offset * PACKET_OFFSET_SZ);
 #else
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 	hw_hdr_offset = TXDESC_OFFSET+EARLY_MODE_INFO_SIZE;
 #else
 	hw_hdr_offset = TXDESC_OFFSET;
@@ -740,7 +740,7 @@ u32	rtw_tkip_encrypt(_adapter *padapter, u8 *pxmitframe)
 	hw_hdr_offset = TXDESC_SIZE +
 	                (((struct xmit_frame*)pxmitframe)->pkt_offset * PACKET_OFFSET_SZ);
 #else
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 	hw_hdr_offset = TXDESC_OFFSET+EARLY_MODE_INFO_SIZE;
 #else
 	hw_hdr_offset = TXDESC_OFFSET;
@@ -1637,7 +1637,7 @@ u32	rtw_aes_encrypt(_adapter *padapter, u8 *pxmitframe)
 	hw_hdr_offset = TXDESC_SIZE +
 	                (((struct xmit_frame*)pxmitframe)->pkt_offset * PACKET_OFFSET_SZ);
 #else
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 	hw_hdr_offset = TXDESC_OFFSET+EARLY_MODE_INFO_SIZE;
 #else
 	hw_hdr_offset = TXDESC_OFFSET;

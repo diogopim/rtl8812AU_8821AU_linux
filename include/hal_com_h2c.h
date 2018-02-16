@@ -250,9 +250,9 @@ enum h2c_cmd {
 #define SET_H2CCMD_AOAC_RSVDPAGE_LOC_NEIGHBOR_ADV(__pH2CCmd, __Value)		SET_BITS_TO_LE_1BYTE_8BIT((__pH2CCmd)+2, 0, 8, __Value)
 #define SET_H2CCMD_AOAC_RSVDPAGE_LOC_GTK_RSP(__pH2CCmd, __Value)		SET_BITS_TO_LE_1BYTE_8BIT((__pH2CCmd)+3, 0, 8, __Value)
 #define SET_H2CCMD_AOAC_RSVDPAGE_LOC_GTK_INFO(__pH2CCmd, __Value)		SET_BITS_TO_LE_1BYTE_8BIT((__pH2CCmd)+4, 0, 8, __Value)
-#ifdef CONFIG_GTK_OL
+#if 0
 #define SET_H2CCMD_AOAC_RSVDPAGE_LOC_GTK_EXT_MEM(__pH2CCmd, __Value)		SET_BITS_TO_LE_1BYTE_8BIT((__pH2CCmd)+5, 0, 8, __Value)
-#endif //CONFIG_GTK_OL
+#endif
 #if 0
 #define SET_H2CCMD_AOAC_RSVDPAGE_LOC_NLO_INFO(__pH2CCmd, __Value)		SET_BITS_TO_LE_1BYTE_8BIT((__pH2CCmd), 0, 8, __Value)
 #endif
@@ -292,9 +292,9 @@ typedef struct _RSVDPAGE_LOC {
 	u8 LocGTKInfo;
 	u8 LocProbeReq;
 	u8 LocNetList;
-#ifdef CONFIG_GTK_OL
+#if 0
 	u8 LocGTKEXTMEM;
-#endif //CONFIG_GTK_OL
+#endif
 #if 0
 	u8 LocPNOInfo;
 	u8 LocScanInfo;

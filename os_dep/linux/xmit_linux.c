@@ -458,7 +458,7 @@ int _rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 	if (rtw_if_up(padapter) == _FALSE) {
 		DBG_COUNTER(padapter->tx_logs.os_tx_err_up);
 		RT_TRACE(_module_xmit_osdep_c_, _drv_err_, ("rtw_xmit_entry: rtw_if_up fail\n"));
-#ifdef DBG_TX_DROP_FRAME
+#if 0
 		DBG_871X("DBG_TX_DROP_FRAME %s if_up fail\n", __FUNCTION__);
 #endif
 		goto drop_packet;
@@ -492,7 +492,7 @@ int _rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 
 	res = rtw_xmit(padapter, &pkt);
 	if (res < 0) {
-#ifdef DBG_TX_DROP_FRAME
+#if 0
 		DBG_871X("DBG_TX_DROP_FRAME %s rtw_xmit fail\n", __FUNCTION__);
 #endif
 		goto drop_packet;

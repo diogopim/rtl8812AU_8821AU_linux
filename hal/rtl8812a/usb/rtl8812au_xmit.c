@@ -33,7 +33,7 @@ s32	rtl8812au_init_xmit_priv(_adapter *padapter)
 	             (void(*)(unsigned long))rtl8812au_xmit_tasklet,
 	             (unsigned long)padapter);
 #endif
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 	pHalData->bEarlyModeEnable = padapter->registrypriv.early_mode;
 #endif
 
@@ -81,7 +81,7 @@ static s32 update_txdesc(struct xmit_frame *pxmitframe, u8 *pmem, s32 sz ,u8 bag
 
 	offset = TXDESC_SIZE + OFFSET_SZ;
 
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 	if(bagg_pkt) {
 		offset += EARLY_MODE_INFO_SIZE ;//0x28
 	}
@@ -532,7 +532,7 @@ s32 rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 		pxmitbuf->priv_data = pxmitframe;
 
 		pxmitframe->agg_num = 1; // alloc xmitframe should assign to 1.
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 		pxmitframe->pkt_offset = (PACKET_OFFSET_SZ/8)+1; // 2; // first frame of aggregation, reserve one offset for EM info ,another for usb bulk-out block check
 #else
 		pxmitframe->pkt_offset = (PACKET_OFFSET_SZ/8); // 1; // first frame of aggregation, reserve offset
@@ -613,7 +613,7 @@ s32 rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 			break;
 
 		pxmitframe->agg_num = 0; // not first frame of aggregation
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 		pxmitframe->pkt_offset = 1;// not first frame of aggregation,reserve offset for EM Info
 #else
 		pxmitframe->pkt_offset = 0; // not first frame of aggregation, no need to reserve offset
@@ -679,7 +679,7 @@ s32 rtl8812au_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 
 
 		pfirstframe->agg_num++;
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 		pxmitpriv->agg_pkt[pfirstframe->agg_num-1].offset = _RND8(len);
 		pxmitpriv->agg_pkt[pfirstframe->agg_num-1].pkt_len = pxmitframe->attrib.last_txcmdsz;
 #endif
@@ -723,7 +723,7 @@ agg_end:
 
 	update_txdesc(pfirstframe, pfirstframe->buf_addr, pfirstframe->attrib.last_txcmdsz,_TRUE);
 
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 	//prepare EM info for first frame, agg_num value start from 1
 	pxmitpriv->agg_pkt[0].offset = _RND8(pfirstframe->attrib.last_txcmdsz +TXDESC_SIZE +(pfirstframe->pkt_offset*PACKET_OFFSET_SZ));
 	pxmitpriv->agg_pkt[0].pkt_len = pfirstframe->attrib.last_txcmdsz;//get from rtw_xmitframe_coalesce

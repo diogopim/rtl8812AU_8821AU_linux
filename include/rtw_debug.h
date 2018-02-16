@@ -318,7 +318,7 @@ extern u64 GlobalDebugComponents;
 			_dbgdump("\n");							\
 		}
 #endif /* defined(_dbgdump) */
-#endif /* CONFIG_DEBUG_RTL871X */
+#endif
 
 #if 0
 #define DBG_COUNTER(counter) counter++
@@ -390,9 +390,9 @@ ssize_t proc_set_wait_hiq_empty(struct file *file, const char __user *buffer, si
 int proc_get_all_sta_info(struct seq_file *m, void *v);
 #endif /* CONFIG_AP_MODE */
 
-#ifdef DBG_MEMORY_LEAK
+#if 0
 int proc_get_malloc_cnt(struct seq_file *m, void *v);
-#endif /* DBG_MEMORY_LEAK */
+#endif
 
 #ifdef CONFIG_FIND_BEST_CHANNEL
 int proc_get_best_channel(struct seq_file *m, void *v);

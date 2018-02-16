@@ -131,7 +131,7 @@ typedef enum mstat_status {
 	MSTAT_FREE
 } MSTAT_STATUS;
 
-#ifdef DBG_MEM_ALLOC
+#if 0
 void rtw_mstat_update(const enum mstat_f flags, const MSTAT_STATUS status, u32 sz);
 void rtw_mstat_dump (void *sel);
 u8* dbg_rtw_vmalloc(u32 sz, const enum mstat_f flags, const char *func, const int line);
@@ -300,7 +300,7 @@ extern void	rtw_usleep_os(int us);
 
 extern u32 	rtw_atoi(u8* s);
 
-#ifdef DBG_DELAY_OS
+#if 0
 #define rtw_mdelay_os(ms) _rtw_mdelay_os((ms), __FUNCTION__, __LINE__)
 #define rtw_udelay_os(ms) _rtw_udelay_os((ms), __FUNCTION__, __LINE__)
 extern void _rtw_mdelay_os(int ms, const char *func, const int line);

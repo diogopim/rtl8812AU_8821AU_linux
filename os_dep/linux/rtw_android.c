@@ -86,9 +86,9 @@ const char *android_wifi_cmd_str[ANDROID_WIFI_CMD_MAX] = {
 	"HOSTAPD_SET_MACADDR_ACL",
 	"HOSTAPD_ACL_ADD_STA",
 	"HOSTAPD_ACL_REMOVE_STA",
-#ifdef CONFIG_GTK_OL
+#if 0
 	"GTK_REKEY_OFFLOAD",
-#endif //CONFIG_GTK_OL
+#endif
 	/*	Private command for	P2P disable*/
 	"P2P_DISABLE"
 };
@@ -500,7 +500,7 @@ int get_int_from_command( char* pcmd )
 	return ( rtw_atoi( pcmd + i ) );
 }
 
-#ifdef CONFIG_GTK_OL
+#if 0
 int rtw_gtk_offload(struct net_device *net, u8 *cmd_ptr)
 {
 	int i;
@@ -543,7 +543,7 @@ int rtw_gtk_offload(struct net_device *net, u8 *cmd_ptr)
 
 	return _SUCCESS;
 }
-#endif //CONFIG_GTK_OL
+#endif
 
 int rtw_android_priv_cmd(struct net_device *net, struct ifreq *ifr, int cmd)
 {
@@ -834,11 +834,11 @@ int rtw_android_priv_cmd(struct net_device *net, struct ifreq *ifr, int cmd)
 		rtw_acl_remove_sta(padapter, addr);
 		break;
 	}
-#ifdef CONFIG_GTK_OL
+#if 0
 	case ANDROID_WIFI_CMD_GTK_REKEY_OFFLOAD:
 		rtw_gtk_offload(net, (u8*)command);
 		break;
-#endif //CONFIG_GTK_OL
+#endif
 	case ANDROID_WIFI_CMD_P2P_DISABLE: {
 #ifdef CONFIG_P2P
 		//struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;

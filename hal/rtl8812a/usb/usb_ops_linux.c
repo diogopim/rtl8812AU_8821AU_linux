@@ -106,7 +106,7 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 
 
 
-#ifdef DBG_CONFIG_ERROR_DETECT_INT
+#if 0
 	if(  pHalData->IntArray[1]  & IMR_TXERR_88E )
 		DBG_871X("===> %s Tx Error Flag Interrupt Status \n",__FUNCTION__);
 	if(  pHalData->IntArray[1]  & IMR_RXERR_88E )
@@ -115,7 +115,7 @@ void interrupt_handler_8812au(_adapter *padapter,u16 pkt_len,u8 *pbuf)
 		DBG_871X("===> %s Transmit FIFO Overflow \n",__FUNCTION__);
 	if(  pHalData->IntArray[1]  & IMR_RXFOVW_88E )
 		DBG_871X("===> %s Receive FIFO Overflow \n",__FUNCTION__);
-#endif//DBG_CONFIG_ERROR_DETECT_INT
+#endif
 
 
 	// C2H Event
@@ -521,7 +521,7 @@ void rtl8812au_set_intf_ops(struct _io_ops	*pops)
 	pops->_write32 = &usb_write32;
 	pops->_writeN = &usb_writeN;
 
-#ifdef CONFIG_USB_SUPPORT_ASYNC_VDN_REQ
+#if 0
 	pops->_write8_async= &usb_async_write8;
 	pops->_write16_async = &usb_async_write16;
 	pops->_write32_async = &usb_async_write32;

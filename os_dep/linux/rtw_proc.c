@@ -124,7 +124,7 @@ static ssize_t proc_set_log_level(struct file *file, const char __user *buffer, 
 	return count;
 }
 
-#ifdef DBG_MEM_ALLOC
+#if 0
 static int proc_get_mstat(struct seq_file *m, void *v)
 {
 	rtw_mstat_dump(m);
@@ -140,7 +140,7 @@ static int proc_get_mstat(struct seq_file *m, void *v)
 const struct rtw_proc_hdl drv_proc_hdls [] = {
 	{"ver_info", proc_get_drv_version, NULL},
 	{"log_level", proc_get_log_level, proc_set_log_level},
-#ifdef DBG_MEM_ALLOC
+#if 0
 	{"mstat", proc_get_mstat, NULL},
 #endif /* DBG_MEM_ALLOC */
 };
@@ -682,9 +682,9 @@ const struct rtw_proc_hdl adapter_proc_hdls [] = {
 	{"all_sta_info", proc_get_all_sta_info, NULL},
 #endif /* CONFIG_AP_MODE */
 
-#ifdef DBG_MEMORY_LEAK
+#if 0
 	{"_malloc_cnt", proc_get_malloc_cnt, NULL},
-#endif /* DBG_MEMORY_LEAK */
+#endif
 
 #ifdef CONFIG_FIND_BEST_CHANNEL
 	{"best_channel", proc_get_best_channel, proc_set_best_channel},

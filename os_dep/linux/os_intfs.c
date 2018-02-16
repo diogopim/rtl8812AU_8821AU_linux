@@ -75,7 +75,7 @@ int rtw_smart_ps = 2;
 
 int rtw_check_fw_ps = 1;
 
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 int rtw_early_mode=1;
 #endif
 
@@ -274,7 +274,7 @@ module_param(rtw_hwpwrp_detect, int, 0644);
 
 module_param(rtw_hw_wps_pbc, int, 0644);
 
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 module_param(rtw_early_mode, int, 0644);
 #endif
 #if 0
@@ -511,7 +511,7 @@ uint loadparam( _adapter *padapter,  _nic_hdl	pnetdev)
 	registry_par->vht_rate_sel = (u8)rtw_vht_rate_sel;
 #endif
 
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 	registry_par->early_mode = (u8)rtw_early_mode;
 #endif
 	registry_par->lowrate_two_xmit = (u8)rtw_lowrate_two_xmit;
@@ -1074,9 +1074,9 @@ u8 rtw_init_default_value(_adapter *padapter)
 	//security_priv
 	//rtw_get_encrypt_decrypt_from_registrypriv(padapter);
 	psecuritypriv->binstallGrpkey = _FAIL;
-#ifdef CONFIG_GTK_OL
+#if 0
 	psecuritypriv->binstallKCK_KEK = _FAIL;
-#endif //CONFIG_GTK_OL
+#endif
 	psecuritypriv->sw_encrypt=pregistrypriv->software_encrypt;
 	psecuritypriv->sw_decrypt=pregistrypriv->software_decrypt;
 
@@ -2692,7 +2692,7 @@ void rtw_ndev_destructor(struct net_device *ndev)
 	free_netdev(ndev);
 }
 
-#ifdef CONFIG_ARP_KEEP_ALIVE
+#if 0
 struct route_info {
 	struct in_addr dst_addr;
 	struct in_addr src_addr;

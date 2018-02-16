@@ -699,7 +699,7 @@ void ConstructProbeRsp(_adapter *padapter, u8 *pframe, u32 *pLength, u8 *StaAddr
 	*pLength = pktlen;
 }
 
-#ifdef CONFIG_GTK_OL
+#if 0
 static void ConstructGTKResponse(
     PADAPTER padapter,
     u8			*pframe,
@@ -809,7 +809,7 @@ static void ConstructGTKResponse(
 	pGTKRspPkt += 88;
 
 }
-#endif //CONFIG_GTK_OL
+#endif
 
 // To check if reserved page content is destroyed by beacon beacuse beacon is too large.
 // 2010.06.23. Added by tynli.
@@ -1577,9 +1577,9 @@ static void rtl8812_set_FwAoacRsvdPage_cmd(PADAPTER padapter, PRSVDPAGE_LOC rsvd
 		//SET_H2CCMD_AOAC_RSVDPAGE_LOC_NEIGHBOR_ADV(u1H2CAoacRsvdPageParm, rsvdpageloc->LocNbrAdv);
 		SET_H2CCMD_AOAC_RSVDPAGE_LOC_GTK_RSP(u1H2CAoacRsvdPageParm, rsvdpageloc->LocGTKRsp);
 		SET_H2CCMD_AOAC_RSVDPAGE_LOC_GTK_INFO(u1H2CAoacRsvdPageParm, rsvdpageloc->LocGTKInfo);
-#ifdef CONFIG_GTK_OL
+#if 0
 		SET_H2CCMD_AOAC_RSVDPAGE_LOC_GTK_EXT_MEM(u1H2CAoacRsvdPageParm, rsvdpageloc->LocGTKEXTMEM);
-#endif // CONFIG_GTK_OL
+#endif
 	} else {
 #if 0
 		if(!pwrpriv->pno_in_resume) {
@@ -1727,7 +1727,7 @@ static inline void ConstructARPResponse(
 	SET_ARP_PKT_OPERATION(pARPRspPkt, 0x0200); // ARP response
 	SET_ARP_PKT_SENDER_MAC_ADDR(pARPRspPkt, myid(&(padapter->eeprompriv)));
 	SET_ARP_PKT_SENDER_IP_ADDR(pARPRspPkt, pIPAddress);
-#ifdef CONFIG_ARP_KEEP_ALIVE
+#if 0
 	if (rtw_gw_addr_query(padapter)==0) {
 		SET_ARP_PKT_TARGET_MAC_ADDR(pARPRspPkt, pmlmepriv->gw_mac_addr);
 		SET_ARP_PKT_TARGET_IP_ADDR(pARPRspPkt, pmlmepriv->gw_ip);
@@ -1805,7 +1805,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 	//struct security_priv *psecuritypriv = &padapter->securitypriv; //added by xx
 	//u8 currentip[4];
 	//u8 cur_dot11txpn[8];
-#ifdef CONFIG_GTK_OL
+#if 0
 	struct sta_priv *pstapriv = &padapter->stapriv;
 	struct sta_info * psta;
 	u8 kek[RTW_KEK_LEN];
@@ -1998,7 +1998,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 
 		TotalPageNum += CurtPktPageNum;
 
-#ifdef CONFIG_GTK_OL
+#if 0
 		BufIndex += (CurtPktPageNum*PageSize);
 
 		//if the ap staion info. exists, get the kek, kck from staion info.
@@ -2081,7 +2081,7 @@ static void rtl8812_set_FwRsvdPagePkt(PADAPTER padapter, BOOLEAN bDLFinished)
 		TotalPacketLen = BufIndex-TxDescLen + PageSize; //extension memory for FW
 #else
 		TotalPacketLen = BufIndex-TxDescLen + sizeof (union pn48); //IV len
-#endif //CONFIG_GTK_OL
+#endif
 	} else
 #endif //CONFIG_WOWLAN
 	{
@@ -2241,14 +2241,14 @@ static void rtl8812_set_FwRemoteWakeCtrl_Cmd(PADAPTER padapter, u8 benable)
 	if (!ppwrpriv->wowlan_pno_enable) {
 		SET_H2CCMD_REMOTE_WAKECTRL_ENABLE(u1H2CRemoteWakeCtrlParm, benable);
 		SET_H2CCMD_REMOTE_WAKE_CTRL_ARP_OFFLOAD_EN(u1H2CRemoteWakeCtrlParm, 1);
-#ifdef CONFIG_GTK_OL
+#if 0
 		if(psecuritypriv->binstallKCK_KEK == _TRUE && psecuritypriv->dot11PrivacyAlgrthm == _AES_) {
 			SET_H2CCMD_REMOTE_WAKE_CTRL_GTK_OFFLOAD_EN(u1H2CRemoteWakeCtrlParm, 1);
 		} else {
 			DBG_871X("no kck or security is not AES\n");
 			SET_H2CCMD_REMOTE_WAKE_CTRL_GTK_OFFLOAD_EN(u1H2CRemoteWakeCtrlParm, 0);
 		}
-#endif //CONFIG_GTK_OL
+#endif
 
 		SET_H2CCMD_REMOTE_WAKE_CTRL_FW_UNICAST_EN(u1H2CRemoteWakeCtrlParm, 1);
 
@@ -2359,9 +2359,9 @@ static void rtl8812_set_FwWoWlanCtrl_Cmd(PADAPTER padapter, u8 bFuncEn)
 	SET_H2CCMD_WOWLAN_UNICAST_PKT_ENABLE(u1H2CWoWlanCtrlParm, hw_unicast);
 	SET_H2CCMD_WOWLAN_ALL_PKT_DROP(u1H2CWoWlanCtrlParm, 0);
 	SET_H2CCMD_WOWLAN_GPIO_ACTIVE(u1H2CWoWlanCtrlParm, gpio_high_active);
-#ifndef CONFIG_GTK_OL
+#if 1
 	SET_H2CCMD_WOWLAN_REKEY_WAKE_UP(u1H2CWoWlanCtrlParm, 1);
-#endif //!CONFIG_GTK_OL
+#endif
 	SET_H2CCMD_WOWLAN_DISCONNECT_WAKE_UP(u1H2CWoWlanCtrlParm, discont_wake);
 	SET_H2CCMD_WOWLAN_GPIONUM(u1H2CWoWlanCtrlParm, gpionum);
 	SET_H2CCMD_WOWLAN_DATAPIN_WAKE_UP(u1H2CWoWlanCtrlParm, sdio_wakeup_enable);

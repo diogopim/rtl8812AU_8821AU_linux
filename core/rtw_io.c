@@ -412,7 +412,7 @@ void rtw_reset_continual_io_error(struct dvobj_priv *dvobj)
 	ATOMIC_SET(&dvobj->continual_io_error, 0);
 }
 
-#ifdef DBG_IO
+#if 0
 
 u16 read_sniff_ranges[][2] = {
 	//{0x520, 0x523},

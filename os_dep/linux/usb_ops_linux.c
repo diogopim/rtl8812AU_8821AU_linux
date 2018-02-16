@@ -46,7 +46,7 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, u8 request, u16 value, u16 inde
 	u8 *pIo_buf;
 	int vendorreq_times = 0;
 
-#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_DYNAMIC_ALLOCATE
+#if 0
 	u8 *tmp_buf;
 #else // use stack memory
 	//u8 tmp_buf[MAX_USB_IO_CTL_SIZE];
@@ -83,7 +83,7 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, u8 request, u16 value, u16 inde
 #ifdef CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
 	pIo_buf = pdvobjpriv->usb_vendor_req_buf;
 #else
-#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_DYNAMIC_ALLOCATE
+#if 0
 	tmp_buf = rtw_malloc( (u32) len + ALIGNMENT_UNIT);
 	tmp_buflen =  (u32)len + ALIGNMENT_UNIT;
 #else // use stack memory
@@ -160,7 +160,7 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, u8 request, u16 value, u16 inde
 	}
 
 	// release IO memory used by vendorreq
-#ifdef CONFIG_USB_VENDOR_REQ_BUFFER_DYNAMIC_ALLOCATE
+#if 0
 	rtw_mfree(tmp_buf, tmp_buflen);
 #endif
 
@@ -173,7 +173,7 @@ exit:
 
 }
 
-#ifdef CONFIG_USB_SUPPORT_ASYNC_VDN_REQ
+#if 0
 static void _usbctrl_vendorreq_async_callback(struct urb *urb, struct pt_regs *regs)
 {
 	if (urb) {
@@ -240,7 +240,7 @@ exit:
 }
 
 
-#endif /* CONFIG_USB_SUPPORT_ASYNC_VDN_REQ */
+#endif
 
 unsigned int ffaddr2pipehdl(struct dvobj_priv *pdvobj, u32 addr)
 {
@@ -548,7 +548,7 @@ u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *wmem)
 	RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("+usb_write_port\n"));
 
 	if (RTW_CANNOT_TX(padapter)) {
-#ifdef DBG_TX
+#if 0
 		DBG_871X(" DBG_TX %s:%d bDriverStopped%d, bSurpriseRemoved:%d\n",__FUNCTION__, __LINE__
 		         ,padapter->bDriverStopped, padapter->bSurpriseRemoved);
 #endif
@@ -931,7 +931,7 @@ void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 			skb_put(precvbuf->pskb, purb->actual_length);
 			skb_queue_tail(&precvpriv->rx_skb_queue, precvbuf->pskb);
 
-#ifndef CONFIG_FIX_NR_BULKIN_BUFFER
+#if 1
 			if (skb_queue_len(&precvpriv->rx_skb_queue)<=1)
 #endif
 				tasklet_schedule(&precvpriv->recv_tasklet);
@@ -1016,7 +1016,7 @@ u32 usb_read_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *rmem)
 		if (NULL != (precvbuf->pskb = skb_dequeue(&precvpriv->free_recv_skb_queue)))
 			goto recv_buf_hook;
 
-#ifndef CONFIG_FIX_NR_BULKIN_BUFFER
+#if 1
 		precvbuf->pskb = rtw_skb_alloc(MAX_RECVBUF_SZ + RECVBUFF_ALIGN_SZ);
 #endif
 

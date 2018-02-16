@@ -1604,10 +1604,10 @@ u32 rtl8812au_hal_init(PADAPTER Adapter)
 
 #if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_TX_MCAST2UNI)
 
-#ifdef CONFIG_CHECK_AC_LIFETIME
+#if 0
 	// Enable lifetime check for the four ACs
 	rtw_write8(Adapter, REG_LIFETIME_CTRL, 0x0F);
-#endif	// CONFIG_CHECK_AC_LIFETIME
+#endif
 
 #ifdef CONFIG_TX_MCAST2UNI
 	rtw_write16(Adapter, REG_PKT_VO_VI_LIFE_TIME, 0x0400);	// unit: 256us. 256ms

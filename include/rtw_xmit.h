@@ -168,7 +168,7 @@ do{\
 #define TXDESC_SIZE 32
 #endif
 
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 #define EARLY_MODE_INFO_SIZE	8
 #endif
 
@@ -530,7 +530,7 @@ struct xmit_buf {
 	struct tx_desc *desc;
 #endif
 
-#if defined(DBG_XMIT_BUF )|| defined(DBG_XMIT_BUF_EXT)
+#if 0
 	u8 no;
 #endif
 
@@ -745,7 +745,7 @@ struct	xmit_priv {
 	struct xmit_buf	pcmd_xmitbuf[CMDBUF_MAX];
 	u8   hw_ssn_seq_no;//mapping to REG_HW_SEQ 0,1,2,3
 	u16	nqos_ssn;
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 
 #if 0
 #define MAX_AGG_PKT_NUM 20

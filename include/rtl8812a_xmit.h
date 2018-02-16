@@ -310,7 +310,7 @@ typedef struct txdescriptor_8812 {
 #define SET_EARLYMODE_LEN2_8812(__pAddr, __Value) 					SET_BITS_TO_LE_4BYTE(__pAddr+4, 2, 15,  __Value)
 #define SET_EARLYMODE_LEN3_8812(__pAddr, __Value) 					SET_BITS_TO_LE_4BYTE(__pAddr+4, 17, 15, __Value)
 
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 #define USB_DUMMY_OFFSET		2
 #else
 #define USB_DUMMY_OFFSET		1
@@ -346,7 +346,7 @@ s32	rtl8812ae_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmit
 void rtl8812ae_xmit_tasklet(void *priv);
 #endif
 
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 void UpdateEarlyModeInfo8812(struct xmit_priv *pxmitpriv,struct xmit_buf *pxmitbuf );
 #endif
 

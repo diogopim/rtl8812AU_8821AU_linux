@@ -698,7 +698,7 @@ typedef struct hal_com_data {
 	u32	rf_tx_pwr_lmt_len;
 #endif
 
-#ifdef CONFIG_BACKGROUND_NOISE_MONITOR
+#if 0
 	s16 noise[ODM_MAX_CHANNEL_NUM];
 #endif
 

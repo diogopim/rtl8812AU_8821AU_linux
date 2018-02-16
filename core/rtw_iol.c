@@ -299,7 +299,7 @@ int _rtw_IOL_append_WD_cmd(struct xmit_frame *xmit_frame, u16 addr, u32 value)
 	return rtw_IOL_append_cmds(xmit_frame, (u8*)&cmd, 8);
 }
 
-#ifdef DBG_IO
+#if 0
 int dbg_rtw_IOL_append_WB_cmd(struct xmit_frame *xmit_frame, u16 addr, u8 value, const char *caller, const int line)
 {
 	if (match_write_sniff_ranges(addr, 1))

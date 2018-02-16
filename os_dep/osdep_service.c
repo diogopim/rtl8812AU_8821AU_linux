@@ -25,12 +25,12 @@
 
 #define RT_TAG	'1178'
 
-#ifdef DBG_MEMORY_LEAK
+#if 0
 #ifdef PLATFORM_LINUX
 atomic_t _malloc_cnt = ATOMIC_INIT(0);
 atomic_t _malloc_size = ATOMIC_INIT(0);
 #endif
-#endif /* DBG_MEMORY_LEAK */
+#endif
 
 
 #if defined(PLATFORM_LINUX)
@@ -92,14 +92,14 @@ inline u8* _rtw_vmalloc(u32 sz)
 	NdisAllocateMemoryWithTag(&pbuf,sz, RT_TAG);
 #endif
 
-#ifdef DBG_MEMORY_LEAK
+#if 0
 #ifdef PLATFORM_LINUX
 	if ( pbuf != NULL) {
 		atomic_inc(&_malloc_cnt);
 		atomic_add(sz, &_malloc_size);
 	}
 #endif
-#endif /* DBG_MEMORY_LEAK */
+#endif
 
 	return pbuf;
 }
@@ -136,12 +136,12 @@ inline void _rtw_vmfree(u8 *pbuf, u32 sz)
 	NdisFreeMemory(pbuf,sz, 0);
 #endif
 
-#ifdef DBG_MEMORY_LEAK
+#if 0
 #ifdef PLATFORM_LINUX
 	atomic_dec(&_malloc_cnt);
 	atomic_sub(sz, &_malloc_size);
 #endif
-#endif /* DBG_MEMORY_LEAK */
+#endif
 }
 
 u8* _rtw_malloc(u32 sz)
@@ -167,14 +167,14 @@ u8* _rtw_malloc(u32 sz)
 
 #endif
 
-#ifdef DBG_MEMORY_LEAK
+#if 0
 #ifdef PLATFORM_LINUX
 	if ( pbuf != NULL) {
 		atomic_inc(&_malloc_cnt);
 		atomic_add(sz, &_malloc_size);
 	}
 #endif
-#endif /* DBG_MEMORY_LEAK */
+#endif
 
 	return pbuf;
 
@@ -225,12 +225,12 @@ void	_rtw_mfree(u8 *pbuf, u32 sz)
 
 #endif
 
-#ifdef DBG_MEMORY_LEAK
+#if 0
 #ifdef PLATFORM_LINUX
 	atomic_dec(&_malloc_cnt);
 	atomic_sub(sz, &_malloc_size);
 #endif
-#endif /* DBG_MEMORY_LEAK */
+#endif
 
 }
 
@@ -370,7 +370,7 @@ inline void _rtw_usb_buffer_free(struct usb_device *dev, size_t size, void *addr
 }
 #endif /* CONFIG_USB_HCI */
 
-#if defined(DBG_MEM_ALLOC)
+#if 0
 
 struct rtw_mem_stat {
 	ATOMIC_T alloc; // the memory bytes we allocate currently
@@ -1457,7 +1457,7 @@ void rtw_usleep_os(int us)
 }
 
 
-#ifdef DBG_DELAY_OS
+#if 0
 void _rtw_mdelay_os(int ms, const char *func, const int line)
 {
 #if 0

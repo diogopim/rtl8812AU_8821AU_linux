@@ -56,7 +56,7 @@ u64 GlobalDebugComponents = \
                             _module_mp_ |
                             _module_efuse_;
 
-#endif /* CONFIG_DEBUG_RTL871X */
+#endif
 
 #include <rtw_version.h>
 
@@ -1758,7 +1758,7 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 
 #endif
 
-#ifdef DBG_MEMORY_LEAK
+#if 0
 #include <asm/atomic.h>
 extern atomic_t _malloc_cnt;;
 extern atomic_t _malloc_size;;
@@ -1770,7 +1770,7 @@ int proc_get_malloc_cnt(struct seq_file *m, void *v)
 
 	return 0;
 }
-#endif /* DBG_MEMORY_LEAK */
+#endif
 
 #ifdef CONFIG_FIND_BEST_CHANNEL
 int proc_get_best_channel(struct seq_file *m, void *v)

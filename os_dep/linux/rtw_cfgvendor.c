@@ -42,7 +42,7 @@
 
 #include <net/rtnetlink.h>
 
-#ifdef DBG_MEM_ALLOC
+#if 0
 extern bool match_mstat_sniff_rules(const enum mstat_f flags, const size_t size);
 struct sk_buff * dbg_rtw_cfg80211_vendor_event_alloc(struct wiphy *wiphy, int len, int event_id, gfp_t gfp
         , const enum mstat_f flags, const char *func, const int line)

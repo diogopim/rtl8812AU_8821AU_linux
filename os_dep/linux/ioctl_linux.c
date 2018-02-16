@@ -2421,7 +2421,7 @@ static int rtw_wx_set_scan(struct net_device *dev, struct iw_request_info *a,
 
 	_func_enter_;
 
-#ifdef DBG_IOCTL
+#if 0
 	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
 #endif
 	/*
@@ -2634,7 +2634,7 @@ exit:
 
 	rtw_ps_deny_cancel(padapter, PS_DENY_SCAN);
 
-#ifdef DBG_IOCTL
+#if 0
 	DBG_871X("DBG_IOCTL %s:%d return %d\n",__FUNCTION__, __LINE__, ret);
 #endif
 
@@ -2670,7 +2670,7 @@ static int rtw_wx_get_scan(struct net_device *dev, struct iw_request_info *a,
 
 	_func_enter_;
 
-#ifdef DBG_IOCTL
+#if 0
 	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
 #endif
 	/*
@@ -2774,7 +2774,7 @@ exit:
 
 	_func_exit_;
 
-#ifdef DBG_IOCTL
+#if 0
 	DBG_871X("DBG_IOCTL %s:%d return %d\n",__FUNCTION__, __LINE__, ret);
 #endif
 
@@ -2806,7 +2806,7 @@ static int rtw_wx_set_essid(struct net_device *dev,
 
 	_func_enter_;
 
-#ifdef DBG_IOCTL
+#if 0
 	DBG_871X("DBG_IOCTL %s:%d\n",__FUNCTION__, __LINE__);
 #endif
 
@@ -2961,7 +2961,7 @@ exit:
 
 	DBG_871X("<=%s, ret %d\n",__FUNCTION__, ret);
 
-#ifdef DBG_IOCTL
+#if 0
 	DBG_871X("DBG_IOCTL %s:%d return %d\n",__FUNCTION__, __LINE__, ret);
 #endif
 
@@ -7300,7 +7300,7 @@ static int rtw_dbg_port(struct net_device *dev,
 			}
 		}
 		break;
-#ifdef CONFIG_BACKGROUND_NOISE_MONITOR
+#if 0
 		case 0x1e: {
 			HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 			PDM_ODM_T pDM_Odm = &pHalData->odmpriv;

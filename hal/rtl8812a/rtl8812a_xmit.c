@@ -69,7 +69,7 @@ void _dbg_dump_tx_info(_adapter	*padapter,int frame_tag, u8 *ptxdesc)
  *	-1	Hardware resource(TX FIFO) not ready
  *	-2	Software resource(xmitbuf) not ready
  */
-#ifdef CONFIG_TX_EARLY_MODE
+#if 0
 
 //#define DBG_EMINFO
 

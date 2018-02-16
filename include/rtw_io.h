@@ -381,7 +381,7 @@ extern u32 _rtw_write_port(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem);
 u32 _rtw_write_port_and_wait(_adapter *adapter, u32 addr, u32 cnt, u8 *pmem, int timeout_ms);
 extern void _rtw_write_port_cancel(_adapter *adapter);
 
-#ifdef DBG_IO
+#if 0
 bool match_read_sniff_ranges(u16 addr, u16 len);
 bool match_write_sniff_ranges(u16 addr, u16 len);
 

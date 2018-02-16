@@ -131,20 +131,10 @@
 #define CONFIG_LAYER2_ROAMING_RESUME
 #define CONFIG_LONG_DELAY_ISSUE
 #define CONFIG_NEW_SIGNAL_STAT_PROCESS
-//#define CONFIG_SIGNAL_DISPLAY_DBM //display RX signal with dbm
-#if 0
-//#define CONFIG_BACKGROUND_NOISE_MONITOR
-#endif
 #define RTW_NOTCH_FILTER 0 /* 0:Disable, 1:Enable, */
 #define CONFIG_DEAUTH_BEFORE_CONNECT
 
 #define CONFIG_TX_MCAST2UNI	1	// Support IP multicast->unicast
-//#define CONFIG_CHECK_AC_LIFETIME 1	// Check packet lifetime of 4 ACs.
-
-#if 0
-//#define CONFIG_GTK_OL
-#define CONFIG_ARP_KEEP_ALIVE
-#endif // CONFIG_WOWLAN
 
 #if 0
 #ifndef WAKEUP_GPIO_IDX
@@ -161,6 +151,7 @@
 #define CONFIG_USB_RX_AGGREGATION	1
 #endif
 
+//TODO: test the performance claims bellow.
 //#define CONFIG_REDUCE_USB_TX_INT	1	// Trade-off: Improve performance, but may cause TX URBs blocked by USB Host/Bus driver on few platforms.
 //#define CONFIG_EASY_REPLACEMENT	1
 
@@ -169,34 +160,24 @@
  */
 //#define CONFIG_USE_USB_BUFFER_ALLOC_TX 1	// Trade-off: For TX path, improve stability on some platforms, but may cause performance degrade on other platforms.
 //#define CONFIG_USE_USB_BUFFER_ALLOC_RX 1	// For RX path
-#ifdef CONFIG_USE_USB_BUFFER_ALLOC_RX
-
-#else
+#if 1
 #define CONFIG_PREALLOC_RECV_SKB
-#ifdef CONFIG_PREALLOC_RECV_SKB
-//#define CONFIG_FIX_NR_BULKIN_BUFFER /* only use PREALLOC_RECV_SKB buffer, don't alloc skb at runtime */
-#endif
 #endif
 
 /*
  * USB VENDOR REQ BUFFER ALLOCATION METHOD
  * if not set we'll use function local variable (stack memory)
  */
-//#define CONFIG_USB_VENDOR_REQ_BUFFER_DYNAMIC_ALLOCATE
 #define CONFIG_USB_VENDOR_REQ_BUFFER_PREALLOC
 
 #define CONFIG_USB_VENDOR_REQ_MUTEX
 #define CONFIG_VENDOR_REQ_RETRY
-
-//#define CONFIG_USB_SUPPORT_ASYNC_VDN_REQ 1
 
 
 /*
  * HAL  Related Config
  */
 #define RTL8812A_RX_PACKET_INCLUDE_CRC	0
-
-//#define CONFIG_ONLY_ONE_OUT_EP_TO_LOW	0
 
 #define CONFIG_OUT_EP_WIFI_MODE	0
 
@@ -290,10 +271,6 @@
 #define RATE_ADAPTIVE_SUPPORT 			0
 #define POWER_TRAINING_ACTIVE			0
 
-#ifdef CONFIG_USB_TX_AGGREGATION
-//#define 	CONFIG_TX_EARLY_MODE
-#endif
-
 #define	RTL8188E_EARLY_MODE_PKT_NUM_10	0
 
 #define CONFIG_80211D
@@ -306,23 +283,10 @@
 #define DBG	0
 
 //#define CONFIG_DEBUG /* DBG_871X, etc... */
-//#define CONFIG_DEBUG_RTL871X /* RT_TRACE, RT_PRINT_DATA, _func_enter_, _func_exit_ */
 
 #define CONFIG_PROC_DEBUG
 
 #define DBG_CONFIG_ERROR_DETECT
-//#define DBG_CONFIG_ERROR_DETECT_INT
-//#define DBG_CONFIG_ERROR_RESET
-
-//#define DBG_IO
-//#define DBG_DELAY_OS
-//#define DBG_MEM_ALLOC
-//#define DBG_IOCTL
-
-//#define DBG_TX
-//#define DBG_XMIT_BUF
-//#define DBG_XMIT_BUF_EXT
-//#define DBG_TX_DROP_FRAME
 
 //#define DBG_RX_DROP_FRAME
 //#define DBG_RX_SEQ
@@ -335,6 +299,4 @@
 //#define DBG_ROAMING_TEST
 
 //#define DBG_HAL_INIT_PROFILING
-
-//#define DBG_MEMORY_LEAK	1
 
